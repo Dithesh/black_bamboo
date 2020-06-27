@@ -9,7 +9,7 @@
     <form>
         <mat-form-field  appearance="outline" class="ew-250 pb-0">
             <mat-label>Search</mat-label>
-            <input type="text" matInput>
+            <input (keyup)="applyFilter($event)" #search type="text" matInput>
             <mat-icon matSuffix>search</mat-icon>
         </mat-form-field>
     </form>

@@ -27,7 +27,7 @@ export class FeedbackSettingComponent implements OnInit {
 
   displayedColumns: string[] = ['action', 'questions', 'type'];
   dataSource = new MatTableDataSource(TABLE_DATA);
-
+  sidemenu=false;
   @ViewChild(MatSort, {static: true}) sort: MatSort;
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
   constructor() { }
