@@ -27,9 +27,9 @@
         <li>
             <a href="javascript:;" matRipple [matRippleUnbounded]="false">Users</a>
         </li>
-        <li [class.subOpen]="settingOpen" routerLinkActive="subOpen" class="have_submenu">
+        <li  routerLinkActive="subOpen" class="have_submenu" [class.subOpen]="settingOpen">
             <a href="javascript:;" (click)="settingOpen = !settingOpen" matRipple [matRippleUnbounded]="false">Setting <mat-icon>keyboard_arrow_down</mat-icon></a>
-            <ul class="list-unlisted submenu-Wrapper" *ngIf="settingOpen">
+            <ul  routerLinkActive="active" class="list-unlisted submenu-Wrapper">
                 <li routerLinkActive="active">
                     <a href="javascript:;" routerLink="/admin/settings/categories" matRipple>Categories</a>
                 </li>
