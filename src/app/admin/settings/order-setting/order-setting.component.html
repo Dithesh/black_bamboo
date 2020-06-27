@@ -1,11 +1,11 @@
 <div class="page_header d-flex mb-4">
     <h2 class="header_title">Order Settings</h2>
     <div class="ml-auto">
-        <button mat-raised-button color="primary">Add New</button>
+        <button mat-raised-button color="primary" routerLink="/admin/settings/new-order-type">Add New</button>
     </div>
 </div>
 <div class="table_outerWrapper mat-elevation-z8 mt-20">
-    <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8 w-100">
+    <table mat-table [dataSource]="dataSource" matSort class="w-100">
         <!-- Position Column -->
         <ng-container matColumnDef="action">
             <th mat-header-cell *matHeaderCellDef mat-sort-header class="ew-100"> Action </th>
