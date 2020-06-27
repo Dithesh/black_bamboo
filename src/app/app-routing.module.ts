@@ -8,10 +8,13 @@ const routes: Routes = [
     loadChildren: () => import('./admin/admin.module').then(mod => mod.AdminModule),
   },
   {
+    path: "guest",
+    loadChildren: () => import('./guest/guest.module').then(mod => mod.GuestModule),
+  },
+  {
     path: "",
-    redirectTo:'/admin',
+    redirectTo:'/guest/signin',
     pathMatch:'full'
-    // loadChildren: () => import('./guest/guest.module').then(mod => mod.GuestModule),
   },
 ];
 

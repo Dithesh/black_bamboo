@@ -23,7 +23,7 @@ export class SigninComponent implements OnInit {
     event.preventDefault();
     this.form.markAllAsTouched();
     if(this.form.invalid)return;
-    this._serv.endpoint="token/";
+    this._serv.endpoint="auth/signin";
     this._serv.post(this.form.value).subscribe(response => {
       console.log(response);
       localStorage.setItem('lock_token', response['access'])
