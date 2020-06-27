@@ -4,6 +4,7 @@ import { BranchesSettingComponent } from './branches-setting/branches-setting.co
 import { CategoriesSettingComponent } from './categories-setting/categories-setting.component';
 import { FeedbackSettingComponent } from './feedback-setting/feedback-setting.component';
 import { OrderSettingComponent } from './order-setting/order-setting.component';
+import { AddOrderTypeComponent } from './add-order-type/add-order-type.component';
 
 
 const routes: Routes = [
@@ -27,6 +28,10 @@ const routes: Routes = [
   {
     path:"orders",
     component:OrderSettingComponent
+  },
+  {
+    path:"new-order-type",
+    component:AddOrderTypeComponent
   }
 ];
 
