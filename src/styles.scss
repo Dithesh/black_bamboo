@@ -64,6 +64,12 @@ html, body {
 button:focus {
     outline: none;
 }
+.transition{
+    -webkit-transition: .3s ease-in-out;
+    -ms-transition: .3s ease-in-out;
+    -moz-transition: .3s ease-in-out;
+    transition: .3s ease-in-out;
+}
 h3.page_title {
     font-weight: 500;
     font-size: 1.8rem;
@@ -116,5 +122,38 @@ mat-form-field{
         }
     }
 }
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.right_sidePannel{
+    position: fixed;
+    right: -300px;
+    top: 0;
+    width: 300px;
+    padding: 20px;
+    background-color: #fff;
+    height: 100%;
+    z-index: 3;
+    box-shadow: -2px 0px 12px rgba(#000, 0.2);
+    &.active{
+        right: 0px;
+    }
+    & .right_headerBox{
+        & h4{
+            font-size: 2rem;
+            font-weight: 600;
+            text-align: center;
+        }
+    }
+}
+.backdrop{
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: none;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(#000, 0.1);
+    z-index: 2;
+    &.active{
+        display: block;
+    }
+}

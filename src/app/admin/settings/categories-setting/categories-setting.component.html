@@ -1,7 +1,7 @@
 <div class="page_header d-flex mb-4">
     <h2 class="header_title">Categories Settings</h2>
     <div class="ml-auto">
-        <button mat-raised-button color="primary">Add New</button>
+        <button mat-raised-button color="primary" (click)="sidemenu = !sidemenu">Add New</button>
     </div>
 </div>
 
@@ -39,3 +39,25 @@
     </table>
     <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
 </div>
+
+<div class="right_sidePannel transition" [class.active]="sidemenu">
+    <div class="right_headerBox">
+        <h4>Add New</h4>
+    </div>
+    <div class="right_bodyWrapper">
+        <mat-form-field  appearance="outline" class="w-100 pb-0 mb-15">
+            <mat-label>Category</mat-label>
+            <input type="text" matInput>
+        </mat-form-field>
+        <mat-form-field  appearance="outline" class="w-100 pb-0 mb-15">
+            <mat-label>Discription</mat-label>
+            <input type="text" matInput>
+        </mat-form-field>
+
+        <div class="d-flex justify-content-between">
+            <button mat-raised-button color="primary">Add</button>
+            <button mat-raised-button color="warn" (click)="sidemenu = !sidemenu">Cancel</button>
+        </div>
+    </div>
+</div>
+<div class="backdrop" [class.active]="sidemenu" (click)="sidemenu = !sidemenu"></div>

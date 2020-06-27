@@ -25,6 +25,7 @@ const TABLE_DATA: PeriodicElement[] = [
 export class CategoriesSettingComponent implements OnInit {
   displayedColumns: string[] = ['action', 'title', 'discription'];
   dataSource = new MatTableDataSource(TABLE_DATA);
+  sidemenu=false;
 
   @ViewChild(MatSort, {static: true}) sort: MatSort;
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
