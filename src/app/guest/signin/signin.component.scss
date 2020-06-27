@@ -1,0 +1,30 @@
+.box_wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    min-height: 100vh;
+    background-color: #f8f8f8;
+
+    & .center_box {
+        display: block;
+        width: 400px;
+        border-radius: 5px;
+        overflow: hidden;
+
+        @media (max-width: 768px) {
+            position: absolute;
+            width: 100%;
+        }
+
+        & .center_box_title {
+            font-size: 2rem;
+            font-weight: 600;
+            text-align: center;
+            width: 100%;
+        }
+    }
+}

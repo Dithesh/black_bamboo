@@ -1,0 +1,51 @@
+<div class="sidebar_wrapper scroll_style">
+    <div class="profile_wrapper"></div>
+    <ul>
+        <li routerLinkActive="active">
+            <a href="javascript:;" routerLink="/admin/dashboard" matRipple [matRippleUnbounded]="false">
+                Dashboard
+            </a>
+        </li>
+        <li routerLinkActive="active">
+            <a href="javascript:;" routerLink="/admin/order" matRipple [matRippleUnbounded]="false" >
+                Orders
+            </a>
+        </li>
+        <li routerLinkActive="active">
+            <a href="javascript:;" routerLink="/admin/products"  matRipple [matRippleUnbounded]="false" >
+                Products
+            </a>
+        </li>
+        <li routerLinkActive="active">
+            <a href="javascript:;" matRipple [matRippleUnbounded]="false" >
+                Tables
+            </a>
+        </li>
+        <li>
+            <a href="javascript:;" matRipple [matRippleUnbounded]="false">Reports</a>
+        </li>
+        <li>
+            <a href="javascript:;" matRipple [matRippleUnbounded]="false">Users</a>
+        </li>
+        <li [class.subOpen]="settingOpen" routerLinkActive="subOpen" class="have_submenu">
+            <a href="javascript:;" (click)="settingOpen = !settingOpen" matRipple [matRippleUnbounded]="false">Setting <mat-icon>keyboard_arrow_down</mat-icon></a>
+            <ul class="list-unlisted submenu-Wrapper" *ngIf="settingOpen">
+                <li routerLinkActive="active">
+                    <a href="javascript:;" routerLink="/admin/settings/categories" matRipple>Categories</a>
+                </li>
+                <li routerLinkActive="active">
+                    <a href="javascript:;" routerLink="/admin/settings/branches" matRipple>Branches</a>
+                </li>
+                <li routerLinkActive="active">
+                    <a href="javascript:;" routerLink="/admin/settings/orders" matRipple>Order Setting</a>
+                </li>
+                <li routerLinkActive="active">
+                    <a href="javascript:;" routerLink="/admin/settings/feedback" matRipple>Feedback Questions</a>
+                </li>
+            </ul>
+        </li>
+        <li>
+            <a href="javascript:;" matRipple [matRippleUnbounded]="false">Sign Out</a>
+        </li>
+    </ul>
+</div>
