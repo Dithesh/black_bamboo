@@ -5,6 +5,7 @@ $color-warning:#bd2227;
     & .product_imrBox{
         position: relative;
         display: inline-block;
+        overflow: hidden;
         & input{
             visibility: hidden;
             position: absolute;

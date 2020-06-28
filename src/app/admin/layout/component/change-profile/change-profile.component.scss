@@ -1,6 +1,7 @@
 .profile_imrBox{
     position: relative;
     display: inline-block;
+    overflow: hidden;
     & input{
         visibility: hidden;
         position: absolute;
@@ -11,7 +12,7 @@
         margin-bottom: 0px;
         background-size: 100%;
         display: block;
-        background-image: url('/assets/images/user.jpg');
+        background-image: url('/assets/images/user.png');
         background-position: center;
         background-repeat: no-repeat;
         border-radius: 4px;
