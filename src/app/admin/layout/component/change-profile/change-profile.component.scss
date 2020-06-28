@@ -1,0 +1,21 @@
+.profile_imrBox{
+    position: relative;
+    display: inline-block;
+    & input{
+        visibility: hidden;
+        position: absolute;
+    }
+    & label{
+        width: 150px;
+        height: 150px;
+        margin-bottom: 0px;
+        background-size: 100%;
+        display: block;
+        background-image: url('/assets/images/user.jpg');
+        background-position: center;
+        background-repeat: no-repeat;
+        border-radius: 4px;
+        border: 1px solid #b9b9b9;
+        cursor: pointer;
+    }
+}

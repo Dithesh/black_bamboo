@@ -15,10 +15,13 @@ import { FooterComponent } from './layout/footer/footer.component';
 import { SidebarComponent } from './layout/sidebar/sidebar.component';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatMenuModule } from '@angular/material/menu';
+import { ChangePasswordComponent } from './layout/component/change-password/change-password.component';
+import { ChangeProfileComponent } from './layout/component/change-profile/change-profile.component';
+import { MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 
 
 @NgModule({
-  declarations: [AdminComponent, HeaderComponent, FooterComponent, SidebarComponent],
+  declarations: [AdminComponent, HeaderComponent, FooterComponent, SidebarComponent, ChangePasswordComponent, ChangeProfileComponent],
   imports: [
     CommonModule,
     AdminRoutingModule,
@@ -30,6 +33,12 @@ import { MatMenuModule } from '@angular/material/menu';
     MatRippleModule,
     MatBadgeModule,
     MatMenuModule,
+    MatDialogModule,
+    MatDialog,
+    MatDialogRef
+  ],
+  providers:[
+    MatDialogModule,
   ]
 })
 export class AdminModule { }
