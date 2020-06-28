@@ -205,4 +205,22 @@ mat-form-field{
             background-color: #f3f3f3;
         }
     }
+    &.profile_menu{
+        width: 200px;
+        & h4{
+            font-weight: 600;
+            font-size: 1.6rem;
+            padding: 0px 15px;
+            margin-bottom: 10px;
+            margin-top: 10px;
+        }
+    }
+}
+.popup_formWrapper{
+    width: 300px;
+    max-width: 100%;
+    padding: 15px;
+}
+.popup_Btnfooter{
+    margin-top: 15px;
 }

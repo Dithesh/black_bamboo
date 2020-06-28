@@ -7,11 +7,6 @@
         <div class="header_navigation">
             <ul>
                 <li>
-                    <!-- <button mat-raised-button color="primary" matBadge="8" matBadgePosition="before" matBadgeColor="accent">
-                        Action
-                    </button> -->
-                </li>
-                <li>
                     <button type="button" [matMenuTriggerFor]="notification" mat-icon-button>
                         <mat-icon matBadgeColor="accent" matBadgePosition="before" matBadge="15">notifications</mat-icon>
                     </button>
@@ -20,6 +15,17 @@
                             <li matRipple>Notification message</li>
                             <li matRipple>Notification message</li>
                             <li matRipple>Notification message</li>
+                        </ul>
+                    </mat-menu>
+                </li>
+                <li>
+                    <div class="profile_box" [matMenuTriggerFor]="profileMenu" style="background-image: url('assets/images/user.png');"></div>
+                    <mat-menu #profileMenu="matMenu" class="notification_menu profile_menu">
+                        <h4>Jone Doe</h4>
+                        <ul class="list-unstyled mb-0">
+                            <button mat-menu-item (click)="changePassword()">Change Image</button>
+                            <button mat-menu-item (click)="changeProfile()">Change Password</button>
+                            <button mat-menu-item>Sign Out</button>
                         </ul>
                     </mat-menu>
                 </li>
