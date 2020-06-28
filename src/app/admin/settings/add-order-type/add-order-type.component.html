@@ -2,7 +2,7 @@
     <h2 class="header_title">Add New Order Type</h2>
 </div>
 
-<form [formGroup]="form">
+<form [formGroup]="form" (submit)="saveOrderType($event)">
     <div class="add_formWrapper">
         <div class="row">
             <div class="col-lg-4 col-md-6 col-sm-6 col-12">
@@ -29,10 +29,10 @@
     
         <div class="d-flex align-items-center my-20">
             <p class="my-0 mr-20">Table Required</p>
-            <mat-slide-toggle formControlName="enableTables"></mat-slide-toggle>
+            <mat-slide-toggle formControlName="enableTables" (change)="handleTableMaster()"></mat-slide-toggle>
         </div>
     
-        <div class="tabels_tableWrapper mb-40" [hidden]="!form.get('enableTables').value">
+        <div class="tabels_tableWrapper table-responsive mb-40" [hidden]="!form.get('enableTables').value">
             <div class="d-flex mb-10 tabel_header justify-content-between align-items-center">
                 <h3 class="mb-0 font-weight-500">Add Tables</h3>
                 <button mat-raised-button color="primary" type="button" (click)="addAnotherTable()">Add New</button>
@@ -59,7 +59,7 @@
                     <ng-container matColumnDef="description">
                         <th mat-header-cell *matHeaderCellDef mat-sort-header> Description </th>
                         <td mat-cell *matCellDef="let element; let i=index;"  [formGroupName]="i">
-                            <mat-form-field appearance="outline" class="w-100 pb-0 ew-mx-200">
+                            <mat-form-field appearance="outline" class="w-100 pb-0 ew-mx-200 mr-20">
                                 <input matInput formControlName="description" type="text">
                               </mat-form-field>
                         </td>

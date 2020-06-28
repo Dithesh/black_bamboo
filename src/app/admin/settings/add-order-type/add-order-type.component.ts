@@ -61,7 +61,7 @@ export class AddOrderTypeComponent implements OnInit {
     let table =  this.fb.group({
       id: [''],
       tableId: [''],
-      description: ['d'],
+      description: [''],
       noOfChair: [''],
       isActive: [''],
       deletedFlag: [false]
@@ -87,7 +87,33 @@ export class AddOrderTypeComponent implements OnInit {
   }
 
   getOrderTypeDetails() {
+    this._serv.endpoint = "order-manager/order-type/"+this.orderTypeId;
+    this._serv.get().subscribe(response => {
+      let data = response as any;
+      this.form.patchValue(data);
+      data.tables.forEach(elem => {
+        this.tables.push(this.addTable(elem));
+        this.dataSource.next(this.tables.controls);
+      })
+    })
+  }
 
+  saveOrderType(event=null) {
+    if(event!=null)event.preventDefault();
+    this.form.markAllAsTouched();
+    if(this.form.invalid)return;
+    let formValue = this.form.value;
+    this._serv.endpoint="order-manager/order-type";
+    let apiCall=null;
+    if(formValue.id && formValue.id != null && formValue.id !=undefined){
+      this._serv.endpoint+='/'+formValue.id;
+      apiCall = this._serv.put(formValue);
+    }else {
+      apiCall = this._serv.post(formValue);
+    }
+    apiCall.subscribe(response => {
+      
+    })
   }
 
   getAllBranches() {
@@ -98,6 +124,15 @@ export class AddOrderTypeComponent implements OnInit {
         this.form.get('branch_id').setValue(this.branchList[0].id);
       }
     })
+  }
+
+  handleTableMaster() {
+    let value = this.form.get('enableTables').value;
+    this.tables.controls = [];
+    this.tables.reset();
+    if(value) {
+      this.addAnotherTable()
+    }
   }
 
 }
