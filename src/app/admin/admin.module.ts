@@ -18,6 +18,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { ChangePasswordComponent } from './layout/component/change-password/change-password.component';
 import { ChangeProfileComponent } from './layout/component/change-profile/change-profile.component';
 import { MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { SharedModule } from '../shared/shared.module';
 
 
 @NgModule({
@@ -28,15 +29,9 @@ import { MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dial
     MatSidenavModule,
     MatDividerModule,
     MatToolbarModule,
-    MatIconModule,
-    MatButtonModule,
-    MatRippleModule,
-    MatBadgeModule,
-    MatMenuModule,
-    MatDialogModule,
-    MatDialog,
-    MatDialogRef
+    SharedModule
   ],
+  entryComponents: [ChangePasswordComponent, ChangeProfileComponent],
   providers:[
     MatDialogModule,
   ]
