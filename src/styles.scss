@@ -1,4 +1,6 @@
-
+$color-primary: #2e358e;
+$color-accent: #faae1a;
+$color-warning:#bd2227;
 // Custom Theming for Angular Material
 // For more information: https://material.angular.io/guide/theming
 @import '~@angular/material/theming';
@@ -155,5 +157,21 @@ mat-form-field{
     z-index: 2;
     &.active{
         display: block;
+    }
+}
+
+.number_input{
+    width: 100px;
+    & .btn{
+        background-color: $color-primary;
+        color: #fff;
+        border-color: $color-primary;
+        font-size: 1.4rem;
+        width: 30px;
+    }
+    & .form-control{
+        border-color: $color-primary;
+        font-size: 1.4rem;
+        text-align: center;
     }
 }

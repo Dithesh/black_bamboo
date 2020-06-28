@@ -1,0 +1,32 @@
+$color-primary: #2e358e;
+$color-accent: #faae1a;
+$color-warning:#bd2227;
+.add_formWrapper{
+    & .product_imrBox{
+        position: relative;
+        display: inline-block;
+        & input{
+            visibility: hidden;
+            position: absolute;
+        }
+        & label{
+            width: 172px;
+            height: 172px;
+            margin-bottom: 0px;
+            background-size: 100%;
+            display: block;
+            background-image: url('/assets/images/food.jpg');
+            background-position: center;
+            background-repeat: no-repeat;
+            border-radius: 4px;
+            border: 1px solid #b9b9b9;
+            cursor: pointer;
+        }
+    }
+    & .prduct_formControl{
+        @media (max-width:1200px) and (min-width: 575px) {
+            margin-right: 10px;
+            max-width: 300px;
+        }
+    }
+}
