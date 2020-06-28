@@ -7,14 +7,21 @@
         <div class="header_navigation">
             <ul>
                 <li>
-                    <button type="button" mat-icon-button>
-                        <mat-icon>help</mat-icon>
-                    </button>
+                    <!-- <button mat-raised-button color="primary" matBadge="8" matBadgePosition="before" matBadgeColor="accent">
+                        Action
+                    </button> -->
                 </li>
                 <li>
-                    <button type="button" mat-icon-button>
-                        <mat-icon>settings</mat-icon>
+                    <button type="button" [matMenuTriggerFor]="notification" mat-icon-button>
+                        <mat-icon matBadgeColor="accent" matBadgePosition="before" matBadge="15">notifications</mat-icon>
                     </button>
+                    <mat-menu #notification="matMenu" class="notification_menu">
+                        <ul class="list-unstyled mb-0">
+                            <li matRipple>Notification message</li>
+                            <li matRipple>Notification message</li>
+                            <li matRipple>Notification message</li>
+                        </ul>
+                    </mat-menu>
                 </li>
             </ul>
         </div>

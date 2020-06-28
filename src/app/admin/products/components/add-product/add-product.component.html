@@ -54,7 +54,7 @@
     <div class="tabels_tableWrapper mb-40">
         <div class="d-flex mb-10 tabel_header justify-content-between align-items-center">
             <h3 class="mb-0 font-weight-500">Order type based pricing</h3>
-            <button mat-raised-button color="primary">Add New</button>
+            <button mat-raised-button color="primary" (click)="openDialog()">Add New</button>
         </div>
         <div class="table_outerWrapper">
             <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8 w-100">

@@ -13,6 +13,8 @@ import { AdminComponent } from './admin.component';
 import { HeaderComponent } from './layout/header/header.component';
 import { FooterComponent } from './layout/footer/footer.component';
 import { SidebarComponent } from './layout/sidebar/sidebar.component';
+import { MatBadgeModule } from '@angular/material/badge';
+import { MatMenuModule } from '@angular/material/menu';
 
 
 @NgModule({
@@ -25,7 +27,9 @@ import { SidebarComponent } from './layout/sidebar/sidebar.component';
     MatToolbarModule,
     MatIconModule,
     MatButtonModule,
-    MatRippleModule
+    MatRippleModule,
+    MatBadgeModule,
+    MatMenuModule,
   ]
 })
 export class AdminModule { }

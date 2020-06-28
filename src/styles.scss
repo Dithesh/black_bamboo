@@ -175,3 +175,34 @@ mat-form-field{
         text-align: center;
     }
 }
+.success-snackbar{ 
+    background-color: #009519;
+    & button{
+        color: #000;
+    }
+}
+.error-snackbar{ 
+    background-color:$color-warning;
+    & button{
+        color: #000;
+    }
+}
+.info-snackbar{ 
+    background-color:$color-accent;
+    & button{
+        color: #000;
+    }
+}
+.notification_menu{
+    width: 250px;
+    max-width: 100%;
+    margin-bottom: 0px;
+    & li{
+        padding: 10px 15px;
+        font-size: 1.4rem;
+        cursor: pointer;
+        &:hover{
+            background-color: #f3f3f3;
+        }
+    }
+}

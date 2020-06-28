@@ -21,14 +21,15 @@ import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import {MatButtonToggleModule} from '@angular/material/button-toggle';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import { ConfirmPopupComponent } from './components/confirm-popup/confirm-popup.component';
-
+import {MatBadgeModule} from '@angular/material/badge';
 
 
 @NgModule({
   declarations: [DatexPipe, SnackbarComponent, ConfirmPopupComponent],
   imports: [
     CommonModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatButtonModule,
   ],
   exports: [
     MatGridListModule,
@@ -51,10 +52,13 @@ import { ConfirmPopupComponent } from './components/confirm-popup/confirm-popup.
     MatButtonToggleModule,
     MatSlideToggleModule,
     SnackbarComponent,
+    ConfirmPopupComponent,
+    MatBadgeModule
   ],
   providers: [
     SnackService,
     MatSnackBar,
+    MatButtonModule,
   ]
 })
 export class SharedModule { }

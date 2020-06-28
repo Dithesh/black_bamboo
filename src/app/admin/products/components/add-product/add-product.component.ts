@@ -2,6 +2,9 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmPopupComponent } from 'src/app/shared/components/confirm-popup/confirm-popup.component';
+import { SnackService } from 'src/app/shared/services/snack.service';
 
 export interface PeriodicElement {
   action:any;
@@ -24,16 +27,18 @@ export class AddProductComponent implements OnInit {
 
   displayedColumns: string[] = ['action', 'ordertype', 'price', 'tax'];
   dataSource = new MatTableDataSource(TABLE_DATA);
-  successMessage = 'Saved Successfully';
-  action ="close";
   @ViewChild(MatSort, {static: true}) sort: MatSort;
-  constructor(private _snackBar: MatSnackBar) { }
+  constructor(private _snackBar: MatSnackBar, private dialog:MatDialog, private snakBar:SnackService) { }
 
   ngOnInit(): void {
     this.dataSource.sort = this.sort;
   }
 
   openSnackBar() {
-    this._snackBar.open(this.successMessage, this.action, {duration: 2000,});
+    this.snakBar.openSnackBar('Saved Successfully','close','success');
+  }
+
+  openDialog() {
+    this.dialog.open(ConfirmPopupComponent);
   }
 }
