@@ -26,11 +26,15 @@ const routes: Routes = [
     component:FeedbackSettingComponent
   },
   {
-    path:"orders",
+    path:"order-type",
     component:OrderSettingComponent
   },
   {
-    path:"new-order-type",
+    path:"order-type/update",
+    component:AddOrderTypeComponent
+  },
+  {
+    path:"order-type/update/:id",
     component:AddOrderTypeComponent
   }
 ];
