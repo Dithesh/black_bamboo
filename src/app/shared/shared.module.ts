@@ -20,11 +20,12 @@ import { SnackService } from './services/snack.service';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import {MatButtonToggleModule} from '@angular/material/button-toggle';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
+import { ConfirmPopupComponent } from './components/confirm-popup/confirm-popup.component';
 
 
 
 @NgModule({
-  declarations: [DatexPipe, SnackbarComponent],
+  declarations: [DatexPipe, SnackbarComponent, ConfirmPopupComponent],
   imports: [
     CommonModule,
     MatSnackBarModule
@@ -49,6 +50,7 @@ import {MatSlideToggleModule} from '@angular/material/slide-toggle';
     NgxMatSelectSearchModule,
     MatButtonToggleModule,
     MatSlideToggleModule,
+    SnackbarComponent,
   ],
   providers: [
     SnackService,
