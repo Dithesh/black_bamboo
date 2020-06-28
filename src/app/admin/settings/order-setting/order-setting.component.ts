@@ -35,7 +35,7 @@ export class OrderSettingComponent implements OnInit {
 
 
   changeStatus(data) {
-    this._serv.endpoint="order-manager/category/order-type/"+data.id;
+    this._serv.endpoint="order-manager/order-type/status/"+data.id;
     this._serv.put(data).subscribe(response => {
           
     })
