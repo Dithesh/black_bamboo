@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 export interface PeriodicElement {
   action:any;
@@ -23,12 +24,16 @@ export class AddProductComponent implements OnInit {
 
   displayedColumns: string[] = ['action', 'ordertype', 'price', 'tax'];
   dataSource = new MatTableDataSource(TABLE_DATA);
-
+  successMessage = 'Saved Successfully';
+  action ="close";
   @ViewChild(MatSort, {static: true}) sort: MatSort;
-  constructor() { }
+  constructor(private _snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
     this.dataSource.sort = this.sort;
   }
 
+  openSnackBar() {
+    this._snackBar.open(this.successMessage, this.action, {duration: 2000,});
+  }
 }
