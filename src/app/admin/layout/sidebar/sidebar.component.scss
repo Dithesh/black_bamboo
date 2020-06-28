@@ -60,18 +60,25 @@ $color-warning:#bd2227;
                     justify-content: space-between;
                     padding: 15px 30px;
                     padding-right: 15px;
+
                 }
-            }
-            &.subOpen{
-                border-left: none;
-                background-color: rgba($color-primary, 0.1);
-            }
-            & .submenu-Wrapper{
-                & li{
-                    // border:none;
-                    & a{
-                        margin-right: 10px;
-                        padding: 15px 30px;
+                & .submenu-Wrapper{
+                    display: none;
+                    & li{
+                        // border:none;
+                        & a{
+                            margin-right: 10px;
+                            padding: 15px 30px;
+                        }
+                    }
+                }
+                &.subOpen{
+                    border-left: none;
+                    background-color: rgba($color-primary, 0.1);
+
+                    
+                    & .submenu-Wrapper{
+                        display: block;
                     }
                 }
             }
