@@ -25,4 +25,14 @@ export class DataService {
   delete() {
     return this.http.delete(this.apiUrl + this.endpoint);
   }
+
+  formArrayCount(formArray) {
+    let count=0;
+    formArray.controls.forEach(elem => {
+      if(!elem.get('deletedFlag').value) {
+        count++;
+      }
+    })
+    return count;
+  }
 }
