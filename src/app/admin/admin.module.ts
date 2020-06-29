@@ -29,7 +29,7 @@ import { SharedModule } from '../shared/shared.module';
     MatSidenavModule,
     MatDividerModule,
     MatToolbarModule,
-    SharedModule
+    SharedModule,
   ],
   entryComponents: [ChangePasswordComponent, ChangeProfileComponent],
   providers:[

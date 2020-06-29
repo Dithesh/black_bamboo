@@ -219,7 +219,11 @@ mat-form-field{
 .popup_formWrapper{
     width: 300px;
     max-width: 100%;
-    padding: 15px;
+    & h3{
+        font-weight: 500;
+        font-size: 1.6rem;
+    }
+
 }
 .popup_Btnfooter{
     margin-top: 15px;
