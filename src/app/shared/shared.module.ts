@@ -22,7 +22,7 @@ import {MatButtonToggleModule} from '@angular/material/button-toggle';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import { ConfirmPopupComponent } from './components/confirm-popup/confirm-popup.component';
 import {MatBadgeModule} from '@angular/material/badge';
-
+import {MatExpansionModule} from '@angular/material/expansion';
 
 @NgModule({
   declarations: [DatexPipe, SnackbarComponent, ConfirmPopupComponent],
@@ -53,7 +53,8 @@ import {MatBadgeModule} from '@angular/material/badge';
     MatSlideToggleModule,
     SnackbarComponent,
     ConfirmPopupComponent,
-    MatBadgeModule
+    MatBadgeModule,
+    MatExpansionModule
   ],
   providers: [
     SnackService,

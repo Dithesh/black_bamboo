@@ -6,9 +6,20 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./new-order.component.scss']
 })
 export class NewOrderComponent implements OnInit {
-
+  step = 0;
   constructor() { }
+  setStep(index: number) {
+    this.step = index;
+  }
 
+  nextStep() {
+    this.step++;
+  }
+
+  prevStep() {
+    this.step--;
+  }
+ 
   ngOnInit(): void {
   }
 
