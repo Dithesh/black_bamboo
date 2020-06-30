@@ -28,7 +28,6 @@ import {MatBadgeModule} from '@angular/material/badge';
   declarations: [DatexPipe, SnackbarComponent, ConfirmPopupComponent],
   imports: [
     CommonModule,
-    MatSnackBarModule,
     MatButtonModule,
   ],
   exports: [
@@ -56,8 +55,6 @@ import {MatBadgeModule} from '@angular/material/badge';
     MatBadgeModule
   ],
   providers: [
-    SnackService,
-    MatSnackBar,
     MatButtonModule,
   ]
 })

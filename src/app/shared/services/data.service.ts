@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from './../../../environments/environment';
+import { SnackService } from './snack.service';
 
 @Injectable({
   providedIn: 'root'
@@ -8,7 +9,8 @@ import { environment } from './../../../environments/environment';
 export class DataService {
   apiUrl = environment.apiUrl;
   endpoint = "";
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient
+    ,private snakBar:SnackService) { }
 
   get() {
     return this.http.get(this.apiUrl + this.endpoint);
@@ -34,5 +36,9 @@ export class DataService {
       }
     })
     return count;
+  }
+
+  showMessage(message, type) {
+    this.snakBar.openSnackBar(message,'close',type);
   }
 }

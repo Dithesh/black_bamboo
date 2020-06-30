@@ -5,18 +5,9 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmPopupComponent } from 'src/app/shared/components/confirm-popup/confirm-popup.component';
 import { SnackService } from 'src/app/shared/services/snack.service';
-
-export interface PeriodicElement {
-  action:any;
-  ordertype: string;
-  price: string;
-  tax: string;
-}
-
-const TABLE_DATA: PeriodicElement[] = [
-  {action:'', ordertype: 'text', price: '', tax:' '},
-  {action:'', ordertype: 'text', price: '', tax: ''},
-];
+import { FormGroup, FormBuilder, FormArray, AbstractControl } from '@angular/forms';
+import { DataService } from 'src/app/shared/services/data.service';
+import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'app-add-product',
@@ -24,21 +15,59 @@ const TABLE_DATA: PeriodicElement[] = [
   styleUrls: ['./add-product.component.scss']
 })
 export class AddProductComponent implements OnInit {
-
-  displayedColumns: string[] = ['action', 'ordertype', 'price', 'tax'];
-  dataSource = new MatTableDataSource(TABLE_DATA);
+  form: FormGroup;
+  displayedColumns: string[] = ['ordertype', 'price', 'taxPercent', 'packagingCharges'];
+  dataSource = new BehaviorSubject<AbstractControl[]>([]);;
   @ViewChild(MatSort, {static: true}) sort: MatSort;
-  constructor(private _snackBar: MatSnackBar, private dialog:MatDialog, private snakBar:SnackService) { }
+  orderTypes: any[];
+  constructor(
+    private _snackBar: MatSnackBar, 
+    private dialog:MatDialog, 
+    private _serv: DataService,
+    private fb: FormBuilder
+    ) { 
+      this.form = this.fb.group({
+        id: [''],
+        productNumber: [''],
+        productName: [''],
+        description: [''],
+        featuredImage: [''],
+        price: [''],
+        taxPercent: [''],
+        packagingCharges: [''],
+        isActive: [''],
+        branch_id: [''],
+        isOrderTypePricing: [''],
+        isVeg: [''],
+        orderBasedPrice: this.fb.array([]),
+      })
+    }
 
   ngOnInit(): void {
-    this.dataSource.sort = this.sort;
+    this.getOrderTypes();
   }
 
-  openSnackBar() {
-    this.snakBar.openSnackBar('Saved Successfully','close','success');
+  get orderBasedPrice() {
+    return this.form.get('orderBasedPrice') as FormArray;
   }
 
-  openDialog() {
-    this.dialog.open(ConfirmPopupComponent);
+  getOrderTypes() {
+    this._serv.endpoint = "order-manager/order-type?fields=id,typeName";
+    this._serv.get().subscribe(response => {
+      this.orderTypes = response as any[];
+      this.orderTypes.forEach(elem => {
+        this.orderBasedPrice.push(this.fb.group({
+          id: [''],
+          price: [''],
+          taxPercent: [''],
+          packagingCharges: [''],
+          orderTypeId: [elem.id],
+          orderTypeName: [elem.typeName]
+        }));
+        this.dataSource.next(this.orderBasedPrice.controls);
+      })
+    })
   }
+
+
 }
