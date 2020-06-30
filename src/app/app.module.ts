@@ -6,6 +6,8 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { TokenInterceptor } from './shared/services/intercepter';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { SnackService } from './shared/services/snack.service';
 
 @NgModule({
   declarations: [
@@ -15,14 +17,17 @@ import { TokenInterceptor } from './shared/services/intercepter';
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    HttpClientModule
+    HttpClientModule,
+    MatSnackBarModule,
   ],
   providers: [
     {
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptor,
       multi: true
-    }
+    },
+    SnackService,
+    MatSnackBar
   ],
   bootstrap: [AppComponent],
 })

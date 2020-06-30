@@ -73,6 +73,7 @@ export class AddOrderTypeComponent implements OnInit {
   }
 
   removeTable(index) {
+    if(this._serv.formArrayCount(this.tables) <= 1) return;
     let control = this.tables.controls[index];
     if(control.get('id').value != '') {
       let value = control.value;
@@ -84,6 +85,7 @@ export class AddOrderTypeComponent implements OnInit {
     }else {
       this.tables.removeAt(index);
     }
+    this.dataSource.next(this.tables.controls);
   }
 
   getOrderTypeDetails() {

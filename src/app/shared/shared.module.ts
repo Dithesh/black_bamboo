@@ -28,7 +28,6 @@ import {MatExpansionModule} from '@angular/material/expansion';
   declarations: [DatexPipe, SnackbarComponent, ConfirmPopupComponent],
   imports: [
     CommonModule,
-    MatSnackBarModule,
     MatButtonModule,
   ],
   exports: [
@@ -57,8 +56,6 @@ import {MatExpansionModule} from '@angular/material/expansion';
     MatExpansionModule
   ],
   providers: [
-    SnackService,
-    MatSnackBar,
     MatButtonModule,
   ]
 })

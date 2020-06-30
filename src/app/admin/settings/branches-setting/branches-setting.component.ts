@@ -4,6 +4,8 @@ import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { DataService } from 'src/app/shared/services/data.service';
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmPopupComponent } from 'src/app/shared/components/confirm-popup/confirm-popup.component';
 
 
 @Component({
@@ -22,7 +24,8 @@ export class BranchesSettingComponent implements OnInit {
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
   constructor(
     private _serv: DataService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private dialog: MatDialog
   ) { 
     this.form = this.fb.group({
       id: [''],
@@ -83,9 +86,13 @@ export class BranchesSettingComponent implements OnInit {
       apiCall = this._serv.post(formValue);
     }
     apiCall.subscribe(response => {
+      this._serv.showMessage("Branch updated successfully", 'success')
       this.cancelUpdate();
       this.getAllBranches();
     })
   }
 
+  deleteBranch(item) {
+    this.dialog.open(ConfirmPopupComponent);
+  }
 }
