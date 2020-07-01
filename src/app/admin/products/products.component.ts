@@ -39,5 +39,12 @@ export class ProductsComponent implements OnInit {
   }
 
 
+  changeStatus(data) {
+    this._serv.endpoint="order-manager/product/status/"+data.id;
+    this._serv.put(data).subscribe(response => {
+          
+    })
+  }
+
 
 }

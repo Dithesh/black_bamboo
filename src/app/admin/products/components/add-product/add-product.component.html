@@ -1,8 +1,9 @@
 <div class="page_header d-flex mb-4">
-    <h2 class="header_title">Add New Product</h2>
+    <h2 class="header_title" *ngIf="!productId">Add New Product</h2>
+    <h2 class="header_title" *ngIf="productId">Update Product</h2>
 </div>
 
-<form [formGroup]="form">
+<form [formGroup]="form" (submit)="saveProduct($event)">
     
     <div class="add_formWrapper">
         <div class="row">
@@ -25,7 +26,7 @@
                             <div class="col">
                                 <mat-form-field appearance="outline" class="w-100">
                                     <mat-label>Product Name</mat-label>
-                                    <input matInput type="text">
+                                    <input matInput formControlName="productName" type="text">
                                 </mat-form-field>
                             </div>
                         </div>
@@ -34,20 +35,24 @@
                     <div class="col-12 col-md-6">
                         <mat-form-field appearance="outline" class="w-100">
                             <mat-label>Categories</mat-label>
-                            <input matInput type="text">
+                            <mat-select matNativeControl formControlName="categories" multiple>
+                                <mat-option *ngFor="let item of categoryList;" [value]="item.id">{{ item.categoryName }}</mat-option>
+                            </mat-select>
                         </mat-form-field>
                     </div>
                     <div class="col-12 col-md-6">
                         <mat-form-field appearance="outline" class="w-100">
                             <mat-label>Branch</mat-label>
-                            <input matInput type="text">
+                            <mat-select matNativeControl formControlName="branch_id">
+                                <mat-option *ngFor="let item of branchList;" [value]="item.id">{{ item.branchTitle }}</mat-option>
+                            </mat-select>
                         </mat-form-field>
                     </div>
                     
                     <div class="col-12">
                         <mat-form-field appearance="outline" class="w-100">
                             <mat-label>Description</mat-label>
-                            <textarea matInput cdkTextareaAutosize></textarea>
+                            <textarea matInput formControlName="description" cdkTextareaAutosize></textarea>
                         </mat-form-field>
                     </div>
                 </div>
@@ -56,25 +61,25 @@
 
         <div class="d-flex align-items-center my-20">
             <p class="my-0 mr-20">Enable Order type based pricing</p>
-            <mat-slide-toggle></mat-slide-toggle>
+            <mat-slide-toggle formControlName="isOrderTypePricing"></mat-slide-toggle>
         </div>
 
-        <div class="row">
+        <div class="row" *ngIf="!form.get('isOrderTypePricing').value">
             <div class="col-12 col-md-3">
                 <mat-form-field appearance="outline" class="w-100">
                     <mat-label>Price</mat-label>
-                    <input matInput type="text">
+                    <input matInput formControlName="price" type="text">
                 </mat-form-field>
             </div>
             <div class="col-12 col-md-3">
                 <mat-form-field appearance="outline" class="w-100">
-                    <mat-label>taxPercent</mat-label>
-                    <input matInput type="text">
+                    <mat-label>Tax Percent</mat-label>
+                    <input matInput formControlName="taxPercent" type="text">
                 </mat-form-field>
             </div>
         </div>
 
-        <div class="tabels_tableWrapper mb-40">
+        <div class="tabels_tableWrapper mb-40" *ngIf="form.get('isOrderTypePricing').value">
             <div class="d-flex mb-10 tabel_header justify-content-between align-items-center">
                 <h3 class="mb-0 font-weight-500">Order type based pricing</h3>
             </div>
@@ -124,19 +129,19 @@
             <div class="col-12">
                 <div class="d-flex align-items-center my-10">
                     <p class="my-0 mr-20">Veg Only</p>
-                    <mat-slide-toggle></mat-slide-toggle>
+                    <mat-slide-toggle formControlName="isVeg"></mat-slide-toggle>
                 </div>
             </div>
             <div class="col-12">
                 <div class="d-flex align-items-center my-10">
                     <p class="my-0 mr-20">Is Active?</p>
-                    <mat-slide-toggle></mat-slide-toggle>
+                    <mat-slide-toggle formControlName="isActive"></mat-slide-toggle>
                 </div>
             </div>
         </div>
         
         <div class="button_wrapper">
-            <button mat-raised-button color="primary" class="mr-20">Add</button>
+            <button mat-raised-button color="primary" class="mr-20">{{ (productId)?'Update':'Add'}}</button>
             <button mat-raised-button color="warn">Cancel</button>
         </div>
     </div>
