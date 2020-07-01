@@ -1,6 +1,4 @@
-$color-primary: #2e358e;
-$color-accent: #faae1a;
-$color-warning:#bd2227;
+@import '../../../../../variables.scss';
 // .order_outer{
 //     & .order_box{
 //         width:300px;
@@ -33,6 +31,7 @@ $color-warning:#bd2227;
 //         }
 //     }
 // }
+
 .table_form_wrapper{
     & .order_typeRow{
         & .type_radio{
@@ -78,35 +77,89 @@ $color-warning:#bd2227;
         flex:0 0 20%;
         max-width: 20%;
         padding: 0px 10px;
-        
-        &.table_innerBox{
+        height: 90px;
+        & .table_circle{
+            display: block;
+            position: absolute;
+            z-index: 2;
             display: flex;
-            &.flex-d-row{
-                flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: #fff;
+            background-color: $color-success;
+            width: calc(100% - 36px);
+            height: calc(100% - 36px);
+            left: 18px;
+            top: 18px;
+            border-radius: 5px;
+            cursor: pointer;
+            &.all{
+                background-color: $color-warning;
             }
-            & .radio_outer{
-                flex-direction: row;
-                justify-content: space-between;
-            }
-            & .table_seat_radio{
+        }
+        & .table_innerBox{
+            display: flex;
+            
+            & .table_seat_checkBox{
                 position: relative;
                 overflow: hidden;
+                width: 100%;
+                
+                & label{
+                    width: 15px;
+                    height: 100%;
+                    background-color: $color-success;
+                    cursor: pointer;
+                    margin-bottom: 0px;
+                }
                 & input{
                     visibility: hidden;
                     position: absolute;
                     opacity: 0;
+                    &:checked + label{
+                        background-color: $color-warning;
+                    }
                 }
-                & label{
-                    width: 100%;
-                    height: 15px;
-                    background-color: $color-accent;
-                    cursor: pointer;
-                    &.vertical{
-                        height: 100%;
-                        width: 15px;
+                &.vertical{
+                    margin: 20px 0px;
+                }
+                &.horizontal{
+                    & label{
+                        height: 15px;
+                        width: 100%;
                     }
                 }
             }
+            & .radio_outer{
+                -ms-flex-preferred-size: 0;
+                flex-basis: 0;
+                -ms-flex-positive: 1;
+                flex-grow: 1;
+                max-width: 100%;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                .table_seat_checkBox{
+                    flex: 0 0 15px;
+                }
+            }
+        }
+    }
+}
+
+::ng-deep{
+    .searchBox{
+        & .mat-form-field-wrapper{
+            padding-bottom: 0px;
+            margin: 0px;
+            & .mat-form-field-flex{
+                & .mat-form-field-infix{
+                    border-top: 0px;
+                }
+            }
+            
         }
     }
 }

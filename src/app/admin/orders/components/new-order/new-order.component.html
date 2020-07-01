@@ -53,7 +53,12 @@
         </div>
     </div>
 </div>
-
+<div class="searchBox my-10 text-right">
+  <mat-form-field appearance="outline">
+    <mat-label>Number of Customers</mat-label>
+    <input matInput>
+  </mat-form-field>
+</div>
 <div class="order_stepWrapper mt-10">
     <mat-accordion class="example-headers-align">
         <mat-expansion-panel [expanded]="step === 0" (opened)="setStep(0)" hideToggle>
@@ -68,34 +73,127 @@
           </mat-expansion-panel-header>
           <div class="table_selectWrapper">
             <div class="table_col">
-                <div class="row no-gutters">
-                    <div class="table_innerBox flex-d-row col-auto order-1">
-                        <div class="table_seat_radio vertical">
-                            <input type="radio" id="t1s1">
+                <div class="row ew-130 mx-auto position-relative h-100 no-gutters">
+                  <span class="table_circle">T1</span>
+                    <div class="table_innerBox col-auto order-1">
+                        <div class="table_seat_checkBox vertical">
+                            <input type="checkbox" id="t1s1">
                             <label for="t1s1"></label>
                         </div>
                     </div>
-                    <div class="table_innerBox flex-d-row col-auto order-2">
-                        <div class="table_seat_radio vertical">
-                            <input type="radio" id="t1s2">
+                    <div class="table_innerBox col-auto order-3">
+                        <div class="table_seat_checkBox vertical">
+                            <input type="checkbox" id="t1s2">
                             <label for="t1s2"></label>
                         </div>
                     </div>
-                    <div class="table_innerBox col order-4">
-                        <div class="d-flex">
-                            <div class="radio_outer">
-                                <div class="table_seat_radio horizontal">
-                                    <input type="radio" id="t1s2">
-                                    <label for="t1s2"></label>
+                    <div class="table_innerBox col order-2">
+                        <div class="d-flex mx-1 w-100">
+                            <div class="radio_outer px-1">
+                                <div class="table_seat_checkBox horizontal">
+                                    <input type="checkbox" id="t1s3">
+                                    <label for="t1s3"></label>
                                 </div>
-                                <div class="table_seat_radio horizontal">
-                                    <input type="radio" id="t1s2">
-                                    <label for="t1s2"></label>
+                                <div class="table_seat_checkBox horizontal">
+                                    <input type="checkbox" id="t1s4">
+                                    <label for="t1s4"></label>
                                 </div>
                             </div>
+                            <div class="radio_outer px-1">
+                              <div class="table_seat_checkBox horizontal">
+                                  <input type="checkbox" id="t1s3">
+                                  <label for="t1s3"></label>
+                              </div>
+                              <div class="table_seat_checkBox horizontal">
+                                  <input type="checkbox" id="t1s4">
+                                  <label for="t1s4"></label>
+                              </div>
+                          </div>
                         </div>
                     </div>
                 </div>
+            </div>
+            <div class="table_col">
+                <div class="row ew-130 mx-auto position-relative h-100 no-gutters">
+                  <span class="table_circle">T2</span>
+                    <div class="table_innerBox col-auto order-1">
+                        <div class="table_seat_checkBox vertical">
+                            <input type="checkbox" id="t1s1">
+                            <label for="t1s1"></label>
+                        </div>
+                    </div>
+                    <div class="table_innerBox col-auto order-3">
+                        <div class="table_seat_checkBox vertical">
+                            <input type="checkbox" id="t1s2">
+                            <label for="t1s2"></label>
+                        </div>
+                    </div>
+                    <div class="table_innerBox col order-2">
+                        <div class="d-flex mx-1 w-100">
+                            <div class="radio_outer px-1">
+                                <div class="table_seat_checkBox horizontal">
+                                    <input type="checkbox" id="t1s3">
+                                    <label for="t1s3"></label>
+                                </div>
+                                <div class="table_seat_checkBox horizontal">
+                                    <input type="checkbox" id="t1s4">
+                                    <label for="t1s4"></label>
+                                </div>
+                            </div>
+                            <div class="radio_outer px-1">
+                              <div class="table_seat_checkBox horizontal">
+                                  <input type="checkbox" id="t1s3">
+                                  <label for="t1s3"></label>
+                              </div>
+                              <div class="table_seat_checkBox horizontal">
+                                  <input type="checkbox" id="t1s4">
+                                  <label for="t1s4"></label>
+                              </div>
+                          </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="table_col">
+              <div class="row ew-130 mx-auto position-relative h-100 no-gutters">
+                <span class="table_circle">T3</span>
+                  <div class="table_innerBox col-auto order-1">
+                      <div class="table_seat_checkBox vertical">
+                          <input type="checkbox" id="t1s1">
+                          <label for="t1s1"></label>
+                      </div>
+                  </div>
+                  <div class="table_innerBox col-auto order-3">
+                      <div class="table_seat_checkBox vertical">
+                          <input type="checkbox" id="t1s2">
+                          <label for="t1s2"></label>
+                      </div>
+                  </div>
+                  <div class="table_innerBox col order-2">
+                      <div class="d-flex mx-1 w-100">
+                          <div class="radio_outer px-1">
+                              <div class="table_seat_checkBox horizontal">
+                                  <input type="checkbox" id="t1s3">
+                                  <label for="t1s3"></label>
+                              </div>
+                              <div class="table_seat_checkBox horizontal">
+                                  <input type="checkbox" id="t1s4">
+                                  <label for="t1s4"></label>
+                              </div>
+                          </div>
+                          <div class="radio_outer px-1">
+                            <div class="table_seat_checkBox horizontal">
+                                <input type="checkbox" id="t1s3">
+                                <label for="t1s3"></label>
+                            </div>
+                            <div class="table_seat_checkBox horizontal">
+                                <input type="checkbox" id="t1s4">
+                                <label for="t1s4"></label>
+                            </div>
+                        </div>
+                      </div>
+                  </div>
+              </div>
             </div>
           </div>
           

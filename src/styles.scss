@@ -1,6 +1,4 @@
-$color-primary: #2e358e;
-$color-accent: #faae1a;
-$color-warning:#bd2227;
+@import 'variables.scss';
 // Custom Theming for Angular Material
 // For more information: https://material.angular.io/guide/theming
 @import '~@angular/material/theming';
