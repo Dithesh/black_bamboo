@@ -37,7 +37,7 @@ export class AddOrderTypeComponent implements OnInit {
       enableExtraInfo: [''],
       enableDeliverCharge: [''],
       enableExtraCharge: [''],
-      isActive: [''],
+      isActive: [false],
       branch_id: [''],
       tables: this.fb.array([])
     });

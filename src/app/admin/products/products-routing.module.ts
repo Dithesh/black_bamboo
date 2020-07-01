@@ -13,7 +13,11 @@ const routes: Routes = [
         component:ProductsComponent
       },
       {
-        path:"new",
+        path:"update",
+        component:AddProductComponent
+      },
+      {
+        path:"update/:id",
         component:AddProductComponent
       }
     ]
