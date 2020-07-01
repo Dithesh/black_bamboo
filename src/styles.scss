@@ -226,3 +226,23 @@ mat-form-field{
 .popup_Btnfooter{
     margin-top: 15px;
 }
+
+// ==================input box style edit ==========================
+.mat-form-field-wrapper{
+    & .mat-form-field-flex{
+        & .mat-form-field-infix{
+            // border-top: 0px;
+            border-top: 4px solid transparent;
+            padding: 12px 0px;
+        }
+    }
+}
+.mat-form-field-appearance-outline{
+    &.mat-form-field-can-float{
+        &.mat-form-field-should-float {
+            & .mat-form-field-label{
+                transform: translateY(-1.2em) scale(0.75);
+            }
+        }
+    }
+}
