@@ -72,6 +72,8 @@ export class CategoriesSettingComponent implements OnInit, AfterViewInit {
     this._serv.endpoint="order-manager/category/status/"+data.id;
     this._serv.put(data).subscribe(response => {
       this._serv.showMessage("Category status changed successfully", 'success');
+    }, ({error}) => {
+      this._serv.showMessage(error['msg'], 'error');
     })
   }
 
@@ -110,6 +112,8 @@ export class CategoriesSettingComponent implements OnInit, AfterViewInit {
       this._serv.showMessage("Category updated successfully", 'success');
       this.cancelUpdate();
       this.getAllCategories();
+    }, ({error}) => {
+      this._serv.showMessage(error['msg'], 'error');
     })
   }
 
@@ -128,6 +132,8 @@ export class CategoriesSettingComponent implements OnInit, AfterViewInit {
         this._serv.delete().subscribe(response => {
           this._serv.showMessage("Category deleted successfully", 'success');
           this.getAllCategories();
+        }, ({error}) => {
+          this._serv.showMessage(error['msg'], 'error');
         })
       }
     })

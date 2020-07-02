@@ -124,7 +124,10 @@ export class AddProductComponent implements OnInit {
       apiCall = this._serv.post(formValue);
     }
     apiCall.subscribe(response => {
-      
+      this._serv.showMessage("Product updated successfully", 'success');
+      this.router.navigateByUrl('/admin/products');
+    }, ({error}) => {
+      this._serv.showMessage(error['msg'], 'error');
     })
   }
 

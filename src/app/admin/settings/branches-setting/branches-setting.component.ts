@@ -75,6 +75,8 @@ export class BranchesSettingComponent implements OnInit, AfterViewInit {
     this._serv.endpoint="order-manager/branch/status/"+data.id;
     this._serv.put(data).subscribe(response => {
       this._serv.showMessage("Branch status changed successfully", 'success');
+    }, ({error}) => {
+      this._serv.showMessage(error['msg'], 'error');
     })
   }
 
@@ -109,6 +111,8 @@ export class BranchesSettingComponent implements OnInit, AfterViewInit {
       this._serv.showMessage("Branch updated successfully", 'success')
       this.cancelUpdate();
       this.getAllBranches();
+    }, ({error}) => {
+      this._serv.showMessage(error['msg'], 'error');
     })
   }
 
@@ -120,6 +124,8 @@ export class BranchesSettingComponent implements OnInit, AfterViewInit {
         this._serv.delete().subscribe(response => {
           this._serv.showMessage("Branch deleted successfully", 'success');
           this.getAllBranches();
+        }, ({error}) => {
+          this._serv.showMessage(error['msg'], 'error');
         })
       }
     })
