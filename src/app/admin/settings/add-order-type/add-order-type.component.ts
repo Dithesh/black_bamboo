@@ -3,7 +3,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { FormGroup, FormBuilder, FormArray, AbstractControl } from '@angular/forms';
 import { DataService } from 'src/app/shared/services/data.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
 
 @Component({
@@ -23,7 +23,8 @@ export class AddOrderTypeComponent implements OnInit {
   constructor(
     private _serv: DataService,
     private fb: FormBuilder,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router
   ) { 
     this.orderTypeId = this.route.snapshot.params.id;
     if(this.orderTypeId) {
@@ -114,7 +115,10 @@ export class AddOrderTypeComponent implements OnInit {
       apiCall = this._serv.post(formValue);
     }
     apiCall.subscribe(response => {
-      
+      this._serv.showMessage("Order type updated successfully", 'success');
+      this.router.navigateByUrl('/admin/settings/order-type');
+    }, ({error}) => {
+      this._serv.showMessage(error['msg'], 'error');
     })
   }
 

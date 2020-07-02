@@ -47,7 +47,7 @@
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
-    <mat-paginator [pageSizeOptions]="[10]" [length]="dataSource?.total" [pageSize]="10" (page)="getAllCategories($event.pageIndex+1)"></mat-paginator>
+    <mat-paginator [pageSizeOptions]="[10]" [length]="dataSource?.total" [pageSize]="10"></mat-paginator>
 </div>
 
 <div class="right_sidePannel transition" [class.active]="sidemenu">
