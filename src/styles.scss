@@ -244,5 +244,12 @@ mat-form-field{
                 transform: translateY(-1.2em) scale(0.75);
             }
         }
+        & .mat-form-field-flex{
+            &:hover{
+                & .mat-form-field-outline-thick{
+                    color: $color-primary;
+                }
+            }
+        }
     }
 }
