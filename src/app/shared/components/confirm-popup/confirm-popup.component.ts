@@ -12,7 +12,7 @@ export class ConfirmPopupComponent implements OnInit {
 
   ngOnInit(): void {
   }
-  closePopup(){
-    this.dialogRef.close();
+  closePopup(flag){
+    this.dialogRef.close(flag);
   }
 }
