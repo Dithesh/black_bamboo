@@ -74,10 +74,11 @@
     margin: 0px -10px;
     flex-wrap: wrap;
     & .table_col{
-        flex:0 0 20%;
-        max-width: 20%;
+        flex:0 0 16.666%;
+        max-width: 16.666%;
         padding: 0px 10px;
         height: 90px;
+        min-width: 150px;
         & .table_circle{
             display: block;
             position: absolute;

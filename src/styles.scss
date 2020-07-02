@@ -64,6 +64,15 @@ html, body {
 button:focus {
     outline: none;
 }
+.text-primary{
+    color: $color-primary !important;
+}
+.text-accent{
+    color: $color-accent !important;
+}
+.text-warning{
+    color: $color-warning !important;
+}
 .transition{
     -webkit-transition: .3s ease-in-out;
     -ms-transition: .3s ease-in-out;
@@ -228,27 +237,51 @@ mat-form-field{
 }
 
 // ==================input box style edit ==========================
-.mat-form-field-wrapper{
-    & .mat-form-field-flex{
-        & .mat-form-field-infix{
-            // border-top: 0px;
-            border-top: 4px solid transparent;
-            padding: 12px 0px;
-        }
-    }
-}
-.mat-form-field-appearance-outline{
-    &.mat-form-field-can-float{
-        &.mat-form-field-should-float {
-            & .mat-form-field-label{
-                transform: translateY(-1.2em) scale(0.75);
-            }
-        }
+.mat-form-field{
+    & .mat-form-field-wrapper{
         & .mat-form-field-flex{
+            margin-top: 0px;
             &:hover{
                 & .mat-form-field-outline-thick{
                     color: $color-primary;
                 }
+            }
+            & .mat-form-field-infix{
+                // border-top: 0px;
+                border-top: 0px solid transparent;
+                padding: 10px 0px 12px;
+            }
+            
+        }
+        & .mat-form-field-outline{
+            top: 0;
+        }
+        & .mat-form-field-suffix{
+            top: .4em;
+            & .mat-icon-button{
+                width: 2em !important;
+                height: 2em !important;
+            }
+        }
+        
+        & .mat-select-arrow-wrapper{
+            transform: translateY(10%);
+        }
+    }
+    &.mat-form-field-appearance-outline{
+        & .mat-form-field-wrapper{
+            margin: 0px 0;
+        }
+    }
+    &.field-pb-0{
+        & .mat-form-field-wrapper{
+           padding-bottom: 0px;
+        }
+    }
+    &.mat-form-field-can-float{
+        &.mat-form-field-should-float {
+            & .mat-form-field-label{
+                transform: translateY(-1.2em) scale(0.75);
             }
         }
     }
