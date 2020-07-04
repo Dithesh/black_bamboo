@@ -277,7 +277,7 @@
             </div>
             <div class="order_tableOuter">
               <h4 class="font-weight-600 mb-10">Items</h4>
-              <div class="table_outerWrapper">
+              <div class="table_outerWrapper table-responsive">
                 <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z2 w-100">
 
                   <!-- Position Column -->
@@ -293,7 +293,6 @@
                       </mat-form-field>
                     </td>
                   </ng-container>
-                
                   <!-- Name Column -->
                   <ng-container matColumnDef="quantity">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header class="ew-210">Quality</th>
@@ -309,51 +308,77 @@
                     </div>
                     </td>
                   </ng-container>
-                
                   <!-- Weight Column -->
                   <ng-container matColumnDef="price">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Price </th>
-                    <td mat-cell *matCellDef="let element"> {{element.weight}} </td>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header class="ew-150"> Price </th>
+                    <td mat-cell *matCellDef="let element"> {{element.price}} </td>
                   </ng-container>
                 
                   <!-- Symbol Column -->
                   <ng-container matColumnDef="total">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Total </th>
-                    <td mat-cell *matCellDef="let element"> {{element.symbol}} </td>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header class="ew-150"> Total </th>
+                    <td mat-cell *matCellDef="let element"> {{element.total}} </td>
                   </ng-container>
                 
                   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
                   <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
                 </table>
+              </div>
             </div>
+            <div class="total_wrapper">
+              <table class="total_table table">
+                <tr>
+                  <td></td>
+                  <td>Total</td>
+                  <td class="price_td">1000</td>
+                </tr>
+                <tr>
+                  <td></td>
+                  <td>CGST</td>
+                  <td class="price_td">500</td>
+                </tr>
+                <tr>
+                  <td></td>
+                  <td>SGST</td>
+                  <td class="price_td">300</td>
+                </tr>
+                <tr>
+                  <td></td>
+                  <td>Grand Total</td>
+                  <td class="price_td">2500</td>
+                </tr>
+                <tr class="return_row">
+                  <td>
+                    <mat-form-field appearance="outline" class="ew-150 field-pb-0">
+                      <input matInput placeholder="Amount Recived">
+                    </mat-form-field>
+                  </td>
+                  <td class="text-primary">Return Amount</td>
+                  <td class="text-primary text-right">1500</td>
+                </tr>
+              </table>
             </div>
           </div>
           <mat-action-row>
-            <button mat-raised-button color="warn" (click)="prevStep()">Previous</button>
-            <button mat-raised-button color="primary" (click)="nextStep()">Next</button>
+            <button mat-raised-button color="warn" (click)="prevStep()">Cancel</button>
+            <button mat-raised-button color="primary" (click)="nextStep()">Save</button>
           </mat-action-row>
         </mat-expansion-panel>
       
         <mat-expansion-panel [expanded]="step === 2" (opened)="setStep(2)" hideToggle>
           <mat-expansion-panel-header>
             <mat-panel-title>
-              Day of the trip
+              <h2 class="my-10">Review & Bill</h2>
             </mat-panel-title>
-            <mat-panel-description>
-              Inform the date you wish to travel
-              <mat-icon>date_range</mat-icon>
-            </mat-panel-description>
           </mat-expansion-panel-header>
       
-          <mat-form-field>
-            <mat-label>Date</mat-label>
-            <input matInput [matDatepicker]="picker" (focus)="picker.open()" readonly>
-          </mat-form-field>
-          <mat-datepicker #picker></mat-datepicker>
+          <div class="ratting_wrapper">
+              
+          </div>
       
           <mat-action-row>
-            <button mat-raised-button color="warn" (click)="prevStep()">Previous</button>
-            <button mat-raised-button color="primary" (click)="nextStep()">End</button>
+            <button mat-raised-button color="warn" (click)="prevStep()">Back to order</button>
+            <button mat-raised-button color="primary" (click)="nextStep()">Bill</button>
           </mat-action-row>
         </mat-expansion-panel>
       

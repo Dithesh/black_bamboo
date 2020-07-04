@@ -10,8 +10,8 @@ export interface PeriodicElement {
 }
 
 const ELEMENT_DATA: PeriodicElement[] = [
-  {product: 1, quantity: 'Hydrogen', price: 1.0079, total: 10},
-  {product: 2, quantity: 'Helium', price: 4.0026, total: 12},
+  {product: 'item', quantity: 1, price: 1.0079, total: 10},
+  {product: 'item', quantity: 2, price: 4.0026, total: 12},
 ];
 
 @Component({

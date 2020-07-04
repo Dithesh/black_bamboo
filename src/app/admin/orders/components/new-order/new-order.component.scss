@@ -150,6 +150,34 @@
     }
 }
 
+.table_outerWrapper{
+    & table{
+        min-width: 500px;
+    }
+}
+.order_detailWrapper{
+    & .total_wrapper{
+        padding-top: 30px;
+        & .total_table{
+            margin-right: 30px;
+            margin-left: auto;
+            width: 400px;
+            & tr{
+                & td{
+                    font-weight: 500;
+                    border: none;
+                    vertical-align: middle;
+                    font-size: 1.4rem;
+                    &.price_td{
+                        text-align: right;
+                        font-size: 1.6rem;
+                    }
+                }
+            }
+        }
+    }
+}
+
 ::ng-deep{
     .searchBox{
         & .mat-form-field-wrapper{

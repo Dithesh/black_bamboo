@@ -180,6 +180,9 @@ mat-form-field{
         border-color: $color-primary;
         font-size: 1.4rem;
         text-align: center;
+        &:focus{
+            box-shadow: none;
+        }
     }
 }
 .success-snackbar{ 
@@ -320,7 +323,7 @@ mat-form-field{
             & .mat-slide-toggle-bar {
 
                 & .mat-slide-toggle-thumb-container {
-                    left: -5px;
+                    left: -3px;
                 }
             }
 
