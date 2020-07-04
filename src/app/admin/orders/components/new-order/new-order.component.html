@@ -301,7 +301,7 @@
                         <div class="input-group-prepend">
                           <button class="btn btn-outline-secondary" type="button" id="button-addon1">-</button>
                         </div>
-                        <input type="text" class="form-control" formControlName="quality">
+                        <input type="text" class="form-control">
                         <div class="input-group-append">
                             <button class="btn btn-outline-secondary" type="button" id="button-addon1">+</button>
                           </div>
@@ -372,8 +372,35 @@
             </mat-panel-title>
           </mat-expansion-panel-header>
       
-          <div class="ratting_wrapper">
-              
+          <div class="ratting_wrapper text-center">
+              <h4>Rate Your Review</h4>
+              <div class="ratting_radioOuter text-center">
+                <div class="radio_box">
+                  <input type="radio" id="sad" value="Sad" name="rating" [(ngModel)]="rating">
+                  <label for="sad" class="ratingImg cursor-pointer">
+                    <img src="assets/images/rate-sad.png" alt="">
+                  </label>
+                </div>
+                <div class="radio_box">
+                  <input type="radio" id="natural" value="Natural" name="rating" [(ngModel)]="rating">
+                  <label for="natural" class="ratingImg cursor-pointer">
+                    <img src="assets/images/rate-natural.png" alt="">
+                  </label>
+                </div>
+                <div class="radio_box">
+                  <input type="radio" id="happy" value="Happy" name="rating" [(ngModel)]="rating">
+                  <label for="happy" class="ratingImg cursor-pointer">
+                    <img src="assets/images/rate-happy.png" alt="">
+                  </label>
+                </div>
+                <div class="radio_box">
+                  <input type="radio" id="awesome" value="Awesome" name="rating" [(ngModel)]="rating">
+                  <label for="awesome" class="ratingImg cursor-pointer">
+                    <img src="assets/images/rate-awesome.png" alt="">
+                  </label>
+                </div>
+              </div>
+              <p class="mb-0 mt-10 text-primary">{{rating}}</p>
           </div>
       
           <mat-action-row>

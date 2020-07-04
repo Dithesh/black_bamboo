@@ -186,3 +186,45 @@
         }
     }
 }
+.ratting_wrapper{
+    & .ratting_radioOuter{
+        & .radio_box{
+            display: inline-block;
+            position: relative;
+            margin-right: 5px;
+            & label{
+                display: inline-block;
+                width: 100px;
+                text-align: center;
+                & img{
+                    max-width: 100%;
+                    -webkit-transition: .3s ease-in-out;
+                    -moz-transition: .3s ease-in-out;
+                    -ms-transition: .3s ease-in-out;
+                    transition: .3s ease-in-out;
+                    filter: grayscale(100%);
+                }
+            }
+            & input{
+                position: absolute;
+                visibility: hidden;
+                opacity: 0;
+                &:checked + label{
+                    & img{
+                        filter: grayscale(0);
+                    }
+                }
+            }
+        }
+    }
+}
+.ratting_wrapper{
+    & h4{
+        font-size: 16px;
+        font-weight: 500;
+        margin-bottom: 10px;
+    }
+    & p{
+        font-size: 20px;
+    }
+}

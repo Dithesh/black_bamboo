@@ -21,6 +21,7 @@ const ELEMENT_DATA: PeriodicElement[] = [
 })
 export class NewOrderComponent implements OnInit {
   step = 0;
+  rating;
   constructor() { }
   setStep(index: number) {
     this.step = index;
