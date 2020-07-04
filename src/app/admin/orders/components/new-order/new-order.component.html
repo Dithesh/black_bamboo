@@ -53,7 +53,7 @@
         </div>
     </div>
 </div>
-<div class="searchBox my-10 text-right">
+<!-- <div class="searchBox my-10 text-right">
   <mat-form-field appearance="outline">
     <mat-label>Number of Customers</mat-label>
     <mat-select>
@@ -63,7 +63,7 @@
       <mat-option value="4">4</mat-option>
     </mat-select>
   </mat-form-field>
-</div>
+</div> -->
 <div class="order_stepWrapper mt-10">
     <mat-accordion class="example-headers-align">
         <mat-expansion-panel [expanded]="step === 0" (opened)="setStep(0)" hideToggle>
@@ -254,51 +254,71 @@
             </mat-panel-title>
           </mat-expansion-panel-header>
           <div class="order_detailWrapper">
-            <h3>Order No: #123456</h3>
+            <h3 class="text-primary">Order No: #123456</h3>
             <div class="row mb-20">
-              <div class="col-lg-3 col-md-5 col-sm-6 col-12">
-                <mat-form-field appearance="outline">
-                  <mat-label>Customers Name</mat-label>
-                  <mat-select>
-                    <mat-option value="jone doe">jone doe</mat-option>
-                    <mat-option value="dithesh">dithesh</mat-option>
-                    <mat-option value="kiran">kiran</mat-option>
-                  </mat-select>
+              <div class="col-xl-3 col-lg-4 col-md-5 col-sm-6 col-12">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>Related Info</mat-label>
+                  <input matInput>
                 </mat-form-field>
               </div>
-              <div class="col-lg-3 col-md-5 col-sm-6 col-12">
-                <mat-form-field appearance="outline">
+              <div class="col-xl-3 col-lg-4 col-md-5 col-sm-6 col-12">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>Customer Name</mat-label>
+                  <input matInput>
+                </mat-form-field>
+              </div>
+              <div class="col-xl-3 col-lg-4 col-md-5 col-sm-6 col-12">
+                <mat-form-field appearance="outline" class="w-100">
                   <mat-label>Mobile Number</mat-label>
                   <input matInput>
                 </mat-form-field>
               </div>
             </div>
             <div class="order_tableOuter">
-              <h4>Items</h4>
+              <h4 class="font-weight-600 mb-10">Items</h4>
               <div class="table_outerWrapper">
-                <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+                <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z2 w-100">
 
                   <!-- Position Column -->
-                  <ng-container matColumnDef="position">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header> No. </th>
-                    <td mat-cell *matCellDef="let element"> {{element.position}} </td>
+                  <ng-container matColumnDef="product">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header class="ew-300">Product </th>
+                    <td mat-cell *matCellDef="let element">
+                      <mat-form-field appearance="outline" placeholder="Select Food" class="ew-200 my-10 field-pb-0">
+                        <mat-select>
+                          <mat-option value="Golibaje">Golibaje</mat-option>
+                          <mat-option value="Ambade">Ambade</mat-option>
+                          <mat-option value="Podi">Podi</mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                    </td>
                   </ng-container>
                 
                   <!-- Name Column -->
-                  <ng-container matColumnDef="name">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
-                    <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+                  <ng-container matColumnDef="quantity">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header class="ew-210">Quality</th>
+                    <td mat-cell *matCellDef="let element"> 
+                      <div class="input-group mb-0 number_input">
+                        <div class="input-group-prepend">
+                          <button class="btn btn-outline-secondary" type="button" id="button-addon1">-</button>
+                        </div>
+                        <input type="text" class="form-control" formControlName="quality">
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-secondary" type="button" id="button-addon1">+</button>
+                          </div>
+                    </div>
+                    </td>
                   </ng-container>
                 
                   <!-- Weight Column -->
-                  <ng-container matColumnDef="weight">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Weight </th>
+                  <ng-container matColumnDef="price">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Price </th>
                     <td mat-cell *matCellDef="let element"> {{element.weight}} </td>
                   </ng-container>
                 
                   <!-- Symbol Column -->
-                  <ng-container matColumnDef="symbol">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Symbol </th>
+                  <ng-container matColumnDef="total">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Total </th>
                     <td mat-cell *matCellDef="let element"> {{element.symbol}} </td>
                   </ng-container>
                 
