@@ -286,3 +286,43 @@ mat-form-field{
         }
     }
 }
+
+
+
+.mat-slide-toggle {
+    height: 14px;
+    line-height: 14px;
+    
+    & .mat-slide-toggle-label {
+        & .mat-slide-toggle-bar {
+            height: 14px;
+            width: 23px;
+
+            & .mat-slide-toggle-thumb-container {
+                height: 10px;
+                width: 10px;
+                top: 1px;
+                left: 2px;
+
+                & .mat-slide-toggle-thumb {
+                    width: 10px;
+                    height: 10px;
+                }
+            }
+        }
+
+    }
+
+    &.mat-checked {
+        
+        & .mat-slide-toggle-label {
+            & .mat-slide-toggle-bar {
+
+                & .mat-slide-toggle-thumb-container {
+                    left: -5px;
+                }
+            }
+
+        }
+    }
+}
