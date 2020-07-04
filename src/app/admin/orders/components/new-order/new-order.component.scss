@@ -43,6 +43,7 @@
             
             & label{
                 width: 200px;
+                max-width: 100%;
                 padding: 10px;
                 display: block;
                 border-radius: 5px;
@@ -226,5 +227,13 @@
     }
     & p{
         font-size: 20px;
+    }
+}
+
+::ng-deep{
+    .order_typeRow{
+        & .owl-nav{
+            display: none;
+        }
     }
 }

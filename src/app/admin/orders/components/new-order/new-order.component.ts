@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import {MatSort} from '@angular/material/sort';
 import {MatTableDataSource} from '@angular/material/table';
+import { OwlOptions } from 'ngx-owl-carousel-o';
 
 export interface PeriodicElement {
   product: string;
@@ -23,6 +24,37 @@ export class NewOrderComponent implements OnInit {
   step = 0;
   rating;
   constructor() { }
+
+  customOptions: OwlOptions = {
+    loop: false,
+    mouseDrag: true,
+    touchDrag: true,
+    pullDrag: false,
+    autoplay:false,
+    dots: false,
+    navSpeed: 700,
+    nav: true,
+    navText: ['<img src="assets/images/return.svg">', '<img src="assets/images/next.svg">'],
+    responsive: {
+      0: {
+        items: 2
+      },
+      400: {
+        items: 2
+      },
+      760: {
+        items: 3
+      },
+      990: {
+        items: 4
+      },
+      1200: {
+        items: 5
+      }
+    },
+    
+  }
+
   setStep(index: number) {
     this.step = index;
   }

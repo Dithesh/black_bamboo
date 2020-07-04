@@ -23,6 +23,7 @@ import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import { ConfirmPopupComponent } from './components/confirm-popup/confirm-popup.component';
 import {MatBadgeModule} from '@angular/material/badge';
 import {MatExpansionModule} from '@angular/material/expansion';
+import { CarouselModule } from 'ngx-owl-carousel-o';
 
 @NgModule({
   declarations: [DatexPipe, SnackbarComponent, ConfirmPopupComponent],
@@ -53,7 +54,9 @@ import {MatExpansionModule} from '@angular/material/expansion';
     SnackbarComponent,
     ConfirmPopupComponent,
     MatBadgeModule,
-    MatExpansionModule
+    MatExpansionModule,
+    CarouselModule,
+
   ],
   providers: [
     MatButtonModule,

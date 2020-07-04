@@ -31,7 +31,7 @@
 
 <div class="table_form_wrapper">
     <div class="order_typeRow">
-        <div class="type_radio">
+        <!-- <div class="type_radio">
             <input type="radio" name="ordertype" id="tabel">
             <label for="tabel">Table</label>
         </div>
@@ -50,7 +50,39 @@
         <div class="type_radio">
             <input type="radio" name="ordertype" id="ubereat">
             <label for="ubereat">Uber Eats</label>
-        </div>
+        </div> -->
+        <owl-carousel-o [options]="customOptions">
+          <ng-template carouselSlide>
+            <div class="type_radio">
+              <input type="radio" name="ordertype" id="tabel">
+              <label for="tabel">Table</label>
+            </div>
+          </ng-template>  
+          <ng-template carouselSlide>
+            <div class="type_radio">
+              <input type="radio" name="ordertype" id="takeaway">
+              <label for="takeaway">Take Away</label>
+            </div>
+          </ng-template>  
+          <ng-template carouselSlide>
+            <div class="type_radio">
+              <input type="radio" name="ordertype" id="zomato">
+              <label for="zomato">Zomato</label>
+            </div>
+          </ng-template>  
+          <ng-template carouselSlide>
+            <div class="type_radio">
+              <input type="radio" name="ordertype" id="sqiggy">
+              <label for="sqiggy">Swiggy</label>
+            </div>
+          </ng-template>
+          <ng-template carouselSlide>
+            <div class="type_radio">
+              <input type="radio" name="ordertype" id="ubereat">
+              <label for="ubereat">Uber Eats</label>
+            </div>
+          </ng-template>
+        </owl-carousel-o>
     </div>
 </div>
 <!-- <div class="searchBox my-10 text-right">
