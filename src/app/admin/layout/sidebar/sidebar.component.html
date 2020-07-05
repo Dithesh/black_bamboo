@@ -2,33 +2,38 @@
     <div class="profile_wrapper"></div>
     <ul>
         <li routerLinkActive="active">
-            <a href="javascript:;" routerLink="/admin/dashboard" matRipple [matRippleUnbounded]="false">
-                Dashboard
-            </a>
+
+            <a href="javascript:;" routerLink="/admin/dashboard" matRipple [matRippleUnbounded]="false"> <mat-icon>storage</mat-icon> <span class="d-inline-block ml-3">Dashboard</span></a>
         </li>
         <li routerLinkActive="active">
             <a href="javascript:;" routerLink="/admin/order" matRipple [matRippleUnbounded]="false" >
-                Orders
+                <mat-icon>fact_check</mat-icon> <span class="d-inline-block ml-3">Orders</span>
             </a>
         </li>
         <li routerLinkActive="active">
             <a href="javascript:;" routerLink="/admin/products"  matRipple [matRippleUnbounded]="false" >
-                Products
+                <mat-icon>add_box</mat-icon> <span class="d-inline-block ml-3">Products</span>
             </a>
         </li>
         <li routerLinkActive="active">
             <a href="javascript:;" matRipple [matRippleUnbounded]="false" >
-                Tables
+                <mat-icon>view_module</mat-icon> <span class="d-inline-block ml-3">Tables</span>
             </a>
         </li>
         <li>
-            <a href="javascript:;" matRipple [matRippleUnbounded]="false">Reports</a>
+            <a href="javascript:;" matRipple [matRippleUnbounded]="false">
+                <mat-icon>pie_chart</mat-icon> <span class="d-inline-block ml-3"> Reports</span>
+            </a>
         </li>
         <li>
-            <a href="javascript:;" matRipple [matRippleUnbounded]="false">Users</a>
+            <a href="javascript:;" matRipple [matRippleUnbounded]="false">
+                <mat-icon>person</mat-icon> <span class="d-inline-block ml-3">Users</span>
+            </a>
         </li>
         <li  routerLinkActive="subOpen" class="have_submenu" [class.subOpen]="settingOpen">
-            <a href="javascript:;" (click)="settingOpen = !settingOpen" matRipple [matRippleUnbounded]="false">Setting <mat-icon>keyboard_arrow_down</mat-icon></a>
+            <a href="javascript:;" (click)="settingOpen = !settingOpen" matRipple [matRippleUnbounded]="false">
+                <mat-icon>settings</mat-icon> <span class="d-inline-block ml-3">Setting </span>
+                <mat-icon class="ml-auto">keyboard_arrow_down</mat-icon></a>
             <ul  routerLinkActive="active" class="list-unlisted submenu-Wrapper">
                 <li routerLinkActive="active">
                     <a href="javascript:;" routerLink="/admin/settings/categories" matRipple>Categories</a>
@@ -42,7 +47,9 @@
             </ul>
         </li>
         <li>
-            <a href="javascript:;" matRipple [matRippleUnbounded]="false">Sign Out</a>
+            <a href="javascript:;" matRipple [matRippleUnbounded]="false">
+                <mat-icon>power_settings_new</mat-icon> <span class="d-inline-block ml-3">Sign Out</span>
+            </a>
         </li>
     </ul>
 </div>

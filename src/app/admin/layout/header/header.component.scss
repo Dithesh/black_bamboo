@@ -1,3 +1,29 @@
+@import 'src/variables.scss';
+.logo_headerBox{
+    background-color: $bg-sidebar;
+    margin-left: -16px;
+    display: inline-flex;
+    align-items: center;
+    width: 280px;
+    height: 64px;
+    padding-left: 16px;
+    padding-right: 16px;
+    & .logoImg{
+        max-width: 100%;
+        &.collapsed{
+            display: none;
+        }
+    }
+    &.small{
+        width:69px;
+        & .logoImg{
+            display: none;
+            &.collapsed{
+                display: inline-block;
+            }
+        }
+    }
+}
 .header_navigation {
     display: flex;
     flex-direction: row;

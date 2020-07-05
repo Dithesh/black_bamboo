@@ -21,10 +21,11 @@ $color-warning:#bd2227;
             transition: .2s ease-in-out;
             border-left: 4px solid transparent;
             & a {
-                display: block;
+                display: flex;
+                align-items: center;
                 cursor: pointer;
                 line-height: 1;
-                padding: 20px 30px;
+                padding: 14px 30px;
                 width: 100%;
                 font-size: 1.4rem;
                 text-decoration: none;
@@ -57,7 +58,7 @@ $color-warning:#bd2227;
                 & > a{
                     display: flex;
                     align-items: center;
-                    justify-content: space-between;
+                    // justify-content: space-between;
                     padding: 15px 30px;
                     padding-right: 15px;
 
@@ -79,6 +80,27 @@ $color-warning:#bd2227;
                     
                     & .submenu-Wrapper{
                         display: block;
+                    }
+                }
+            }
+        }
+    }
+}
+
+::ng-deep{
+    mat-sidenav-container{
+        &.menu-close {
+            mat-sidenav{
+                & .sidebar_wrapper{
+                    & ul {
+                        & li {
+                            & a {
+                                padding: 14px 17px !important;
+                                & > span{
+                                    display: none !important;
+                                }
+                            }
+                        }
                     }
                 }
             }
