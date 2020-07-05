@@ -105,18 +105,19 @@
               <div class="row">
                 <div class="col-12 col-md-8">
                   <div class="order_tableOuter">
-                    <h4 class="font-weight-600 mb-10">Items</h4>
+                    <h4 class="font-weight-600 mb-10 d-flex justify-content-between">
+                      Items
+                      <button mat-raised-button color="primary" type="button" (click)="addAnotherItem()">Add New</button>
+                    </h4>
                     <div class="table_outerWrapper table-responsive">
-                      <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z2 w-100">
+                      <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z2 w-100" formArrayName="items">
     
                         <ng-container matColumnDef="product">
                           <th mat-header-cell *matHeaderCellDef class="ew-300">Product </th>
-                          <td mat-cell *matCellDef="let element">
+                          <td mat-cell *matCellDef="let element; let i=index;" [formGroupName]="i">
                             <mat-form-field appearance="outline" placeholder="Select Food" class="ew-200 my-10 field-pb-0">
-                              <mat-select>
-                                <mat-option value="Golibaje">Golibaje</mat-option>
-                                <mat-option value="Ambade">Ambade</mat-option>
-                                <mat-option value="Podi">Podi</mat-option>
+                              <mat-select formControlName="productId" (selectionChange)="onProductChange($event, element)" >
+                                <mat-option *ngFor="let item of productList;" [value]="item.id">{{ item.productName }}</mat-option>
                               </mat-select>
                             </mat-form-field>
                           </td>
@@ -124,27 +125,32 @@
                         
                         <ng-container matColumnDef="quantity">
                           <th mat-header-cell *matHeaderCellDef class="ew-210">Quality</th>
-                          <td mat-cell *matCellDef="let element"> 
+                          <td mat-cell *matCellDef="let element; let i=index;" [formGroupName]="i"> 
                             <div class="input-group mb-0 number_input">
                               <div class="input-group-prepend">
                                 <button class="btn btn-outline-secondary" type="button" id="button-addon1">-</button>
                               </div>
-                              <input type="text" class="form-control">
+                              <input type="text" (change)="getOrderItemTotal(element)" class="form-control" formControlName="quantity">
                               <div class="input-group-append">
-                                  <button class="btn btn-outline-secondary" type="button" id="button-addon1">+</button>
-                                </div>
+                                <button class="btn btn-outline-secondary" type="button" id="button-addon1">+</button>
+                              </div>
                           </div>
                           </td>
                         </ng-container>
                         
                         <ng-container matColumnDef="price">
                           <th mat-header-cell *matHeaderCellDef class="ew-150"> Price </th>
-                          <td mat-cell *matCellDef="let element"> {{element.price}} </td>
+                          <td mat-cell *matCellDef="let element; let i=index;" [formGroupName]="i"> {{(element.get('price').value)?element.get('price').value:"00.00"}} </td>
+                        </ng-container>
+                        
+                        <ng-container matColumnDef="pkg_charge">
+                          <th mat-header-cell *matHeaderCellDef class="ew-150"> Pck. Charge </th>
+                          <td mat-cell *matCellDef="let element; let i=index;" [formGroupName]="i"> {{ (element.get('packagingCharges').value)?element.get('packagingCharges').value:'00.00' }} </td>
                         </ng-container>
                       
                         <ng-container matColumnDef="total">
                           <th mat-header-cell *matHeaderCellDef class="ew-150"> Total </th>
-                          <td mat-cell *matCellDef="let element"> {{element.total}} </td>
+                          <td mat-cell *matCellDef="let element; let i=index;" [formGroupName]="i"> {{ element.get('totalPrice').value }} </td>
                         </ng-container>
                       
                         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

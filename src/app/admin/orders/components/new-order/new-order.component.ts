@@ -2,9 +2,10 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import {MatSort} from '@angular/material/sort';
 import {MatTableDataSource} from '@angular/material/table';
 import { OwlOptions } from 'ngx-owl-carousel-o';
-import { FormGroup, FormBuilder, FormArray } from '@angular/forms';
+import { FormGroup, FormBuilder, FormArray, AbstractControl } from '@angular/forms';
 import { DataService } from 'src/app/shared/services/data.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { BehaviorSubject } from 'rxjs';
 
 export interface PeriodicElement {
   product: string;
@@ -26,8 +27,6 @@ const ELEMENT_DATA: PeriodicElement[] = [
 export class NewOrderComponent implements OnInit {
   
 
-  displayedColumns: string[] = ['product', 'quantity', 'price', 'total'];
-  dataSource = new MatTableDataSource(ELEMENT_DATA);
 
   @ViewChild(MatSort, {static: true}) sort: MatSort;
 
@@ -70,6 +69,8 @@ export class NewOrderComponent implements OnInit {
   tableList: any[];
   orderId;
   productList: any[];
+  displayedColumns: string[] = ['product', 'quantity', 'price', 'pkg_charge', 'total'];
+  dataSource = new BehaviorSubject<AbstractControl[]>([]);branchList: any[];
 
   constructor(
     private fb: FormBuilder,
@@ -99,9 +100,35 @@ export class NewOrderComponent implements OnInit {
  
 
   ngOnInit() {
-    this.dataSource.sort = this.sort;
     this.getOrderTypes();
     this.getAllProducts();
+    if(this.orderId) {
+      
+    }else {
+      this.items.push(this.addOrderItem());
+      this.dataSource.next(this.items.controls);
+    }
+  }
+
+  addAnotherItem() {
+    let blankRecords =this.items.value.filter(x => x.price == '' || x.quantity == '');
+    if(blankRecords.length <= 0) {
+      this.items.push(this.addOrderItem());
+      this.dataSource.next(this.items.controls);
+    }else {
+      this._serv.showMessage('Please fill all the data.', 'error')
+    }
+  }
+
+  addOrderItem() {
+    return this.fb.group({
+      id: [''],
+      productId: [''],
+      price: [''],
+      quantity: ['1'],
+      packagingCharges: [''],
+      totalPrice: [''],
+    })
   }
 
   getAllProducts() {
@@ -109,6 +136,57 @@ export class NewOrderComponent implements OnInit {
     this._serv.get().subscribe(response => {
       this.productList = response as any[];
     })
+  }
+
+  get items() {
+    return this.form.get('items') as FormArray;
+  }
+
+  onProductChange(event, itemform: FormGroup) {
+    
+    let itemValue = itemform.value;
+    let formArray = this.items.value;
+    let count=0;
+    formArray.forEach(elem => {
+      if(elem.productId == itemValue.productId)
+        count++;
+    })
+    if(count >= 2) {
+      this._serv.showMessage("Product already selected", "error");
+      itemform.get('productId').setValue("");
+      // itemform.get('productId').setErrors({invalid: "Please select product"});
+      return;
+    }
+    this.productList.forEach(elem => {
+      if(elem.id == itemValue.productId) {
+        
+        if(elem.isOrderTypePricing) {
+          elem.pricings.forEach(el => {
+            if(el.orderTypeId == this.form.get('orderTypeId').value) {
+              console.log(el);
+              itemform.patchValue({
+                price: el.price,
+                packagingCharges: el.packagingCharges
+              })
+            }
+          })
+        }else {
+          itemform.patchValue({
+            price: elem.price,
+            packagingCharges: elem.packagingCharges
+          })
+        }
+      }
+    })
+    this.getOrderItemTotal(itemform);
+  }
+
+  getOrderItemTotal(orderItem) {
+    let itemValue = orderItem.value;
+    let price = (itemValue.price)?parseFloat(itemValue.price):0;
+    let quantity = (itemValue.quantity)?parseFloat(itemValue.quantity):0;
+    let packagingCharges = (itemValue.packagingCharges)?parseFloat(itemValue.packagingCharges):0;
+    orderItem.get('totalPrice').setValue((price * quantity) + (packagingCharges * quantity));
   }
 
   getOrderTypes() {
