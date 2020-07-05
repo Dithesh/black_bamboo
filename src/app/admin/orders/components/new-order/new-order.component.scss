@@ -97,9 +97,6 @@
             top: 18px;
             border-radius: 5px;
             cursor: pointer;
-            &.all{
-                background-color: $color-warning;
-            }
         }
         & .table_innerBox{
             display: flex;
@@ -115,11 +112,17 @@
                     background-color: $color-success;
                     cursor: pointer;
                     margin-bottom: 0px;
+
+                    &.pointer-none {
+                        background-color: rgba($color-warning, 0.6) !important;
+                    }
                 }
                 & input{
                     visibility: hidden;
                     position: absolute;
                     opacity: 0;
+
+
                     &:checked + label{
                         background-color: $color-warning;
                     }
@@ -145,6 +148,25 @@
                 justify-content: space-between;
                 .table_seat_checkBox{
                     flex: 0 0 15px;
+                }
+            }
+        }
+
+        
+        &.reserved{
+            
+            & .table_circle{
+                background-color: $color-accent;
+            }
+
+            
+            & .table_innerBox{
+                
+                & .table_seat_checkBox{
+                    
+                    & label{
+                        background-color: $color-accent;
+                    }
                 }
             }
         }

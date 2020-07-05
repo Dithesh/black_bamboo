@@ -25,8 +25,6 @@ export class AddProductComponent implements OnInit {
   @ViewChild(MatSort, {static: true}) sort: MatSort;
   orderTypes: any[];
   constructor(
-    private _snackBar: MatSnackBar, 
-    private dialog:MatDialog, 
     private _serv: DataService,
     private fb: FormBuilder,
     private route: ActivatedRoute,
