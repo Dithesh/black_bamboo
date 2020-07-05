@@ -4,12 +4,18 @@
     margin-left: -16px;
     display: inline-flex;
     align-items: center;
+    justify-content: center;
     width: 280px;
     height: 64px;
     padding-left: 16px;
     padding-right: 16px;
     & .logoImg{
         max-width: 100%;
+        -webkit-transition: .3s ease-in-out;
+        -moz-transition: .3s ease-in-out;
+        -ms-transition: .3s ease-in-out;
+        transition: .3s ease-in-out;
+        opacity: 1;
         &.collapsed{
             display: none;
         }
@@ -17,7 +23,11 @@
     &.small{
         width:69px;
         & .logoImg{
-            display: none;
+            // display: none;
+            &.expand{
+                max-width: 0px;
+                opacity: 0;
+            }
             &.collapsed{
                 display: inline-block;
             }

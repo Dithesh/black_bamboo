@@ -5,13 +5,13 @@
             <img src="assets/images/logo-small.png" class="logoImg collapsed" alt="">
 
         </span> 
-        <button type="button" mat-icon-button (click)="_layout.isOpened = !_layout.isOpened">
+        <button type="button" class="ml-3" mat-icon-button (click)="_layout.isOpened = !_layout.isOpened">
             <mat-icon>menu</mat-icon>
         </button>
         <!-- <span>Resto App</span> -->
         <div class="header_navigation">
             <ul>
-                <li>
+                <li class="mr-20">
                     <button type="button" [matMenuTriggerFor]="notification" mat-icon-button>
                         <mat-icon matBadgeColor="accent" matBadgePosition="before" matBadge="15">notifications</mat-icon>
                     </button>

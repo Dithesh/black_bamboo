@@ -1,1 +1,85 @@
-<p>user works!</p>
+<div class="page_header d-flex mb-4">
+    <h2 class="header_title">Users</h2>
+    <div class="ml-auto">
+        <button mat-raised-button color="primary" (click)="updateUser()">Add New</button>
+    </div>
+</div>
+<div class="table_outerWrapper mat-elevation-z2 mt-20">
+    <table mat-table [dataSource]="dataSource" matSort class="w-100">
+        <!-- Position Column -->
+        <ng-container matColumnDef="action">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header class="ew-100"> Action </th>
+            <td mat-cell *matCellDef="let element"> 
+                <button mat-icon-button [matMenuTriggerFor]="moreOption">
+                    <mat-icon>more_vert</mat-icon>
+                </button>
+                    <mat-menu #moreOption="matMenu" yPosition="above">
+                    <button mat-menu-item><mat-icon>create</mat-icon> Edit</button>
+                    <button mat-menu-item><mat-icon>delete</mat-icon>Delete</button>
+                </mat-menu>
+            </td>
+        </ng-container>
+
+        <!-- Name Column -->
+        <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
+            <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+        </ng-container>
+
+        <!-- Weight Column -->
+        <ng-container matColumnDef="branch">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Branch</th>
+            <td mat-cell *matCellDef="let element"> {{element.branch}} </td>
+        </ng-container>
+
+        <!-- Symbol Column -->
+        <ng-container matColumnDef="number">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header class="ew-200">Number</th>
+            <td mat-cell *matCellDef="let element"> {{element.number}} </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+    <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+</div>
+
+
+<div class="right_sidePannel transition" [class.active]="sidemenu">
+    <div class="right_headerBox">
+        <h4>Add User</h4>
+    </div>
+    <div class="right_bodyWrapper">
+        <form>
+            <div class="mb-15 mt-15 text-center">
+                <div class="profile_imrBox">
+                    <input type="file" name="" id="prodctImg">
+                    <label for="prodctImg" title="Change Image"></label>
+                </div>
+            </div>
+            <mat-form-field  appearance="outline" class="w-100 pb-0 mb-15">
+                <mat-label>Full Name</mat-label>
+                <input type="text" matInput>
+            </mat-form-field>
+            <mat-form-field  appearance="outline" class="w-100 pb-0 mb-15">
+                <mat-label>Branch Name</mat-label>
+                <input type="text" matInput>
+            </mat-form-field>
+            <mat-form-field  appearance="outline" class="w-100 pb-0 mb-15">
+                <mat-label>Number</mat-label>
+                <input type="text" matInput>
+            </mat-form-field>
+            
+
+            <div class="d-flex align-items-center mb-20 mt-10">
+                <p class="my-0 mr-20">Is Active?</p>
+                <mat-slide-toggle></mat-slide-toggle>
+            </div>
+    
+            <div class="d-flex justify-content-between">
+                <button mat-raised-button color="primary" type="submit">Add</button>
+                <button mat-raised-button color="warn" type="button" (click)="cancelUser()">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="backdrop" [class.active]="sidemenu" (click)="cancelUser()"></div>

@@ -96,8 +96,16 @@ $color-warning:#bd2227;
                         & li {
                             & a {
                                 padding: 14px 17px !important;
+                                justify-content: center;
                                 & > span{
                                     display: none !important;
+                                }
+                            }
+                            &.have_submenu{
+                                & a{
+                                    & .right_arrow{
+                                        display: none;
+                                    }
                                 }
                             }
                         }
