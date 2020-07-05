@@ -17,7 +17,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 export class AddProductComponent implements OnInit {
   form: FormGroup;
-  displayedColumns: string[] = ['ordertype', 'price', 'taxPercent', 'packagingCharges'];
+  displayedColumns: string[] = ['ordertype', 'price', 'packagingCharges'];
   dataSource = new BehaviorSubject<AbstractControl[]>([]);branchList: any[];
   productId: any;
   categoryList: any[];

@@ -69,6 +69,7 @@ export class NewOrderComponent implements OnInit {
   selectedOrderType: any;
   tableList: any[];
   orderId;
+  productList: any[];
 
   constructor(
     private fb: FormBuilder,
@@ -100,6 +101,14 @@ export class NewOrderComponent implements OnInit {
   ngOnInit() {
     this.dataSource.sort = this.sort;
     this.getOrderTypes();
+    this.getAllProducts();
+  }
+
+  getAllProducts() {
+    this._serv.endpoint = "order-manager/product?status=active&needPricing=detailed";
+    this._serv.get().subscribe(response => {
+      this.productList = response as any[];
+    })
   }
 
   getOrderTypes() {

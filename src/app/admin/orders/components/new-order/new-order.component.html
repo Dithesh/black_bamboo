@@ -102,87 +102,96 @@
                   </mat-form-field>
                 </div>
               </div>
-              <!-- <div class="order_tableOuter">
-                <h4 class="font-weight-600 mb-10">Items</h4>
-                <div class="table_outerWrapper table-responsive">
-                  <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z2 w-100">
-
-                    <ng-container matColumnDef="product">
-                      <th mat-header-cell *matHeaderCellDef mat-sort-header class="ew-300">Product </th>
-                      <td mat-cell *matCellDef="let element">
-                        <mat-form-field appearance="outline" placeholder="Select Food" class="ew-200 my-10 field-pb-0">
-                          <mat-select>
-                            <mat-option value="Golibaje">Golibaje</mat-option>
-                            <mat-option value="Ambade">Ambade</mat-option>
-                            <mat-option value="Podi">Podi</mat-option>
-                          </mat-select>
-                        </mat-form-field>
-                      </td>
-                    </ng-container>
-                    
-                    <ng-container matColumnDef="quantity">
-                      <th mat-header-cell *matHeaderCellDef mat-sort-header class="ew-210">Quality</th>
-                      <td mat-cell *matCellDef="let element"> 
-                        <div class="input-group mb-0 number_input">
-                          <div class="input-group-prepend">
-                            <button class="btn btn-outline-secondary" type="button" id="button-addon1">-</button>
+              <div class="row">
+                <div class="col-12 col-md-8">
+                  <div class="order_tableOuter">
+                    <h4 class="font-weight-600 mb-10">Items</h4>
+                    <div class="table_outerWrapper table-responsive">
+                      <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z2 w-100">
+    
+                        <ng-container matColumnDef="product">
+                          <th mat-header-cell *matHeaderCellDef class="ew-300">Product </th>
+                          <td mat-cell *matCellDef="let element">
+                            <mat-form-field appearance="outline" placeholder="Select Food" class="ew-200 my-10 field-pb-0">
+                              <mat-select>
+                                <mat-option value="Golibaje">Golibaje</mat-option>
+                                <mat-option value="Ambade">Ambade</mat-option>
+                                <mat-option value="Podi">Podi</mat-option>
+                              </mat-select>
+                            </mat-form-field>
+                          </td>
+                        </ng-container>
+                        
+                        <ng-container matColumnDef="quantity">
+                          <th mat-header-cell *matHeaderCellDef class="ew-210">Quality</th>
+                          <td mat-cell *matCellDef="let element"> 
+                            <div class="input-group mb-0 number_input">
+                              <div class="input-group-prepend">
+                                <button class="btn btn-outline-secondary" type="button" id="button-addon1">-</button>
+                              </div>
+                              <input type="text" class="form-control">
+                              <div class="input-group-append">
+                                  <button class="btn btn-outline-secondary" type="button" id="button-addon1">+</button>
+                                </div>
                           </div>
-                          <input type="text" class="form-control">
-                          <div class="input-group-append">
-                              <button class="btn btn-outline-secondary" type="button" id="button-addon1">+</button>
-                            </div>
-                      </div>
-                      </td>
-                    </ng-container>
-                    
-                    <ng-container matColumnDef="price">
-                      <th mat-header-cell *matHeaderCellDef mat-sort-header class="ew-150"> Price </th>
-                      <td mat-cell *matCellDef="let element"> {{element.price}} </td>
-                    </ng-container>
-                  
-                    <ng-container matColumnDef="total">
-                      <th mat-header-cell *matHeaderCellDef mat-sort-header class="ew-150"> Total </th>
-                      <td mat-cell *matCellDef="let element"> {{element.total}} </td>
-                    </ng-container>
-                  
-                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-                  </table>
+                          </td>
+                        </ng-container>
+                        
+                        <ng-container matColumnDef="price">
+                          <th mat-header-cell *matHeaderCellDef class="ew-150"> Price </th>
+                          <td mat-cell *matCellDef="let element"> {{element.price}} </td>
+                        </ng-container>
+                      
+                        <ng-container matColumnDef="total">
+                          <th mat-header-cell *matHeaderCellDef class="ew-150"> Total </th>
+                          <td mat-cell *matCellDef="let element"> {{element.total}} </td>
+                        </ng-container>
+                      
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                      </table>
+                    </div>
+                  </div>
                 </div>
-              </div> -->
-              <!-- <div class="total_wrapper">
-                <table class="total_table table">
-                  <tr>
-                    <td></td>
-                    <td>Total</td>
-                    <td class="price_td">1000</td>
-                  </tr>
-                  <tr>
-                    <td></td>
-                    <td>CGST</td>
-                    <td class="price_td">500</td>
-                  </tr>
-                  <tr>
-                    <td></td>
-                    <td>SGST</td>
-                    <td class="price_td">300</td>
-                  </tr>
-                  <tr>
-                    <td></td>
-                    <td>Grand Total</td>
-                    <td class="price_td">2500</td>
-                  </tr>
-                  <tr class="return_row">
-                    <td>
-                      <mat-form-field appearance="outline" class="ew-150 field-pb-0">
-                        <input matInput placeholder="Amount Recived">
-                      </mat-form-field>
-                    </td>
-                    <td class="text-primary">Return Amount</td>
-                    <td class="text-primary text-right">1500</td>
-                  </tr>
-                </table>
-              </div> -->
+                <div class="col-12 col-md-4">
+                  <div class="total_wrapper">
+                    <table class="total_table table">
+                      <tr>
+                        <td>Total</td>
+                        <td class="price_td">1000</td>
+                      </tr>
+                      <tr>
+                        <td>Packaging Charges</td>
+                        <td class="price_td">1000.00</td>
+                      </tr>
+                      <tr>
+                        <td>Delivery Charges</td>
+                        <td class="price_td">1000.00</td>
+                      </tr>
+                      <tr>
+                        <td>Delivery Charges</td>
+                        <td class="price_td">1000</td>
+                      </tr>
+                      <tr>
+                        <td>CGST</td>
+                        <td class="price_td">500</td>
+                      </tr>
+                      <tr>
+                        <td>SGST</td>
+                        <td class="price_td">300</td>
+                      </tr>
+                      <tr>
+                        <td>Grand Total</td>
+                        <td class="price_td">2500</td>
+                      </tr>
+                      <tr class="return_row">
+                        <td class="text-primary">Return Amount</td>
+                        <td class="text-primary text-right">1500</td>
+                      </tr>
+                    </table>
+                  </div>
+                </div>
+              </div>
             </div>
             <!-- <mat-action-row>
               <button mat-raised-button color="warn" (click)="prevStep()">Cancel</button>
