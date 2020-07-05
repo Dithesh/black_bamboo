@@ -34,23 +34,33 @@
             <a href="javascript:;" (click)="openAccountMenu()" matRipple [matRippleUnbounded]="false">
                 <mat-icon>settings</mat-icon> <span class="d-inline-block ml-3">Account </span>
                 <mat-icon class="ml-auto right_arrow">keyboard_arrow_down</mat-icon></a>
-            <!-- <ul  routerLinkActive="active" class="list-unlisted submenu-Wrapper">
+            <ul  routerLinkActive="active" class="list-unlisted submenu-Wrapper">
                 <li routerLinkActive="active">
                     <a href="javascript:;" routerLink="/admin/settings/categories" matRipple>
-                        Categories
+                        Dashbord
                     </a>
                 </li>
                 <li routerLinkActive="active">
                     <a href="javascript:;" routerLink="/admin/settings/branches" matRipple>
-                        Branches
+                        Transition List
                     </a>
                 </li>
                 <li routerLinkActive="active">
                     <a href="javascript:;" routerLink="/admin/settings/order-type" matRipple>
-                        Order Types
+                        Make Transition
                     </a>
                 </li>
-            </ul> -->
+                <li routerLinkActive="active">
+                    <a href="javascript:;" routerLink="/admin/settings/order-type" matRipple>
+                        Account
+                    </a>
+                </li>
+                <li routerLinkActive="active">
+                    <a href="javascript:;" routerLink="/admin/settings/order-type" matRipple>
+                        Reports
+                    </a>
+                </li>
+            </ul>
         </li>
         <li  routerLinkActive="subOpen" class="have_submenu" [class.subOpen]="settingOpen">
             <a href="javascript:;" (click)="openSubmenu()" matRipple [matRippleUnbounded]="false">
