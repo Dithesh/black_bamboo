@@ -180,11 +180,9 @@
 }
 .order_detailWrapper{
     & .total_wrapper{
-        padding-top: 30px;
         & .total_table{
-            margin-right: 30px;
-            margin-left: auto;
-            width: 400px;
+            // margin-right: 30px;
+            // margin-left: 30px;
             & tr{
                 & td{
                     font-weight: 500;
