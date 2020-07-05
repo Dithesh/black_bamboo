@@ -1,11 +1,13 @@
 <mat-toolbar color="primary">
     <mat-toolbar-row>
+        <span class="logo_headerBox" [class.small]="!_layout.isOpened">
+            <img src="assets/images/logo.png" class="logoImg expand" alt="">
+            <img src="assets/images/logo-small.png" class="logoImg collapsed" alt="">
+
+        </span> 
         <button type="button" mat-icon-button (click)="_layout.isOpened = !_layout.isOpened">
             <mat-icon>menu</mat-icon>
         </button>
-        <span>
-            <img src="assets/images/logo.png" class="logoImg" alt="">
-        </span>
         <!-- <span>Resto App</span> -->
         <div class="header_navigation">
             <ul>
