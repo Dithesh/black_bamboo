@@ -1,0 +1,20 @@
+@import '../../../../variables.scss';
+.dashbordBox{
+    border:1px solid #ddd;
+    box-shadow: 0px 0px 12px rgba(#000, 0.2);
+    min-height: 100px;
+    border-radius: 5px;
+    padding: 20px;
+    cursor: pointer;
+    color: $color-primary;
+    & h3{
+        font-size: 20px;
+        font-weight: 600;
+        margin-bottom: 0px;
+    }
+    & h2{
+        font-size: 24px;
+        font-weight: 600;
+        margin-bottom: 5px;
+    }
+}
