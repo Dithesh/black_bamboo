@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import {MatSort} from '@angular/material/sort';
 import {MatTableDataSource} from '@angular/material/table';
 import { OwlOptions } from 'ngx-owl-carousel-o';
-import { FormGroup, FormBuilder, FormArray, AbstractControl } from '@angular/forms';
+import { FormGroup, FormBuilder, FormArray, AbstractControl, FormControl } from '@angular/forms';
 import { DataService } from 'src/app/shared/services/data.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
@@ -31,7 +31,7 @@ export class NewOrderComponent implements OnInit {
   @ViewChild(MatSort, {static: true}) sort: MatSort;
 
 
-  step = 1;
+  step = 0;
   rating;
   customOptions: OwlOptions = {
     loop: false,
@@ -69,8 +69,9 @@ export class NewOrderComponent implements OnInit {
   tableList: any[];
   orderId;
   productList: any[];
-  displayedColumns: string[] = ['product', 'quantity', 'price', 'pkg_charge', 'total'];
+  displayedColumns: string[] = ['product', 'quantity', 'price', 'total'];
   dataSource = new BehaviorSubject<AbstractControl[]>([]);branchList: any[];
+  blockForms: boolean;
 
   constructor(
     private fb: FormBuilder,
@@ -78,6 +79,7 @@ export class NewOrderComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router
   ) { 
+    this.orderId = this.route.snapshot.params.id;
     this.form = this.fb.group({
       id: [''],
       branch_id: [''],
@@ -88,11 +90,12 @@ export class NewOrderComponent implements OnInit {
       cgst: [''],
       sgst: [''],
       igst: [''],
+      orderItemTotal: [''],
       orderAmount: [''],
       packingCharge: [''],
       extraCharge: [''],
       deliverCharge: [''],
-      orderStatus: [''],
+      orderStatus: ['new'],
       tables: this.fb.array([]),
       items: this.fb.array([]),
     })
@@ -103,14 +106,51 @@ export class NewOrderComponent implements OnInit {
     this.getOrderTypes();
     this.getAllProducts();
     if(this.orderId) {
-      
+      this.getOrderDetail();
     }else {
       this.items.push(this.addOrderItem());
       this.dataSource.next(this.items.controls);
     }
   }
 
+  getOrderDetail() {
+    this._serv.endpoint = "order-manager/order/"+this.orderId;
+    this._serv.get().subscribe((response: any) => {
+      this.form.patchValue({
+        id: response.id,
+        branch_id: response.branch_id,
+        orderTypeId: response.orderTypeId,
+        relatedInfo: response.relatedInfo,
+        customerName: response.customer.customerName,
+        mobileNumber: response.customer.mobileNumber,
+        cgst: response.cgst,
+        sgst: response.sgst,
+        orderItemTotal: response.orderItemTotal,
+        orderAmount: response.orderAmount,
+        packingCharge: response.packingCharge,
+        deliverCharge: response.deliverCharge,
+        orderStatus: response.orderStatus,
+      });
+
+      if(response.orderStatus == 'completed' || response.orderStatus == 'cancelled') {
+        this.blockForms = true;
+        this.form.disable();
+      }
+
+      this.items.controls = [];
+      response.order_items.forEach(item => {
+        let orderItem = this.addOrderItem();
+        if(this.blockForms == true)orderItem.disable();
+        orderItem.patchValue(item);
+        this.items.push(orderItem);
+      })
+      this.dataSource.next(this.items.controls);
+      this.handleFinalPricing();
+    })
+  }
+
   addAnotherItem() {
+    if(this.blockForms)return;
     let blankRecords =this.items.value.filter(x => x.price == '' || x.quantity == '');
     if(blankRecords.length <= 0) {
       this.items.push(this.addOrderItem());
@@ -124,10 +164,10 @@ export class NewOrderComponent implements OnInit {
     return this.fb.group({
       id: [''],
       productId: [''],
-      price: [''],
+      price: ['0.00'],
       quantity: ['1'],
-      packagingCharges: [''],
-      totalPrice: [''],
+      packagingCharges: ['0.00'],
+      totalPrice: ['0.00'],
     })
   }
 
@@ -185,8 +225,36 @@ export class NewOrderComponent implements OnInit {
     let itemValue = orderItem.value;
     let price = (itemValue.price)?parseFloat(itemValue.price):0;
     let quantity = (itemValue.quantity)?parseFloat(itemValue.quantity):0;
-    let packagingCharges = (itemValue.packagingCharges)?parseFloat(itemValue.packagingCharges):0;
+    let packagingCharges = (itemValue.packagingCharges && this.selectedOrderType.enableExtraCharge)?parseFloat(itemValue.packagingCharges):0;
     orderItem.get('totalPrice').setValue((price * quantity) + (packagingCharges * quantity));
+    this.handleFinalPricing();
+  }
+
+  handleFinalPricing() {
+    let orderItems = this.items.value;
+    let totalPrice = 0;
+    let grandTotal = 0;
+    orderItems.forEach(item => {
+      totalPrice = totalPrice + parseFloat(item.totalPrice);
+    })
+    grandTotal+=totalPrice;
+    if(this.selectedOrderType.enableDeliverCharge) {
+      let charge = this.form.get('deliverCharge').value;
+      if(charge!=null && charge != '' && charge != undefined && charge > 0){
+        grandTotal += parseFloat(charge);
+      }
+    }
+    let tax = grandTotal * 0.06;
+    grandTotal += tax * 2;
+    this.form.patchValue({
+      orderItemTotal: totalPrice,
+      orderAmount: grandTotal,
+      packingCharge: '',
+      extraCharge: '',
+      cgst: tax,
+      sgst: tax,
+      igst: '',
+    })
   }
 
   getOrderTypes() {
@@ -205,6 +273,11 @@ export class NewOrderComponent implements OnInit {
     if(this.selectedOrderType.enableTables) {
       this.getTableInfo();
     }
+    if(this.selectedOrderType.enableExtraCharge) {
+      this.displayedColumns = ['product', 'quantity', 'price', 'pkg_charge', 'total'];
+    }else {
+      this.displayedColumns = ['product', 'quantity', 'price', 'total'];
+    }
   }
 
   get tables() {
@@ -212,25 +285,27 @@ export class NewOrderComponent implements OnInit {
   }
 
   getTableInfo() {
-    this._serv.endpoint = "order-manager/tables?orderTypeId="+this.selectedOrderType.id;
+    this._serv.endpoint = "order-manager/tables?orderTypeId="+this.selectedOrderType.id+"&orderId="+this.orderId;
     this._serv.get().subscribe(response => {
       this.tableList = response as any[];
       this.tables.controls=[];
       this.tableList.forEach(t => {
         let chairs = [];
         let selectedChairs = t.selectedChairs.split(",").filter(x => x!="");
+        
         let orderSelectedChairs = t.orderSelectedChairs.split(",").filter(x => x!="");
         t.chairs.forEach(elem => {
           if(elem != "") {
             let permission = "full";
-            if(selectedChairs.indexOf(parseInt(elem)) >= 0) permission="blocked";
-            if(orderSelectedChairs.indexOf(parseInt(elem)) >= 0) permission="full";
-
-            chairs.push(this.fb.group( {
+            if(selectedChairs.indexOf(elem.toString()) >= 0) permission="blocked";
+            if(orderSelectedChairs.indexOf(elem.toString()) >= 0) permission="full";
+            let group = this.fb.group( {
               chairId: [elem],
               permission: [permission],
-              isSelected: [(permission=='full')?false:true]
-            }))
+              isSelected: [(permission=='full' && orderSelectedChairs.indexOf(elem.toString()) < 0)?false:true]
+            });
+            if(this.blockForms)group.disable();
+            chairs.push(group)
           }
         })
 
@@ -243,11 +318,11 @@ export class NewOrderComponent implements OnInit {
         }))
         
       })
-      console.log(this.tables.value);
     })
   }
 
   selectAllChairs(table) {
+    if(this.blockForms)return;
     (table.get('chairs') as FormArray).controls.forEach(elem => {
       if(elem.get('permission').value == 'full') {
         elem.get('isSelected').setValue(true);
@@ -265,6 +340,51 @@ export class NewOrderComponent implements OnInit {
 
   prevStep() {
     this.step--;
+  }
+
+  handleNumberControl(formControl, type) {
+    if(this.blockForms)return;
+    let value = formControl.get('quantity').value;
+    if(value == null || value == undefined || value == "")value=0;
+    if(type == 'next') {
+      value++;
+    }else if(value > 0) {
+      value--;
+    }
+    formControl.get('quantity').setValue(value, {emitEvent: true});
+    this.getOrderItemTotal(formControl)
+  }
+
+  saveOrder(type = "confirm") {
+    let orderData = {...this.form.value};
+
+    if(type == 'confirm') {
+      orderData.orderStatus = "new";
+    }else if(type == "complete" || type == "complete and print") {
+      orderData.orderStatus = "completed";
+    }else if(type == 'cancel') {
+      orderData.orderStatus = "cancelled";
+    }
+
+    orderData.tables = orderData.tables.map((table:any) => {
+      return {
+        ...table,
+        chairs: table.chairs.filter(chair => (chair.isSelected && chair.permission == 'full')).map(chair => chair.chairId).join(',')
+      }
+    }).filter(table => table.chairs != "")
+    console.log(orderData);
+    let api=null;
+    this._serv.endpoint="order-manager/order";
+    if(orderData.id == "") {
+      api = this._serv.post(orderData);
+    }else {
+      this._serv.endpoint+="/"+orderData.id;
+      api = this._serv.put(orderData);
+    }
+    api.subscribe(response => {
+
+    })
+
   }
 }
 
