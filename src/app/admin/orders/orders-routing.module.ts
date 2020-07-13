@@ -19,6 +19,10 @@ const routes: Routes = [
         component:NewOrderComponent
       },
       {
+        path: "update/:id",
+        component:NewOrderComponent
+      },
+      {
         path:"table",
         component:TablePageComponent
       },

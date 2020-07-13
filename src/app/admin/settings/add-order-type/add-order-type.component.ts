@@ -34,10 +34,10 @@ export class AddOrderTypeComponent implements OnInit {
       id: [''],
       typeName: [''],
       description: [''],
-      enableTables: [''],
-      enableExtraInfo: [''],
-      enableDeliverCharge: [''],
-      enableExtraCharge: [''],
+      enableTables: [false],
+      enableExtraInfo: [false],
+      enableDeliverCharge: [false],
+      enableExtraCharge: [false],
       isActive: [false],
       branch_id: [''],
       tables: this.fb.array([])
@@ -114,6 +114,7 @@ export class AddOrderTypeComponent implements OnInit {
     }else {
       apiCall = this._serv.post(formValue);
     }
+    
     apiCall.subscribe(response => {
       this._serv.showMessage("Order type updated successfully", 'success');
       this.router.navigateByUrl('/admin/settings/order-type');

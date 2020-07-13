@@ -8,8 +8,8 @@
           <owl-carousel-o [options]="customOptions">
             <ng-container *ngFor="let item of orderTypeList;">
               <ng-template carouselSlide>
-                <div class="type_radio" (click)="onChangeOrderType(item)">
-                  <input type="radio" name="orderTypeId" [id]="'order-type'+item.id" [value]="item.id" formControlName="orderTypeId">
+                <div class="type_radio">
+                  <input (change)="onChangeOrderType(item)" type="radio" name="orderTypeId" [id]="'order-type'+item.id" [value]="item.id" formControlName="orderTypeId">
                   <label [for]="'order-type'+item.id">{{ item.typeName }}</label>
                 </div>
               </ng-template> 
@@ -46,7 +46,7 @@
                         <div class="table_innerBox col order-2">
                             <div class="d-flex mx-1 w-100">
                               <ng-container *ngFor="let chair of item.get('chairs')['controls'];let ci = index;">
-                                <ng-container *ngIf="ci != 0 && ci != 1 && ci%2 != 0">
+                                <ng-container *ngIf="ci != 0 && ci != 1 && ci%2 == 0">
                                   <div class="radio_outer px-1">
                                       <div class="table_seat_checkBox horizontal" [formGroupName]="ci">
                                           <input type="checkbox"  [id]="ci+'chair'+ti" formControlName="isSelected">
@@ -81,7 +81,7 @@
               </mat-panel-title>
             </mat-expansion-panel-header>
             <div class="order_detailWrapper">
-              <h3 class="text-primary">Order No: #<ng-container *ngIf="orderId">232323</ng-container><ng-container *ngIf="!orderId">##</ng-container></h3>
+              <h3 class="text-primary">Order No: #<ng-container *ngIf="orderId">{{ orderId }}</ng-container><ng-container *ngIf="!orderId">##</ng-container></h3>
               <div class="row mb-20">
                 <div class="col-xl-3 col-lg-4 col-md-5 col-sm-6 col-12">
                   <mat-form-field appearance="outline" class="w-100">
@@ -128,11 +128,11 @@
                           <td mat-cell *matCellDef="let element; let i=index;" [formGroupName]="i"> 
                             <div class="input-group mb-0 number_input">
                               <div class="input-group-prepend">
-                                <button class="btn btn-outline-secondary" type="button" id="button-addon1">-</button>
+                                <button class="btn btn-outline-secondary" type="button" (click)="handleNumberControl(element, 'prev')" id="button-addon1">-</button>
                               </div>
-                              <input type="text" (change)="getOrderItemTotal(element)" class="form-control" formControlName="quantity">
+                              <input type="text" class="form-control" formControlName="quantity" (change)="getOrderItemTotal(element)">
                               <div class="input-group-append">
-                                <button class="btn btn-outline-secondary" type="button" id="button-addon1">+</button>
+                                <button class="btn btn-outline-secondary" (click)="handleNumberControl(element, 'next')" type="button" id="button-addon1">+</button>
                               </div>
                           </div>
                           </td>
@@ -159,50 +159,64 @@
                     </div>
                   </div>
                 </div>
-                <div class="col-12 col-md-4">
+                <div class="col-12 col-md-4" *ngIf="form.get('orderItemTotal').value > 0">
                   <div class="total_wrapper">
                     <table class="total_table table">
                       <tr>
                         <td>Total</td>
-                        <td class="price_td">1000</td>
+                        <td class="price_td">{{ form.get('orderItemTotal').value }}</td>
                       </tr>
-                      <tr>
+                      <!-- <tr>
                         <td>Packaging Charges</td>
                         <td class="price_td">1000.00</td>
-                      </tr>
-                      <tr>
+                      </tr> -->
+                      <tr *ngIf="selectedOrderType?.enableDeliverCharge">
                         <td>Delivery Charges</td>
-                        <td class="price_td">1000.00</td>
+                        <td class="price_td">
+                          <mat-form-field appearance="outline" class="ew-70">
+                            <input (keyup)="handleFinalPricing()" formControlName="deliverCharge" matInput>
+                          </mat-form-field>
+                        </td>
                       </tr>
                       <tr>
-                        <td>Delivery Charges</td>
-                        <td class="price_td">1000</td>
+                        <td>CGST(6%)</td>
+                        <td class="price_td">{{ form.get('cgst').value }}</td>
                       </tr>
                       <tr>
-                        <td>CGST</td>
-                        <td class="price_td">500</td>
-                      </tr>
-                      <tr>
-                        <td>SGST</td>
-                        <td class="price_td">300</td>
+                        <td>SGST(6%)</td>
+                        <td class="price_td">{{ form.get('sgst').value }}</td>
                       </tr>
                       <tr>
                         <td>Grand Total</td>
-                        <td class="price_td">2500</td>
+                        <td class="price_td">{{ form.get('orderAmount').value }}</td>
                       </tr>
                       <tr class="return_row">
-                        <td class="text-primary">Return Amount</td>
-                        <td class="text-primary text-right">1500</td>
+                        <td class="text-primary">
+                            <mat-form-field appearance="outline" class="ew-70">
+                              <mat-label>Received</mat-label>
+                              <input (keyup)="handleFinalPricing()" #calAmount matInput>
+                            </mat-form-field>
+                        </td>
+                        <td class="text-primary text-right"><small>Return: </small>{{ (calAmount.value)?(calAmount.value - form.get('orderAmount').value):00 }}</td>
                       </tr>
                     </table>
+
                   </div>
                 </div>
               </div>
             </div>
-            <!-- <mat-action-row>
-              <button mat-raised-button color="warn" (click)="prevStep()">Cancel</button>
-              <button mat-raised-button color="primary" (click)="nextStep()">Save</button>
-            </mat-action-row> -->
+            <mat-action-row *ngIf="form.get('orderStatus').value != 'cancelled'">
+              <ng-container *ngIf="form.get('orderStatus').value != 'completed'">
+                <button mat-raised-button *ngIf="orderId" type="button" color="warn" (click)="saveOrder('cancel')">Cancel Order</button>
+                <button mat-raised-button type="button" color="accent" (click)="saveOrder('complete and print')">Complete & Print</button>
+                <button mat-raised-button type="button" color="primary" (click)="saveOrder('complete')">Complete</button>
+                <button mat-stroked-button *ngIf="orderId" type="button" color="primary" (click)="saveOrder('confirm')">Save</button>
+                <button mat-stroked-button *ngIf="!orderId" type="button" color="primary" (click)="saveOrder('confirm')">Confirm Order</button>
+              </ng-container>
+              <ng-container *ngIf="form.get('orderStatus').value == 'completed'">
+                <button mat-raised-button type="button" color="accent" (click)="printOrder()">Print</button>
+              </ng-container>
+            </mat-action-row>
           </mat-expansion-panel>
         
           <!-- <mat-expansion-panel [expanded]="step === 2" (opened)="setStep(2)" hideToggle>
