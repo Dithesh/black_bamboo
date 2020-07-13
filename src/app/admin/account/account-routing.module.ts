@@ -26,7 +26,7 @@ const routes: Routes = [
     component:ReportComponent
   },
   {
-    path:"transitionlist",
+    path:"transactionlist",
     component:TransactionListComponent
   },
   {

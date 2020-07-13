@@ -3,20 +3,21 @@
     <ul>
         <li routerLinkActive="active">
 
-            <a href="javascript:;" routerLink="/admin/dashboard" matRipple [matRippleUnbounded]="false"> <mat-icon>storage</mat-icon> <span class="d-inline-block ml-3">Dashboard</span></a>
+            <a href="javascript:;" routerLink="/admin/dashboard" matRipple [matRippleUnbounded]="false">
+                <mat-icon>storage</mat-icon> <span class="d-inline-block ml-3">Dashboard</span></a>
         </li>
         <li routerLinkActive="active">
-            <a href="javascript:;" routerLink="/admin/order" matRipple [matRippleUnbounded]="false" >
+            <a href="javascript:;" routerLink="/admin/order" matRipple [matRippleUnbounded]="false">
                 <mat-icon>fact_check</mat-icon> <span class="d-inline-block ml-3">Orders</span>
             </a>
         </li>
         <li routerLinkActive="active">
-            <a href="javascript:;" routerLink="/admin/products"  matRipple [matRippleUnbounded]="false" >
+            <a href="javascript:;" routerLink="/admin/products" matRipple [matRippleUnbounded]="false">
                 <mat-icon>add_box</mat-icon> <span class="d-inline-block ml-3">Products</span>
             </a>
         </li>
         <li routerLinkActive="active">
-            <a href="javascript:;" matRipple [matRippleUnbounded]="false" >
+            <a href="javascript:;" matRipple [matRippleUnbounded]="false">
                 <mat-icon>view_module</mat-icon> <span class="d-inline-block ml-3">Tables</span>
             </a>
         </li>
@@ -30,24 +31,25 @@
                 <mat-icon>person</mat-icon> <span class="d-inline-block ml-3">Users</span>
             </a>
         </li>
-        <li  routerLinkActive="subOpen" class="have_submenu" [class.subOpen]="accoutnOpen">
+        <li routerLinkActive="subOpen" class="have_submenu" [class.subOpen]="accoutnOpen">
             <a href="javascript:;" (click)="openAccountMenu()" matRipple [matRippleUnbounded]="false">
                 <mat-icon>addchart</mat-icon> <span class="d-inline-block ml-3">Account </span>
-                <mat-icon class="ml-auto right_arrow">keyboard_arrow_down</mat-icon></a>
-            <ul  routerLinkActive="active" class="list-unlisted submenu-Wrapper">
+                <mat-icon class="ml-auto right_arrow">keyboard_arrow_down</mat-icon>
+            </a>
+            <ul routerLinkActive="active" class="list-unlisted submenu-Wrapper">
                 <li routerLinkActive="active">
                     <a href="javascript:;" routerLink="/admin/account/dashbord" matRipple>
                         Dashbord
                     </a>
                 </li>
                 <li routerLinkActive="active">
-                    <a href="javascript:;" routerLink="/admin/account/transitionlist" matRipple>
-                        Transition List
+                    <a href="javascript:;" routerLink="/admin/account/transactionlist" matRipple>
+                        Transaction List
                     </a>
                 </li>
                 <li routerLinkActive="active">
                     <a href="javascript:;" routerLink="/admin/account/make-transaction" matRipple>
-                        Make Transition
+                        Make Transaction
                     </a>
                 </li>
                 <li routerLinkActive="active">
@@ -62,11 +64,12 @@
                 </li>
             </ul>
         </li>
-        <li  routerLinkActive="subOpen" class="have_submenu" [class.subOpen]="settingOpen">
+        <li routerLinkActive="subOpen" class="have_submenu" [class.subOpen]="settingOpen">
             <a href="javascript:;" (click)="openSubmenu()" matRipple [matRippleUnbounded]="false">
                 <mat-icon>settings</mat-icon> <span class="d-inline-block ml-3">Setting </span>
-                <mat-icon class="ml-auto right_arrow">keyboard_arrow_down</mat-icon></a>
-            <ul  routerLinkActive="active" class="list-unlisted submenu-Wrapper">
+                <mat-icon class="ml-auto right_arrow">keyboard_arrow_down</mat-icon>
+            </a>
+            <ul routerLinkActive="active" class="list-unlisted submenu-Wrapper">
                 <li routerLinkActive="active">
                     <a href="javascript:;" routerLink="/admin/settings/categories" matRipple>
                         Categories

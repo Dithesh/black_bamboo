@@ -7,6 +7,7 @@ import { TransactionListComponent } from './transaction-list/transaction-list.co
 import { MakeTransactionComponent } from './make-transaction/make-transaction.component';
 import { ReportComponent } from './report/report.component';
 import { AccountsComponent } from './accounts/accounts.component';
+import { SharedModule } from 'src/app/shared/shared.module';
 
 
 @NgModule({
@@ -14,6 +15,7 @@ import { AccountsComponent } from './accounts/accounts.component';
   imports: [
     CommonModule,
     AccountRoutingModule,
+    SharedModule
   ]
 })
 export class AccountModule { }
