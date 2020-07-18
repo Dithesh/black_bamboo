@@ -5,81 +5,122 @@
     </div>
 </div>
 <div class="table_outerWrapper mat-elevation-z2 mt-20">
-    <table mat-table [dataSource]="dataSource" matSort class="w-100">
+    <table mat-table [dataSource]="dataSource?.data" matSort class="w-100">
         <!-- Position Column -->
         <ng-container matColumnDef="action">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header class="ew-100"> Action </th>
+            <th mat-header-cell *matHeaderCellDef class="ew-100"> Action </th>
             <td mat-cell *matCellDef="let element"> 
                 <button mat-icon-button [matMenuTriggerFor]="moreOption">
                     <mat-icon>more_vert</mat-icon>
                 </button>
-                    <mat-menu #moreOption="matMenu" yPosition="above">
-                    <button mat-menu-item><mat-icon>create</mat-icon> Edit</button>
-                    <button mat-menu-item><mat-icon>delete</mat-icon>Delete</button>
+                    <mat-menu #moreOption="matMenu">
+                    <button mat-menu-item type="button" (click)="updateUser(element)"><mat-icon>create</mat-icon> Edit</button>
+                    <button mat-menu-item type="button" (click)="deleteUser(element)"><mat-icon>delete</mat-icon>Delete</button>
                 </mat-menu>
             </td>
         </ng-container>
 
-        <!-- Name Column -->
-        <ng-container matColumnDef="name">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
-            <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+        <ng-container matColumnDef="firstName">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header class="ew-200"> User Name </th>
+            <td mat-cell *matCellDef="let element"> {{element.firstName}} {{ element.lastName }} </td>
         </ng-container>
 
-        <!-- Weight Column -->
-        <ng-container matColumnDef="branch">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>Branch</th>
-            <td mat-cell *matCellDef="let element"> {{element.branch}} </td>
+        <ng-container matColumnDef="roles">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header class="ew-200"> Role </th>
+            <td mat-cell *matCellDef="let element"> {{element.roles}} </td>
         </ng-container>
 
-        <!-- Symbol Column -->
-        <ng-container matColumnDef="number">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header class="ew-200">Number</th>
-            <td mat-cell *matCellDef="let element"> {{element.number}} </td>
+        <ng-container matColumnDef="branch_title">
+            <th mat-header-cell *matHeaderCellDef> Branch </th>
+            <td mat-cell *matCellDef="let element"> {{element.description}} </td>
         </ng-container>
+
+        <ng-container matColumnDef="mobileNumber">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Mobile Number </th>
+            <td mat-cell *matCellDef="let element"> {{element.mobileNumber}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="email">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Email </th>
+            <td mat-cell *matCellDef="let element"> {{element.email}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="isActive">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Is Active? </th>
+            <td mat-cell *matCellDef="let element"> 
+                <mat-slide-toggle color="accent" disabled="true" [(ngModel)]="element.isActive"></mat-slide-toggle>
+            </td>
+        </ng-container>
+
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
-    <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+    <mat-paginator [pageSizeOptions]="[10]" [length]="dataSource?.total" [pageSize]="10"></mat-paginator>
 </div>
 
 
 <div class="right_sidePannel transition" [class.active]="sidemenu">
     <div class="right_headerBox">
-        <h4>Add User</h4>
+        <h4 *ngIf="!this.form.get('id').value">Add New</h4>
+        <h4 *ngIf="this.form.get('id').value">Update Category</h4>
     </div>
     <div class="right_bodyWrapper">
-        <form>
+        <form [formGroup]="form" (submit)="saveUser($event)">
             <div class="mb-15 mt-15 text-center">
                 <div class="profile_imrBox">
                     <input type="file" name="" id="prodctImg">
                     <label for="prodctImg" title="Change Image"></label>
                 </div>
             </div>
-            <mat-form-field  appearance="outline" class="w-100 pb-0 mb-15">
-                <mat-label>Full Name</mat-label>
-                <input type="text" matInput>
+            <mat-form-field  appearance="outline" class="w-100 pb-0 mb-20">
+                <mat-label>First Name</mat-label>
+                <input type="text" formControlName="firstName" matInput>
             </mat-form-field>
-            <mat-form-field  appearance="outline" class="w-100 pb-0 mb-15">
-                <mat-label>Branch Name</mat-label>
-                <input type="text" matInput>
+            <mat-form-field  appearance="outline" class="w-100 pb-0 mb-20">
+                <mat-label>Last Name</mat-label>
+                <input type="text" formControlName="lastName" matInput>
             </mat-form-field>
-            <mat-form-field  appearance="outline" class="w-100 pb-0 mb-15">
-                <mat-label>Number</mat-label>
-                <input type="text" matInput>
+            <mat-form-field  appearance="outline" class="w-100 pb-0 mb-20">
+                <mat-label>Mobile Number</mat-label>
+                <input type="text" formControlName="mobileNumber" matInput>
+            </mat-form-field>
+            <mat-form-field  appearance="outline" class="w-100 pb-0 mb-20">
+                <mat-label>Email</mat-label>
+                <input type="text" formControlName="email" matInput>
+            </mat-form-field>
+            <mat-form-field  appearance="outline" class="w-100 pb-0 mb-20">
+                <mat-label>Password</mat-label>
+                <input type="text" formControlName="password" matInput>
             </mat-form-field>
             
+            <mat-form-field  appearance="outline" class="w-100 pb-0 mb-20">
+                <mat-label>Roles</mat-label>
+                <mat-select matNativeControl formControlName="roles">
+                    <mat-option value="Super Admin">Super Admin</mat-option>
+                    <mat-option value="Admin">Admin</mat-option>
+                    <mat-option value="Accountant">Accountant</mat-option>
+                    <mat-option value="Order Manager">Order Manager</mat-option>
+                    <mat-option value="Customer">Customer</mat-option>
+                </mat-select>
+            </mat-form-field>
+            
+            <mat-form-field *ngIf="form.get('roles').value != 'Super Admin'" appearance="outline" class="w-100 pb-0 mb-20">
+                <mat-label>Branch</mat-label>
+                <mat-select matNativeControl formControlName="branch_id">
+                    <mat-option *ngFor="let item of branchList;" [value]="item.id">{{ item.branchTitle }}</mat-option>
+                </mat-select>
+            </mat-form-field>
 
             <div class="d-flex align-items-center mb-20 mt-10">
                 <p class="my-0 mr-20">Is Active?</p>
-                <mat-slide-toggle></mat-slide-toggle>
+                <mat-slide-toggle formControlName="isActive"></mat-slide-toggle>
             </div>
     
             <div class="d-flex justify-content-between">
-                <button mat-raised-button color="primary" type="submit">Add</button>
-                <button mat-raised-button color="warn" type="button" (click)="cancelUser()">Cancel</button>
+                <button mat-raised-button color="primary" type="submit">{{ (this.form.get('id').value)?'Update':'Add'}}</button>
+                <button mat-raised-button color="warn" type="button" (click)="cancelUpdate()">Cancel</button>
             </div>
         </form>
     </div>
 </div>
-<div class="backdrop" [class.active]="sidemenu" (click)="cancelUser()"></div>
+<div class="backdrop" [class.active]="sidemenu" (click)="cancelUpdate()"></div>
