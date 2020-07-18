@@ -1,0 +1,40 @@
+.top_nav {
+    background-color: #ffffff;
+
+    & .top_nav_inner {
+        margin: 0 15px;
+        padding: 10px 0;
+
+        .dashbordBox {
+            border: 1px solid #ddd;
+            text-decoration: none;
+            box-shadow: 0px 0px 12px rgba(#000, 0.2);
+            min-height: 40px;
+            border-radius: 5px;
+            padding: 10px 15px;
+            color: #fff;
+            cursor: pointer;
+
+            &:hover {
+                text-decoration: none;
+            }
+            &.one {
+                background-color: #00b894;
+            }
+            &.two {
+                background-color: #00cec9;
+            }
+            &.three {
+                background-color: #0984e3;
+            }
+            &.four {
+                background-color: #6c5ce7;
+            }
+            & h3 {
+                font-size: 16px;
+                font-weight: 500;
+                margin-bottom: 0px;
+            }
+        }
+    }
+}

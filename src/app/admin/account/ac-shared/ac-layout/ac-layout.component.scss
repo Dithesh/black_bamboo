@@ -1,0 +1,39 @@
+:host {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+mat-sidenav-container {
+    height: 100%;
+
+    & mat-sidenav {
+        width: 180px;
+    }
+
+    & mat-sidenav-content {
+        padding: 15px;
+
+        @media (max-width: 768px) {
+            padding: 10px;
+        }
+    }
+
+    
+    &.menu-close {
+
+        
+        & mat-sidenav {
+            width: 40px;
+            transform: none;
+            visibility: visible !important;
+        }
+
+        & mat-sidenav-content {
+            margin-left: 40px;
+        }
+
+        & .inner_sub_menu {
+            display: none;
+        }
+    }
+}

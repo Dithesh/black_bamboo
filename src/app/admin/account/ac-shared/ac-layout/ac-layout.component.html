@@ -1,0 +1,18 @@
+<app-ac-top-bar></app-ac-top-bar>
+<mat-sidenav-container class="account_wrapper_main" (backdropClick)="_layout.isOpened=false" [class.menu-close]="!_layout.isOpened && _layout.menuMode == 'side'">
+    <mat-sidenav *ngIf="!sideBarDisable" [mode]="_layout.menuMode" [(opened)]="_layout.isOpened" [fixedInViewport]="_layout.isFixedMenu">
+        <div class="d-flex justify-content-end">
+            <button type="button" mat-icon-button (click)="_layout.isOpened = !_layout.isOpened">
+                <mat-icon>menu</mat-icon>
+            </button>
+        </div>
+        <ul class="inner_sub_menu">
+            <li><a href="javascript:;" routerLink='/admin/account/master/ledger'>Ledger Account</a></li>
+            <li><a href="javascript:;" routerLink='/admin/account/master/inventory'>Inventories</a></li>
+            <li><a href="javascript:;" routerLink='/admin/account/master/unit'>Units</a></li>
+        </ul>
+    </mat-sidenav>
+    <mat-sidenav-content>
+        <router-outlet></router-outlet>
+    </mat-sidenav-content>
+</mat-sidenav-container>

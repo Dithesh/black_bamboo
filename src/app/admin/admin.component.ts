@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { LayoutService } from './layout/services/layout.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-admin',
@@ -8,9 +9,26 @@ import { LayoutService } from './layout/services/layout.service';
 })
 export class AdminComponent implements OnInit {
   isOpened=false;
-  constructor(public _layout: LayoutService) { }
+  noPadding=false;
+  constructor(
+    public _layout: LayoutService,
+    private router: Router
+    ) { }
 
   ngOnInit(): void {
+    this.handleRouting();
+    this.router.events.subscribe(response => {
+      this.handleRouting();
+    })
+  }
+
+  handleRouting(){
+    let url = this.router.url;
+    if(url.indexOf('/admin/account') >= 0) {
+      this.noPadding = true;
+    }else {
+      this.noPadding = false;
+    }
   }
 
 }

@@ -9,7 +9,7 @@ import { AddOrderTypeComponent } from './add-order-type/add-order-type.component
 const routes: Routes = [
   {
     path:"",
-    redirectTo:'branches',
+    redirectTo:'categories',
     pathMatch:'full'
   },
   {
