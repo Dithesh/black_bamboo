@@ -1,225 +1,224 @@
 <form [formGroup]="form">
-  <div class="page_header d-flex mb-4">
-    <h2 class="header_title">New Order</h2>
-  </div>
+    <div class="page_header d-flex mb-4">
+        <h2 class="header_title">New Order</h2>
+    </div>
 
-  <div class="table_form_wrapper">
-      <div class="order_typeRow">
-          <owl-carousel-o [options]="customOptions">
+    <div class="table_form_wrapper">
+        <div class="order_typeRow">
             <ng-container *ngFor="let item of orderTypeList;">
-              <ng-template carouselSlide>
                 <div class="type_radio">
-                  <input (change)="onChangeOrderType(item)" type="radio" name="orderTypeId" [id]="'order-type'+item.id" [value]="item.id" formControlName="orderTypeId">
-                  <label [for]="'order-type'+item.id">{{ item.typeName }}</label>
+                    <input (change)="onChangeOrderType(item)" type="radio" name="orderTypeId" [id]="'order-type'+item.id" [value]="item.id" formControlName="orderTypeId">
+                    <label [for]="'order-type'+item.id">{{ item.typeName }}</label>
                 </div>
-              </ng-template> 
-            </ng-container> 
-          </owl-carousel-o>
-      </div>
-  </div>
-  <div class="order_stepWrapper mt-10">
-      <mat-accordion class="example-headers-align">
-          <mat-expansion-panel *ngIf="selectedOrderType && selectedOrderType.enableTables" [expanded]="step === 0" (opened)="setStep(0)" hideToggle>
-            <mat-expansion-panel-header>
-              <mat-panel-title>
-                <h2 class="my-10">Select Table</h2>
-              </mat-panel-title>
-            </mat-expansion-panel-header>
-            <div class="table_selectWrapper mt-20 mb-15" formArrayName="tables">
-              <ng-container *ngFor="let item of tables['controls'];let ti=index;">
-                <div class="table_col" [class.reserved]="item.get('isReserved').value" [formGroupName]="ti">
-                    <div class="row ew-130 mx-auto position-relative h-100 no-gutters">
-                      <span class="table_circle" (click)="selectAllChairs(item)">{{ item.get('tableId').value }}</span>
-                      <ng-container formArrayName="chairs">
-                        <div class="table_innerBox col-auto order-1" *ngIf="item.get('chairs')['controls'].length > 0">
-                            <div class="table_seat_checkBox vertical" formGroupName="0">
-                                <input type="checkbox"  formControlName="isSelected" [id]="0+'chair'+ti">
-                                <label [for]="0+'chair'+ti" [class.pointer-none]="item.get('chairs')['controls'][0].get('permission').value == 'blocked'"></label>
-                            </div>
-                        </div>
-                        <div class="table_innerBox col-auto order-3" *ngIf="item.get('chairs')['controls'].length > 1">
-                            <div class="table_seat_checkBox vertical" formGroupName="1">
-                                <input type="checkbox" formControlName="isSelected" [id]="1+'chair'+ti">
-                                <label [for]="1+'chair'+ti" [class.pointer-none]="item.get('chairs')['controls'][1].get('permission').value == 'blocked'"></label>
-                            </div>
-                        </div>
-                        <div class="table_innerBox col order-2">
-                            <div class="d-flex mx-1 w-100">
-                              <ng-container *ngFor="let chair of item.get('chairs')['controls'];let ci = index;">
-                                <ng-container *ngIf="ci != 0 && ci != 1 && ci%2 == 0">
-                                  <div class="radio_outer px-1">
-                                      <div class="table_seat_checkBox horizontal" [formGroupName]="ci">
-                                          <input type="checkbox"  [id]="ci+'chair'+ti" formControlName="isSelected">
-                                          <label [for]="ci+'chair'+ti"  [class.pointer-none]="item.get('chairs')['controls'][ci].get('permission').value == 'blocked'"></label>
-                                      </div>
-                                      <ng-container *ngIf="item.get('chairs')['controls'].length > (ci+1)">
-                                        <div class="table_seat_checkBox horizontal" [formGroupName]="ci + 1">
-                                            <input type="checkbox"  [id]="ci+1+'chair'+ti" formControlName="isSelected">
-                                            <label [for]="ci+1+'chair'+ti"  [class.pointer-none]="item.get('chairs')['controls'][ci+1].get('permission').value == 'blocked'"></label>
+            </ng-container>
+        </div>
+    </div>
+    <div class="order_stepWrapper mt-10">
+        <mat-accordion class="example-headers-align">
+            <mat-expansion-panel *ngIf="selectedOrderType && selectedOrderType.enableTables" [expanded]="step === 0" (opened)="setStep(0)" hideToggle>
+                <mat-expansion-panel-header>
+                    <mat-panel-title>
+                        <h2 class="my-10">Select Table</h2>
+                    </mat-panel-title>
+                </mat-expansion-panel-header>
+                <div class="table_selectWrapper mt-20 mb-15" formArrayName="tables">
+                    <ng-container *ngFor="let item of tables['controls'];let ti=index;">
+                        <div class="table_col" [class.reserved]="item.get('isReserved').value" [formGroupName]="ti">
+                            <div class="row ew-130 mx-auto position-relative h-100 no-gutters">
+                                <span class="table_circle" (click)="selectAllChairs(item)">{{ item.get('tableId').value }}</span>
+                                <ng-container formArrayName="chairs">
+                                    <div class="table_innerBox col-auto order-1" *ngIf="item.get('chairs')['controls'].length > 0">
+                                        <div class="table_seat_checkBox vertical" formGroupName="0">
+                                            <input type="checkbox" formControlName="isSelected" [id]="0+'chair'+ti">
+                                            <label [for]="0+'chair'+ti" [class.pointer-none]="item.get('chairs')['controls'][0].get('permission').value == 'blocked'"></label>
                                         </div>
-                                      </ng-container>
-                                  </div>
+                                    </div>
+                                    <div class="table_innerBox col-auto order-3" *ngIf="item.get('chairs')['controls'].length > 1">
+                                        <div class="table_seat_checkBox vertical" formGroupName="1">
+                                            <input type="checkbox" formControlName="isSelected" [id]="1+'chair'+ti">
+                                            <label [for]="1+'chair'+ti" [class.pointer-none]="item.get('chairs')['controls'][1].get('permission').value == 'blocked'"></label>
+                                        </div>
+                                    </div>
+                                    <div class="table_innerBox col order-2">
+                                        <div class="d-flex mx-1 w-100">
+                                            <ng-container *ngFor="let chair of item.get('chairs')['controls'];let ci = index;">
+                                                <ng-container *ngIf="ci != 0 && ci != 1 && ci%2 == 0">
+                                                    <div class="radio_outer px-1">
+                                                        <div class="table_seat_checkBox horizontal" [formGroupName]="ci">
+                                                            <input type="checkbox" [id]="ci+'chair'+ti" formControlName="isSelected">
+                                                            <label [for]="ci+'chair'+ti" [class.pointer-none]="item.get('chairs')['controls'][ci].get('permission').value == 'blocked'"></label>
+                                                        </div>
+                                                        <ng-container *ngIf="item.get('chairs')['controls'].length > (ci+1)">
+                                                            <div class="table_seat_checkBox horizontal" [formGroupName]="ci + 1">
+                                                                <input type="checkbox" [id]="ci+1+'chair'+ti" formControlName="isSelected">
+                                                                <label [for]="ci+1+'chair'+ti" [class.pointer-none]="item.get('chairs')['controls'][ci+1].get('permission').value == 'blocked'"></label>
+                                                            </div>
+                                                        </ng-container>
+                                                    </div>
+                                                </ng-container>
+                                            </ng-container>
+                                        </div>
+                                    </div>
                                 </ng-container>
-                              </ng-container>
                             </div>
                         </div>
-                      </ng-container>
-                    </div>
+                    </ng-container>
                 </div>
-              </ng-container>
-            </div>
-            
-            <mat-action-row>
-              <button mat-raised-button color="primary" (click)="nextStep()" >Take Order</button>
-            </mat-action-row>
-          </mat-expansion-panel>
-        
-          <mat-expansion-panel [expanded]="step === 1" (opened)="setStep(1)" hideToggle>
-            <mat-expansion-panel-header>
-              <mat-panel-title>
-                <h2 class="my-10">Order Detail</h2>
-              </mat-panel-title>
-            </mat-expansion-panel-header>
-            <div class="order_detailWrapper">
-              <h3 class="text-primary">Order No: #<ng-container *ngIf="orderId">{{ orderId }}</ng-container><ng-container *ngIf="!orderId">##</ng-container></h3>
-              <div class="row mb-20">
-                <div class="col-xl-3 col-lg-4 col-md-5 col-sm-6 col-12">
-                  <mat-form-field appearance="outline" class="w-100">
-                    <mat-label>Related Info</mat-label>
-                    <input formControlName="relatedInfo" matInput>
-                  </mat-form-field>
-                </div>
-                <div class="col-xl-3 col-lg-4 col-md-5 col-sm-6 col-12">
-                  <mat-form-field appearance="outline" class="w-100">
-                    <mat-label>Customer Name</mat-label>
-                    <input formControlName="customerName" matInput>
-                  </mat-form-field>
-                </div>
-                <div class="col-xl-3 col-lg-4 col-md-5 col-sm-6 col-12">
-                  <mat-form-field appearance="outline" class="w-100">
-                    <mat-label>Mobile Number</mat-label>
-                    <input formControlName="mobileNumber" matInput>
-                  </mat-form-field>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-12 col-md-8">
-                  <div class="order_tableOuter">
-                    <h4 class="font-weight-600 mb-10 d-flex justify-content-between">
-                      Items
-                      <button mat-raised-button color="primary" type="button" (click)="addAnotherItem()">Add New</button>
-                    </h4>
-                    <div class="table_outerWrapper table-responsive">
-                      <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z2 w-100" formArrayName="items">
-    
-                        <ng-container matColumnDef="product">
-                          <th mat-header-cell *matHeaderCellDef class="ew-300">Product </th>
-                          <td mat-cell *matCellDef="let element; let i=index;" [formGroupName]="i">
-                            <mat-form-field appearance="outline" placeholder="Select Food" class="ew-200 my-10 field-pb-0">
-                              <mat-select formControlName="productId" (selectionChange)="onProductChange($event, element)" >
-                                <mat-option *ngFor="let item of productList;" [value]="item.id">{{ item.productName }}</mat-option>
-                              </mat-select>
+
+                <mat-action-row>
+                    <button mat-raised-button color="primary" (click)="nextStep()">Take Order</button>
+                </mat-action-row>
+            </mat-expansion-panel>
+
+            <mat-expansion-panel [expanded]="step === 1" (opened)="setStep(1)" hideToggle>
+                <mat-expansion-panel-header>
+                    <mat-panel-title>
+                        <h2 class="my-10">Order Detail</h2>
+                    </mat-panel-title>
+                </mat-expansion-panel-header>
+                <div class="order_detailWrapper">
+                    <h3 class="text-primary">Order No: #
+                        <ng-container *ngIf="orderId">{{ orderId }}</ng-container>
+                        <ng-container *ngIf="!orderId">##</ng-container>
+                    </h3>
+                    <div class="row mb-20">
+                        <div class="col-xl-3 col-lg-4 col-md-5 col-sm-6 col-12">
+                            <mat-form-field appearance="outline" class="w-100">
+                                <mat-label>Related Info</mat-label>
+                                <input formControlName="relatedInfo" matInput>
                             </mat-form-field>
-                          </td>
-                        </ng-container>
-                        
-                        <ng-container matColumnDef="quantity">
-                          <th mat-header-cell *matHeaderCellDef class="ew-210">Quality</th>
-                          <td mat-cell *matCellDef="let element; let i=index;" [formGroupName]="i"> 
-                            <div class="input-group mb-0 number_input">
-                              <div class="input-group-prepend">
-                                <button class="btn btn-outline-secondary" type="button" (click)="handleNumberControl(element, 'prev')" id="button-addon1">-</button>
-                              </div>
-                              <input type="text" class="form-control" formControlName="quantity" (change)="getOrderItemTotal(element)">
-                              <div class="input-group-append">
-                                <button class="btn btn-outline-secondary" (click)="handleNumberControl(element, 'next')" type="button" id="button-addon1">+</button>
-                              </div>
-                          </div>
-                          </td>
-                        </ng-container>
-                        
-                        <ng-container matColumnDef="price">
-                          <th mat-header-cell *matHeaderCellDef class="ew-150"> Price </th>
-                          <td mat-cell *matCellDef="let element; let i=index;" [formGroupName]="i"> {{(element.get('price').value)?element.get('price').value:"00.00"}} </td>
-                        </ng-container>
-                        
-                        <ng-container matColumnDef="pkg_charge">
-                          <th mat-header-cell *matHeaderCellDef class="ew-150"> Pck. Charge </th>
-                          <td mat-cell *matCellDef="let element; let i=index;" [formGroupName]="i"> {{ (element.get('packagingCharges').value)?element.get('packagingCharges').value:'00.00' }} </td>
-                        </ng-container>
-                      
-                        <ng-container matColumnDef="total">
-                          <th mat-header-cell *matHeaderCellDef class="ew-150"> Total </th>
-                          <td mat-cell *matCellDef="let element; let i=index;" [formGroupName]="i"> {{ element.get('totalPrice').value }} </td>
-                        </ng-container>
-                      
-                        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-                      </table>
+                        </div>
+                        <div class="col-xl-3 col-lg-4 col-md-5 col-sm-6 col-12">
+                            <mat-form-field appearance="outline" class="w-100">
+                                <mat-label>Customer Name</mat-label>
+                                <input formControlName="customerName" matInput>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-xl-3 col-lg-4 col-md-5 col-sm-6 col-12">
+                            <mat-form-field appearance="outline" class="w-100">
+                                <mat-label>Mobile Number</mat-label>
+                                <input formControlName="mobileNumber" matInput>
+                            </mat-form-field>
+                        </div>
                     </div>
-                  </div>
-                </div>
-                <div class="col-12 col-md-4" *ngIf="form.get('orderItemTotal').value > 0">
-                  <div class="total_wrapper">
-                    <table class="total_table table">
-                      <tr>
-                        <td>Total</td>
-                        <td class="price_td">{{ form.get('orderItemTotal').value }}</td>
-                      </tr>
-                      <!-- <tr>
+                    <div class="row">
+                        <div class="col-12 col-md-8">
+                            <div class="order_tableOuter">
+                                <h4 class="font-weight-600 mb-10 d-flex justify-content-between">
+                                    Items
+                                    <button mat-raised-button color="primary" type="button" (click)="addAnotherItem()">Add New</button>
+                                </h4>
+                                <div class="table_outerWrapper table-responsive">
+                                    <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z2 w-100" formArrayName="items">
+
+                                        <ng-container matColumnDef="product">
+                                            <th mat-header-cell *matHeaderCellDef class="ew-300">Product </th>
+                                            <td mat-cell *matCellDef="let element; let i=index;" [formGroupName]="i">
+                                                <mat-form-field appearance="outline" placeholder="Select Food" class="ew-200 my-10 field-pb-0">
+                                                    <mat-select formControlName="productId" (selectionChange)="onProductChange($event, element)">
+                                                        <mat-option *ngFor="let item of productList;" [value]="item.id">{{ item.productName }}</mat-option>
+                                                    </mat-select>
+                                                </mat-form-field>
+                                            </td>
+                                        </ng-container>
+
+                                        <ng-container matColumnDef="quantity">
+                                            <th mat-header-cell *matHeaderCellDef class="ew-210">Quality</th>
+                                            <td mat-cell *matCellDef="let element; let i=index;" [formGroupName]="i">
+                                                <div class="input-group mb-0 number_input">
+                                                    <div class="input-group-prepend">
+                                                        <button class="btn btn-outline-secondary" type="button" (click)="handleNumberControl(element, 'prev')" id="button-addon1">-</button>
+                                                    </div>
+                                                    <input type="text" class="form-control" formControlName="quantity" (change)="getOrderItemTotal(element)">
+                                                    <div class="input-group-append">
+                                                        <button class="btn btn-outline-secondary" (click)="handleNumberControl(element, 'next')" type="button" id="button-addon1">+</button>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </ng-container>
+
+                                        <ng-container matColumnDef="price">
+                                            <th mat-header-cell *matHeaderCellDef class="ew-150"> Price </th>
+                                            <td mat-cell *matCellDef="let element; let i=index;" [formGroupName]="i"> {{(element.get('price').value)?element.get('price').value:"00.00"}} </td>
+                                        </ng-container>
+
+                                        <ng-container matColumnDef="pkg_charge">
+                                            <th mat-header-cell *matHeaderCellDef class="ew-150"> Pck. Charge </th>
+                                            <td mat-cell *matCellDef="let element; let i=index;" [formGroupName]="i"> {{ (element.get('packagingCharges').value)?element.get('packagingCharges').value:'00.00' }} </td>
+                                        </ng-container>
+
+                                        <ng-container matColumnDef="total">
+                                            <th mat-header-cell *matHeaderCellDef class="ew-150"> Total </th>
+                                            <td mat-cell *matCellDef="let element; let i=index;" [formGroupName]="i"> {{ element.get('totalPrice').value }} </td>
+                                        </ng-container>
+
+                                        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                                        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-4 align-self-end" *ngIf="form.get('orderItemTotal').value > 0">
+                            <div class="total_wrapper">
+                                <table class="total_table table mb-0">
+                                    <tr>
+                                        <td>Total</td>
+                                        <td class="price_td">{{ form.get('orderItemTotal').value }}</td>
+                                    </tr>
+                                    <!-- <tr>
                         <td>Packaging Charges</td>
                         <td class="price_td">1000.00</td>
                       </tr> -->
-                      <tr *ngIf="selectedOrderType?.enableDeliverCharge">
-                        <td>Delivery Charges</td>
-                        <td class="price_td">
-                          <mat-form-field appearance="outline" class="ew-70">
-                            <input (keyup)="handleFinalPricing()" formControlName="deliverCharge" matInput>
-                          </mat-form-field>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>CGST(6%)</td>
-                        <td class="price_td">{{ form.get('cgst').value }}</td>
-                      </tr>
-                      <tr>
-                        <td>SGST(6%)</td>
-                        <td class="price_td">{{ form.get('sgst').value }}</td>
-                      </tr>
-                      <tr>
-                        <td>Grand Total</td>
-                        <td class="price_td">{{ form.get('orderAmount').value }}</td>
-                      </tr>
-                      <tr class="return_row">
-                        <td class="text-primary">
-                            <mat-form-field appearance="outline" class="ew-70">
-                              <mat-label>Received</mat-label>
-                              <input (keyup)="handleFinalPricing()" #calAmount matInput>
-                            </mat-form-field>
-                        </td>
-                        <td class="text-primary text-right"><small>Return: </small>{{ (calAmount.value)?(calAmount.value - form.get('orderAmount').value):00 }}</td>
-                      </tr>
-                    </table>
+                                    <tr *ngIf="selectedOrderType?.enableDeliverCharge">
+                                        <td>Delivery Charges</td>
+                                        <td class="price_td">
+                                            <mat-form-field appearance="outline" class="ew-70">
+                                                <input (keyup)="handleFinalPricing()" formControlName="deliverCharge" matInput>
+                                            </mat-form-field>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>CGST(6%)</td>
+                                        <td class="price_td">{{ form.get('cgst').value }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>SGST(6%)</td>
+                                        <td class="price_td">{{ form.get('sgst').value }}</td>
+                                    </tr>
+                                    <tr class="grandTotal">
+                                        <td>Grand Total</td>
+                                        <td class="price_td">{{ form.get('orderAmount').value }}</td>
+                                    </tr>
+                                    <tr class="return_row">
+                                        <td class="text-primary">
+                                            <mat-form-field appearance="outline" class="ew-100 pb-0">
+                                                <mat-label>Received</mat-label>
+                                                <input (keyup)="handleFinalPricing()" #calAmount matInput>
+                                            </mat-form-field>
+                                        </td>
+                                        <td class="text-primary text-right"><small>Return: </small>{{ (calAmount.value)?(calAmount.value - form.get('orderAmount').value):00 }}</td>
+                                    </tr>
+                                </table>
 
-                  </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-              </div>
-            </div>
-            <mat-action-row *ngIf="form.get('orderStatus').value != 'cancelled'">
-              <ng-container *ngIf="form.get('orderStatus').value != 'completed'">
-                <button mat-raised-button *ngIf="orderId" type="button" color="warn" (click)="saveOrder('cancel')">Cancel Order</button>
-                <button mat-raised-button type="button" color="accent" (click)="saveOrder('complete and print')">Complete & Print</button>
-                <button mat-raised-button type="button" color="primary" (click)="saveOrder('complete')">Complete</button>
-                <button mat-stroked-button *ngIf="orderId" type="button" color="primary" (click)="saveOrder('confirm')">Save</button>
-                <button mat-stroked-button *ngIf="!orderId" type="button" color="primary" (click)="saveOrder('confirm')">Confirm Order</button>
-              </ng-container>
-              <ng-container *ngIf="form.get('orderStatus').value == 'completed'">
-                <button mat-raised-button type="button" color="accent" (click)="printOrder()">Print</button>
-              </ng-container>
-            </mat-action-row>
-          </mat-expansion-panel>
-        
-          <!-- <mat-expansion-panel [expanded]="step === 2" (opened)="setStep(2)" hideToggle>
+                <mat-action-row *ngIf="form.get('orderStatus').value != 'cancelled'">
+                    <ng-container *ngIf="form.get('orderStatus').value != 'completed'">
+                        <button mat-raised-button *ngIf="orderId" type="button" color="warn" (click)="saveOrder('cancel')">Cancel Order</button>
+                        <button mat-raised-button type="button" color="accent" (click)="saveOrder('complete and print')">Complete & Print</button>
+                        <button mat-raised-button type="button" color="primary" (click)="saveOrder('complete')">Complete</button>
+                        <button mat-stroked-button *ngIf="orderId" type="button" color="primary" (click)="saveOrder('confirm')">Save</button>
+                        <button mat-stroked-button *ngIf="!orderId" type="button" color="primary" (click)="saveOrder('confirm')">Confirm Order</button>
+                    </ng-container>
+                    <ng-container *ngIf="form.get('orderStatus').value == 'completed'">
+                        <button mat-raised-button type="button" color="accent" (click)="printOrder()">Print</button>
+                    </ng-container>
+                </mat-action-row>
+            </mat-expansion-panel>
+
+            <!-- <mat-expansion-panel [expanded]="step === 2" (opened)="setStep(2)" hideToggle>
             <mat-expansion-panel-header>
               <mat-panel-title>
                 <h2 class="my-10">Review & Bill</h2>
@@ -262,8 +261,8 @@
               <button mat-raised-button color="primary" (click)="nextStep()">Bill</button>
             </mat-action-row>
           </mat-expansion-panel> -->
-        
-      </mat-accordion>
-        
-  </div>
+
+        </mat-accordion>
+
+    </div>
 </form>

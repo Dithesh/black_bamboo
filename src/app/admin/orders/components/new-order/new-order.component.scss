@@ -31,56 +31,60 @@
 //         }
 //     }
 // }
-
-.table_form_wrapper{
-    & .order_typeRow{
-        & .type_radio{
+.table_form_wrapper {
+    & .order_typeRow {
+        & .type_radio {
             display: inline-block;
             position: relative;
             overflow: hidden;
-            margin-right: 15px;
+            // margin-right: 15px;
             margin-bottom: 15px;
-            
-            & label{
+            & label {
                 width: 200px;
                 max-width: 100%;
                 padding: 10px;
                 display: block;
-                border-radius: 5px;
-                background-color: rgba($color-primary, 0.2);
-                border: 1px solid $color-primary;
-                color: #000;
+                // border-radius: 5px;
+                background-color: #5661a3;
+                border: 1px solid #5661a3;
+                color: #fff;
                 font-size: 1.4rem;
                 font-weight: 500;
                 text-align: center;
                 cursor: pointer;
                 text-transform: uppercase;
             }
-            & input{
+            & input {
                 position: absolute;
                 visibility: hidden;
                 opacity: 0;
-                &:checked + label{
+                &:checked+label {
                     color: #fff;
-                    background-color: $color-primary;
+                    border-color: #2c3691;
+                    background-color: #2c3691;
                 }
             }
         }
     }
 }
 
-.table_selectWrapper{
+.table_outerWrapper {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.table_selectWrapper {
     display: flex;
     align-items: center;
     margin: 0px -10px;
     flex-wrap: wrap;
-    & .table_col{
-        flex:0 0 16.666%;
+    & .table_col {
+        flex: 0 0 16.666%;
         max-width: 16.666%;
         padding: 0px 10px;
         height: 90px;
         min-width: 150px;
-        & .table_circle{
+        & .table_circle {
             display: block;
             position: absolute;
             z-index: 2;
@@ -98,46 +102,41 @@
             border-radius: 5px;
             cursor: pointer;
         }
-        & .table_innerBox{
+        & .table_innerBox {
             display: flex;
-            
-            & .table_seat_checkBox{
+            & .table_seat_checkBox {
                 position: relative;
                 overflow: hidden;
                 width: 100%;
-                
-                & label{
+                & label {
                     width: 15px;
                     height: 100%;
                     background-color: $color-success;
                     cursor: pointer;
                     margin-bottom: 0px;
-
                     &.pointer-none {
                         background-color: rgba($color-warning, 0.6) !important;
                     }
                 }
-                & input{
+                & input {
                     visibility: hidden;
                     position: absolute;
                     opacity: 0;
-
-
-                    &:checked + label{
+                    &:checked+label {
                         background-color: $color-warning;
                     }
                 }
-                &.vertical{
+                &.vertical {
                     margin: 20px 0px;
                 }
-                &.horizontal{
-                    & label{
+                &.horizontal {
+                    & label {
                         height: 15px;
                         width: 100%;
                     }
                 }
             }
-            & .radio_outer{
+            & .radio_outer {
                 -ms-flex-preferred-size: 0;
                 flex-basis: 0;
                 -ms-flex-positive: 1;
@@ -146,25 +145,18 @@
                 display: flex;
                 flex-direction: column;
                 justify-content: space-between;
-                .table_seat_checkBox{
+                .table_seat_checkBox {
                     flex: 0 0 15px;
                 }
             }
         }
-
-        
-        &.reserved{
-            
-            & .table_circle{
+        &.reserved {
+            & .table_circle {
                 background-color: $color-accent;
             }
-
-            
-            & .table_innerBox{
-                
-                & .table_seat_checkBox{
-                    
-                    & label{
+            & .table_innerBox {
+                & .table_seat_checkBox {
+                    & label {
                         background-color: $color-accent;
                     }
                 }
@@ -173,25 +165,35 @@
     }
 }
 
-.table_outerWrapper{
-    & table{
+.table_outerWrapper {
+    & table {
         min-width: 500px;
     }
 }
-.order_detailWrapper{
-    & .total_wrapper{
-        & .total_table{
+
+.order_detailWrapper {
+    & .total_wrapper {
+        & .total_table {
             // margin-right: 30px;
             // margin-left: 30px;
-            & tr{
-                & td{
+            border: 1px solid #ddd;
+            & tr {
+                &.grandTotal {
+                    background-color: #e9eaf3;
+                }
+                & td {
                     font-weight: 500;
                     border: none;
                     vertical-align: middle;
                     font-size: 1.4rem;
-                    &.price_td{
+                    &.price_td {
                         text-align: right;
                         font-size: 1.6rem;
+                    }
+                }
+                &:first-child {
+                    & td {
+                        padding-top: 1rem;
                     }
                 }
             }
@@ -199,25 +201,26 @@
     }
 }
 
-::ng-deep{
-    .searchBox{
-        & .mat-form-field-wrapper{
+::ng-deep {
+    .searchBox {
+        & .mat-form-field-wrapper {
             padding-bottom: 0px;
             margin: 0px;
         }
     }
 }
-.ratting_wrapper{
-    & .ratting_radioOuter{
-        & .radio_box{
+
+.ratting_wrapper {
+    & .ratting_radioOuter {
+        & .radio_box {
             display: inline-block;
             position: relative;
             margin-right: 5px;
-            & label{
+            & label {
                 display: inline-block;
                 width: 100px;
                 text-align: center;
-                & img{
+                & img {
                     max-width: 100%;
                     -webkit-transition: .3s ease-in-out;
                     -moz-transition: .3s ease-in-out;
@@ -226,12 +229,12 @@
                     filter: grayscale(100%);
                 }
             }
-            & input{
+            & input {
                 position: absolute;
                 visibility: hidden;
                 opacity: 0;
-                &:checked + label{
-                    & img{
+                &:checked+label {
+                    & img {
                         filter: grayscale(0);
                     }
                 }
@@ -239,21 +242,14 @@
         }
     }
 }
-.ratting_wrapper{
-    & h4{
+
+.ratting_wrapper {
+    & h4 {
         font-size: 16px;
         font-weight: 500;
         margin-bottom: 10px;
     }
-    & p{
+    & p {
         font-size: 20px;
-    }
-}
-
-::ng-deep{
-    .order_typeRow{
-        & .owl-nav{
-            display: none;
-        }
     }
 }
