@@ -10,6 +10,7 @@ export class AcLayoutComponent implements OnInit {
 
   isOpened=false;
   @Input('sideBarDisable') sideBarDisable = false;
+  @Input('sideMenu') sideMenu = [];
 
   constructor(public _layout: MasterLayoutService) { }
 
