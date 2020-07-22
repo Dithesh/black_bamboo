@@ -119,7 +119,7 @@ h3.page_title {
     & .header_title{
         margin-bottom: 0px;
         font-weight: 500;
-        font-size: 2.2rem;
+        font-size: 1.8rem;
     }
 }
 
@@ -327,6 +327,89 @@ mat-form-field{
                 }
             }
 
+        }
+    }
+}
+
+.mat-raised-button.sm_btn {
+    line-height: 28px;
+}
+.mat-icon-button.sm_btn {    
+    width: 18px;
+    height: 18px;
+    line-height: 18px;
+
+    & .mat-icon {
+        width: 14px;
+        height: 14px;
+        font-size: 14px;
+        line-height: 14px;
+    }
+}
+
+.edit_table_row {
+    background-color: #fff;
+}
+
+table {
+    & tr {
+        &.read-only {
+            & td {
+                &:not(.action) {
+                    pointer-events: none;
+                }
+            }
+        }
+        & .inline_edit {
+            position: relative;
+            min-width: 50px;
+            & input, 
+            & select {
+                width: 100%;
+                height: 100%;
+                border: none;
+                background-color: transparent;
+                -webkit-appearance: none;
+                -moz-appearance: none;
+            
+                &:focus {
+                    outline: none;
+                }
+            }
+        
+            & select::-ms-expand {
+                display: none;
+            }
+        
+            & .error_spin {
+                display: none;
+            }
+            &.error {
+                & .error_spin {
+                    position: absolute;
+                    right: 5px;
+                    top: 50%;
+                    transform: translateY(-50%);
+                    cursor: pointer;
+                    display: block;
+                    // width: 20px;
+                    // height: 20px;
+                    // display: flex;
+                    // align-items: center;
+                    // justify-content: center;
+                    // background-color: $color-warning;
+                    // border-radius: 50%;
+                    // color: #ffffff;
+                    // font-size: 12px;
+        
+                    & .mat-icon {
+                        width: 14px;
+                        height: 14px;
+                        font-size: 14px;
+                        color: $color-warning;
+                    }
+                }
+            }
         }
     }
 }

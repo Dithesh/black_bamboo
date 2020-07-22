@@ -107,6 +107,14 @@ $color-warning:#bd2227;
                                         display: none;
                                     }
                                 }
+
+                                &.subOpen {
+                                    border-left: 4px solid $color-primary !important;
+                                }
+
+                                & .submenu-Wrapper {
+                                    display: none !important;
+                                }
                             }
                         }
                     }

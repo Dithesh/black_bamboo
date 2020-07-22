@@ -1,1 +1,104 @@
-<p>inventory works!</p>
+<div class="page_header d-flex mb-4">
+    <h2 class="header_title">Inventories</h2>
+    <div class="ml-auto">
+        <button mat-raised-button color="primary" type="button" class="sm_btn" (click)="addNewInventory()">Add New</button>
+    </div>
+</div>
+
+<div class="page_body" [formGroup]="form">
+    <div class="table-responsive">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <td>Name</td>
+                    <td  class="ew-70">Unit</td>
+                    <td  class="ew-80">Price</td>
+                    <td class="ew-150">Description</td>
+                    <td class="ew-60">Status?</td>
+                    <td class="ew-70">Action</td>
+                </tr>
+            </thead>
+            <tbody>
+                <ng-container formArrayName="newInventories">
+                    <tr *ngFor="let item of newInventories['controls'];let i=index;" [formGroupName]="i" class="edit_table_row" [class.read-only]="i != editIndex">
+                        <td class="inline_edit" [class.error]="!item.get('itemName').value">
+                            <input type="text" formControlName="itemName">
+                            <div class="error_spin">
+                                <mat-icon>bug_report</mat-icon>
+                            </div>
+                        </td>
+                        <td class="inline_edit" [class.error]="!item.get('unitId').value">
+                            <select formControlName="unitId">
+                                <option *ngFor="let item of unitList;" [value]="item.id">{{ item.unitLabel }}</option>
+                            </select>
+                            <div class="error_spin">
+                                <mat-icon>bug_report</mat-icon>
+                            </div>
+                        </td>
+                        <td class="inline_edit" [class.error]="!item.get('pricePerUnit').value">
+                            <input type="text" formControlName="pricePerUnit">
+                            <div class="error_spin">
+                                <mat-icon>bug_report</mat-icon>
+                            </div>
+                        </td>
+                        <td class="inline_edit">
+                            <input type="text" formControlName="description">
+                        </td>
+                        <td class="inline_edit">
+                            <mat-slide-toggle formControlName="isActive"></mat-slide-toggle>
+                        </td>
+                        <td>
+                            <button mat-icon-button color="primary" type="button" class="sm_btn mr-2" (click)="saveInventory(item, i)">
+                                <mat-icon>save</mat-icon>     
+                            </button>
+                            <button mat-icon-button color="warn" type="button" class="sm_btn" (click)="removeNewInventory(i)">
+                                <mat-icon>clear</mat-icon>     
+                            </button>
+                        </td>
+                    </tr>
+                </ng-container>
+                <ng-container formArrayName="inventories">
+                    <tr *ngFor="let item of inventories['controls'];let i=index;" [formGroupName]="i" [class.edit_table_row]="i == editIndex"  [class.read-only]="i != editIndex">
+                        <td class="inline_edit" [class.error]="!item.get('itemName').value">
+                            <input type="text" formControlName="itemName"  [readonly]="i != editIndex">
+                            <div class="error_spin">
+                                <mat-icon>bug_report</mat-icon>
+                            </div>
+                        </td>
+                        <td class="inline_edit" [class.error]="!item.get('unitId').value">
+                            <select formControlName="unitId">
+                                <option value="1">M2</option>
+                            </select>
+                            <div class="error_spin">
+                                <mat-icon>bug_report</mat-icon>
+                            </div>
+                        </td>
+                        <td class="inline_edit">
+                            <input type="text" formControlName="pricePerUnit"  [readonly]="i != editIndex">
+                        </td>
+                        <td class="inline_edit">
+                            <input type="text" formControlName="description"  [readonly]="i != editIndex">
+                        </td>
+                        <td class="inline_edit">
+                            <mat-slide-toggle formControlName="isActive" ></mat-slide-toggle>
+                        </td>
+                        <td class="action">
+                            <button mat-icon-button *ngIf="i != editIndex" color="primary" type="button" class="sm_btn mr-2" (click)="onEditClick(i)">
+                                <mat-icon>edit</mat-icon>     
+                            </button>
+                            <button mat-icon-button *ngIf="i == editIndex" color="primary" type="button" class="sm_btn mr-2" (click)="saveInventory(item)">
+                                <mat-icon>save</mat-icon>     
+                            </button>
+                            <button mat-icon-button color="warn" *ngIf="i == editIndex" type="button" class="sm_btn" (click)="editIndex=undefined;">
+                                <mat-icon>clear</mat-icon>     
+                            </button>
+                            <button mat-icon-button color="warn" *ngIf="i != editIndex" type="button" class="sm_btn" (click)="deleteInventory(i)">
+                                <mat-icon>delete</mat-icon>     
+                            </button>
+                        </td>
+                    </tr>
+                </ng-container>
+            </tbody>
+        </table>
+    </div>
+</div>

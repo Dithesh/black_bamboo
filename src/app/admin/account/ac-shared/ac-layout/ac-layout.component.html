@@ -6,7 +6,7 @@
                 <mat-icon>menu</mat-icon>
             </button>
         </div>
-        <ul class="inner_sub_menu mt-10">
+        <ul class="inner_sub_menu">
             <ng-container *ngFor="let item of sideMenu;">
                 <li><a href="javascript:;"  matRipple [matRippleUnbounded]="false" [routerLink]='item.link' routerLinkActive="active">{{ item.key }}</a></li>
             </ng-container>
