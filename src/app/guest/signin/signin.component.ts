@@ -25,10 +25,11 @@ export class SigninComponent implements OnInit {
     if(this.form.invalid)return;
     this._serv.endpoint="auth/signin";
     this._serv.post(this.form.value).subscribe(response => {
-      console.log(response);
       localStorage.setItem('lock_token', response['token'])
-      // localStorage.setItem('refr_token', response['refresh'])
       this.router.navigateByUrl('/admin/dashboard')
+      this._serv.showMessage("Logged in successfully.", 'success');
+    }, ({error}) => {
+      this._serv.showMessage(error['msg'], 'error');
     })
   }
 

@@ -66,9 +66,9 @@
                 <input type="text"  formControlName="description" matInput>
             </mat-form-field>
             
-            <mat-form-field  appearance="outline" class="w-100 pb-0 mb-15">
+            <mat-form-field  appearance="outline" class="w-100 pb-0 mb-15" *ngIf="userData?.roles == 'Super Admin'">
                 <mat-label>Branch</mat-label>
-                <mat-select matNativeControl formControlName="branch_id">
+                <mat-select matNativeControl formControlName="branch_id" [required]="userData?.roles == 'Super Admin'">
                     <mat-option *ngFor="let item of branchList;" [value]="item.id">{{ item.branchTitle }}</mat-option>
                 </mat-select>
             </mat-form-field>

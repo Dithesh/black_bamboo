@@ -5,6 +5,7 @@
 export const environment = {
   production: false,
   apiUrl: "http://127.0.0.1:8000/api/",
+  domain: "http://127.0.0.1:8000",
   // apiUrl: "http://godreamt.com/resto-app/public/api/"
 };
 

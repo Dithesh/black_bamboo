@@ -3,6 +3,7 @@ import { FormGroup, FormBuilder, FormArray, Validators } from '@angular/forms';
 import { DataService } from 'src/app/shared/services/data.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmPopupComponent } from 'src/app/shared/components/confirm-popup/confirm-popup.component';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-inventory',
@@ -16,24 +17,24 @@ export class InventoryComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private _serv: DataService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private route:ActivatedRoute
   ) { 
     this.form = this.fb.group({
       inventories: this.fb.array([]),
       newInventories: this.fb.array([]),
     })
+    this.route.data.subscribe((response:any) => {
+      this.getAllUnits(response.units);
+    })
   }
 
   ngOnInit(): void {
-    this.getAllUnits();
     this.getAllInventories();
   }
 
-  getAllUnits() {
-    this._serv.endpoint="account-manager/unit";
-    this._serv.get().subscribe((response:any[]) => {
-      this.unitList = response;
-    })
+  getAllUnits(list) {
+    this.unitList = list;
   }
 
   get inventories() {

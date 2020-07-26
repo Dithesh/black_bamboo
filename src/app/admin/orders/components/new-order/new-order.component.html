@@ -1,4 +1,4 @@
-<form [formGroup]="form">
+<form [formGroup]="form" class="transaction_form">
     <div class="page_header d-flex mb-4">
         <h2 class="header_title">New Order</h2>
     </div>
@@ -100,6 +100,14 @@
                                 <input formControlName="mobileNumber" matInput>
                             </mat-form-field>
                         </div>
+                        <div class="col-xl-3 col-lg-4 col-md-5 col-sm-6 col-12" *ngIf="userData?.roles == 'Super Admin'">
+                            <mat-form-field appearance="outline" class="w-100 pb-0">
+                                <mat-label>Branch</mat-label>
+                                <mat-select matNativeControl formControlName="branch_id"  [required]="userData?.roles == 'Super Admin'">
+                                    <mat-option *ngFor="let item of branchList;" [value]="item.id">{{ item.branchTitle }}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
                     </div>
                     <div class="row">
                         <div class="col-12 col-md-8">
@@ -159,11 +167,16 @@
                             </div>
                         </div>
                         <div class="col-12 col-md-4 align-self-end" *ngIf="form.get('orderItemTotal').value > 0">
-                            <div class="total_wrapper">
+                            <div class="table-responsive total_wrapper">
                                 <table class="total_table table mb-0">
                                     <tr>
                                         <td>Total</td>
-                                        <td class="price_td">{{ form.get('orderItemTotal').value }}</td>
+                                        <td class="price_td">
+                                            <mat-form-field class="ew-80 inline-input">
+                                                <input matInput formControlName="orderItemTotal" readonly matInputCommified format="currency">
+                                            </mat-form-field>
+                                            <!-- {{ form.get('orderItemTotal').value }} -->
+                                        </td>
                                     </tr>
                                     <!-- <tr>
                         <td>Packaging Charges</td>
@@ -172,22 +185,37 @@
                                     <tr *ngIf="selectedOrderType?.enableDeliverCharge">
                                         <td>Delivery Charges</td>
                                         <td class="price_td">
-                                            <mat-form-field appearance="outline" class="ew-70">
-                                                <input (keyup)="handleFinalPricing()" formControlName="deliverCharge" matInput>
+                                            <mat-form-field class="ew-80 inline-input">
+                                                <input matInput (keyup)="handleFinalPricing()" formControlName="deliverCharge" matInputCommified format="currency">
                                             </mat-form-field>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>CGST(6%)</td>
-                                        <td class="price_td">{{ form.get('cgst').value }}</td>
+                                        <td class="price_td">
+                                            <mat-form-field class="ew-80 inline-input">
+                                                <input matInput formControlName="cgst" readonly matInputCommified format="currency">
+                                            </mat-form-field>
+                                            <!-- {{ form.get('cgst').value }} -->
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td>SGST(6%)</td>
-                                        <td class="price_td">{{ form.get('sgst').value }}</td>
+                                        <td class="price_td">
+                                            <mat-form-field class="ew-80 inline-input">
+                                                <input matInput formControlName="sgst" readonly matInputCommified format="currency">
+                                            </mat-form-field>
+                                            <!-- {{ form.get('sgst').value }} -->
+                                        </td>
                                     </tr>
                                     <tr class="grandTotal">
                                         <td>Grand Total</td>
-                                        <td class="price_td">{{ form.get('orderAmount').value }}</td>
+                                        <td class="price_td">
+                                            <mat-form-field class="ew-80 inline-input">
+                                                <input matInput formControlName="orderAmount" readonly matInputCommified format="currency">
+                                            </mat-form-field>
+                                            <!-- {{ form.get('orderAmount').value }} -->
+                                        </td>
                                     </tr>
                                     <tr class="return_row">
                                         <td class="text-primary">
@@ -196,7 +224,15 @@
                                                 <input (keyup)="handleFinalPricing()" #calAmount matInput>
                                             </mat-form-field>
                                         </td>
-                                        <td class="text-primary text-right"><small>Return: </small>{{ (calAmount.value)?(calAmount.value - form.get('orderAmount').value):00 }}</td>
+                                        <td class="price_td">
+                                            
+                                            <mat-form-field class="ew-80 inline-input">
+                                                <!-- <mat-label>Return</mat-label> -->
+                                                <input matInput [value]="(calAmount.value)?(calAmount.value - form.get('orderAmount').value):00" readonly matInputCommified format="currency">
+                                            </mat-form-field>
+                                            <!-- <small>Return: </small>
+                                            {{ (calAmount.value)?(calAmount.value - form.get('orderAmount').value):00 }} -->
+                                        </td>
                                     </tr>
                                 </table>
 

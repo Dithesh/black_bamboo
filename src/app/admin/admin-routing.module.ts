@@ -25,6 +25,14 @@ const routes: Routes = [
         loadChildren: () => import('./products/products.module').then(mod => mod.ProductsModule)
       },
       {
+        path:"tables",
+        loadChildren: () => import('./table-manager/table-manager.module').then(mod => mod.TableManagerModule)
+      },
+      {
+        path:"reports",
+        loadChildren: () => import('./report-manager/report-manager.module').then(mod => mod.ReportManagerModule)
+      },
+      {
         path:"user",
         loadChildren: () => import('./user/user.module').then(mod => mod.UserModule)
       },

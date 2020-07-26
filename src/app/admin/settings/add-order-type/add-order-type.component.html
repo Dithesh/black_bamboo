@@ -18,10 +18,10 @@
                     <input matInput formControlName="description" type="text">
                 </mat-form-field>
             </div>
-            <div class="col-lg-4 col-md-6 col-sm-6 col-12">
+            <div class="col-lg-4 col-md-6 col-sm-6 col-12"  *ngIf="userData?.roles == 'Super Admin'">
                 <mat-form-field appearance="outline" class="w-100 pb-0">
                     <mat-label>Branch</mat-label>
-                    <mat-select matNativeControl formControlName="branch_id">
+                    <mat-select matNativeControl formControlName="branch_id"  [required]="userData?.roles == 'Super Admin'">
                         <mat-option *ngFor="let item of branchList;" [value]="item.id">{{ item.branchTitle }}</mat-option>
                     </mat-select>
                 </mat-form-field>

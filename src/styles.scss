@@ -413,3 +413,22 @@ table {
         }
     }
 }
+
+
+.transaction_form {
+    position: relative;
+    width: 100%;
+    min-height: 300px;
+    background-color: rgba($color-primary, 0.1);
+    padding: 20px;
+
+    & .table-responsive {
+        padding-bottom: 15px;
+        & .inline-input {
+            & .mat-form-field-wrapper {
+                margin-bottom: -1.25em;
+            }
+        }
+    }
+
+}

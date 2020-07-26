@@ -20,6 +20,7 @@ export class AddOrderTypeComponent implements OnInit {
   orderTypeId;
 
   @ViewChild(MatSort, {static: true}) sort: MatSort;
+  userData: any;
   constructor(
     private _serv: DataService,
     private fb: FormBuilder,
@@ -45,6 +46,7 @@ export class AddOrderTypeComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.userData = this._serv.getUserData();
     // this.dataSource.sort = this.sort;
     this.getAllBranches();
   }

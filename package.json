@@ -22,6 +22,8 @@
     "@angular/platform-browser": "~10.0.0",
     "@angular/platform-browser-dynamic": "~10.0.0",
     "@angular/router": "~10.0.0",
+    "@auth0/angular-jwt": "^5.0.1",
+    "@rxweb/reactive-form-validators": "^2.0.0",
     "bootstrap": "^4.4.1",
     "mix-scss": "^1.0.9",
     "moment": "^2.26.0",

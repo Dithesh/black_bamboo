@@ -9,6 +9,7 @@ import { FormGroup, FormBuilder, FormArray, AbstractControl } from '@angular/for
 import { DataService } from 'src/app/shared/services/data.service';
 import { BehaviorSubject } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-add-product',
@@ -16,11 +17,14 @@ import { ActivatedRoute, Router } from '@angular/router';
   styleUrls: ['./add-product.component.scss']
 })
 export class AddProductComponent implements OnInit {
+  imageSrc="url(\'/assets/images/food.jpg\')";
+  url = environment.domain;
   form: FormGroup;
   displayedColumns: string[] = ['ordertype', 'price', 'packagingCharges'];
   dataSource = new BehaviorSubject<AbstractControl[]>([]);branchList: any[];
   productId: any;
   categoryList: any[];
+  userData: any;
 ;
   @ViewChild(MatSort, {static: true}) sort: MatSort;
   orderTypes: any[];
@@ -39,10 +43,11 @@ export class AddProductComponent implements OnInit {
         description: [''],
         categories: [''],
         featuredImage: [''],
+        image: [''],
         price: [''],
         taxPercent: [''],
         packagingCharges: [''],
-        isActive: [false],
+        isActive: [true],
         branch_id: [''],
         isOrderTypePricing: [''],
         isVeg: [''],
@@ -51,6 +56,7 @@ export class AddProductComponent implements OnInit {
     }
 
   ngOnInit(): void {
+    this.userData = this._serv.getUserData();
     if(this.productId) {
       this.getProductDetails();
     }else {
@@ -62,10 +68,14 @@ export class AddProductComponent implements OnInit {
 
   getProductDetails() {
     this._serv.endpoint = "order-manager/product/"+this.productId;
-    this._serv.get().subscribe(response => {
-      let data = response as any;
+    this._serv.get().subscribe((data:any) => {
       data.categories = data.categories.map(x => x.id);
       this.form.patchValue(data);
+      
+      if(this._serv.notNull(data.featuredImage)){
+        
+        this.imageSrc = "url(\'"+ this.url + data.featuredImage +"\')"
+      }
       this.getOrderTypes(data);
       // data.tables.forEach(elem => {
       //   this.tables.push(this.addTable(elem));
@@ -144,6 +154,26 @@ export class AddProductComponent implements OnInit {
         this.form.get('branch_id').setValue(this.branchList[0].id);
       }
     })
+  }
+  
+
+  handleFileInput(event) {
+    var file = event.dataTransfer ? event.dataTransfer.files[0] : event.target.files[0];
+    var pattern = /image-*/;
+    var reader = new FileReader();
+    if (!file.type.match(pattern)) {
+      alert('invalid format');
+      return;
+    }
+    reader.onload = this._handleReaderLoaded.bind(this);
+    reader.readAsDataURL(file);
+  }
+
+  _handleReaderLoaded(file) {
+    let reader = file.target;
+    let imageSrc = reader.result;
+    this.form.get('image').setValue(imageSrc)
+    this.imageSrc = "url(\'"+imageSrc+"\')";
   }
 
 }

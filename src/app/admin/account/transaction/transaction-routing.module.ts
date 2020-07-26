@@ -9,6 +9,8 @@ import { PaymentTransactionComponent } from './payment-transaction/payment-trans
 import { PaymentTransactionHistoryComponent } from './payment-transaction-history/payment-transaction-history.component';
 import { ReceiptTransactionComponent } from './receipt-transaction/receipt-transaction.component';
 import { ReceiptTransactionHistoryComponent } from './receipt-transaction-history/receipt-transaction-history.component';
+import { LedgerAccountResolver } from '../ac-shared/resolver/ledger-account.resolver';
+import { InventoryResolver } from '../ac-shared/resolver/inventory.resolver';
 
 
 
@@ -19,7 +21,11 @@ const routes: Routes = [
     children: [
       {
         path: "purchase-transaction",
-        component: PurchaseTransactionComponent
+        component: PurchaseTransactionComponent,
+        resolve: {
+          accounts: LedgerAccountResolver,
+          items: InventoryResolver
+        }
       },
       {
         path: "purchase-transaction/:id",

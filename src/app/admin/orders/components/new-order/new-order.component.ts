@@ -31,7 +31,7 @@ export class NewOrderComponent implements OnInit {
   @ViewChild(MatSort, {static: true}) sort: MatSort;
 
 
-  step = 0;
+  step = 1;
   rating;
   
   // customOptions: OwlOptions = {
@@ -74,6 +74,7 @@ export class NewOrderComponent implements OnInit {
   displayedColumns: string[] = ['product', 'quantity', 'price', 'total'];
   dataSource = new BehaviorSubject<AbstractControl[]>([]);branchList: any[];
   blockForms: boolean;
+  userData: any;
 
   constructor(
     private fb: FormBuilder,
@@ -105,14 +106,26 @@ export class NewOrderComponent implements OnInit {
  
 
   ngOnInit() {
+    this.userData = this._serv.getUserData();
     this.getOrderTypes();
     this.getAllProducts();
+    this.getAllBranches();
     if(this.orderId) {
       this.getOrderDetail();
     }else {
       this.items.push(this.addOrderItem());
       this.dataSource.next(this.items.controls);
     }
+  }
+
+  getAllBranches() {
+    this._serv.endpoint = "order-manager/branch?fields=id,branchTitle";
+    this._serv.get().subscribe(response => {
+      this.branchList = response as any[];
+      if(this.orderId == undefined && this.branchList.length > 0) {
+        this.form.get('branch_id').setValue(this.branchList[0].id);
+      }
+    })
   }
 
   getOrderDetail() {
@@ -384,7 +397,10 @@ export class NewOrderComponent implements OnInit {
       api = this._serv.put(orderData);
     }
     api.subscribe(response => {
-
+      this._serv.showMessage("Order saved successfully", 'success');
+      this.router.navigateByUrl('/admin/order');
+    }, ({error}) => {
+      this._serv.showMessage(error['msg'], 'error');
     })
 
   }

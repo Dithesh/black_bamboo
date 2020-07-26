@@ -8,7 +8,7 @@ import { MatTableModule } from '@angular/material/table';
 import {MatPaginatorModule} from '@angular/material/paginator';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import { MatRippleModule, MatNativeDateModule } from '@angular/material/core';
+import { MatRippleModule, MatNativeDateModule, ErrorStateMatcher, ShowOnDirtyErrorStateMatcher } from '@angular/material/core';
 import {MatSortModule} from '@angular/material/sort';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatMenuModule} from '@angular/material/menu';
@@ -24,9 +24,12 @@ import { ConfirmPopupComponent } from './components/confirm-popup/confirm-popup.
 import {MatBadgeModule} from '@angular/material/badge';
 import {MatExpansionModule} from '@angular/material/expansion';
 import { CarouselModule } from 'ngx-owl-carousel-o';
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
+import { NumberFormatterDirective } from './services/number-formater.directive';
+import {  RxReactiveFormsModule } from "@rxweb/reactive-form-validators"
 
 @NgModule({
-  declarations: [DatexPipe, SnackbarComponent, ConfirmPopupComponent],
+  declarations: [DatexPipe, SnackbarComponent, ConfirmPopupComponent, NumberFormatterDirective],
   imports: [
     CommonModule,
     MatButtonModule,
@@ -56,10 +59,13 @@ import { CarouselModule } from 'ngx-owl-carousel-o';
     MatBadgeModule,
     MatExpansionModule,
     CarouselModule,
-
+    MatAutocompleteModule,
+    NumberFormatterDirective,
+    RxReactiveFormsModule
   ],
   providers: [
     MatButtonModule,
+    {provide: ErrorStateMatcher, useClass: ShowOnDirtyErrorStateMatcher}
   ]
 })
 export class SharedModule { }

@@ -4,6 +4,7 @@ import { MasterComponent } from './master.component';
 import { LedgerAccountsComponent } from './ledger-accounts/ledger-accounts.component';
 import { InventoryComponent } from './inventory/inventory.component';
 import { UnitsComponent } from './units/units.component';
+import { UnitResolver } from '../ac-shared/resolver/unit.resolver';
 
 
 const routes: Routes = [
@@ -17,7 +18,10 @@ const routes: Routes = [
       },
       {
         path: "inventory",
-        component: InventoryComponent
+        component: InventoryComponent,
+        resolve: {
+          units: UnitResolver
+        }
       },
       {
         path: "unit",

@@ -20,7 +20,7 @@
             </thead>
             <tbody>
                 <ng-container formArrayName="newInventories">
-                    <tr *ngFor="let item of newInventories['controls'];let i=index;" [formGroupName]="i" class="edit_table_row" [class.read-only]="i != editIndex">
+                    <tr *ngFor="let item of newInventories['controls'];let i=index;" [formGroupName]="i" class="edit_table_row">
                         <td class="inline_edit" [class.error]="!item.get('itemName').value">
                             <input type="text" formControlName="itemName">
                             <div class="error_spin">
@@ -47,7 +47,7 @@
                         <td class="inline_edit">
                             <mat-slide-toggle formControlName="isActive"></mat-slide-toggle>
                         </td>
-                        <td>
+                        <td class="action">
                             <button mat-icon-button color="primary" type="button" class="sm_btn mr-2" (click)="saveInventory(item, i)">
                                 <mat-icon>save</mat-icon>     
                             </button>
@@ -67,7 +67,7 @@
                         </td>
                         <td class="inline_edit" [class.error]="!item.get('unitId').value">
                             <select formControlName="unitId">
-                                <option value="1">M2</option>
+                                <option *ngFor="let item of unitList;" [value]="item.id">{{ item.unitLabel }}</option>
                             </select>
                             <div class="error_spin">
                                 <mat-icon>bug_report</mat-icon>

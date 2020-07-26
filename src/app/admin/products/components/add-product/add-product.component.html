@@ -9,8 +9,8 @@
         <div class="row">
             <div class="col-sm-auto">
                 <div class="product_imrBox">
-                    <input type="file" name="" id="prodctImg">
-                    <label for="prodctImg" title="Change Image"></label>
+                    <input type="file" name="" id="prodctImg"  (change)="handleFileInput($event)">
+                    <label for="prodctImg" title="Change Image"  [ngStyle]="{'background-image': imageSrc}"></label>
                 </div>
             </div>
             <div class="col-sm 12 col-md">
@@ -20,13 +20,13 @@
                             <div class="col-2">
                                 <mat-form-field appearance="outline" class="w-100">
                                     <mat-label>No.</mat-label>
-                                    <input matInput formControlName="productNumber" type="text">
+                                    <input matInput required formControlName="productNumber" type="text">
                                 </mat-form-field>
                             </div>
                             <div class="col">
                                 <mat-form-field appearance="outline" class="w-100">
                                     <mat-label>Product Name</mat-label>
-                                    <input matInput formControlName="productName" type="text">
+                                    <input matInput required formControlName="productName" type="text">
                                 </mat-form-field>
                             </div>
                         </div>
@@ -40,10 +40,10 @@
                             </mat-select>
                         </mat-form-field>
                     </div>
-                    <div class="col-12 col-md-6">
+                    <div class="col-12 col-md-6" *ngIf="userData?.roles == 'Super Admin'">
                         <mat-form-field appearance="outline" class="w-100">
                             <mat-label>Branch</mat-label>
-                            <mat-select matNativeControl formControlName="branch_id">
+                            <mat-select matNativeControl formControlName="branch_id" [required]="userData?.roles == 'Super Admin'">
                                 <mat-option *ngFor="let item of branchList;" [value]="item.id">{{ item.branchTitle }}</mat-option>
                             </mat-select>
                         </mat-form-field>

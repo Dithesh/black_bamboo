@@ -20,6 +20,7 @@ export class CategoriesSettingComponent implements OnInit, AfterViewInit {
   form:FormGroup;
   filterForm:FormGroup;
   branchList: any[];
+  userData;
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -43,6 +44,7 @@ export class CategoriesSettingComponent implements OnInit, AfterViewInit {
    }
 
   ngOnInit(): void {
+    this.userData = this._serv.getUserData();
     this.getAllCategories();
     this.getAllBranches();
   }

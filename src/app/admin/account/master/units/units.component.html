@@ -27,7 +27,7 @@
                         <td class="inline_edit">
                             <input type="text" formControlName="description">
                         </td>
-                        <td>
+                        <td class="action">
                             <button mat-icon-button color="primary" type="button" class="sm_btn mr-2" (click)="saveUnit(item, i)">
                                 <mat-icon>save</mat-icon>     
                             </button>
@@ -48,7 +48,7 @@
                         <td class="inline_edit error">
                             <input type="text" formControlName="description" [readonly]="i != editIndex">
                         </td>
-                        <td>
+                        <td class="action">
                             <button mat-icon-button *ngIf="i != editIndex" color="primary" type="button" class="sm_btn mr-2" (click)="onEditClick(i)">
                                 <mat-icon>edit</mat-icon>     
                             </button>

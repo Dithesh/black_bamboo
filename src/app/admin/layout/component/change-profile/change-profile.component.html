@@ -1,12 +1,14 @@
-<div class="popup_formWrapper">
-    <h3>Change Profile Image</h3>
-    <div class="text-center">
-        <div class="profile_imrBox">
-            <input type="file" name="" id="prodctImg">
-            <label for="prodctImg" title="Change Image"></label>
+<form (submit)="saveImage($event)">
+    <div class="popup_formWrapper">
+        <h3>Change Profile Image</h3>
+        <div class="text-center">
+            <div class="profile_imrBox">
+                <input type="file" name="" id="prodctImg" (change)="handleFileInput($event)">
+                <label for="prodctImg" title="Change Image" [ngStyle]="{'background-image': imageSrc}"></label>
+            </div>
         </div>
     </div>
-</div>
-<div class="popup_Btnfooter text-center">
-    <button mat-raised-button color="primary" class="ew-100">Save</button>
-</div>
+    <div class="popup_Btnfooter text-center">
+        <button mat-raised-button color="primary" type="submit" class="ew-100">Save</button>
+    </div>
+</form> 
