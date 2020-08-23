@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { DataService } from 'src/app/shared/services/data.service';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-dashboard',
@@ -6,16 +8,50 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent implements OnInit {
-  content=""
-  toggle=false;
-  constructor() { }
+  ongoingorders: any;
+  completedOrders: any;
+  constructor(
+    private _serv: DataService
+  ) { }
 
   ngOnInit(): void {
+    this.getData();
+    setInterval(() => {
+      this.getData();
+    },120000)
   }
 
-  toggleContent() {
-    this.toggle=!this.toggle;
-    this.content=this.content + `Finally, if your app's content is not placed inside of a mat-sidenav-container element, you need to add the mat-app-background class to your wrapper element (for example the body). This ensures that the proper theme background is applied to your page.`
+  getData() {
+    this.getDashboardOnGoingOrders();
+    this.getDashboardCompletedOrders();
+  }
+
+  getDashboardOnGoingOrders() {
+    let startDate = moment(new Date()).format('YYYY-MM-DD');
+    let endDate = moment(new Date()).format('YYYY-MM-DD');
+    this._serv.endpoint = "order-manager/order?"
+                            + "&orderStatus=new,accepted,prepairing,packing"
+                            + "&startDate="+startDate
+                            + "&endDate="+endDate
+                            + "&orderType=asc"
+                            + "&orderCol=updated_at"
+    this._serv.get().subscribe(response => {
+      this.ongoingorders = response as any;
+    })
+  }
+
+  getDashboardCompletedOrders() {
+    let startDate = moment(new Date()).format('YYYY-MM-DD');
+    let endDate = moment(new Date()).format('YYYY-MM-DD');
+    this._serv.endpoint = "order-manager/order?"
+                            + "&orderStatus=dispatched,delivered,completed,cancelled"
+                            + "&startDate="+startDate
+                            + "&endDate="+endDate
+                            + "&orderType=asc"
+                            + "&orderCol=updated_at"
+    this._serv.get().subscribe(response => {
+      this.completedOrders = response as any;
+    })
   }
 
 }

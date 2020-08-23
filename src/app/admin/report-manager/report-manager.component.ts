@@ -1,4 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { FormGroup, FormBuilder } from '@angular/forms';
+import { DataService } from 'src/app/shared/services/data.service';
+import * as XLSX from 'xlsx'; 
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-report-manager',
@@ -7,9 +11,73 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ReportManagerComponent implements OnInit {
 
-  constructor() { }
-
-  ngOnInit(): void {
+  orderStatus=['new', 'accepted', 'prepairing', 'packing', 'dispatched', 'delivered', 'completed', 'cancelled'];
+  displayedColumns: string[] = ['action', 'id', 'orderType', 'orderAmount', 'orderStatus', 'created_at'];
+  filterForm:FormGroup;
+  orderTypeList: any[];
+  fileName= 'ExcelSheet.xlsx';
+  dataSource: any;
+  @ViewChild('reportTable') reportTable:any;
+  constructor(
+    private _serv: DataService,
+    private fb: FormBuilder
+  ) { 
+    this.filterForm = this.fb.group({
+      searchString: [''],
+      orderStatus: [''],
+      typeOfOrder: [''],
+      startDate: [''],
+      endDate: [''],
+      orderCol: [''],
+      orderType: ['']
+    })
   }
 
+  ngOnInit(): void {
+    this.getOrderTypes();
+  }
+
+  getOrderTypes() {
+    this._serv.endpoint = "order-manager/order-type?status=active";
+    this._serv.get().subscribe(response => {
+      this.orderTypeList = response as any[];
+    })
+  }
+
+  
+  getOrderList(event) {
+    event.preventDefault()
+    let filterValue = this.filterForm.value;
+    let startDate="", endDate="";
+    if(this._serv.notNull(filterValue.startDate) && this._serv.notNull(filterValue.endDate)) {
+      startDate = moment(filterValue.startDate).format('YYYY-MM-DD');
+      endDate = moment(filterValue.endDate).format('YYYY-MM-DD');
+    }
+    this._serv.endpoint = "order-manager/order?"
+                            + "&searchString="+filterValue.searchString
+                            + "&orderStatus="+filterValue.orderStatus
+                            + "&typeOfOrder="+filterValue.typeOfOrder
+                            + "&startDate="+startDate
+                            + "&endDate="+endDate
+                            + "&orderType="+filterValue.orderType
+                            + "&orderCol="+filterValue.orderCol
+    this._serv.get().subscribe(response => {
+      this.dataSource = response as any;
+      ;
+      
+    })
+  }
+
+  exportToExcel() {
+    this.displayedColumns = ['id', 'orderType', 'orderAmount', 'orderStatus', 'created_at'];
+     const ws: XLSX.WorkSheet =XLSX.utils.table_to_sheet(this.reportTable._elementRef.nativeElement)
+
+     /* generate workbook and add the worksheet */
+     const wb: XLSX.WorkBook = XLSX.utils.book_new();
+     XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+
+     /* save to file */
+     XLSX.writeFile(wb, this.fileName);
+     this.displayedColumns = ['action', 'id', 'orderType', 'orderAmount', 'orderStatus', 'created_at'];
+  }
 }

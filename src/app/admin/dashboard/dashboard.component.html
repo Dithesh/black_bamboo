@@ -23,96 +23,118 @@
 
 <div class="orderList_box">
     <div class="row">
-        <div class="col-md-4 col-sm-6">
-            <div class="order_listInner">
-                <h3>On Table Orders</h3>
-                <ul class="list-unstyled mb-0 table_order">
-                    <li>
-                        <div class="orderBox">
-                            <div class="orderBox_header">
-                                <h4 class="order_number">0001</h4>
-                                <span class="order_time">00:00:01</span>
-                            </div>
-                            <div class="orderBox_body">
-                                T2, T3, T4
-                            </div>
-                            <div class="orderBox_footer">
-                                <p class="price_tag">&#8377; 2500</p>
-                                <a href="javascript:;" class="btn viewBtn">View Order</a>
-                            </div>
+        <div class="col-md-8 col-sm-6">
+            <div class="row">
+                <div class="col-12">
+                    <h3>Ongoing Orders</h3>
+                </div>
+                <div class="col-md-6 col-sm-12" *ngFor="let item of ongoingorders;">
+                    <div class="orderBox on_table">
+                        <div class="orderBox_header">
+                            <h4 class="order_number">#{{ item.id }}</h4>
+                            <span class="order_time">{{ item.orderStatus | titlecase }}</span>
                         </div>
-                    </li>
-                    <li>
-                        <div class="orderBox">
-                            <div class="orderBox_header">
-                                <h4 class="order_number">0001</h4>
-                                <span class="order_time">00:00:01</span>
-                            </div>
-                            <div class="orderBox_body">
-                                T2, T3, T4
-                            </div>
-                            <div class="orderBox_footer">
-                                <p class="price_tag">&#8377; 2500</p>
-                                <a href="javascript:;" class="btn viewBtn">View Order</a>
-                            </div>
+                        <div class="orderBox_body">
+                            Orderd type: {{ item.order_type.typeName }}
                         </div>
-                    </li>
-                </ul>
+                        <div class="orderBox_footer">
+                            <p class="price_tag">&#8377; {{ item.orderAmount }}</p>
+                            <a href="javascript:;" [routerLink]="['/admin/order/update/'+item.id]" class="btn viewBtn">View Order</a>
+                        </div>
+                    </div>
+                </div>
+                <!-- <div class="col-md-8 col-sm-6">
+                    <div class="order_listInner">
+                        <ul class="list-unstyled mb-0 table_order">
+                            <li>
+                                <div class="orderBox">
+                                    <div class="orderBox_header">
+                                        <h4 class="order_number">0001</h4>
+                                        <span class="order_time">00:00:01</span>
+                                    </div>
+                                    <div class="orderBox_body">
+                                        T2, T3, T4
+                                    </div>
+                                    <div class="orderBox_footer">
+                                        <p class="price_tag">&#8377; 2500</p>
+                                        <a href="javascript:;" class="btn viewBtn">View Order</a>
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="orderBox">
+                                    <div class="orderBox_header">
+                                        <h4 class="order_number">0001</h4>
+                                        <span class="order_time">00:00:01</span>
+                                    </div>
+                                    <div class="orderBox_body">
+                                        T2, T3, T4
+                                    </div>
+                                    <div class="orderBox_footer">
+                                        <p class="price_tag">&#8377; 2500</p>
+                                        <a href="javascript:;" class="btn viewBtn">View Order</a>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-8 col-sm-6">
+                    <div class="order_listInner">
+                        <ul class="list-unstyled mb-0 parcel_order">
+                            <li>
+                                <div class="orderBox">
+                                    <div class="orderBox_header">
+                                        <h4 class="order_number">0001</h4>
+                                        <span class="order_time">00:00:01</span>
+                                    </div>
+                                    <div class="orderBox_body">
+                                        Orderd on Zomato
+                                    </div>
+                                    <div class="orderBox_footer">
+                                        <p class="price_tag">&#8377; 2500</p>
+                                        <a href="javascript:;" class="btn viewBtn">View Order</a>
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="orderBox">
+                                    <div class="orderBox_header">
+                                        <h4 class="order_number">0001</h4>
+                                        <span class="order_time">00:00:01</span>
+                                    </div>
+                                    <div class="orderBox_body">
+                                        Suggi Order
+                                    </div>
+                                    <div class="orderBox_footer">
+                                        <p class="price_tag">&#8377; 2500</p>
+                                        <a href="javascript:;" class="btn viewBtn">View Order</a>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div> -->
             </div>
         </div>
         <div class="col-md-4 col-sm-6">
-            <div class="order_listInner">
-                <h3>Take Away</h3>
-                <ul class="list-unstyled mb-0 parcel_order">
-                    <li>
-                        <div class="orderBox">
-                            <div class="orderBox_header">
-                                <h4 class="order_number">0001</h4>
-                                <span class="order_time">00:00:01</span>
-                            </div>
-                            <div class="orderBox_body">
-                                Orderd on Zomato
-                            </div>
-                            <div class="orderBox_footer">
-                                <p class="price_tag">&#8377; 2500</p>
-                                <a href="javascript:;" class="btn viewBtn">View Order</a>
-                            </div>
+            <h3>Finished Orders</h3>
+            <div class="row">
+                <div class="col-12" *ngFor="let item of completedOrders;">
+                    <div class="orderBox" [ngClass]="{completed: item.orderStatus == 'completed', cancelled: item.orderStatus != 'completed'}">
+                        <div class="orderBox_header">
+                            <h4 class="order_number">#{{ item.id }}</h4>
+                            <span class="order_time">{{ item.orderStatus | titlecase }}</span>
                         </div>
-                    </li>
-                    <li>
-                        <div class="orderBox">
-                            <div class="orderBox_header">
-                                <h4 class="order_number">0001</h4>
-                                <span class="order_time">00:00:01</span>
-                            </div>
-                            <div class="orderBox_body">
-                                Suggi Order
-                            </div>
-                            <div class="orderBox_footer">
-                                <p class="price_tag">&#8377; 2500</p>
-                                <a href="javascript:;" class="btn viewBtn">View Order</a>
-                            </div>
+                        <div class="orderBox_body">
+                            Orderd type: {{ item.order_type.typeName }}
                         </div>
-                    </li>
-                </ul>
-            </div>
-        </div>
-        <div class="col-md-4 col-sm-6">
-            <div class="order_listInner">
-                <h3>Finished</h3>
-                <ul class="list-unstyled finished_order mb-0">
-                    <li>
-                        <div class="orderBox">
-                            <div class="orderBox_header">
-                                <h4 class="order_number">0001</h4>
-                            </div>
-                            <div class="orderBox_footer mt-4">
-                                <p class="price_tag">&#8377; 2500</p>
-                                <a href="javascript:;" class="btn viewBtn">View Payment</a>
-                            </div>
+                        <div class="orderBox_footer">
+                            <p class="price_tag">&#8377; {{ item.orderAmount }}</p>
+                            <a href="javascript:;" [routerLink]="['/admin/order/update/'+item.id]" class="btn viewBtn">View Order</a>
                         </div>
-                    </li>
-                </ul>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

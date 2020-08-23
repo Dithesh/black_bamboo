@@ -22,14 +22,14 @@ const routes: Routes = [
         path: "update/:id",
         component:NewOrderComponent
       },
-      {
-        path:"table",
-        component:TablePageComponent
-      },
-      {
-        path:"take-away",
-        component:TakeAwayPageComponent
-      }
+      // {
+      //   path:"table",
+      //   component:TablePageComponent
+      // },
+      // {
+      //   path:"take-away",
+      //   component:TakeAwayPageComponent
+      // }
     ]
   }
 ];

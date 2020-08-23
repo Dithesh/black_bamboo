@@ -32,84 +32,74 @@ $color-warning:#bd2227;
     border-radius: 10px;
     background: #fff;
     box-shadow: 0px 0px 12px 0px rgba(0,0,0,0.1);
-    & .order_listInner{
-        & h3{
-            font-size: 1.8rem;
-            font-weight: 500;
-            margin-bottom: 10px;
+
+    & h3{
+        font-size: 1.8rem;
+        font-weight: 500;
+        margin-bottom: 10px;
+    }
+    & .orderBox{
+        border-radius: 10px;
+        padding: 15px;
+        background-color: #fff;
+        width: 100%;
+        margin-bottom: 15px;
+
+        & .orderBox_header{
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            & .order_number{
+                margin-bottom: 0px;
+                margin-top: 0px;
+                font-size: 1.4rem;
+                font-weight: 500;
+            }
+            & .order_time{
+                font-size: 1.4rem;
+                display: inline-block;
+            }
         }
-        & ul{
-            & li{
-                margin-bottom: 10px;
-                & .orderBox{
-                    border-radius: 10px;
-                    padding: 15px;
-                    background-color: #fff;
-                    & .orderBox_header{
-                        display: flex;
-                        align-items: center;
-                        justify-content: space-between;
-                        & .order_number{
-                            margin-bottom: 0px;
-                            margin-top: 0px;
-                            font-size: 1.4rem;
-                            font-weight: 500;
-                        }
-                        & .order_time{
-                            font-size: 1.4rem;
-                            display: inline-block;
-                        }
-                    }
-                    & .orderBox_body{
-                        padding: 10px 0px;
-                        font-size: 1.6rem;
-                    }
-                    & .orderBox_footer{
-                        display: flex;
-                        align-items: center;
-                        justify-content: space-between;
-                        & .price_tag{
-                            margin-bottom: 0px;
-                            margin-top: 0px;
-                            font-size: 1.4rem;
-                            font-weight: 600;
-                        }
-                        & .viewBtn{
-                            font-size: 1.3rem;
-                            display: inline-block;
-                            border-radius: 25px;
-                            background-color: $color-primary;
-                            color: #fff;
-                            
-                            padding: 2px 6px;
-                        }
-                    }
-                }
+        & .orderBox_body{
+            padding: 10px 0px;
+            font-size: 1.6rem;
+        }
+        & .orderBox_footer{
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            & .price_tag{
+                margin-bottom: 0px;
+                margin-top: 0px;
+                font-size: 1.4rem;
+                font-weight: 600;
             }
-            &.table_order{
-                & li{
-                    & .orderBox{
-                        background-color: rgba(191, 198, 255, 0.21);
-                        color: #000;
-                    }
-                }
+            & .viewBtn{
+                font-size: 1.3rem;
+                display: inline-block;
+                border-radius: 25px;
+                background-color: $color-primary;
+                color: #fff;
+                
+                padding: 2px 6px;
             }
-            &.parcel_order{
-                & li{
-                    & .orderBox{
-                        background-color: rgba(255, 171, 93, 0.28);
-                        color: #000;
-                    }
-                }
-            }
-            &.finished_order{
-                & li{
-                    & .orderBox{
-                        background-color: rgba(171, 255, 151, 0.55);
-                        color: #000;
-                    }
-                }
-            }
+        }
+
+        &.on_table{
+            background-color: rgba(191, 198, 255, 0.21);
+            color: #000;
+        }
+        &.parcel_order{
+            background-color: rgba(255, 171, 93, 0.28);
+            color: #000;
+        }
+        &.completed{
+            background-color: rgba(171, 255, 151, 0.55);
+            color: #000;
+        }
+        &.cancelled{
+            background-color: rgba(247, 55, 24, 0.55);
+            color: #000;
         }
     }
 }
