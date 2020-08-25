@@ -1,0 +1,94 @@
+
+@import '../../../variables.scss';
+
+.table_selectWrapper {
+    display: flex;
+    align-items: center;
+    margin: 0px -10px;
+    flex-wrap: wrap;
+    & .table_col {
+        flex: 0 0 16.666%;
+        max-width: 16.666%;
+        padding: 0px 10px;
+        height: 90px;
+        min-width: 150px;
+        & .table_circle {
+            display: block;
+            position: absolute;
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: #fff;
+            background-color: $color-success;
+            width: calc(100% - 36px);
+            height: calc(100% - 36px);
+            left: 18px;
+            top: 18px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        & .table_innerBox {
+            display: flex;
+            & .table_seat_checkBox {
+                position: relative;
+                overflow: hidden;
+                width: 100%;
+                & label {
+                    width: 15px;
+                    height: 100%;
+                    background-color: $color-success;
+                    cursor: pointer;
+                    margin-bottom: 0px;
+                    &.pointer-none {
+                        background-color: rgba($color-warning, 0.6) !important;
+                    }
+                }
+                & input {
+                    visibility: hidden;
+                    position: absolute;
+                    opacity: 0;
+                    &:checked+label {
+                        background-color: $color-warning;
+                    }
+                }
+                &.vertical {
+                    margin: 20px 0px;
+                }
+                &.horizontal {
+                    & label {
+                        height: 15px;
+                        width: 100%;
+                    }
+                }
+            }
+            & .radio_outer {
+                -ms-flex-preferred-size: 0;
+                flex-basis: 0;
+                -ms-flex-positive: 1;
+                flex-grow: 1;
+                max-width: 100%;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                .table_seat_checkBox {
+                    flex: 0 0 15px;
+                }
+            }
+        }
+        &.reserved {
+            & .table_circle {
+                background-color: $color-accent;
+            }
+            & .table_innerBox {
+                & .table_seat_checkBox {
+                    & label {
+                        background-color: $color-accent;
+                    }
+                }
+            }
+        }
+    }
+}

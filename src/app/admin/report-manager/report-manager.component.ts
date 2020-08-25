@@ -63,21 +63,21 @@ export class ReportManagerComponent implements OnInit {
                             + "&orderCol="+filterValue.orderCol
     this._serv.get().subscribe(response => {
       this.dataSource = response as any;
-      ;
-      
     })
   }
 
   exportToExcel() {
     this.displayedColumns = ['id', 'orderType', 'orderAmount', 'orderStatus', 'created_at'];
-     const ws: XLSX.WorkSheet =XLSX.utils.table_to_sheet(this.reportTable._elementRef.nativeElement)
-
-     /* generate workbook and add the worksheet */
-     const wb: XLSX.WorkBook = XLSX.utils.book_new();
-     XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
-
-     /* save to file */
-     XLSX.writeFile(wb, this.fileName);
-     this.displayedColumns = ['action', 'id', 'orderType', 'orderAmount', 'orderStatus', 'created_at'];
+    setTimeout(() => {
+      const ws: XLSX.WorkSheet =XLSX.utils.table_to_sheet(this.reportTable._elementRef.nativeElement)
+ 
+      /* generate workbook and add the worksheet */
+      const wb: XLSX.WorkBook = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+ 
+      /* save to file */
+      XLSX.writeFile(wb, this.fileName);
+      this.displayedColumns = ['action', 'id', 'orderType', 'orderAmount', 'orderStatus', 'created_at'];
+    }, 1000)
   }
 }
