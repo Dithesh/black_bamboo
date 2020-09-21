@@ -14,14 +14,13 @@ import * as moment from 'moment';
 })
 export class OrdersComponent implements OnInit, AfterViewInit {
   orderStatus=['new', 'accepted', 'prepairing', 'packing', 'dispatched', 'delivered', 'completed', 'cancelled'];
-  displayedColumns: string[] = ['action', 'id', 'orderType', 'orderAmount', 'orderStatus', 'created_at'];
+  displayedColumns: string[] = ['action', 'id', 'orderAmount', 'orderStatus', 'created_at'];
   dataSource;
   filterOn=false;
   filterForm:FormGroup;
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
-  orderTypeList: any[] = [];
 
   constructor(
     private _serv: DataService,
@@ -30,7 +29,6 @@ export class OrdersComponent implements OnInit, AfterViewInit {
     this.filterForm = this.fb.group({
       searchString: [''],
       orderStatus: [''],
-      typeOfOrder: [''],
       startDate: [''],
       endDate: [''],
       orderCol: [''],
@@ -40,13 +38,12 @@ export class OrdersComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
       this.getOrderList();
-      this.getOrderTypes();
   }
 
   ngAfterViewInit() {
     
     this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
-    merge(this.sort.sortChange, this.paginator.page, this.filterForm.get('searchString').valueChanges, this.filterForm.get('orderStatus').valueChanges, this.filterForm.get('typeOfOrder').valueChanges, this.filterForm.get('endDate').valueChanges)
+    merge(this.sort.sortChange, this.paginator.page, this.filterForm.get('searchString').valueChanges, this.filterForm.get('orderStatus').valueChanges, this.filterForm.get('endDate').valueChanges)
       .subscribe(data => {
         this.filterForm.patchValue({
           orderCol: this.sort.active,
@@ -66,20 +63,12 @@ export class OrdersComponent implements OnInit, AfterViewInit {
     this._serv.endpoint = "order-manager/order?pageNumber="+page
                             + "&searchString="+filterValue.searchString
                             + "&orderStatus="+filterValue.orderStatus
-                            + "&typeOfOrder="+filterValue.typeOfOrder
                             + "&startDate="+startDate
                             + "&endDate="+endDate
                             + "&orderType="+filterValue.orderType
                             + "&orderCol="+filterValue.orderCol
     this._serv.get().subscribe(response => {
       this.dataSource = response as any;
-    })
-  }
-
-  getOrderTypes() {
-    this._serv.endpoint = "order-manager/order-type?status=active";
-    this._serv.get().subscribe(response => {
-      this.orderTypeList = response as any[];
     })
   }
 

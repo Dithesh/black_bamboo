@@ -1,13 +1,9 @@
-<div class="page_header d-flex mb-4">
-    <h2 class="header_title">Tables</h2>
-</div>
-
 <div [formGroup]="form">
     <div class="table_selectWrapper mt-20 mb-15" formArrayName="tables">
         <ng-container *ngFor="let item of tables['controls'];let ti=index;">
             <div class="table_col" [class.reserved]="item.get('isReserved').value" [formGroupName]="ti">
                 <div class="row ew-130 mx-auto position-relative h-100 no-gutters">
-                    <span class="table_circle" (click)="changeReservedStatus(item)">{{ item.get('tableId').value }}</span>
+                    <span class="table_circle" (click)="selectAllChairs(item)">{{ item.get('tableId').value }}</span>
                     <ng-container formArrayName="chairs">
                         <div class="table_innerBox col-auto order-1" *ngIf="item.get('chairs')['controls'].length > 0">
                             <div class="table_seat_checkBox vertical" formGroupName="0">
@@ -46,4 +42,7 @@
             </div>
         </ng-container>
     </div>
+
+    <button mat-button color="primary" class="mr-2 mt-20" (click)="saveTableInfo()">Done</button>
+    <!-- <button mat-button color="warn" (click)="dialogRef.close()">Cancel</button> -->
 </div>

@@ -6,6 +6,13 @@ import { FormGroup, FormBuilder, FormArray, AbstractControl, FormControl } from 
 import { DataService } from 'src/app/shared/services/data.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
+import { MatDialog } from '@angular/material/dialog';
+import { PrintOrderInvoiceComponent } from '../print-order-invoice/print-order-invoice.component';
+import { AddOrderItemComponent } from '../add-order-item/add-order-item.component';
+import { environment } from 'src/environments/environment';
+import { TableSelectionComponent } from '../table-selection/table-selection.component';
+import { ServeOrderItemComponent } from '../serve-order-item/serve-order-item.component';
+import { ConfirmPopupComponent } from 'src/app/shared/components/confirm-popup/confirm-popup.component';
 
 export interface PeriodicElement {
   product: string;
@@ -75,18 +82,19 @@ export class NewOrderComponent implements OnInit {
   dataSource = new BehaviorSubject<AbstractControl[]>([]);branchList: any[];
   blockForms: boolean;
   userData: any;
+  url = environment.domain;
 
   constructor(
     private fb: FormBuilder,
     private _serv: DataService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private dialog: MatDialog
   ) { 
     this.orderId = this.route.snapshot.params.id;
     this.form = this.fb.group({
       id: [''],
       branch_id: [''],
-      orderTypeId: [''],
       relatedInfo: [''],
       customerName: [''],
       mobileNumber: [''],
@@ -107,89 +115,26 @@ export class NewOrderComponent implements OnInit {
 
   ngOnInit() {
     this.userData = this._serv.getUserData();
-    this.getOrderTypes();
-    this.getAllProducts();
     this.getAllBranches();
     if(this.orderId) {
       this.getOrderDetail();
-    }else {
-      this.items.push(this.addOrderItem());
-      this.dataSource.next(this.items.controls);
-    }
-  }
-
-  getAllBranches() {
-    this._serv.endpoint = "order-manager/branch?fields=id,branchTitle";
-    this._serv.get().subscribe(response => {
-      this.branchList = response as any[];
-      if(this.orderId == undefined && this.branchList.length > 0) {
-        this.form.get('branch_id').setValue(this.branchList[0].id);
-      }
-    })
-  }
-
-  getOrderDetail() {
-    this._serv.endpoint = "order-manager/order/"+this.orderId;
-    this._serv.get().subscribe((response: any) => {
-      this.form.patchValue({
-        id: response.id,
-        branch_id: response.branch_id,
-        orderTypeId: response.orderTypeId,
-        relatedInfo: response.relatedInfo,
-        customerName: (response.customer)?response.customer.customerName:"",
-        mobileNumber: (response.customer)?response.customer.mobileNumber:"",
-        cgst: response.cgst,
-        sgst: response.sgst,
-        orderItemTotal: response.orderItemTotal,
-        orderAmount: response.orderAmount,
-        packingCharge: response.packingCharge,
-        deliverCharge: response.deliverCharge,
-        orderStatus: response.orderStatus,
-      });
-
-      if(response.orderStatus == 'completed' || response.orderStatus == 'cancelled') {
-        this.blockForms = true;
-        this.form.disable();
-      }
-
-      this.items.controls = [];
-      response.order_items.forEach(item => {
-        let orderItem = this.addOrderItem();
-        if(this.blockForms == true)orderItem.disable();
-        orderItem.patchValue(item);
-        this.items.push(orderItem);
-      })
-      this.dataSource.next(this.items.controls);
-      this.handleFinalPricing();
-    })
-  }
-
-  addAnotherItem() {
-    if(this.blockForms)return;
-    let blankRecords =this.items.value.filter(x => x.price == '' || x.quantity == '');
-    if(blankRecords.length <= 0) {
-      this.items.push(this.addOrderItem());
-      this.dataSource.next(this.items.controls);
-    }else {
-      this._serv.showMessage('Please fill all the data.', 'error')
-    }
+    } 
+    this.getTableInfo();
   }
 
   addOrderItem() {
     return this.fb.group({
       id: [''],
       productId: [''],
+      productName: [''],
+      orderType: [''],
       price: ['0.00'],
       quantity: ['1'],
+      servedItems: ['0'],
       packagingCharges: ['0.00'],
       totalPrice: ['0.00'],
-    })
-  }
-
-  getAllProducts() {
-    this._serv.endpoint = "order-manager/product?status=active&needPricing=detailed";
-    this._serv.get().subscribe(response => {
-      this.productList = response as any[];
+      featuredImage: [''],
+      deletedFlag: [false]
     })
   }
 
@@ -197,50 +142,54 @@ export class NewOrderComponent implements OnInit {
     return this.form.get('items') as FormArray;
   }
 
-  onProductChange(event, itemform: FormGroup) {
-    
-    let itemValue = itemform.value;
-    let formArray = this.items.value;
-    let count=0;
-    formArray.forEach(elem => {
-      if(elem.productId == itemValue.productId)
-        count++;
-    })
-    if(count >= 2) {
-      this._serv.showMessage("Product already selected", "error");
-      itemform.get('productId').setValue("");
-      // itemform.get('productId').setErrors({invalid: "Please select product"});
-      return;
-    }
-    this.productList.forEach(elem => {
-      if(elem.id == itemValue.productId) {
-        
-        if(elem.isOrderTypePricing) {
-          elem.pricings.forEach(el => {
-            if(el.orderTypeId == this.form.get('orderTypeId').value) {
-              console.log(el);
-              itemform.patchValue({
-                price: el.price,
-                packagingCharges: el.packagingCharges
-              })
-            }
+  addNewOrderItem() {
+    if(this.blockForms)return;
+    let dialogRef = this.dialog.open(AddOrderItemComponent, {
+      width: '500px',
+      autoFocus: false,
+      data: {
+        orderItems: this.items.value
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(response => {
+      if(response) {
+        let removeElement=[];
+        this.items.controls.forEach(control => {
+          if(control.get('orderType').value == response.orderType) {
+            response.items.forEach((elem, index) => {
+              if(control.get('productId').value == elem.id) {
+                removeElement.unshift(index);
+              }
+            })
+          }
+        })
+        removeElement.sort(function(a, b){return b-a}); //sort indexes
+        removeElement.forEach(index => {
+          response.items.splice(index, 1);
+        })
+        response.items.forEach(item => {
+          let form = this.addOrderItem();
+          form.patchValue({
+            productId: item.id,
+            productName: item.productName,
+            featuredImage: item.featuredImage,
+            orderType: response.orderType,
+            price: item.price,
+            packagingCharges: (response.orderType != 'on-table')?item.packagingCharges:'0'
           })
-        }else {
-          itemform.patchValue({
-            price: elem.price,
-            packagingCharges: elem.packagingCharges
-          })
-        }
+          this.items.push(form);
+          this.getOrderItemTotal(form);
+        })
       }
     })
-    this.getOrderItemTotal(itemform);
   }
 
   getOrderItemTotal(orderItem) {
     let itemValue = orderItem.value;
     let price = (itemValue.price)?parseFloat(itemValue.price):0;
     let quantity = (itemValue.quantity)?parseFloat(itemValue.quantity):0;
-    let packagingCharges = (itemValue.packagingCharges && this.selectedOrderType.enableExtraCharge)?parseFloat(itemValue.packagingCharges):0;
+    let packagingCharges = (itemValue.packagingCharges && itemValue.orderType != 'on-table')?parseFloat(itemValue.packagingCharges):0;
     orderItem.get('totalPrice').setValue((price * quantity) + (packagingCharges * quantity));
     this.handleFinalPricing();
   }
@@ -250,14 +199,14 @@ export class NewOrderComponent implements OnInit {
     let totalPrice = 0;
     let grandTotal = 0;
     orderItems.forEach(item => {
-      totalPrice = totalPrice + parseFloat(item.totalPrice);
+      if(!item.deletedFlag) {
+        totalPrice = totalPrice + parseFloat(item.totalPrice);
+      }
     })
     grandTotal+=totalPrice;
-    if(this.selectedOrderType.enableDeliverCharge) {
-      let charge = this.form.get('deliverCharge').value;
-      if(charge!=null && charge != '' && charge != undefined && charge > 0){
-        grandTotal += parseFloat(charge);
-      }
+    let charge = this.form.get('deliverCharge').value;
+    if(charge!=null && charge != '' && charge != undefined && charge > 0){
+      grandTotal += parseFloat(charge);
     }
     let tax = grandTotal * 0.06;
     grandTotal += tax * 2;
@@ -272,35 +221,45 @@ export class NewOrderComponent implements OnInit {
     })
   }
 
-  getOrderTypes() {
-    this._serv.endpoint = "order-manager/order-type?status=active";
-    this._serv.get().subscribe(response => {
-      this.orderTypeList = response as any[];
-      if(this.orderTypeList.length > 0){
-        this.form.get('orderTypeId').setValue(this.orderTypeList[0].id)
-        this.onChangeOrderType(this.orderTypeList[0])
+  
+  manageTables() {
+    if(this.blockForms)return;
+    let dialogRef = this.dialog.open(TableSelectionComponent, {
+      width: '1200px',
+      data: {
+        tables: this.tables
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(response => {
+      if(response){
+        this.tables.controls=[];
+        this.tables.reset();
+        response.controls.forEach(control => {
+          this.tables.push(control);
+        })
       }
     })
   }
 
-  onChangeOrderType(orderType) {
-    this.selectedOrderType = orderType;
-    if(this.selectedOrderType.enableTables) {
-      this.getTableInfo();
-    }
-    if(this.selectedOrderType.enableExtraCharge) {
-      this.displayedColumns = ['product', 'quantity', 'price', 'pkg_charge', 'total'];
-    }else {
-      this.displayedColumns = ['product', 'quantity', 'price', 'total'];
-    }
+  serveOrderItem() {
+    let dialogRef = this.dialog.open(ServeOrderItemComponent, {
+      width: '500px',
+      data: {
+        form: this.items
+      }
+    })
   }
+
+  
+
 
   get tables() {
     return this.form.get('tables') as FormArray;
-  }
+  } 
 
   getTableInfo() {
-    this._serv.endpoint = "order-manager/tables?orderTypeId="+this.selectedOrderType.id+"&orderId="+this.orderId;
+    this._serv.endpoint = "order-manager/tables?orderId="+this.orderId;
     this._serv.get().subscribe(response => {
       this.tableList = response as any[];
       this.tables.controls=[];
@@ -336,58 +295,144 @@ export class NewOrderComponent implements OnInit {
     })
   }
 
-  selectAllChairs(table) {
-    if(this.blockForms)return;
-    (table.get('chairs') as FormArray).controls.forEach(elem => {
-      if(elem.get('permission').value == 'full') {
-        elem.get('isSelected').setValue(true);
+  
+
+  getAllBranches() {
+    this._serv.endpoint = "order-manager/branch?fields=id,branchTitle";
+    this._serv.get().subscribe(response => {
+      this.branchList = response as any[];
+      if(this.orderId == undefined && this.branchList.length > 0) {
+        this.form.get('branch_id').setValue(this.branchList[0].id);
       }
     })
   }
 
-  setStep(index: number) {
-    this.step = index;
+  getOrderDetail() {
+    this._serv.endpoint = "order-manager/order/"+this.orderId;
+    this._serv.get().subscribe((response: any) => {
+      this.form.patchValue({
+        id: response.id,
+        branch_id: response.branch_id,
+        relatedInfo: response.relatedInfo,
+        customerName: (response.customer)?response.customer.customerName:"",
+        mobileNumber: (response.customer)?response.customer.mobileNumber:"",
+        cgst: response.cgst,
+        sgst: response.sgst,
+        orderItemTotal: response.orderItemTotal,
+        orderAmount: response.orderAmount,
+        packingCharge: response.packingCharge,
+        deliverCharge: response.deliverCharge,
+        orderStatus: response.orderStatus,
+      });
+
+      if(response.orderStatus == 'completed' || response.orderStatus == 'cancelled') {
+        this.blockForms = true;
+        this.form.disable();
+      }
+
+      this.items.controls = [];
+      response.order_items.forEach(item => {
+        let orderItem = this.addOrderItem();
+        if(this.blockForms == true)orderItem.disable();
+        orderItem.patchValue({
+          id: item.id,
+          productId: item.product.id,
+          productName: item.product.productName,
+          orderType: item.orderType,
+          price: item.price,
+          quantity: item.quantity,
+          servedItems: item.servedQuantity,
+          packagingCharges: item.packagingCharges,
+          totalPrice: item.totalPrice,
+          featuredImage: item.product.featuredImage,
+          deletedFlag: false
+        });
+        this.items.push(orderItem);
+      })
+      this.dataSource.next(this.items.controls);
+      this.handleFinalPricing();
+    })
   }
 
-  nextStep() {
-    this.step++;
-  }
-
-  prevStep() {
-    this.step--;
-  }
-
-  handleNumberControl(formControl, type) {
+  handleNumberControl(formControl, type, index) {
     if(this.blockForms)return;
     let value = formControl.get('quantity').value;
-    if(value == null || value == undefined || value == "")value=0;
+    let served = parseInt(formControl.get('servedItems').value);
+    if(isNaN(value) || value == null || value == undefined || value == "") {
+      value = ( served > 1)?served:1;
+    };
     if(type == 'next') {
       value++;
-    }else if(value > 0) {
+    }else if(type == 'prev' && value > 0 && served < value) {
       value--;
     }
-    formControl.get('quantity').setValue(value, {emitEvent: true});
-    this.getOrderItemTotal(formControl)
+    if(value == 0) {
+      let dialogRef = this.dialog.open(ConfirmPopupComponent);
+      dialogRef.afterClosed().subscribe(data => {
+        if(data) {
+          if(this._serv.notNull(formControl.get('id').value)) {
+            formControl.get('deletedFlag').setValue(true);
+          }else {
+            this.items.removeAt(index);
+          }
+          this.getOrderItemTotal(formControl)
+        }else {
+          formControl.get('quantity').setValue(( served > 1)?served:1, {emitEvent: false})
+          this.getOrderItemTotal(formControl)
+        }
+      })
+    }else {
+      formControl.get('quantity').setValue(value, {emitEvent: true});
+      this.getOrderItemTotal(formControl)
+    }
   }
 
   saveOrder(type = "confirm") {
     let orderData = {...this.form.value};
 
-    if(type == 'confirm') {
-      orderData.orderStatus = "new";
-    }else if(type == "complete" || type == "complete and print") {
-      orderData.orderStatus = "completed";
-    }else if(type == 'cancel') {
-      orderData.orderStatus = "cancelled";
-    }
-
+    
     orderData.tables = orderData.tables.map((table:any) => {
       return {
         ...table,
         chairs: table.chairs.filter(chair => (chair.isSelected && chair.permission == 'full')).map(chair => chair.chairId).join(',')
       }
-    }).filter(table => table.chairs != "")
-    console.log(orderData);
+    }).filter(table => table.chairs != "");
+
+    if(orderData.items.length <= 0) {
+      this._serv.showMessage('Please add items.', 'error');
+      return;
+    }
+    let message = "";
+    if(type == 'confirm') {
+      orderData.orderStatus = "new";
+      this.updateOrder(orderData);
+      return;
+    }else if(type == "complete") {
+      orderData.orderStatus = "completed";
+      message = "Data will be freezed after completion. Are you sure want to procede?";
+    }else if(type == 'cancel') {
+      orderData.orderStatus = "cancelled";
+      message = "Data will be freezed after cancelling. Are you sure want to procede?";
+    }
+
+    this.takeConfirmation(orderData, message);
+    
+  }
+
+  takeConfirmation(orderData, message) {
+    let dialogRef = this.dialog.open(ConfirmPopupComponent, {
+      data: {
+        message: message
+      }
+    });
+    dialogRef.afterClosed().subscribe(data => {
+      if(data) {
+        this.updateOrder(orderData);
+      }
+    })
+  }
+
+  updateOrder(orderData) {
     let api=null;
     this._serv.endpoint="order-manager/order";
     if(orderData.id == "") {
@@ -398,15 +443,28 @@ export class NewOrderComponent implements OnInit {
     }
     api.subscribe(response => {
       this._serv.showMessage("Order saved successfully", 'success');
-      this.router.navigateByUrl('/admin/order');
+
+      if(orderData.orderStatus == "completed") {
+        this.printOrder(orderData);
+        this.orderId = response.id;
+        this.getOrderDetail();
+      }else {
+        this.router.navigateByUrl('/admin/order');
+      }
     }, ({error}) => {
       this._serv.showMessage(error['msg'], 'error');
     })
-
   }
 
-  printOrder() {
-    
+  printOrder(orderData=null) {
+    if(!this._serv.notNull(orderData)) {
+      orderData = this.form.value;
+    }
+    this.dialog.open(PrintOrderInvoiceComponent, {
+      data: {
+        orderData: orderData
+      }
+    })
   }
 }
 

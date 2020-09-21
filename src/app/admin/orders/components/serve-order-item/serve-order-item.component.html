@@ -1,0 +1,27 @@
+<h1>Serve Items
+</h1>
+
+<ng-container *ngFor="let item of items['controls'];let i=index;">
+    <div class="item_card">
+        <div class="item_wraper">
+            <div class="img_item">
+                <img *ngIf="item.get('featuredImage').value" [src]=" url + item.get('featuredImage').value" alt="">
+                <img *ngIf="!item.get('featuredImage').value" src="/assets/images/food.jpg" alt="">
+            </div>
+            <span>Item Name</span>
+        </div>
+        <div>
+            <div class="input-group mb-0 number_input">
+                <div class="input-group-prepend">
+                    <button class="btn btn-outline-secondary" type="button" (click)="handleNumberControl(item, 'prev')">-</button>
+                </div>
+                <input type="text" class="form-control" [formControl]="item.get('servedItems')" digitOnly>
+                <div class="input-group-append">
+                    <button class="btn btn-outline-secondary" type="button" (click)="handleNumberControl(item, 'next')">+</button>
+                </div>
+            </div>
+            <p class="text-warning mt-2 mb-0">Pending: <b>{{ getpendingItems(item) }}</b></p>
+        </div>
+    </div>
+</ng-container>
+<button mat-button color="primary" class="mr-2 mt-20" (click)="closeItem()">Done</button>

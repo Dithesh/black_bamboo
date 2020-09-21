@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TablePageComponent } from './table-page.component';
+import { AddTableManagerComponent } from './add-table-manager.component';
 
-describe('TablePageComponent', () => {
-  let component: TablePageComponent;
-  let fixture: ComponentFixture<TablePageComponent>;
+describe('AddTableManagerComponent', () => {
+  let component: AddTableManagerComponent;
+  let fixture: ComponentFixture<AddTableManagerComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ TablePageComponent ]
+      declarations: [ AddTableManagerComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(TablePageComponent);
+    fixture = TestBed.createComponent(AddTableManagerComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

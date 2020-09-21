@@ -1,4 +1,5 @@
-<form [formGroup]="form" class="transaction_form">
+<!-- <form [formGroup]="form" class="transaction_form">
+
     <div class="page_header d-flex mb-4">
         <h2 class="header_title">New Order</h2>
     </div>
@@ -175,13 +176,8 @@
                                             <mat-form-field class="ew-80 inline-input">
                                                 <input matInput formControlName="orderItemTotal" readonly matInputCommified format="currency">
                                             </mat-form-field>
-                                            <!-- {{ form.get('orderItemTotal').value }} -->
                                         </td>
                                     </tr>
-                                    <!-- <tr>
-                        <td>Packaging Charges</td>
-                        <td class="price_td">1000.00</td>
-                      </tr> -->
                                     <tr *ngIf="selectedOrderType?.enableDeliverCharge">
                                         <td>Delivery Charges</td>
                                         <td class="price_td">
@@ -196,7 +192,6 @@
                                             <mat-form-field class="ew-80 inline-input">
                                                 <input matInput formControlName="cgst" readonly matInputCommified format="currency">
                                             </mat-form-field>
-                                            <!-- {{ form.get('cgst').value }} -->
                                         </td>
                                     </tr>
                                     <tr>
@@ -205,7 +200,6 @@
                                             <mat-form-field class="ew-80 inline-input">
                                                 <input matInput formControlName="sgst" readonly matInputCommified format="currency">
                                             </mat-form-field>
-                                            <!-- {{ form.get('sgst').value }} -->
                                         </td>
                                     </tr>
                                     <tr class="grandTotal">
@@ -214,7 +208,6 @@
                                             <mat-form-field class="ew-80 inline-input">
                                                 <input matInput formControlName="orderAmount" readonly matInputCommified format="currency">
                                             </mat-form-field>
-                                            <!-- {{ form.get('orderAmount').value }} -->
                                         </td>
                                     </tr>
                                     <tr class="return_row">
@@ -227,11 +220,8 @@
                                         <td class="price_td">
                                             
                                             <mat-form-field class="ew-80 inline-input">
-                                                <!-- <mat-label>Return</mat-label> -->
                                                 <input matInput [value]="(calAmount.value)?(calAmount.value - form.get('orderAmount').value):00" readonly matInputCommified format="currency">
                                             </mat-form-field>
-                                            <!-- <small>Return: </small>
-                                            {{ (calAmount.value)?(calAmount.value - form.get('orderAmount').value):00 }} -->
                                         </td>
                                     </tr>
                                 </table>
@@ -254,7 +244,7 @@
                 </mat-action-row>
             </mat-expansion-panel>
 
-            <!-- <mat-expansion-panel [expanded]="step === 2" (opened)="setStep(2)" hideToggle>
+            <mat-expansion-panel [expanded]="step === 2" (opened)="setStep(2)" hideToggle>
             <mat-expansion-panel-header>
               <mat-panel-title>
                 <h2 class="my-10">Review & Bill</h2>
@@ -296,9 +286,160 @@
               <button mat-raised-button color="warn" (click)="prevStep()">Back to order</button>
               <button mat-raised-button color="primary" (click)="nextStep()">Bill</button>
             </mat-action-row>
-          </mat-expansion-panel> -->
+          </mat-expansion-panel>
 
         </mat-accordion>
 
+    </div>
+</form> -->
+
+<form [formGroup]="form">
+    <div class="page_header d-flex mb-4">
+        <h2 class="header_title" *ngIf="!orderId">New Order</h2>
+        <h2 class="header_title" *ngIf="orderId">Edit Order : {{orderId}}</h2>
+        <div class="ml-auto">
+            <button mat-button color="primary" type="button" (click)="manageTables()">
+                <mat-icon>view_module</mat-icon>
+                Tables
+            </button>
+        </div>
+    </div>
+    
+    <div class="order_layout">
+        <div class="customer_section">
+            <h2 class="header_title">Customer Details</h2>
+            <div class="row">
+                <div class="col">
+                    <mat-form-field appearance="outline" class="w-100">
+                        <mat-label>Related Info</mat-label>
+                        <input formControlName="relatedInfo" matInput>
+                    </mat-form-field>
+                </div>
+                <div class="col">
+                    <mat-form-field appearance="outline" class="w-100">
+                        <mat-label>Customer Name</mat-label>
+                        <input formControlName="customerName" matInput>
+                    </mat-form-field>
+                </div>
+                <div class="col">
+                    <mat-form-field appearance="outline" class="w-100">
+                        <mat-label>Mobile Number</mat-label>
+                        <input formControlName="mobileNumber" matInput>
+                    </mat-form-field>
+                </div>
+                <div class="col" *ngIf="userData?.roles == 'Super Admin'">
+                    <mat-form-field appearance="outline" class="w-100 pb-0">
+                        <mat-label>Branch</mat-label>
+                        <mat-select matNativeControl formControlName="branch_id"  [required]="userData?.roles == 'Super Admin'">
+                            <mat-option *ngFor="let item of branchList;" [value]="item.id">{{ item.branchTitle }}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+        </div>
+        <div class="billing_details">
+            <div class="delivery_box">
+                <mat-form-field appearance="outline" class="w-100 inline-input">
+                    <mat-label>Deliver Charge (Optional)</mat-label>
+                    <input matInput  [formControl]="form.get('deliverCharge')" (change)="handleFinalPricing()" digitOnly [decimal]="true">
+                </mat-form-field>
+            </div>
+            <div class="billing_wrapper">
+                <div class="billing_strip">
+                    <p class="title">Order Item Total</p>
+                    <span class="value_section">{{ form.get('orderItemTotal').value | currency }}</span>
+                </div>
+                <div class="billing_strip">
+                    <p class="title">Delivery Charge</p>
+                    <span class="value_section">{{ form.get('deliverCharge').value | currency }}</span>
+                </div>
+                <div class="billing_strip" *ngIf="form.get('packingCharge').value">
+                    <p class="title">Total Pkg Charge</p>
+                    <span class="value_section">{{ form.get('packingCharge').value | currency }}</span>
+                </div>
+                <!-- <div class="billing_strip">
+                    <p class="title">Total Amount</p>
+                    <span class="value_section">{{ form.get('packingCharge').value | currency }}</span>
+                </div> -->
+                <div class="billing_strip">
+                    <p class="title">CGST(6%)</p>
+                    <span class="value_section">{{ form.get('cgst').value | currency }}</span>
+                </div>
+                <div class="billing_strip">
+                    <p class="title">SGST(6%)</p>
+                    <span class="value_section">{{ form.get('sgst').value | currency }}</span>
+                </div>
+                <div class="billing_strip">
+                    <p class="title">Grand Total</p>
+                    <span class="value_section">{{ form.get('orderAmount').value | currency }}</span>
+                </div>
+            </div>
+            <div class="action_wrapper">
+                <button mat-raised-button color="success" class="w-100" type="button"
+                    *ngIf="form.get('orderStatus').value != 'completed' && form.get('orderStatus').value != 'cancelled'"  
+                    (click)="saveOrder('complete')">Complete</button>
+
+                <button mat-raised-button color="primary" class="w-100" 
+                    *ngIf="form.get('orderStatus').value != 'completed' && form.get('orderStatus').value != 'cancelled'"  
+                    (click)="saveOrder('confirm')">Save</button>
+
+                <button mat-raised-button color="accent" *ngIf="form.get('orderStatus').value == 'completed'" class="w-100" (click)="printOrder()">Print</button>
+
+                <button mat-raised-button color="warn" 
+                    *ngIf="orderId && form.get('orderStatus').value != 'completed' && form.get('orderStatus').value != 'cancelled'" 
+                    class="w-100" (click)="saveOrder('cancel')">Cancel</button>
+            </div>
+        </div>
+        <div class="order_items">
+            <div class="page_header d-flex mb-4">
+                <h2 class="header_title">Items</h2>
+                <div class="ml-auto">
+                    <button mat-button color="accent" type="button" *ngIf="items['controls'].length > 0 && form.get('orderStatus').value != 'completed' && form.get('orderStatus').value != 'cancelled'" (click)="serveOrderItem()">
+                        <mat-icon>done_all</mat-icon>
+                        Serve Items
+                    </button>
+                    <button mat-button color="primary" *ngIf="form.get('orderStatus').value != 'completed' && form.get('orderStatus').value != 'cancelled'" type="button" (click)="addNewOrderItem()">
+                        <mat-icon>add</mat-icon>
+                        Add Item
+                    </button>
+                </div>
+            </div>
+            <ng-container *ngFor="let item of items['controls'];let i=index;">
+                <div class="order_item_card" *ngIf="!item.get('deletedFlag').value">
+                    <span class="order_item_card_strip" *ngIf="item.get('orderType').value != 'on-table'">{{ item.get('orderType').value | titlecase }}</span>
+                    <div class="img_item">
+                        <img *ngIf="item.get('featuredImage').value" [src]=" url + item.get('featuredImage').value" alt="">
+                        <img *ngIf="!item.get('featuredImage').value" src="/assets/images/food.jpg" alt="">
+                    </div>
+                    <div class="order-details">
+                        <p class="product_name">{{ item.get('productName').value }}</p>
+                        <p class="product_price">
+                            <small>Price: &nbsp;&nbsp;&nbsp;</small>
+                            <span>{{ item.get('price').value | currency  }}</span>
+                        </p>
+                        <p class="product_price" *ngIf="item.get('orderType').value != 'on-table'">
+                            <small>Packaging charges: &nbsp;&nbsp;&nbsp;</small>
+                            <span>{{ item.get('packagingCharges').value | currency  }}</span>
+                        </p>
+                        <p class="product_price">
+                            <small>Total: &nbsp;&nbsp;&nbsp;</small>
+                            <span>{{ item.get('totalPrice').value | currency }}</span>
+                        </p>
+                    </div>
+                    <div class="action_menu">
+                        <div class="input-group mb-0 number_input">
+                            <div class="input-group-prepend">
+                                <button class="btn btn-outline-secondary" type="button" (click)="handleNumberControl(item, 'prev', i)">-</button>
+                            </div>
+                            <input type="text" class="form-control" [formControl]="item.get('quantity')" (keyup)="handleNumberControl(item, 'text', i)" digitOnly>
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-secondary" type="button" (click)="handleNumberControl(item, 'next', i)">+</button>
+                            </div>
+                        </div>
+                        <p class="text-success mt-2">Served: <b>{{ item.get('servedItems').value }}</b></p>
+                    </div>
+                </div>
+            </ng-container>
+        </div>
     </div>
 </form>

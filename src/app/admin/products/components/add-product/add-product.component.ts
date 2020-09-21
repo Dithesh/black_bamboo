@@ -20,14 +20,12 @@ export class AddProductComponent implements OnInit {
   imageSrc="url(\'/assets/images/food.jpg\')";
   url = environment.domain;
   form: FormGroup;
-  displayedColumns: string[] = ['ordertype', 'price', 'packagingCharges'];
-  dataSource = new BehaviorSubject<AbstractControl[]>([]);branchList: any[];
+  branchList: any[];
   productId: any;
   categoryList: any[];
   userData: any;
 ;
   @ViewChild(MatSort, {static: true}) sort: MatSort;
-  orderTypes: any[];
   constructor(
     private _serv: DataService,
     private fb: FormBuilder,
@@ -49,9 +47,7 @@ export class AddProductComponent implements OnInit {
         packagingCharges: [''],
         isActive: [true],
         branch_id: [''],
-        isOrderTypePricing: [''],
         isVeg: [''],
-        orderBasedPrice: this.fb.array([]),
       })
     }
 
@@ -59,8 +55,6 @@ export class AddProductComponent implements OnInit {
     this.userData = this._serv.getUserData();
     if(this.productId) {
       this.getProductDetails();
-    }else {
-      this.getOrderTypes(null);
     }
     this.getAllBranches();
     this.getAllCategories();
@@ -76,45 +70,10 @@ export class AddProductComponent implements OnInit {
         
         this.imageSrc = "url(\'"+ this.url + data.featuredImage +"\')"
       }
-      this.getOrderTypes(data);
       // data.tables.forEach(elem => {
       //   this.tables.push(this.addTable(elem));
       //   this.dataSource.next(this.tables.controls);
       // })
-    })
-  }
-
-
-  get orderBasedPrice() {
-    return this.form.get('orderBasedPrice') as FormArray;
-  }
-
-  getOrderTypes(productData:any) {
-    this._serv.endpoint = "order-manager/order-type?fields=id,typeName";
-    this._serv.get().subscribe(response => {
-      this.orderTypes = response as any[];
-      this.orderTypes.forEach(elem => {
-        let id="", price=0, taxPercent=0, packagingCharges=0;
-        if(productData) {
-          productData.pricings.forEach(prod => {
-              if(prod.orderTypeId == elem.id) {
-                id=prod.id;
-                price= prod.price;
-                taxPercent= prod.taxPercent;
-                packagingCharges= prod.packagingCharges;
-              }
-          })
-        }
-        this.orderBasedPrice.push(this.fb.group({
-          id: [id],
-          price: [price],
-          taxPercent: [taxPercent],
-          packagingCharges: [packagingCharges],
-          orderTypeId: [elem.id],
-          orderTypeName: [elem.typeName]
-        }));
-        this.dataSource.next(this.orderBasedPrice.controls);
-      })
     })
   }
 

@@ -12,7 +12,7 @@ import * as moment from 'moment';
 export class ReportManagerComponent implements OnInit {
 
   orderStatus=['new', 'accepted', 'prepairing', 'packing', 'dispatched', 'delivered', 'completed', 'cancelled'];
-  displayedColumns: string[] = ['action', 'id', 'orderType', 'orderAmount', 'orderStatus', 'created_at'];
+  displayedColumns: string[] = ['action', 'id', 'orderAmount', 'orderStatus', 'created_at'];
   filterForm:FormGroup;
   orderTypeList: any[];
   fileName= 'ExcelSheet.xlsx';
@@ -34,14 +34,6 @@ export class ReportManagerComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.getOrderTypes();
-  }
-
-  getOrderTypes() {
-    this._serv.endpoint = "order-manager/order-type?status=active";
-    this._serv.get().subscribe(response => {
-      this.orderTypeList = response as any[];
-    })
   }
 
   
@@ -56,7 +48,6 @@ export class ReportManagerComponent implements OnInit {
     this._serv.endpoint = "order-manager/order?"
                             + "&searchString="+filterValue.searchString
                             + "&orderStatus="+filterValue.orderStatus
-                            + "&typeOfOrder="+filterValue.typeOfOrder
                             + "&startDate="+startDate
                             + "&endDate="+endDate
                             + "&orderType="+filterValue.orderType
@@ -67,7 +58,7 @@ export class ReportManagerComponent implements OnInit {
   }
 
   exportToExcel() {
-    this.displayedColumns = ['id', 'orderType', 'orderAmount', 'orderStatus', 'created_at'];
+    this.displayedColumns = ['id', 'orderAmount', 'orderStatus', 'created_at'];
     setTimeout(() => {
       const ws: XLSX.WorkSheet =XLSX.utils.table_to_sheet(this.reportTable._elementRef.nativeElement)
  
@@ -77,7 +68,7 @@ export class ReportManagerComponent implements OnInit {
  
       /* save to file */
       XLSX.writeFile(wb, this.fileName);
-      this.displayedColumns = ['action', 'id', 'orderType', 'orderAmount', 'orderStatus', 'created_at'];
+      this.displayedColumns = ['action', 'id', 'orderAmount', 'orderStatus', 'created_at'];
     }, 1000)
   }
 }

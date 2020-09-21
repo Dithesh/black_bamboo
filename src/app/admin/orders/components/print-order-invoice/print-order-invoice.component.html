@@ -1,0 +1,54 @@
+<div class="ticket" id="print-section">
+    <p class="centered">
+        <b class="title">Black bamboo restaurant</b>
+        <br>Mukka, surathkal</p>
+    <table class="m-auto">
+        <thead>
+            <tr>
+                <th class="quantity">Q.</th>
+                <th class="description">Desc.</th>
+                <th class="price">$$</th>
+            </tr>
+        </thead>
+        <tbody>
+            <ng-container *ngFor="let item of orderData?.items;let i=index;">
+                <tr>
+                    <td class="quantity">x{{ item.quantity }}</td>
+                    <td class="description">{{ item.productName }}</td>
+                    <td class="price">{{ item.price | currency: '':'' }}</td>
+                </tr>
+            </ng-container>
+            <tr>
+                <td class="quantity"></td>
+                <th class="description">CGST</th>
+                <th class="price">{{ orderData?.cgst | currency: '':'' }}</th>
+            </tr>
+            <tr>
+                <td class="quantity"></td>
+                <th class="description">SGST</th>
+                <th class="price">{{ orderData?.sgst | currency: '':'' }}</th>
+            </tr>
+            <tr *ngIf="orderData?.deliverCharge">
+                <td class="quantity"></td>
+                <th class="description">Del. Chrg.</th>
+                <th class="price">{{ orderData?.deliverCharge | currency: '':'' }}</th>
+            </tr>
+            <tr *ngIf="orderData?.packingCharge">
+                <td class="quantity"></td>
+                <th class="description">Pkg. Chrg.</th>
+                <th class="price">{{ orderData?.packingCharge | currency: '':'' }}</th>
+            </tr>
+            <tr>
+                <th class="quantity"></th>
+                <th class="description">TOTAL</th>
+                <th class="price">{{ orderData?.orderAmount | currency: '':'' }}</th>
+            </tr>
+        </tbody>
+    </table>
+    <p class="centered">Thank You :(
+        <br>Visit again</p>
+</div>
+
+<button printSectionId="print-section"
+[useExistingCss]="true"
+mat-button ngxPrint>Print</button>

@@ -254,3 +254,159 @@
         font-size: 20px;
     }
 }
+
+
+.order_layout {
+    height: calc(100vh - 160px);
+    border-radius: 5px;
+    overflow: hidden;
+    background-color: rgba($color-primary, 0.1);
+    background-color: #fff;
+    display: grid;
+    grid-template-columns: 1fr 300px;
+    grid-auto-rows: minmax(min-content, max-content) auto;
+
+    
+    grid-template-areas: 
+            "customer billing"
+            "order billing";
+
+    @media (max-width: 1200px) {
+        height: auto;
+        grid-template-columns: 1fr;
+        grid-auto-rows: minmax(min-content, max-content);
+        grid-template-areas: 
+                "customer"
+                "order"
+                "billing";
+    }
+}
+
+.customer_section {
+    padding: 20px 20px 0px;
+    grid-area: customer;
+}
+
+.billing_details {
+    grid-area: billing;
+    background-color: #fff;
+    border-left: 5px solid #fafafa;
+    position: relative;
+
+    & .delivery_box {
+        padding: 20px 20px 0px;
+        border-bottom: 5px solid #fafafa;
+    }
+
+    & .billing_wrapper {
+        padding: 20px 20px 45px;
+        position: relative;
+        & .billing_strip {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: nowrap;
+            margin-bottom: 5px;
+    
+            & .title {
+                font-size: 14px;
+                font-weight: 400;
+                margin-bottom: 0;
+            }
+    
+            & .value_section {
+                width: 100px;
+                font-size: 14px;
+                font-weight: 500;
+                margin-bottom: 0;
+                text-align: right;
+            }
+        }
+    }
+
+
+    & .action_wrapper {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        display: flex;
+    }
+
+    
+    @media (max-width: 1200px) {
+        border-left: none;
+    }
+
+}
+
+.order_items {
+    grid-area: order;
+    padding: 10px 20px;
+    overflow: auto;
+}
+
+
+// order item design
+.order_item_card {
+    display: grid;
+    grid-template-columns: 100px 1fr 120px;
+    grid-auto-rows: minmax(min-content, max-content);
+    background-color: #fff;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    position: relative;
+
+    &:not(:last-child) {
+        margin-bottom: 2rem;
+    }
+
+    & .order_item_card_strip {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        padding: 0 5px;
+        background-color: rgba(#fff, 0.8);
+        font-size: 1rem;
+        color: $color-success;
+    }
+
+    & .img_item {
+        width: 100px;
+        height: 100px;
+        padding: 5px;
+
+        & img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+    }
+
+    & .order-details {
+        padding: 15px; 
+
+        & p.product_name {
+            margin: 0;
+            font-size: 16px;
+            font-weight: 500;
+            color: rgba(#000, 0.8);
+            margin-bottom: 5px;
+        }
+        & p.product_price {
+            margin: 0;
+            display: flex;
+            font-size: 14px;
+        }
+    }
+
+    & .action_menu {
+        padding: 15px 15px 15px 0px;
+        
+    }
+
+
+
+}
+// order item design end
+

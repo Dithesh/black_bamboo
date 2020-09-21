@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TakeAwayPageComponent } from './take-away-page.component';
+import { TableSelectionComponent } from './table-selection.component';
 
-describe('TakeAwayPageComponent', () => {
-  let component: TakeAwayPageComponent;
-  let fixture: ComponentFixture<TakeAwayPageComponent>;
+describe('TableSelectionComponent', () => {
+  let component: TableSelectionComponent;
+  let fixture: ComponentFixture<TableSelectionComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ TakeAwayPageComponent ]
+      declarations: [ TableSelectionComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(TakeAwayPageComponent);
+    fixture = TestBed.createComponent(TableSelectionComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -1,0 +1,44 @@
+<h1>Order Items
+    <button mat-icon-button (click)="close()"><mat-icon>close</mat-icon></button>
+</h1>
+<form [formGroup]="form">
+    <div class="mt-5">
+        <mat-form-field appearance="outline" class="w-100 inline-input">
+            <mat-label>Select Item</mat-label>
+            <mat-chip-list #itemChipList aria-label="Item Selection">
+                <mat-chip
+                  *ngFor="let item of orderItems"
+                  [selectable]="selectable"
+                  [removable]="removable"
+                  (removed)="remove(item)">
+                  {{item.productName}}
+                  <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+                </mat-chip>
+                <input
+                  #itemInput
+                  formControlName="orderItemName"
+                  [matAutocomplete]="auto"
+                  [matChipInputFor]="itemChipList"
+                  [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                  (matChipInputTokenEnd)="add($event)">
+              </mat-chip-list>
+              <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+                <mat-option *ngFor="let item of filteredProductList | async" [value]="item">
+                  {{item.productName}}
+                </mat-option>
+              </mat-autocomplete>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="w-100 inline-input">
+            <mat-label>Order Type</mat-label>
+            <mat-select matNativeControl formControlName="orderType">
+                <mat-option value="on-table">On Table</mat-option>
+                <mat-option value="take-away">Take Away</mat-option>
+                <mat-option value="online">Online</mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
+    
+    <div class="footer_sec">
+        <button mat-raised-button color="primary" (click)="adOrderItem()">Add</button>
+    </div>
+</form>

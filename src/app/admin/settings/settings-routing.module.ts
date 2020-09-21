@@ -2,14 +2,13 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { BranchesSettingComponent } from './branches-setting/branches-setting.component';
 import { CategoriesSettingComponent } from './categories-setting/categories-setting.component';
-import { OrderSettingComponent } from './order-setting/order-setting.component';
-import { AddOrderTypeComponent } from './add-order-type/add-order-type.component';
+import { AddTableManagerComponent } from './add-table-manager/add-table-manager.component';
 
 
 const routes: Routes = [
   {
     path:"",
-    redirectTo:'categories',
+    redirectTo:'branches',
     pathMatch:'full'
   },
   {
@@ -21,17 +20,9 @@ const routes: Routes = [
     component:CategoriesSettingComponent
   },
   {
-    path:"order-type",
-    component:OrderSettingComponent
+    path:"table-manager",
+    component:AddTableManagerComponent
   },
-  {
-    path:"order-type/update",
-    component:AddOrderTypeComponent
-  },
-  {
-    path:"order-type/update/:id",
-    component:AddOrderTypeComponent
-  }
 ];
 
 @NgModule({

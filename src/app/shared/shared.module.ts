@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, DEFAULT_CURRENCY_CODE } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {MatGridListModule} from '@angular/material/grid-list';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -26,10 +26,12 @@ import {MatExpansionModule} from '@angular/material/expansion';
 import { CarouselModule } from 'ngx-owl-carousel-o';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import { NumberFormatterDirective } from './services/number-formater.directive';
+import { DigitOnlyDirective } from './services/digit-only.directive';
 import {  RxReactiveFormsModule } from "@rxweb/reactive-form-validators"
+import {MatChipsModule} from '@angular/material/chips';
 
 @NgModule({
-  declarations: [DatexPipe, SnackbarComponent, ConfirmPopupComponent, NumberFormatterDirective],
+  declarations: [DatexPipe, SnackbarComponent, ConfirmPopupComponent, NumberFormatterDirective, DigitOnlyDirective],
   imports: [
     CommonModule,
     MatButtonModule,
@@ -61,11 +63,14 @@ import {  RxReactiveFormsModule } from "@rxweb/reactive-form-validators"
     CarouselModule,
     MatAutocompleteModule,
     NumberFormatterDirective,
-    RxReactiveFormsModule
+    DigitOnlyDirective,
+    RxReactiveFormsModule,
+    MatChipsModule
   ],
   providers: [
     MatButtonModule,
-    {provide: ErrorStateMatcher, useClass: ShowOnDirtyErrorStateMatcher}
+    {provide: ErrorStateMatcher, useClass: ShowOnDirtyErrorStateMatcher},
+    {provide: DEFAULT_CURRENCY_CODE, useValue: 'INR'}
   ]
 })
 export class SharedModule { }

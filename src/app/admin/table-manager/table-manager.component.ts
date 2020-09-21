@@ -10,13 +10,12 @@ import { DataService } from 'src/app/shared/services/data.service';
 export class TableManagerComponent implements OnInit {
   form: FormGroup;
   tableList: any[];
-  orderTypeList: any[];
   constructor(
     private fb: FormBuilder,
     private _serv: DataService
   ) { 
     this.form = this.fb.group({
-      orderTypes: this.fb.array([])
+      tables: this.fb.array([])
     })
   }
 
@@ -24,12 +23,12 @@ export class TableManagerComponent implements OnInit {
     this.getTableInfo()
   }
 
-  get orderTypes() {
-    return this.form.get('orderTypes') as FormArray;
+  get tables() {
+    return this.form.get('tables') as FormArray;
   }
 
-  addOrderTypeTables(tables, tableList) {
-    tableList.forEach(t => {
+  addTables() {
+    this.tableList.forEach(t => {
       let chairs = [];
       let selectedChairs = (this._serv.notNull(t.selectedChairs))?t.selectedChairs.split(",").filter(x => x!=""):[];
       t.chairs.forEach(elem => {
@@ -45,7 +44,7 @@ export class TableManagerComponent implements OnInit {
         }
       })
 
-      tables.push(this.fb.group({
+      this.tables.push(this.fb.group({
         id: [t.id],
         tableId: [t.tableId],
         noOfChair: [t.noOfChair],
@@ -61,26 +60,14 @@ export class TableManagerComponent implements OnInit {
   getTableInfo() {
     this._serv.endpoint = "order-manager/tables";
     this._serv.get().subscribe(response => {
-      this.orderTypeList = response as any[];
-      this.orderTypes.controls = [];
-      this.orderTypes.reset();
-      this.orderTypeList.forEach(elem => {
-        let type = this.fb.group({
-          id: [elem.id],
-          typeName: [elem.typeName],
-          tables: this.fb.array([])
-        });
-        this.orderTypes.push(type)
-        let tables=type.get('tables') as FormArray;
-        this.addOrderTypeTables(tables, elem.tables);
-      })
-      
+      this.tableList = response as any[];
+      this.addTables();
     })
   }
 
   changeReservedStatus(table) {
     let value = table.value;
-    this._serv.endpoint = "order-manager/order-type/reserved/"+value.id;
+    this._serv.endpoint = "order-manager/table-manager/reserved/"+value.id;
     this._serv.put({isReserved: !value.isReserved}).subscribe(response => {
       table.get('isReserved').setValue(!value.isReserved);
     }, ({error}) => {

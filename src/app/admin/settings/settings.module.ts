@@ -7,10 +7,11 @@ import { BranchesSettingComponent } from './branches-setting/branches-setting.co
 import { OrderSettingComponent } from './order-setting/order-setting.component';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { AddOrderTypeComponent } from './add-order-type/add-order-type.component';
+import { AddTableManagerComponent } from './add-table-manager/add-table-manager.component';
 
 
 @NgModule({
-  declarations: [CategoriesSettingComponent, BranchesSettingComponent, OrderSettingComponent, AddOrderTypeComponent],
+  declarations: [CategoriesSettingComponent, BranchesSettingComponent, OrderSettingComponent, AddOrderTypeComponent, AddTableManagerComponent],
   imports: [
     CommonModule,
     SettingsRoutingModule,
