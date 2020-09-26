@@ -54,7 +54,7 @@
                 </li>
             </ul>
         </li>
-        <li routerLinkActive="subOpen" class="have_submenu">
+        <!-- <li routerLinkActive="subOpen" class="have_submenu">
             <a href="javascript:;"  routerLink="/admin/account" (click)="openAccountMenu()" matRipple [matRippleUnbounded]="false">
                 <mat-icon>addchart</mat-icon> <span class="d-inline-block ml-3">Account </span>
                 <mat-icon class="ml-auto right_arrow">keyboard_arrow_down</mat-icon>
@@ -81,9 +81,9 @@
                     </a>
                 </li>
             </ul>
-        </li>
+        </li> -->
         <li>
-            <a href="javascript:;" matRipple [matRippleUnbounded]="false">
+            <a href="javascript:;" matRipple [matRippleUnbounded]="false" (click)="signOut()">
                 <mat-icon>power_settings_new</mat-icon> <span class="d-inline-block ml-3">Sign Out</span>
             </a>
         </li>

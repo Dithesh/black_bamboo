@@ -12,6 +12,10 @@ const routes: Routes = [
     loadChildren: () => import('./guest/guest.module').then(mod => mod.GuestModule),
   },
   {
+    path: "kitchen",
+    loadChildren: () => import('./kitchen/kitchen.module').then(mod => mod.KitchenModule),
+  },
+  {
     path: "",
     redirectTo:'/guest/signin',
     pathMatch:'full'

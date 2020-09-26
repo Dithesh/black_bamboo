@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { LayoutService } from '../services/layout.service';
 
 @Component({
@@ -9,7 +10,7 @@ import { LayoutService } from '../services/layout.service';
 export class SidebarComponent implements OnInit {
   settingOpen=false;
   accoutnOpen=false;
-  constructor(public _layout: LayoutService) { }
+  constructor(public _layout: LayoutService, private router: Router) { }
 
   ngOnInit(): void {
   }
@@ -20,5 +21,10 @@ export class SidebarComponent implements OnInit {
   openAccountMenu(){
     this.accoutnOpen = !this.accoutnOpen;
     this._layout.isOpened = true;
+  }
+
+  signOut() {
+    localStorage.removeItem('lock_token');
+    this.router.navigateByUrl('/');
   }
 }

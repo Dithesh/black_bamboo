@@ -1,0 +1,36 @@
+<div class="container-fluid  pa-20">
+    <div class="row">
+        <div class="col-12 col-xl-6">
+            <div class="row">
+                <div class="col-12 col-lg-6" *ngFor="let item of itemData;">
+                    <div class="kitchen_card item_card">
+                        <div class="item_img">
+                            <img *ngIf="item.product.featuredImage" [src]=" url + item.product.featuredImage" alt="">
+                            <img *ngIf="!item.product.featuredImage" src="/assets/images/food.jpg" alt="">
+                        </div>
+                        <div class="content">
+                            <h3 class="title">{{ item.product.productName }}</h3>
+                            <span class="parcel" *ngIf="item.parcelQuantity > 0">Parcel : <b>{{ item.parcelQuantity }}</b></span>
+                        </div>
+                        <h4>{{ item.quantity }} </h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-xl-6" >
+            <div class="row">
+                <div class="col-12 col-lg-6" *ngFor="let order of orderData;">
+                    <div class="kitchen_card pa-20 order_card">
+                        <div class="header">
+                            <h1 class="order_id">Order No: <span>{{ order.id }}</span></h1>
+                            <span>{{ order.updated_at | datex: 'DD-MM-YYYY hh:mm a'}}</span>
+                        </div>
+                        <ul class="order_item_list">
+                            <li *ngFor="let item of order.order_items"><span>{{ item.product.productName }}: <b class="text-muted">({{item.orderType | titlecase}})</b></span><span class="quantity">{{ item.pendingQuantity }}</span></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
