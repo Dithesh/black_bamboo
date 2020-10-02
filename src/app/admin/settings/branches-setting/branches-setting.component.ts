@@ -18,8 +18,6 @@ export class BranchesSettingComponent implements OnInit, AfterViewInit {
 
   displayedColumns: string[] = ['action', 'branchCode', 'branchTitle', 'description', 'branchAddress', 'isActive'];
   dataSource;
-  sidemenu=false;
-  form:FormGroup;
   filterForm:FormGroup;
 
   @ViewChild(MatSort) sort: MatSort;
@@ -34,14 +32,6 @@ export class BranchesSettingComponent implements OnInit, AfterViewInit {
       orderCol: [''],
       orderType: ['']
     });
-    this.form = this.fb.group({
-      id: [''],
-      branchCode: [''],
-      branchTitle: [''],
-      description: [''],
-      branchAddress: [''],
-      isActive: [false]
-    })
   }
 
   ngOnInit(): void {
@@ -75,42 +65,6 @@ export class BranchesSettingComponent implements OnInit, AfterViewInit {
     this._serv.endpoint="order-manager/branch/status/"+data.id;
     this._serv.put(data).subscribe(response => {
       this._serv.showMessage("Branch status changed successfully", 'success');
-    }, ({error}) => {
-      this._serv.showMessage(error['msg'], 'error');
-    })
-  }
-
-  updateBranch(item = null) {
-    if(item == null) {
-      this.form.reset();
-    }else {
-      this.form.patchValue(item);
-    }
-    this.sidemenu = true;
-  }
-
-  cancelUpdate() {
-    this.sidemenu=false;
-    this.form.reset();
-  }
-
-  saveBranch(event=null) {
-    if(event!=null)event.preventDefault();
-    this.form.markAllAsTouched();
-    if(this.form.invalid)return;
-    let formValue = this.form.value;
-    this._serv.endpoint="order-manager/branch";
-    let apiCall=null;
-    if(formValue.id && formValue.id != null && formValue.id !=undefined){
-      this._serv.endpoint+='/'+formValue.id;
-      apiCall = this._serv.put(formValue);
-    }else {
-      apiCall = this._serv.post(formValue);
-    }
-    apiCall.subscribe(response => {
-      this._serv.showMessage("Branch updated successfully", 'success')
-      this.cancelUpdate();
-      this.getAllBranches();
     }, ({error}) => {
       this._serv.showMessage(error['msg'], 'error');
     })

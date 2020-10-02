@@ -9,7 +9,7 @@
                 <div class="row ew-130 mx-auto position-relative h-100 no-gutters">
                     <span class="table_circle" (click)="changeReservedStatus(item)">{{ item.get('tableId').value }}</span>
                     <ng-container formArrayName="chairs">
-                        <div class="table_innerBox col-auto order-1" *ngIf="item.get('chairs')['controls'].length > 0">
+                        <!-- <div class="table_innerBox col-auto order-1" *ngIf="item.get('chairs')['controls'].length > 0">
                             <div class="table_seat_checkBox vertical" formGroupName="0">
                                 <input type="checkbox" formControlName="isSelected" [id]="0+'chair'+ti">
                                 <label [for]="0+'chair'+ti" [class.pointer-none]="item.get('chairs')['controls'][0].get('permission').value == 'blocked'"></label>
@@ -20,11 +20,11 @@
                                 <input type="checkbox" formControlName="isSelected" [id]="1+'chair'+ti">
                                 <label [for]="1+'chair'+ti" [class.pointer-none]="item.get('chairs')['controls'][1].get('permission').value == 'blocked'"></label>
                             </div>
-                        </div>
+                        </div> -->
                         <div class="table_innerBox col order-2">
                             <div class="d-flex mx-1 w-100">
                                 <ng-container *ngFor="let chair of item.get('chairs')['controls'];let ci = index;">
-                                    <ng-container *ngIf="ci != 0 && ci != 1 && ci%2 == 0">
+                                    <ng-container *ngIf="ci%2 == 0">
                                         <div class="radio_outer px-1">
                                             <div class="table_seat_checkBox horizontal" [formGroupName]="ci">
                                                 <input type="checkbox" [id]="ci+'chair'+ti" formControlName="isSelected">

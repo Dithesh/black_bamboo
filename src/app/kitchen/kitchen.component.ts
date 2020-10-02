@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { environment } from 'src/environments/environment';
 import { DataService } from '../shared/services/data.service';
 
@@ -10,10 +11,14 @@ import { DataService } from '../shared/services/data.service';
 export class KitchenComponent implements OnInit {
   orderData;
   itemData;
+  branchId;
   url = environment.domain;
   constructor(
-    private _serv: DataService
-  ) { }
+    private _serv: DataService,
+    private route: ActivatedRoute
+  ) { 
+    this.branchId = this.route.snapshot.params.branch;
+  }
 
   ngOnInit(): void {
     this.getOrderStats();
@@ -26,7 +31,7 @@ export class KitchenComponent implements OnInit {
 
 
   getOrderStats() {
-    this._serv.endpoint = "kitchen/1"
+    this._serv.endpoint = "kitchen/"+this.branchId;
     this._serv.get().subscribe((response:any) => {
       console.log(response.orders);
       this.itemData = response.items;

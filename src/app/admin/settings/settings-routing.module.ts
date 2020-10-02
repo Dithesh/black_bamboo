@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { BranchesSettingComponent } from './branches-setting/branches-setting.component';
 import { CategoriesSettingComponent } from './categories-setting/categories-setting.component';
 import { AddTableManagerComponent } from './add-table-manager/add-table-manager.component';
+import { UpdateBranchComponent } from './branches-setting/update-branch/update-branch.component';
 
 
 const routes: Routes = [
@@ -14,6 +15,14 @@ const routes: Routes = [
   {
     path:"branches",
     component: BranchesSettingComponent
+  },
+  {
+    path:"branches/update",
+    component: UpdateBranchComponent
+  },
+  {
+    path:"branches/update/:id",
+    component: UpdateBranchComponent
   },
   {
     path:"categories",
