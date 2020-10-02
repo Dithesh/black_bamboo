@@ -31,10 +31,16 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-12">
+                    <div class="col-6">
                         <mat-form-field  appearance="outline" class="w-100 pb-0 mb-15">
                             <mat-label>Branch Address</mat-label>
                             <input type="text" formControlName="branchAddress" matInput>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-6">
+                        <mat-form-field  appearance="outline" class="w-100 pb-0 mb-15">
+                            <mat-label>Tax Percentage</mat-label>
+                            <input type="text" formControlName="taxPercent" matInput>
                         </mat-form-field>
                     </div>
                     
@@ -47,6 +53,58 @@
                 </div>
             </div>
         </div>
+
+        <mat-card class="mt-15">
+            <h3 class="mb-10 d-flex justify-content-between align-items-center">
+                Kitchen Setup
+                <button mat-stroked-button color="primary" type="button" (click)="addAnotherKitchen()">+ Add</button>
+            </h3>
+    
+            <div formArrayName="kitchens">
+                <ng-container *ngFor="let item of kitchens['controls'];let i=index;">
+                    <div class="row align-items-center" *ngIf="!item.get('deletedFlag').value" [formGroupName]="i">
+                        <div class="col-sm-4">
+                            <mat-form-field  appearance="outline" class="w-100 pb-0 mb-15">
+                                <mat-label>Kitchen Title</mat-label>
+                                <input type="text" formControlName="kitchenTitle" matInput>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-auto">
+                            <button mat-button color="primary" type="button" class="mb-15" (click)="deleteKitchen(item, i)">- Delete</button>
+                        </div>
+                    </div>
+                </ng-container>
+            </div>
+        </mat-card>
+
+        <mat-card class="mt-15">
+            <h3 class="mb-10 d-flex justify-content-between align-items-center">
+                Order Type Setup
+                <button mat-stroked-button color="primary" type="button" (click)="addAnotherOrderType()">+ Add</button>
+            </h3>
+    
+            <div formArrayName="orderTypes">
+                <ng-container *ngFor="let item of orderTypes['controls'];let i=index;">
+                    <div class="row align-items-center" *ngIf="!item.get('deletedFlag').value" [formGroupName]="i">
+                        <div class="col">
+                            <mat-form-field  appearance="outline" class="w-100 pb-0 mb-15">
+                                <mat-label>Title</mat-label>
+                                <input type="text" formControlName="orderType" matInput>
+                            </mat-form-field>
+                        </div>
+                        <div class="col">
+                            <mat-slide-toggle color="accent" class="mb-15" formControlName="tableRequired">Table Required?</mat-slide-toggle>
+                        </div>
+                        <div class="col">
+                            <mat-slide-toggle color="accent" class="mb-15" formControlName="isActive">Active?</mat-slide-toggle>
+                        </div>
+                        <div class="col-auto">
+                            <button mat-button color="primary" type="button" class="mb-15" (click)="deleteOrderType(item, i)">- Delete</button>
+                        </div>
+                    </div>
+                </ng-container>
+            </div>
+        </mat-card>
 
 
 

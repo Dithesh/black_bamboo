@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DataService } from 'src/app/shared/services/data.service';
 import { environment } from 'src/environments/environment';
@@ -30,7 +30,10 @@ export class UpdateBranchComponent implements OnInit {
       branchTitle: [''],
       description: [''],
       branchAddress: [''],
-      isActive: [false]
+      isActive: [false],
+      taxPercent: [''],
+      kitchens: this.fb.array([]),
+      orderTypes: this.fb.array([]),
     })
   }
 
@@ -41,15 +44,76 @@ export class UpdateBranchComponent implements OnInit {
     }
   }
 
+  get kitchens() {
+    return this.form.get('kitchens') as FormArray;
+  }
+
+  addNewKitchen() {
+    return this.fb.group({
+      id: [''],
+      kitchenTitle: [''],
+      deletedFlag: [false]
+    })
+  }
+
+  addAnotherKitchen() {
+    this.kitchens.push(this.addNewKitchen());
+  }
+
+  deleteKitchen(item, index) {
+    if(this._serv.notNull(item.get('id').value)) {
+      item.get('deletedFlag').setValue(true);
+    }else {
+      this.kitchens.removeAt(index);
+    }
+  }
+
+  get orderTypes() {
+    return this.form.get('orderTypes') as FormArray;
+  }
+
+  addOrderType() {
+    return this.fb.group({
+      id: [''],
+      orderType: [''],
+      tableRequired: [false],
+      isActive: [true],
+      deletedFlag: [false]
+    })
+  }
+
+  addAnotherOrderType() {
+    this.orderTypes.push(this.addOrderType());
+  }
+
+  deleteOrderType(item, index) {
+    if(this._serv.notNull(item.get('id').value)) {
+      item.get('deletedFlag').setValue(true);
+    }else {
+      this.orderTypes.removeAt(index);
+    }
+  }
+
   getBranchDetails() {
     this._serv.endpoint = "order-manager/branch/"+this.branchId;
     this._serv.get().subscribe((data:any) => {
       this.form.patchValue(data);
       
       if(this._serv.notNull(data.branchLogo)){
-        
         this.imageSrc = "url(\'"+ this.url + data.branchLogo +"\')"
       }
+
+      console.log(data);
+      data.kitchens.forEach(elem => {
+        let form = this.addNewKitchen();
+        form.patchValue(elem);
+        this.kitchens.push(form);
+      })
+      data.order_types.forEach(elem => {
+        let form = this.addOrderType();
+        form.patchValue(elem);
+        this.orderTypes.push(form);
+      })
       // data.tables.forEach(elem => {
       //   this.tables.push(this.addTable(elem));
       //   this.dataSource.next(this.tables.controls);
@@ -64,14 +128,7 @@ export class UpdateBranchComponent implements OnInit {
     if(this.form.invalid)return;
     let formValue = this.form.value;
     this._serv.endpoint="order-manager/branch";
-    let apiCall=null;
-    if(formValue.id && formValue.id != null && formValue.id !=undefined){
-      this._serv.endpoint+='/'+formValue.id;
-      apiCall = this._serv.put(formValue);
-    }else {
-      apiCall = this._serv.post(formValue);
-    }
-    apiCall.subscribe(response => {
+    this._serv.post(formValue).subscribe(response => {
       this._serv.showMessage("Branch updated successfully", 'success')
       this.router.navigateByUrl('/admin/settings/branches')
     }, ({error}) => {
