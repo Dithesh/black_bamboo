@@ -58,8 +58,12 @@ export class DataService {
     return value != "" && value != null && value != undefined;
   }
 
-  getUserData() {
-    let token = localStorage.getItem('lock_token');
+  getUserData(key  = 'lock_token') {
+    let token = localStorage.getItem(key);
+    return this.deocodeToken(token);
+  }
+
+  deocodeToken(token) {
     if(this.notNull(token)) {
       const helper = new JwtHelperService();
       let decoded = helper.decodeToken(token);

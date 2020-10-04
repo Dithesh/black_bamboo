@@ -28,14 +28,9 @@
                 </mat-option>
               </mat-autocomplete>
         </mat-form-field>
-        <mat-form-field appearance="outline" class="w-100 inline-input">
-            <mat-label>Order Type</mat-label>
-            <mat-select matNativeControl formControlName="orderType">
-                <mat-option value="on-table">On Table</mat-option>
-                <mat-option value="take-away">Take Away</mat-option>
-                <mat-option value="online">Online</mat-option>
-            </mat-select>
-        </mat-form-field>
+        <div class="mb-20">
+            <mat-slide-toggle formControlName="isParcel" color="primary">Parcel?</mat-slide-toggle>
+        </div>
     </div>
     
     <div class="footer_sec">

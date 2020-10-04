@@ -19,6 +19,8 @@ import { ChangePasswordComponent } from './layout/component/change-password/chan
 import { ChangeProfileComponent } from './layout/component/change-profile/change-profile.component';
 import { MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { SharedModule } from '../shared/shared.module';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { TokenInterceptor } from '../shared/services/intercepter';
 
 
 @NgModule({
@@ -34,6 +36,11 @@ import { SharedModule } from '../shared/shared.module';
   entryComponents: [ChangePasswordComponent, ChangeProfileComponent],
   providers:[
     MatDialogModule,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: TokenInterceptor,
+      multi: true
+    },
   ]
 })
 export class AdminModule { }

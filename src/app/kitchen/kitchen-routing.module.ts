@@ -8,8 +8,18 @@ const routes: Routes = [
     path: "",
     children: [
       {
-        path: ":branch",
-        component: KitchenComponent
+        path: "dashboard",
+        component: KitchenComponent,
+        loadChildren: () => import('./../kitchen/kitchen-dashboard/kitchen-dashboard.module').then(mod => mod.KitchenDashboardModule),
+      },
+      {
+        path: "guest",
+        loadChildren: () => import('./../guest/guest.module').then(mod => mod.GuestModule),
+      },
+      {
+        path: "**",
+        redirectTo: "guest",
+        pathMatch: 'full'
       }
     ]
   }

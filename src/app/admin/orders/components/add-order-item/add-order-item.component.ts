@@ -33,7 +33,7 @@ export class AddOrderItemComponent implements OnInit {
   ) { 
     this.form = this.fb.group({
       orderItemName: [''],
-      orderType: ['on-table']
+      isParcel: [false]
     })
   }
 
@@ -48,7 +48,7 @@ export class AddOrderItemComponent implements OnInit {
     }
     this.dialogRef.close({
       items: this.orderItems,
-      orderType: this.form.get('orderType').value
+      isParcel: this.form.get('isParcel').value
     });
   }
 
@@ -58,7 +58,7 @@ export class AddOrderItemComponent implements OnInit {
 
 
   getAllProducts() {
-    this._serv.endpoint = "order-manager/product?status=active&needPricing=detailed";
+    this._serv.endpoint = "order-manager/product?status=active&needPricing=detailed&stockStatus=in-stock";
     this._serv.get().subscribe(response => {
       this.productList = response as any[];
       this.filteredProductList = this.form.get('orderItemName').valueChanges.pipe(

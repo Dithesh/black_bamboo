@@ -1,20 +1,14 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { SigninComponent } from './signin/signin.component';
-
+import { KitchenDashboardComponent } from './kitchen-dashboard.component';
 
 const routes: Routes = [
   {
     path: "",
     children: [
       {
-        path: "signin",
-        component: SigninComponent
-      },
-      {
-        path: "**",
-        redirectTo: 'signin',
-        pathMatch: 'full'
+        path: "",
+        component: KitchenDashboardComponent
       }
     ]
   }
@@ -24,4 +18,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class GuestRoutingModule { }
+export class KitchenDashboardRoutingModule { }

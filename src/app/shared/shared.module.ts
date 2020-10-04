@@ -70,7 +70,8 @@ import {MatChipsModule} from '@angular/material/chips';
   providers: [
     MatButtonModule,
     {provide: ErrorStateMatcher, useClass: ShowOnDirtyErrorStateMatcher},
-    {provide: DEFAULT_CURRENCY_CODE, useValue: 'INR'}
+    {provide: DEFAULT_CURRENCY_CODE, useValue: 'INR'},
+    
   ]
 })
 export class SharedModule { }

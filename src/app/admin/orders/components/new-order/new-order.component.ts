@@ -14,18 +14,6 @@ import { TableSelectionComponent } from '../table-selection/table-selection.comp
 import { ServeOrderItemComponent } from '../serve-order-item/serve-order-item.component';
 import { ConfirmPopupComponent } from 'src/app/shared/components/confirm-popup/confirm-popup.component';
 
-export interface PeriodicElement {
-  product: string;
-  quantity: number;
-  price: number;
-  total: number;
-}
-
-const ELEMENT_DATA: PeriodicElement[] = [
-  {product: 'item', quantity: 1, price: 1.0079, total: 10},
-  {product: 'item', quantity: 2, price: 4.0026, total: 12},
-];
-
 @Component({
   selector: 'app-new-order',
   templateUrl: './new-order.component.html',
@@ -78,8 +66,7 @@ export class NewOrderComponent implements OnInit {
   tableList: any[];
   orderId;
   productList: any[];
-  displayedColumns: string[] = ['product', 'quantity', 'price', 'total'];
-  dataSource = new BehaviorSubject<AbstractControl[]>([]);branchList: any[];
+  branchList: any[];
   blockForms: boolean;
   userData: any;
   url = environment.domain;
@@ -107,6 +94,7 @@ export class NewOrderComponent implements OnInit {
       extraCharge: [''],
       deliverCharge: [''],
       orderStatus: ['new'],
+      orderType: [''],
       tables: this.fb.array([]),
       items: this.fb.array([]),
     })
@@ -115,19 +103,25 @@ export class NewOrderComponent implements OnInit {
 
   ngOnInit() {
     this.userData = this._serv.getUserData();
-    this.getAllBranches();
     if(this.orderId) {
       this.getOrderDetail();
-    } 
+    }else {
+      if(this.userData.roles != 'Super Admin') {
+        this.form.get('branch_id').setValue(this.userData.branch_id);
+        this.getBranchDetail(this.userData.branch_id);
+      }
+    }
+    if(this.userData.roles == 'Super Admin') {
+      this.getAllBranches();
+    }
     this.getTableInfo();
   }
-
   addOrderItem() {
     return this.fb.group({
       id: [''],
       productId: [''],
       productName: [''],
-      orderType: [''],
+      isParcel: [''],
       price: ['0.00'],
       quantity: ['1'],
       servedItems: ['0'],
@@ -156,7 +150,7 @@ export class NewOrderComponent implements OnInit {
       if(response) {
         let removeElement=[];
         this.items.controls.forEach(control => {
-          if(control.get('orderType').value == response.orderType) {
+          if(control.get('isParcel').value == response.isParcel) {
             response.items.forEach((elem, index) => {
               if(control.get('productId').value == elem.id) {
                 removeElement.unshift(index);
@@ -174,9 +168,9 @@ export class NewOrderComponent implements OnInit {
             productId: item.id,
             productName: item.productName,
             featuredImage: item.featuredImage,
-            orderType: response.orderType,
+            isParcel: response.isParcel,
             price: item.price,
-            packagingCharges: (response.orderType != 'on-table')?item.packagingCharges:'0'
+            packagingCharges: (response.isParcel)?item.packagingCharges:'0'
           })
           this.items.push(form);
           this.getOrderItemTotal(form);
@@ -189,7 +183,7 @@ export class NewOrderComponent implements OnInit {
     let itemValue = orderItem.value;
     let price = (itemValue.price)?parseFloat(itemValue.price):0;
     let quantity = (itemValue.quantity)?parseFloat(itemValue.quantity):0;
-    let packagingCharges = (itemValue.packagingCharges && itemValue.orderType != 'on-table')?parseFloat(itemValue.packagingCharges):0;
+    let packagingCharges = (itemValue.packagingCharges && itemValue.isParcel)?parseFloat(itemValue.packagingCharges):0;
     orderItem.get('totalPrice').setValue((price * quantity) + (packagingCharges * quantity));
     this.handleFinalPricing();
   }
@@ -303,6 +297,10 @@ export class NewOrderComponent implements OnInit {
       this.branchList = response as any[];
       if(this.orderId == undefined && this.branchList.length > 0) {
         this.form.get('branch_id').setValue(this.branchList[0].id);
+        this.getBranchDetail(this.branchList[0].id);
+        this.form.get('branch_id').valueChanges.subscribe(value => {
+          this.getBranchDetail(value);
+        })
       }
     })
   }
@@ -323,6 +321,7 @@ export class NewOrderComponent implements OnInit {
         packingCharge: response.packingCharge,
         deliverCharge: response.deliverCharge,
         orderStatus: response.orderStatus,
+        orderType: response.orderType
       });
 
       if(response.orderStatus == 'completed' || response.orderStatus == 'cancelled') {
@@ -338,7 +337,7 @@ export class NewOrderComponent implements OnInit {
           id: item.id,
           productId: item.product.id,
           productName: item.product.productName,
-          orderType: item.orderType,
+          isParcel: item.isParcel,
           price: item.price,
           quantity: item.quantity,
           servedItems: item.servedQuantity,
@@ -349,7 +348,7 @@ export class NewOrderComponent implements OnInit {
         });
         this.items.push(orderItem);
       })
-      this.dataSource.next(this.items.controls);
+      this.getBranchDetail(response.branch_id);
       this.handleFinalPricing();
     })
   }
@@ -390,13 +389,17 @@ export class NewOrderComponent implements OnInit {
   saveOrder(type = "confirm") {
     let orderData = {...this.form.value};
 
+    if(this.selectedOrderType.tableRequired) {
+      orderData.tables = orderData.tables.map((table:any) => {
+        return {
+          ...table,
+          chairs: table.chairs.filter(chair => (chair.isSelected && chair.permission == 'full')).map(chair => chair.chairId).join(',')
+        }
+      }).filter(table => table.chairs != "");
+    }else {
+      orderData.tables=[];
+    }
     
-    orderData.tables = orderData.tables.map((table:any) => {
-      return {
-        ...table,
-        chairs: table.chairs.filter(chair => (chair.isSelected && chair.permission == 'full')).map(chair => chair.chairId).join(',')
-      }
-    }).filter(table => table.chairs != "");
 
     if(orderData.items.length <= 0) {
       this._serv.showMessage('Please add items.', 'error');
@@ -433,15 +436,10 @@ export class NewOrderComponent implements OnInit {
   }
 
   updateOrder(orderData) {
-    let api=null;
+    console.log("test");
+    
     this._serv.endpoint="order-manager/order";
-    if(orderData.id == "") {
-      api = this._serv.post(orderData);
-    }else {
-      this._serv.endpoint+="/"+orderData.id;
-      api = this._serv.put(orderData);
-    }
-    api.subscribe(response => {
+    this._serv.post(orderData).subscribe((response:any) => {
       this._serv.showMessage("Order saved successfully", 'success');
 
       if(orderData.orderStatus == "completed") {
@@ -463,6 +461,33 @@ export class NewOrderComponent implements OnInit {
     this.dialog.open(PrintOrderInvoiceComponent, {
       data: {
         orderData: orderData
+      }
+    })
+  }
+
+  getBranchDetail(branch_id) {
+    if(!this._serv.notNull(branch_id)){
+      this.orderTypeList=[];
+      return;
+    }
+    console.log("test in");
+    
+    this._serv.endpoint="order-manager/branch/"+branch_id;
+    this._serv.get().subscribe((response:any) => {
+      this.orderTypeList = response.order_types as any[];
+      if(!this._serv.notNull(this.orderId) && this.orderTypeList.filter.length > 0) {
+        this.changeOrderType(this.orderTypeList[0].id);
+      }else {
+        this.changeOrderType(this.form.get('orderType').value)
+      }
+    })
+  }
+
+  changeOrderType(orderTypeId) {
+    this.orderTypeList.forEach(elem => {
+      if(elem.id == orderTypeId) {
+        this.selectedOrderType = elem;
+        this.form.get('orderType').setValue(orderTypeId)
       }
     })
   }

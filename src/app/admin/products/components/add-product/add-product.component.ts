@@ -23,6 +23,7 @@ export class AddProductComponent implements OnInit {
   branchList: any[];
   productId: any;
   categoryList: any[];
+  kitchenList: any[];
   userData: any;
 ;
   @ViewChild(MatSort, {static: true}) sort: MatSort;
@@ -47,7 +48,9 @@ export class AddProductComponent implements OnInit {
         packagingCharges: [''],
         isActive: [true],
         branch_id: [''],
-        isVeg: [''],
+        isVeg: [false],
+        isOutOfStock: [false],
+        kitchen_id: [''],
       })
     }
 
@@ -56,7 +59,12 @@ export class AddProductComponent implements OnInit {
     if(this.productId) {
       this.getProductDetails();
     }
-    this.getAllBranches();
+    if(this.userData.roles != 'Super Admin') {
+        this.form.get('branch_id').setValue(this.userData.branch_id);
+        this.getBranchDetails(this.userData.branch_id);
+    }else{
+      this.getAllBranches();
+    }
     this.getAllCategories();
   }
 
@@ -65,6 +73,7 @@ export class AddProductComponent implements OnInit {
     this._serv.get().subscribe((data:any) => {
       data.categories = data.categories.map(x => x.id);
       this.form.patchValue(data);
+      this.getBranchDetails(data.branch_id)
       
       if(this._serv.notNull(data.featuredImage)){
         
@@ -83,14 +92,7 @@ export class AddProductComponent implements OnInit {
     if(this.form.invalid)return;
     let formValue = this.form.value;
     this._serv.endpoint="order-manager/product";
-    let apiCall=null;
-    if(formValue.id && formValue.id != null && formValue.id !=undefined){
-      this._serv.endpoint+='/'+formValue.id;
-      apiCall = this._serv.put(formValue);
-    }else {
-      apiCall = this._serv.post(formValue);
-    }
-    apiCall.subscribe(response => {
+    this._serv.post(formValue).subscribe(response => {
       this._serv.showMessage("Product updated successfully", 'success');
       this.router.navigateByUrl('/admin/products');
     }, ({error}) => {
@@ -111,7 +113,13 @@ export class AddProductComponent implements OnInit {
       this.branchList = response as any[];
       if(this.productId == undefined && this.branchList.length > 0) {
         this.form.get('branch_id').setValue(this.branchList[0].id);
+        this.getBranchDetails(this.branchList[0].id)
       }
+      
+      this.form.get('branch_id').valueChanges.subscribe(value => {
+        this.form.get('kitchen_id').setValue('');
+        this.getBranchDetails(value)
+      });
     })
   }
   
@@ -133,6 +141,17 @@ export class AddProductComponent implements OnInit {
     let imageSrc = reader.result;
     this.form.get('image').setValue(imageSrc)
     this.imageSrc = "url(\'"+imageSrc+"\')";
+  }
+
+  getBranchDetails(branch_id) {
+    if(!this._serv.notNull(branch_id)){
+      this.kitchenList=[];
+      return;
+    }
+    this._serv.endpoint="order-manager/branch/"+branch_id;
+    this._serv.get().subscribe((response:any) => {
+      this.kitchenList = response.kitchens as any[];
+    })
   }
 
 }

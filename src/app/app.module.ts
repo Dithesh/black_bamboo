@@ -21,11 +21,6 @@ import { SnackService } from './shared/services/snack.service';
     MatSnackBarModule,
   ],
   providers: [
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: TokenInterceptor,
-      multi: true
-    },
     SnackService,
     MatSnackBar
   ],

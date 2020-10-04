@@ -82,13 +82,13 @@
             & .table_circle {
                 background-color: $color-accent;
             }
-            & .table_innerBox {
-                & .table_seat_checkBox {
-                    & label {
-                        background-color: $color-accent;
-                    }
-                }
-            }
+            // & .table_innerBox {
+            //     & .table_seat_checkBox {
+            //         & label {
+            //             background-color: $color-accent;
+            //         }
+            //     }
+            // }
         }
     }
 }

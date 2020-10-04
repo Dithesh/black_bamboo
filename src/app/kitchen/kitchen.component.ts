@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { environment } from 'src/environments/environment';
+import { LayoutService } from '../admin/layout/services/layout.service';
 import { DataService } from '../shared/services/data.service';
 
 @Component({
@@ -15,18 +16,19 @@ export class KitchenComponent implements OnInit {
   url = environment.domain;
   constructor(
     private _serv: DataService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    public _layout: LayoutService,
   ) { 
     this.branchId = this.route.snapshot.params.branch;
   }
 
   ngOnInit(): void {
-    this.getOrderStats();
+    // this.getOrderStats();
 
 
-    setInterval(()=> {
-      this.getOrderStats();
-    }, 30000)
+    // setInterval(()=> {
+    //   this.getOrderStats();
+    // }, 30000)
   }
 
 

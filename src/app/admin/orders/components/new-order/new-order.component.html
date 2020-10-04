@@ -294,15 +294,29 @@
 </form> -->
 
 <form [formGroup]="form">
-    <div class="page_header d-flex mb-4">
+    <div class="page_header d-flex mb-10">
         <h2 class="header_title" *ngIf="!orderId">New Order</h2>
         <h2 class="header_title" *ngIf="orderId">Edit Order : {{orderId}}</h2>
-        <div class="ml-auto">
-            <button mat-button color="primary" type="button" (click)="manageTables()">
-                <mat-icon>view_module</mat-icon>
-                Tables
-            </button>
-        </div>
+    </div>
+
+    <div class="d-flex mb-20">
+        <mat-form-field appearance="outline" class="pb-0 mr-10" *ngIf="userData?.roles == 'Super Admin'">
+            <mat-label>Branch</mat-label>
+            <mat-select matNativeControl formControlName="branch_id"  [required]="userData?.roles == 'Super Admin'">
+                <mat-option *ngFor="let item of branchList;" [value]="item.id">{{ item.branchTitle }}</mat-option>
+            </mat-select>
+        </mat-form-field>
+        <mat-chip-list aria-label="Fish selection">
+            <ng-container *ngFor="let item of orderTypeList;">
+                <mat-chip *ngIf="item.isActive" color="primary" [selected]="item.id == form.get('orderType').value" (click)="changeOrderType(item.id)">{{ item.orderType }}</mat-chip>
+            </ng-container>
+          </mat-chip-list>
+          <div class="ml-auto" *ngIf="selectedOrderType?.tableRequired">
+              <button mat-button color="primary" type="button" (click)="manageTables()">
+                  <mat-icon>view_module</mat-icon>
+                  Tables
+              </button>
+          </div>
     </div>
     
     <div class="order_layout">
@@ -325,14 +339,6 @@
                     <mat-form-field appearance="outline" class="w-100">
                         <mat-label>Mobile Number</mat-label>
                         <input formControlName="mobileNumber" matInput>
-                    </mat-form-field>
-                </div>
-                <div class="col" *ngIf="userData?.roles == 'Super Admin'">
-                    <mat-form-field appearance="outline" class="w-100 pb-0">
-                        <mat-label>Branch</mat-label>
-                        <mat-select matNativeControl formControlName="branch_id"  [required]="userData?.roles == 'Super Admin'">
-                            <mat-option *ngFor="let item of branchList;" [value]="item.id">{{ item.branchTitle }}</mat-option>
-                        </mat-select>
                     </mat-form-field>
                 </div>
             </div>
@@ -406,7 +412,7 @@
             </div>
             <ng-container *ngFor="let item of items['controls'];let i=index;">
                 <div class="order_item_card" *ngIf="!item.get('deletedFlag').value">
-                    <span class="order_item_card_strip" *ngIf="item.get('orderType').value != 'on-table'">{{ item.get('orderType').value | titlecase }}</span>
+                    <span class="order_item_card_strip" *ngIf="item.get('isParcel').value">Parcel</span>
                     <div class="img_item">
                         <img *ngIf="item.get('featuredImage').value" [src]=" url + item.get('featuredImage').value" alt="">
                         <img *ngIf="!item.get('featuredImage').value" src="/assets/images/food.jpg" alt="">
@@ -417,7 +423,7 @@
                             <small>Price: &nbsp;&nbsp;&nbsp;</small>
                             <span>{{ item.get('price').value | currency  }}</span>
                         </p>
-                        <p class="product_price" *ngIf="item.get('orderType').value != 'on-table'">
+                        <p class="product_price" *ngIf="item.get('isParcel').value">
                             <small>Packaging charges: &nbsp;&nbsp;&nbsp;</small>
                             <span>{{ item.get('packagingCharges').value | currency  }}</span>
                         </p>

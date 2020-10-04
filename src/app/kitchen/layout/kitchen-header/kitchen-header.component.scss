@@ -1,6 +1,6 @@
 @import './../../../../variables.scss';
 .logo_headerBox{
-    background-color: $bg-sidebar;
+    background-color: $color-primary;
     margin-left: -16px;
     display: inline-flex;
     align-items: center;
@@ -9,16 +9,10 @@
     height: 64px;
     padding-left: 16px;
     padding-right: 16px;
+    // box-shadow: 0px 1px 2px 1px rgba($color-primary, 0.18);
     & .logoImg{
-        max-width: 100%;
-        -webkit-transition: .3s ease-in-out;
-        -moz-transition: .3s ease-in-out;
-        -ms-transition: .3s ease-in-out;
-        transition: .3s ease-in-out;
-        opacity: 1;
-        &.collapsed{
-            display: none;
-        }
+        
+        filter: brightness(0) invert(1);
     }
     &.small{
         width:69px;
