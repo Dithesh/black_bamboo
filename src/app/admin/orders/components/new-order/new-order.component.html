@@ -397,6 +397,14 @@
                 </div>
 
                 <hr>
+                <mat-form-field appearance="outline" class="w-100 inline-input order-calc" *ngIf="!blockForms">
+                    <mat-label>Received</mat-label>
+                    <input matInput  #calcAmount digitOnly [decimal]="true">
+                    <span matSuffix *ngIf="calcAmount.value">
+                        <small>Return</small><br>
+                        {{ calcAmount.value - form.get('orderAmount').value  }}
+                    </span>
+                </mat-form-field>
                 <div class="text-center">
                     <button mat-stroked-button color="primary" class="my-10 ew-mn-120 mx-auto" 
                         *ngIf="form.get('orderStatus').value != 'completed' && form.get('orderStatus').value != 'cancelled' && !blockForms"  

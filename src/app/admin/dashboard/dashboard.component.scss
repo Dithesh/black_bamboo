@@ -55,6 +55,16 @@ $color-warning:#bd2227;
                 margin-top: 0px;
                 font-size: 1.4rem;
                 font-weight: 500;
+
+                & .order_type {
+                    padding: 5px 10px;
+                    font-size: 1.2rem;
+                    line-height: 1;
+                    background-color: rgba($color-primary, 0.1);
+                    border-radius: 30px;
+                    margin-left: 5px;
+                    display: inline-block;
+                }
             }
             & .order_time{
                 font-size: 1.4rem;
@@ -64,6 +74,10 @@ $color-warning:#bd2227;
         & .orderBox_body{
             padding: 5px 0px;
             font-size: 1.2rem;
+
+            & p, small {
+                font-size: 1.4rem;
+            }
         }
         & .orderBox_footer{
             display: flex;
