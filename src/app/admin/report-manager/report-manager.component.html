@@ -15,7 +15,7 @@
     <mat-card>
         <div class="search_outerWrapper">
             <div class="row gutters-10">
-                <div class="col-lg-4 col-md-4 col-sm-6 col-12">
+                <div class="col-xl-3 col-md-4 col-sm-6 col-12">
                     <mat-form-field appearance="outline" class="w-100 pb-0">
                         <mat-label>Date range</mat-label>
                         <mat-date-range-input [rangePicker]="picker">
@@ -26,7 +26,7 @@
                         <mat-date-range-picker #picker></mat-date-range-picker>
                     </mat-form-field>
                 </div>
-                <div class="col-lg-3 col-md-3 col-sm-6 col-12">
+                <div class="col-xl-2 col-md-3 col-sm-6 col-12">
                     <mat-form-field appearance="outline" class="w-100 pb-0">
                         <mat-label>Status</mat-label>
                         <mat-select formControlName="orderStatus" multiple>
@@ -34,7 +34,26 @@
                         </mat-select>
                     </mat-form-field>
                 </div>
-                <div class="col-lg-2 col-md-2 col-sm-6 col-12">
+                
+                <div class="col-xl-2 col-md-3 col-sm-6 col-12">
+                    <mat-form-field appearance="outline" class="w-100 pb-0 mr-10" *ngIf="userData?.roles == 'Super Admin'">
+                        <mat-label>Branch</mat-label>
+                        <mat-select matNativeControl formControlName="branch_id" (selectionChange)="getBranchDetail(filterForm.get('branch_id').value)">
+                            <mat-option *ngFor="let item of branchList;" [value]="item.id">{{ item.branchTitle }}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="col-xl-2 col-md-3 col-sm-6 col-12">
+                    <mat-form-field appearance="outline" class="w-100 pb-0">
+                        <mat-label>Order Type</mat-label>
+                        <mat-select formControlName="typeOfOrder" multiple>
+                            <ng-container *ngFor="let item of orderTypeList;">
+                                <mat-option *ngIf="item.isActive" [value]="item.id">{{ item.orderType }}</mat-option>
+                            </ng-container>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="col-xl-auto col-md-2 col-sm-6 col-12">
                     <button mat-raised-button class="mr-10" type="submit" color="primary" >Generate</button>
                 </div>
 

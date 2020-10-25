@@ -35,8 +35,12 @@ export class DashboardComponent implements OnInit {
                             + "&endDate="+endDate
                             + "&orderType=asc"
                             + "&orderCol=updated_at"
-    this._serv.get().subscribe(response => {
-      this.ongoingorders = response as any;
+    this._serv.get().subscribe((response:any) => {
+      this.ongoingorders=[];
+      response.forEach(elem => {
+        this._serv.timerUpdate(elem);
+        this.ongoingorders.push(elem);
+      });
     })
   }
 

@@ -8,26 +8,29 @@ import { KitchenHeaderComponent } from './layout/kitchen-header/kitchen-header.c
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { HTTP_INTERCEPTORS } from '@angular/common/http';
-import { KitchenTokenInterceptor } from '../shared/services/intercepter';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { SharedKitchenService } from './shared/shared-kitchen.service';
+import { ConsolidatedKitchenComponent } from './layout/consolidated-kitchen/consolidated-kitchen.component';
 
 
 @NgModule({
-  declarations: [KitchenComponent, KitchenHeaderComponent],
+  declarations: [KitchenComponent, KitchenHeaderComponent, ConsolidatedKitchenComponent],
   imports: [
     CommonModule,
     KitchenRoutingModule,
     MatSidenavModule,
     MatDividerModule,
     MatToolbarModule,
-    SharedModule
+    SharedModule,
+    HttpClientModule,
   ], 
   providers: [
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: KitchenTokenInterceptor,
-      multi: true
-    },
+    SharedKitchenService
+    // {
+    //   provide: HTTP_INTERCEPTORS,
+    //   useClass: KitchenTokenInterceptor,
+    //   multi: true
+    // },
   ]
 })
 export class KitchenModule { }

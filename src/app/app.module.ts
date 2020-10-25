@@ -22,7 +22,12 @@ import { SnackService } from './shared/services/snack.service';
   ],
   providers: [
     SnackService,
-    MatSnackBar
+    MatSnackBar,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: TokenInterceptor,
+      multi: true
+    },
   ],
   bootstrap: [AppComponent],
 })

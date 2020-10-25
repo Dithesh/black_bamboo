@@ -79,4 +79,17 @@ export class DataService {
       return;
     }
   }
+
+  timerUpdate(order){
+    setInterval(()=> {
+      order.timeDif.s++;
+      if(order.timeDif.s >= 60) {
+        order.timeDif.s=0;
+        order.timeDif.i++;
+        if(order.minutes >= 60) {
+          order.timeDif.h++;
+        }
+      }
+    }, 1000)
+  }
 }

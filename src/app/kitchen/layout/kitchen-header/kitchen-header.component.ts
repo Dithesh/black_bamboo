@@ -6,6 +6,7 @@ import { ChangeProfileComponent } from 'src/app/admin/layout/component/change-pr
 import { LayoutService } from 'src/app/admin/layout/services/layout.service';
 import { DataService } from 'src/app/shared/services/data.service';
 import { environment } from 'src/environments/environment';
+import { SharedKitchenService } from '../../shared/shared-kitchen.service';
 
 @Component({
   selector: 'app-kitchen-header',
@@ -16,9 +17,11 @@ export class KitchenHeaderComponent implements OnInit {
   url = environment.domain;
   currentUser;
   imgSrc = "url('assets/images/user.png')"
+  branchDetails: any;
   constructor(
     private router: Router,
-    private _serv: DataService) { }
+    private _serv: DataService,
+    public _kitchen: SharedKitchenService) { }
 
   ngOnInit(): void {
     this.getCurrentUser();
@@ -40,11 +43,28 @@ export class KitchenHeaderComponent implements OnInit {
     this._serv.endpoint="current-user";
     this._serv.get().subscribe((response:any) => {
       this.currentUser = response;
+      this.getBranchDetail(this.currentUser.user.branch_id)
       if(this._serv.notNull(response.user.profilePic)){
         
         this.imgSrc = "url(\'"+ this.url + response.user.profilePic +"\')"
       }
     })
+  }
+
+  getBranchDetail(branch_id) {
+    this._serv.endpoint="order-manager/branch/"+branch_id;
+    this._serv.get().subscribe((response:any) => {
+      this.branchDetails=response;
+      if(this.branchDetails.kitchens && this.branchDetails.kitchens.length > 0) {
+        this._kitchen.kitchen_details = this.branchDetails.kitchens[0]
+        this._kitchen.kirchenChangeService.next(true);
+      }
+    })
+  }
+
+  onChangeKitchen(item) {
+    this._kitchen.kitchen_details = item;
+    this._kitchen.kirchenChangeService.next(true);
   }
 
   signOut() {

@@ -353,33 +353,17 @@
 
 
 // order item design
-.order_item_card {
-    display: grid;
-    grid-template-columns: 100px 1fr 120px;
-    grid-auto-rows: minmax(min-content, max-content);
-    background-color: #fff;
-    box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
-    border-radius: 5px;
-    position: relative;
-
-    &:not(:last-child) {
-        margin-bottom: 2rem;
-    }
-
-    & .order_item_card_strip {
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        padding: 0 5px;
-        background-color: rgba(#fff, 0.8);
-        font-size: 1rem;
-        color: $color-success;
-    }
-
+.order_item_wrapper {
+    margin-bottom: 15px;
+    
     & .img_item {
         width: 100px;
         height: 100px;
-        padding: 5px;
+        background-color: #fff;
+        box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+        border-radius: 50%;
+        margin-right: 15px;
+        overflow: hidden;
 
         & img {
             width: 100%;
@@ -387,31 +371,74 @@
             object-fit: cover;
         }
     }
-
-    & .order-details {
-        padding: 15px; 
-
-        & p.product_name {
-            margin: 0;
-            font-size: 16px;
-            font-weight: 500;
-            color: rgba(#000, 0.8);
-            margin-bottom: 5px;
+    .order_item_card {
+        display: grid;
+        grid-template-columns: 1fr 120px;
+        grid-auto-rows: minmax(min-content, max-content);
+        background-color: #fff;
+        box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+        border-radius: 5px;
+        position: relative;
+    
+        &:not(:last-child) {
+            margin-bottom: 2rem;
         }
-        & p.product_price {
-            margin: 0;
-            display: flex;
-            font-size: 14px;
+    
+        & .order_item_card_strip {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            padding: 0 5px;
+            background-color: rgba(#fff, 0.8);
+            font-size: 1rem;
+            color: $color-success;
         }
+    
+    
+        & .order-details {
+            padding: 15px; 
+    
+            & p.product_name {
+                margin: 0;
+                font-size: 16px;
+                font-weight: 500;
+                color: rgba(#000, 0.8);
+                margin-bottom: 5px;
+            }
+            & p.product_price {
+                margin: 0;
+                display: flex;
+                font-size: 14px;
+            }
+        }
+    
+        & .action_menu {
+            padding: 15px 15px 15px 0px;
+            
+        }
+    
+    
+    
     }
-
-    & .action_menu {
-        padding: 15px 15px 15px 0px;
-        
-    }
-
-
-
 }
 // order item design end
 
+
+.status_box {
+    flex: none;
+    display: inline-flex;
+    padding: 6px 20px;
+    font-size: 14px;
+    text-transform: uppercase;
+    border-radius: 50px;
+    background-color: rgb(179, 216, 105);
+    letter-spacing: 0.4px;
+    box-shadow: 0 2 10px 2px rgba(139, 175, 110, 0.3);
+
+    &.red {
+        background-color: rgb(236, 197, 191);
+    }
+    &.warn {
+        background-color: rgb(223, 238, 181);
+    }
+}

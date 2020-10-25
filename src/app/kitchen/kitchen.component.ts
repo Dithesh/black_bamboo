@@ -23,6 +23,7 @@ export class KitchenComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this._layout.isOpened=false;
     // this.getOrderStats();
 
 

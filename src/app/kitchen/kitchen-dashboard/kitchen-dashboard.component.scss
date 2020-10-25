@@ -1,0 +1,41 @@
+.main_title {
+    font-size: 2rem;
+    font-weight: 500;
+    margin: 20px 0px;
+    letter-spacing: 0.2px;
+    color: #1f1b1b;
+}
+
+.item_wraper {
+    height: calc(100vh - 135px);
+    overflow-y: auto;
+    & .kitchen_card {
+        background-color: #fff;
+        border-radius: 20px;
+        box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        margin: 3px 5px 20px;
+    
+        & .order_id {
+    
+        }
+    
+        & .timer {
+            display: flex;
+            align-items: center;
+            font-weight: 500;
+        }
+    
+        & .tables {
+            font-size: 12px;
+        }
+    
+        & .item_container {
+            & .item_list {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+            }
+        }
+    }
+}

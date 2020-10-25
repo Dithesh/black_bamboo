@@ -21,27 +21,40 @@
     </div>
 </div>
 
-<div class="orderList_box">
+<div class="orderList_box"> 
     <div class="row">
         <div class="col-md-8 col-sm-6">
             <div class="row">
                 <div class="col-12">
                     <h3>Ongoing Orders</h3>
                 </div>
-                <div class="col-md-6 col-sm-12" *ngFor="let item of ongoingorders;">
-                    <div class="orderBox on_table">
+                <div class="col-md-6 col-sm-12" *ngFor="let item of ongoingorders;" [class.order-0]="item.rejectedCount > 0"  [class.order-1]="(item.timeDif.h * 60 + item.timeDif.i) > 20 && item.rejectedCount <= 0"  [class.order-2]="(item.timeDif.h * 60 + item.timeDif.i) <= 20 && item.rejectedCount <= 0">
+                    <div class="orderBox on_table" [class.rejected]="item.rejectedCount > 0" [class.delayed]="(item.timeDif.h * 60 + item.timeDif.i) > 20 && item.rejectedCount <= 0">
                         <div class="orderBox_header">
                             <h4 class="order_number">#{{ item.id }}</h4>
-                            <span class="order_time">{{ item.orderStatus | titlecase }}</span>
+                            <span class="order_time">
+                                
+                                <svg class="mr-5 mb-2" xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.0" width="14px" height="14px" viewBox="0 0 128 128" xml:space="preserve"><g><path d="M63.88 0A63.88 63.88 0 1 1 0 63.88 63.88 63.88 0 0 1 63.88 0zm0 11.88a52 52 0 1 1-52 52 52 52 0 0 1 52-52zm0 46.2a5.8 5.8 0 1 1-5.8 5.8 5.8 5.8 0 0 1 5.8-5.8z" fill-rule="evenodd" fill="#aaaaaa" fill-opacity="1"/><path d="M58.25 5h11.3v59h-11.3V5z" fill="#aaaaaa" fill-opacity="1"/><animateTransform attributeName="transform" type="rotate" from="0 64 64" to="360 64 64" dur="2700ms" repeatCount="indefinite" *ngIf="true"></animateTransform></g></svg>
+                                
+                                <ng-container *ngIf="item.timeDif.h > 0">{{ item.timeDif.h | number : '2.0'}} : </ng-container>{{ item.timeDif.i | number : '2.0'}} : {{ item.timeDif.s | number : '2.0'}}
+                            </span>
                         </div>
                         <div class="orderBox_body">
-                            {{ item.created_at | datex:'DD-MM-YYYY hh:mm a' }}
+                            <ng-container *ngIf="item.order_tables && item.order_tables.length > 0">
+                                <p class="mb-0">Tables : <ng-container *ngFor="let t of item.order_tables; let ti=index;let last=last">{{ t.table.tableId }} <ng-container *ngIf="!last">, </ng-container></ng-container> </p> 
+                            </ng-container>
+                            <small>Bearer: {{ item.bearer.firstName }} {{ item.bearer.lastName }}</small>
                         </div>
                         <div class="orderBox_footer">
                             <p class="price_tag">{{ item.orderAmount |currency }}</p>
                             <a href="javascript:;" [routerLink]="['/admin/order/update/'+item.id]" class="btn viewBtn">View Order</a>
                         </div>
+                        <div class="error_wrapper" *ngIf="item.rejectedCount > 0 || (item.timeDif.h * 60 + item.timeDif.i) > 20">
+                            <p *ngIf="item.rejectedCount > 0">Some order items got rejected</p>
+                            <p *ngIf="(item.timeDif.h * 60 + item.timeDif.i) > 20">Order taking much time than expected.</p>
+                        </div>
                     </div>
+
                 </div>
             </div>
         </div>
@@ -52,7 +65,12 @@
                     <div class="orderBox" [ngClass]="{completed: item.orderStatus == 'completed', cancelled: item.orderStatus != 'completed'}">
                         <div class="orderBox_header">
                             <h4 class="order_number">#{{ item.id }}</h4>
-                            <span class="order_time">{{ item.orderStatus | titlecase }}</span>
+                            <span class="order_time">
+                                
+                                <svg class="mr-5 mb-2" xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.0" width="14px" height="14px" viewBox="0 0 128 128" xml:space="preserve"><g><path d="M63.88 0A63.88 63.88 0 1 1 0 63.88 63.88 63.88 0 0 1 63.88 0zm0 11.88a52 52 0 1 1-52 52 52 52 0 0 1 52-52zm0 46.2a5.8 5.8 0 1 1-5.8 5.8 5.8 5.8 0 0 1 5.8-5.8z" fill-rule="evenodd" fill="#aaaaaa" fill-opacity="1"/><path d="M58.25 5h11.3v59h-11.3V5z" fill="#aaaaaa" fill-opacity="1"/><animateTransform attributeName="transform" type="rotate" from="0 64 64" to="360 64 64" dur="2700ms" repeatCount="indefinite" *ngIf="false"></animateTransform></g></svg>
+                                
+                                <ng-container *ngIf="item.timeDif.h > 0">{{ item.timeDif.h | number : '2.0'}} : </ng-container>{{ item.timeDif.i | number : '2.0'}} : {{ item.timeDif.s | number : '2.0'}}
+                            </span>
                         </div>
                         <div class="orderBox_body">
                             {{ item.created_at | datex:'DD-MM-YYYY hh:mm a' }}

@@ -24,6 +24,7 @@ export class TableSelectionComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.blockForms=this.data.blockForm;
     this.data.tables.controls.forEach(control => {
       this.tables.push(control);
     })

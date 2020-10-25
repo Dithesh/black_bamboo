@@ -11,13 +11,16 @@ import * as moment from 'moment';
 })
 export class ReportManagerComponent implements OnInit {
 
-  orderStatus=['new', 'accepted', 'prepairing', 'packing', 'dispatched', 'delivered', 'completed', 'cancelled'];
+  orderStatus=['new','completed', 'cancelled'];
   displayedColumns: string[] = ['action', 'id', 'orderAmount', 'orderStatus', 'created_at'];
   filterForm:FormGroup;
   orderTypeList: any[];
   fileName= 'ExcelSheet.xlsx';
   dataSource: any;
   @ViewChild('reportTable') reportTable:any;
+  branchDetail: any;
+  userData: any;
+  branchList: any[];
   constructor(
     private _serv: DataService,
     private fb: FormBuilder
@@ -26,6 +29,7 @@ export class ReportManagerComponent implements OnInit {
       searchString: [''],
       orderStatus: [''],
       typeOfOrder: [''],
+      branch_id: [''],
       startDate: [''],
       endDate: [''],
       orderCol: [''],
@@ -34,6 +38,34 @@ export class ReportManagerComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.userData = this._serv.getUserData();
+    if(this.userData.roles != 'Super Admin') {
+      this.filterForm.get('branch_id').setValue(this.userData.branch_id);
+      this.getBranchDetail(this.userData.branch_id);
+    }else {
+      this.getAllBranches();
+    }
+  }
+
+
+  getAllBranches() {
+    this._serv.endpoint = "order-manager/branch?fields=id,branchTitle";
+    this._serv.get().subscribe(response => {
+      this.branchList = response as any[];
+    })
+  }
+  
+  getBranchDetail(branch_id) {
+    if(!this._serv.notNull(branch_id)){
+      this.orderTypeList=[];
+      return;
+    }
+    
+    this._serv.endpoint="order-manager/branch/"+branch_id;
+    this._serv.get().subscribe((response:any) => {
+      this.branchDetail = response;
+      this.orderTypeList = response.order_types as any[];
+    })
   }
 
   
@@ -48,6 +80,8 @@ export class ReportManagerComponent implements OnInit {
     this._serv.endpoint = "order-manager/order?"
                             + "&searchString="+filterValue.searchString
                             + "&orderStatus="+filterValue.orderStatus
+                            + "&branch_id="+filterValue.branch_id
+                            + "&typeOfOrder="+filterValue.typeOfOrder
                             + "&startDate="+startDate
                             + "&endDate="+endDate
                             + "&orderType="+filterValue.orderType

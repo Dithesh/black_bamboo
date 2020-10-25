@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import {MatSort} from '@angular/material/sort';
 import {MatTableDataSource} from '@angular/material/table';
 import { OwlOptions } from 'ngx-owl-carousel-o';
@@ -19,13 +19,11 @@ import { ConfirmPopupComponent } from 'src/app/shared/components/confirm-popup/c
   templateUrl: './new-order.component.html',
   styleUrls: ['./new-order.component.scss']
 })
-export class NewOrderComponent implements OnInit {
+export class NewOrderComponent implements OnInit, OnDestroy {
   
 
 
   @ViewChild(MatSort, {static: true}) sort: MatSort;
-
-
   step = 1;
   rating;
   
@@ -70,6 +68,9 @@ export class NewOrderComponent implements OnInit {
   blockForms: boolean;
   userData: any;
   url = environment.domain;
+  orderData: any;
+  branchDetail: any;
+  keyListener = this.shortCutKeyHandler.bind(this);
 
   constructor(
     private fb: FormBuilder,
@@ -95,6 +96,8 @@ export class NewOrderComponent implements OnInit {
       deliverCharge: [''],
       orderStatus: ['new'],
       orderType: [''],
+      taxDisabled: [false],
+      taxPercent: [0],
       tables: this.fb.array([]),
       items: this.fb.array([]),
     })
@@ -115,6 +118,8 @@ export class NewOrderComponent implements OnInit {
       this.getAllBranches();
     }
     this.getTableInfo();
+
+    window.addEventListener('keydown', this.keyListener, true);
   }
   addOrderItem() {
     return this.fb.group({
@@ -125,6 +130,9 @@ export class NewOrderComponent implements OnInit {
       price: ['0.00'],
       quantity: ['1'],
       servedItems: ['0'],
+      productionAcceptedQuantity: ['0'],
+      productionReadyQuantity: ['0'],
+      productionRejectedQuantity: ['0'],
       packagingCharges: ['0.00'],
       totalPrice: ['0.00'],
       featuredImage: [''],
@@ -202,26 +210,36 @@ export class NewOrderComponent implements OnInit {
     if(charge!=null && charge != '' && charge != undefined && charge > 0){
       grandTotal += parseFloat(charge);
     }
-    let tax = grandTotal * 0.06;
-    grandTotal += tax * 2;
+    
+    let tax = grandTotal * this.form.get('taxPercent').value / 100,
+    cgst=0,
+    sgst=0;
+    if(this.form.get('taxDisabled').value) {
+      tax=0;
+    }else if(tax > 0) {
+      cgst = tax/2;
+      sgst = tax/2;
+    }
+    grandTotal += tax;
     this.form.patchValue({
       orderItemTotal: totalPrice,
       orderAmount: grandTotal,
       packingCharge: '',
       extraCharge: '',
-      cgst: tax,
-      sgst: tax,
+      cgst: cgst,
+      sgst: sgst,
       igst: '',
     })
   }
 
   
   manageTables() {
-    if(this.blockForms)return;
+    
     let dialogRef = this.dialog.open(TableSelectionComponent, {
       width: '1200px',
       data: {
-        tables: this.tables
+        tables: this.tables,
+        blockForm: this.blockForms
       }
     });
 
@@ -308,6 +326,7 @@ export class NewOrderComponent implements OnInit {
   getOrderDetail() {
     this._serv.endpoint = "order-manager/order/"+this.orderId;
     this._serv.get().subscribe((response: any) => {
+      this.orderData=response;
       this.form.patchValue({
         id: response.id,
         branch_id: response.branch_id,
@@ -321,15 +340,21 @@ export class NewOrderComponent implements OnInit {
         packingCharge: response.packingCharge,
         deliverCharge: response.deliverCharge,
         orderStatus: response.orderStatus,
-        orderType: response.orderType
+        orderType: response.orderType,
+        taxDisabled: response.taxDisabled,
+        taxPercent: response.taxPercent,
       });
 
-      if(response.orderStatus == 'completed' || response.orderStatus == 'cancelled') {
+      if(response.orderStatus == 'completed' || response.orderStatus == 'cancelled' || response.rejectedCount > 0) {
         this.blockForms = true;
         this.form.disable();
+      }else {
+        this.blockForms = false;
+        this.form.enable();
       }
 
       this.items.controls = [];
+      this.items.reset();
       response.order_items.forEach(item => {
         let orderItem = this.addOrderItem();
         if(this.blockForms == true)orderItem.disable();
@@ -341,12 +366,16 @@ export class NewOrderComponent implements OnInit {
           price: item.price,
           quantity: item.quantity,
           servedItems: item.servedQuantity,
+          productionAcceptedQuantity: item.productionAcceptedQuantity,
+          productionReadyQuantity: item.productionReadyQuantity,
+          productionRejectedQuantity: item.productionRejectedQuantity,
           packagingCharges: item.packagingCharges,
           totalPrice: item.totalPrice,
           featuredImage: item.product.featuredImage,
           deletedFlag: false
         });
         this.items.push(orderItem);
+        this.getOrderItemTotal(orderItem);
       })
       this.getBranchDetail(response.branch_id);
       this.handleFinalPricing();
@@ -436,8 +465,6 @@ export class NewOrderComponent implements OnInit {
   }
 
   updateOrder(orderData) {
-    console.log("test");
-    
     this._serv.endpoint="order-manager/order";
     this._serv.post(orderData).subscribe((response:any) => {
       this._serv.showMessage("Order saved successfully", 'success');
@@ -470,10 +497,15 @@ export class NewOrderComponent implements OnInit {
       this.orderTypeList=[];
       return;
     }
-    console.log("test in");
     
     this._serv.endpoint="order-manager/branch/"+branch_id;
     this._serv.get().subscribe((response:any) => {
+      this.branchDetail = response;
+      
+      if(this.branchDetail && this.branchDetail.taxPercent && !this._serv.notNull(this.orderId)) {
+        this.form.get('taxPercent').setValue(this.branchDetail.taxPercent);
+      }
+      this.handleFinalPricing();
       this.orderTypeList = response.order_types as any[];
       if(!this._serv.notNull(this.orderId) && this.orderTypeList.filter.length > 0) {
         this.changeOrderType(this.orderTypeList[0].id);
@@ -483,7 +515,8 @@ export class NewOrderComponent implements OnInit {
     })
   }
 
-  changeOrderType(orderTypeId) {
+  changeOrderType(orderTypeId, from='funtion') {
+    if(this.blockForms && from=='button')return;
     this.orderTypeList.forEach(elem => {
       if(elem.id == orderTypeId) {
         this.selectedOrderType = elem;
@@ -491,5 +524,38 @@ export class NewOrderComponent implements OnInit {
       }
     })
   }
+
+  handleRejectedItems(item) {
+    
+    this._serv.endpoint = "order-manager/order/rejected-item-remove";
+    this._serv.post({id: item.value.id}).subscribe(response => {
+      
+      this._serv.showMessage("Rejected items removed successfully", 'success');
+
+      this.getOrderDetail();
+      this.getTableInfo();
+    }, ({error}) => {
+      this._serv.showMessage(error['msg'], 'error');
+    })
+  }
+
+  ngOnDestroy() {
+    
+    window.removeEventListener('keydown', this.keyListener, true);
+  }
+
+
+  shortCutKeyHandler(e) {
+    if (e.ctrlKey && e.which == 68) {
+        e.preventDefault();
+        this.form.get('taxDisabled').setValue(!this.form.get('taxDisabled').value);
+        this.handleFinalPricing();
+    }else if (e.ctrlKey && e.which == 83) {
+      e.preventDefault();
+      this.saveOrder('confirm');
+    }
+  }
+
+
 }
 

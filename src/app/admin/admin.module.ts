@@ -35,12 +35,7 @@ import { TokenInterceptor } from '../shared/services/intercepter';
   ],
   entryComponents: [ChangePasswordComponent, ChangeProfileComponent],
   providers:[
-    MatDialogModule,
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: TokenInterceptor,
-      multi: true
-    },
+    MatDialogModule
   ]
 })
 export class AdminModule { }

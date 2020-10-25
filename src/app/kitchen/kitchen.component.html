@@ -3,6 +3,9 @@
     <mat-sidenav-content>
         <router-outlet></router-outlet>
     </mat-sidenav-content>
+    <mat-sidenav position="end" [(opened)]="_layout.isOpened">
+        <app-consolidated-kitchen></app-consolidated-kitchen>
+    </mat-sidenav>
 </mat-sidenav-container>
 
 <!-- <div class="container-fluid  pa-20">

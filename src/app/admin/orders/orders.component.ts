@@ -14,7 +14,7 @@ import * as moment from 'moment';
 })
 export class OrdersComponent implements OnInit, AfterViewInit {
   orderStatus=['new', 'accepted', 'prepairing', 'packing', 'dispatched', 'delivered', 'completed', 'cancelled'];
-  displayedColumns: string[] = ['action', 'id', 'orderAmount', 'orderStatus', 'created_at'];
+  displayedColumns: string[] = ['action', 'id', 'bearer', 'tables', 'orderAmount', 'orderStatus', 'created_at'];
   dataSource;
   filterOn=false;
   filterForm:FormGroup;

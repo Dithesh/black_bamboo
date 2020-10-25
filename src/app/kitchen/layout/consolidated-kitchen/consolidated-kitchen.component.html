@@ -1,0 +1,15 @@
+<div class="side_bar_consolidated">
+    <ng-container *ngFor="let item of _kitchen.consolidatedProducts;">
+        <div class="kitchen_card item_card">
+            <div class="item_img">
+                <img *ngIf="item.product.featuredImage" [src]=" url + item.product.featuredImage" alt="">
+                <img *ngIf="!item.product.featuredImage" src="/assets/images/food.jpg" alt="">
+            </div>
+            <div class="content">
+                <h3 class="title">{{ item.product.productName }}</h3>
+                <span class="parcel" *ngIf="item.parcelQuantity > 0">Parcel : <b>{{ item.parcelQuantity }}</b></span>
+            </div>
+            <h4>{{ item.quantity + item.parcelQuantity}}</h4>
+        </div>
+    </ng-container>
+</div>

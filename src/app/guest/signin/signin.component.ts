@@ -43,7 +43,7 @@ export class SigninComponent implements OnInit {
         }
       }else if(this.routeType == 'kitchen') {
         if(this.kitchenRoles.indexOf(decoded.roles) >= 0) {
-          localStorage.setItem('kitchen_lock_token', response['token'])
+          localStorage.setItem('lock_token', response['token'])
           this.router.navigateByUrl('/kitchen/dashboard')
           this._serv.showMessage("Logged in successfully.", 'success');
         }else {

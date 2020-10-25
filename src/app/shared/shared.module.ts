@@ -29,12 +29,14 @@ import { NumberFormatterDirective } from './services/number-formater.directive';
 import { DigitOnlyDirective } from './services/digit-only.directive';
 import {  RxReactiveFormsModule } from "@rxweb/reactive-form-validators"
 import {MatChipsModule} from '@angular/material/chips';
+import {MatCheckboxModule} from '@angular/material/checkbox';
 
 @NgModule({
   declarations: [DatexPipe, SnackbarComponent, ConfirmPopupComponent, NumberFormatterDirective, DigitOnlyDirective],
   imports: [
     CommonModule,
     MatButtonModule,
+    MatCheckboxModule
   ],
   exports: [
     MatGridListModule,
@@ -65,7 +67,8 @@ import {MatChipsModule} from '@angular/material/chips';
     NumberFormatterDirective,
     DigitOnlyDirective,
     RxReactiveFormsModule,
-    MatChipsModule
+    MatChipsModule,
+    MatCheckboxModule
   ],
   providers: [
     MatButtonModule,

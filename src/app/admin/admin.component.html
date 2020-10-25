@@ -1,6 +1,6 @@
 <app-header></app-header>
 <mat-sidenav-container (backdropClick)="_layout.isOpened=false" [class.menu-close]="!_layout.isOpened && _layout.menuMode == 'side'">
-    <mat-sidenav [mode]="_layout.menuMode" [(opened)]="_layout.isOpened" [fixedInViewport]="_layout.isFixedMenu">
+    <mat-sidenav [mode]="_layout.menuMode" [(opened)]="_layout.isOpened" [fixedInViewport]="false">
         <app-sidebar></app-sidebar>
     </mat-sidenav>
     <mat-sidenav-content [class.p-0]="noPadding">
