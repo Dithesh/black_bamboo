@@ -477,6 +477,8 @@ export class NewOrderComponent implements OnInit, OnDestroy {
         this.router.navigateByUrl('/admin/order');
       }
     }, ({error}) => {
+      console.log(error);
+      
       this._serv.showMessage(error['msg'], 'error');
     })
   }

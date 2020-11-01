@@ -126,6 +126,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "frontExpoSmart"
+    }
+  },
+  "defaultProject": "frontExpoSmart",
+  "cli": {
+    "analytics": false
+  }
 }
