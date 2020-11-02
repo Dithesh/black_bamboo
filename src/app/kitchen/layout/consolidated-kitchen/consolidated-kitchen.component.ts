@@ -9,7 +9,7 @@ import { SharedKitchenService } from '../../shared/shared-kitchen.service';
 })
 export class ConsolidatedKitchenComponent implements OnInit {
 
-  url = environment.domain;
+  url = environment.imgUrl;
   constructor(public _kitchen: SharedKitchenService) { }
 
   ngOnInit(): void {

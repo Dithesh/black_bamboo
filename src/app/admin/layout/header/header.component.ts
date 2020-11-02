@@ -13,7 +13,7 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent implements OnInit {
-  url = environment.domain;
+  url = environment.imgUrl;
   currentUser;
   imgSrc = "url('assets/images/user.png')"
   constructor(

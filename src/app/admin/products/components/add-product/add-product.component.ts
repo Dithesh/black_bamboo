@@ -18,7 +18,7 @@ import { environment } from 'src/environments/environment';
 })
 export class AddProductComponent implements OnInit {
   imageSrc="url(\'/assets/images/food.jpg\')";
-  url = environment.domain;
+  url = environment.imgUrl;
   form: FormGroup;
   branchList: any[];
   productId: any;

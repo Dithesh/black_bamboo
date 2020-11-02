@@ -14,7 +14,7 @@ import { SharedKitchenService } from '../../shared/shared-kitchen.service';
   styleUrls: ['./kitchen-header.component.scss']
 })
 export class KitchenHeaderComponent implements OnInit {
-  url = environment.domain;
+  url = environment.imgUrl;
   currentUser;
   imgSrc = "url('assets/images/user.png')"
   branchDetails: any;

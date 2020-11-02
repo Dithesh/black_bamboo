@@ -67,7 +67,7 @@ export class NewOrderComponent implements OnInit, OnDestroy {
   branchList: any[];
   blockForms: boolean;
   userData: any;
-  url = environment.domain;
+  url = environment.imgUrl;
   orderData: any;
   branchDetail: any;
   keyListener = this.shortCutKeyHandler.bind(this);

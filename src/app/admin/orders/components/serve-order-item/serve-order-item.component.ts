@@ -11,7 +11,7 @@ import { environment } from 'src/environments/environment';
 })
 export class ServeOrderItemComponent implements OnInit {
   items: FormArray;
-  url = environment.domain;
+  url = environment.imgUrl;
   constructor(
     private _serv: DataService,
     @Inject(MAT_DIALOG_DATA) private data,

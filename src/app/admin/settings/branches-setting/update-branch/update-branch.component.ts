@@ -11,7 +11,7 @@ import { environment } from 'src/environments/environment';
 })
 export class UpdateBranchComponent implements OnInit {
   imageSrc="url(\'/assets/images/food.jpg\')";
-  url = environment.domain;
+  url = environment.imgUrl;
   branchId;
   userData;
 

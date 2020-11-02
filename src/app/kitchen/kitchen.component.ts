@@ -13,7 +13,7 @@ export class KitchenComponent implements OnInit {
   orderData;
   itemData;
   branchId;
-  url = environment.domain;
+  url = environment.imgUrl;
   constructor(
     private _serv: DataService,
     private route: ActivatedRoute,
