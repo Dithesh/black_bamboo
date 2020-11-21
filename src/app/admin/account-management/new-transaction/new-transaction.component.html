@@ -1,0 +1,211 @@
+<div class="accont_header_wrapping pa-25">
+    <h2 class="text-uppercase font-weight-500 mb-0">New Transaction</h2>
+</div>
+<div class="account_body_wrapper pl-25 pr-25">
+    <div class="body_inner_card">
+        <div class="tab_header">
+            <div class="tab_btn active">
+                <a href="javascript:;">Sales</a>
+            </div>
+            <div class="tab_btn">
+                <a href="javascript:;">Purchase</a>
+            </div>
+            <div class="tab_btn">
+                <a href="javascript:;">Payment</a>
+            </div>
+            <div class="tab_btn">
+                <a href="javascript:;">Receipt</a>
+            </div>
+        </div>
+        <div class="tab_body pa-20">
+            <div class="deatail_wraper mb-15">
+                <div class="row">
+                    <div class="col-md-auto col-sm-6 col-12 order-1">
+                        <mat-form-field appearance="fill" class="ew-300">
+                            <mat-label>To Account</mat-label>
+                            <input matInput value="">
+                        </mat-form-field>
+                    </div>
+                    <div class="col-md-auto col-sm-6 col-12 order-2">
+                        <mat-form-field appearance="fill">
+                            <mat-label>Date of transaction</mat-label>
+                            <input matInput [matDatepicker]="picker" >
+                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                            <mat-datepicker #picker></mat-datepicker>
+                        </mat-form-field>
+                    </div>
+                    <!-- <div class="col">
+                        <mat-form-field appearance="fill">
+                            <mat-label>Cars</mat-label>
+                            <mat-select required>
+                              <mat-option value="volvo">Volvo</mat-option>
+                              <mat-option value="saab">Saab</mat-option>
+                              <mat-option value="mercedes">Mercedes</mat-option>
+                              <mat-option value="audi">Audi</mat-option>
+                            </mat-select>
+                          </mat-form-field>
+                    </div> -->
+                    <div class="col-md-auto ml-auto col-sm-6 col-12 order-0 order-sm-3">
+                        <div class="d-inline-flex align-items-center text-primary font-1_6">
+                            <span>Ref. No :</span> 
+                            123132 
+                            <!-- <div class="custom_input ew-60 d-md-inline-block">
+                                <input type="text" class="w-100">
+                                <span class="underline"></span>
+                            </div> -->
+                            <button mat-icon-button class="small_icon_btn ml-10">
+                                <mat-icon>create</mat-icon>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <p class="balance_text text-accent font-1_6 font-weight-400">Current Balance: 0.00</p>
+            </div>  
+            <h3 class="title_h3 font-weight-500 mb-5 text-primary">Inventory Items</h3>
+            <div class="item_table_outer mt-10">
+                <div class="table-responsive">
+                    <table class="table account_table">
+                        <thead>
+                            <tr>
+                                <th class="ew-50"></th>
+                                <th class="">Item</th>
+                                <th class="ew-150">Price</th>
+                                <th class="ew-150">Quantity</th>
+                                <th class="ew-150">Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <button mat-icon-button class="small_icon_btn" color="warn">
+                                        <mat-icon>delete_forever</mat-icon>
+                                    </button>
+                                </td>
+                                <td>Food itemss</td>
+                                <td>230.00</td>
+                                <td>2 <span class="d-inline-block ml-5 font-1_4 text-primary-light">KG</span></td>
+                                <td>2103</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <button mat-icon-button color="warn" class="small_icon_btn">
+                                        <mat-icon>delete_forever</mat-icon>
+                                    </button>
+                                </td>
+                                <td>
+                                    <div class="custom_input w-50 ew-mn-250">
+                                        <input type="text" class="w-100" value="Food itemss">
+                                        <span class="underline"></span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="custom_input error_active ew-120">
+                                        <input type="text" class="w-100" value="230">
+                                        <span class="underline"></span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="custom_input suffix ew-120">
+                                        <span class="suffix_text">KG</span>
+                                        <input type="text" class="w-100" value="230">
+                                        <span class="underline"></span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="custom_input ew-120">
+                                        <input type="text" class="w-100" value="230">
+                                        <span class="underline"></span>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>
+                                    <button mat-icon-button class="small_icon_btn" color="warn">
+                                        <mat-icon>delete_forever</mat-icon>
+                                    </button>
+                                </td>
+                                <td>
+                                    <span class="status_chip active">Active</span>
+                                </td>
+                                <td><mat-slide-toggle color="primary"></mat-slide-toggle></td>
+                                <td>
+                                    <mat-form-field class="field-pb-0 table_select">
+                                        <mat-select>
+                                          <mat-option value="deme" selected>
+                                              select
+                                          </mat-option>
+                                        </mat-select>
+                                      </mat-form-field>
+                                </td>
+                                <td>2103</td>
+                            </tr>
+
+                            <tr>
+                                <td>
+                                    <button mat-icon-button class="small_icon_btn" color="warn">
+                                        <mat-icon>delete_forever</mat-icon>
+                                    </button>
+                                </td>
+                                <td><span class="status_chip inactive">Inactive</span></td>
+                                <td>230.00</td>
+                                <td>2 <span class="d-inline-block ml-5 font-1_4 text-primary-light">KG</span></td>
+                                <td>2103</td>
+                            </tr>
+
+                            <tr class="total_row">
+                                <td>
+                                </td>
+                                <td>Total</td>
+                                <td>230.00</td>
+                                <td>2</td>
+                                <td>2103</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="table-responsive mt-10">
+                    <table class="table account_table">
+                        <tbody>
+                            <tr>
+                                <td class="ew-50"></td>
+                                <td>Food itemss</td>
+                                <td class="ew-150"></td>
+                                <td class="ew-150">15 <span class="d-inline-block ml-5">%</span></td>
+                                <td class="ew-150">2103</td>
+                            </tr>
+                            <tr>
+                                <td class="ew-50"></td>
+                                <td>Food itemss</td>
+                                <td class="ew-150"></td>
+                                <td class="ew-150">
+                                    <div class="custom_input suffix ew-100">
+                                        <span class="suffix_text cursor-pointer" [matMenuTriggerFor]="dropMenu">%</span>
+                                        <input type="text" class="w-100" value="230">
+                                        <span class="underline"></span>
+                                    </div>
+                                    <mat-menu #dropMenu="matMenu" class="dropdown_small">
+                                        <button mat-menu-item>Percent</button>
+                                        <button mat-menu-item>Rupee</button>
+                                    </mat-menu>
+                                </td>
+                                <td class="ew-150">2103</td>
+                            </tr>
+                            <tr class="total_row">
+                                <td>
+                                </td>
+                                <td>Total</td>
+                                <td>230.00</td>
+                                <td>2</td>
+                                <td>2103</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+
+</div>

@@ -1,0 +1,96 @@
+.accont_header_wrapping{
+    min-height: 180px;
+    background-color: #cbcde3;
+    h2{
+        font-size: 2.7rem;
+        color: #2E358E;
+    }
+}
+.account_body_wrapper{
+    margin-top: -72px;
+    .body_inner_card{
+        background-color: #fff;
+        box-shadow: 0px 3px 10px #CCCEE9;
+        border-radius: 5px;
+        overflow: hidden;
+        .tab_header{
+            display: flex;
+            flex-wrap: wrap;
+            border-bottom: 1px solid rgba(46, 52, 142, 0.295);
+            .tab_btn{
+                display: inline-block;
+                a{
+                    display: inline-block;
+                    padding: 2rem;
+                    min-width: 230px;
+                    color: #2E358E;
+                    font-size: 2.6rem;
+                    line-height: 1.2;
+                    text-decoration: none;
+                    font-weight: 500;
+                    text-align: center;
+                    -webkit--transition: .3s ease-in-out;
+                    -moz-transition: .3s ease-in-out;
+                    -ms-transition: .3s ease-in-out;
+                    transition: .3s ease-in-out;
+                }
+                &.active{
+                    a{
+                        background-color: rgba(#FBAD19, 0.19);
+                    }
+                }
+            }
+        }
+    }
+}
+.account_table{
+    thead{
+        tr{
+            th{
+                // background-color: rgba(211, 212, 225, 0.122);
+                background-color: #f3f4ff;
+                border-bottom:5px solid #fff;
+                border-top: none;
+                color: rgba(46, 53, 142, 0.549);
+                padding: 1.5rem;
+                font-size: 1.8rem;
+                font-weight: 500;
+                &:first-child{
+                    border-radius: 10px 0 0 10px;
+                }
+                &:last-child{
+                    border-radius: 0px 10px 10px 0px;
+                }
+            }
+        }
+    }
+    tbody{
+        tr{
+            td{
+                vertical-align: middle;
+                border-top: none;
+                border-bottom: 5px solid #fff;
+                background-color: rgba(211, 212, 225, 0.122);
+                padding: 1rem 1.5rem;
+                font-size: 1.6rem;
+                &:first-child{
+                    border-radius: 10px 0 0 10px;
+                }
+                &:last-child{
+                    border-radius: 0px 10px 10px 0px;
+                }
+            }
+            &:not(:last-child):hover{
+                td{
+                    background-color: #fff7e6;
+                }
+            }
+            &.total_row{
+                background-color: #EBE9E9;
+                td{
+                    font-weight: 600;
+                }
+            }
+        }
+    }
+}

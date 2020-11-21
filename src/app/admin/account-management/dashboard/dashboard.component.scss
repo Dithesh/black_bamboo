@@ -1,0 +1,33 @@
+.accont_header_wrapping{
+    min-height: 150px;
+    background-color: #cbcde3;
+}
+.account_body_wrapper{
+    margin-top: -55px;
+}
+.account_table{
+    thead{
+        tr{
+            th{
+                background-color: rgba(211, 212, 225, 0.122);
+                border-bottom:5px solid transparent;
+                border-top: none;
+                color: rgba(46, 53, 142, 0.549);
+                padding: 1.5rem;
+                font-size: 1.8rem;
+                font-weight: 500;
+            }
+        }
+    }
+    tbody{
+        tr{
+            td{
+                vertical-align: middle;
+                border-bottom: 5px solid transparent;
+                background-color: #fff;
+                padding: 1.5rem;
+                font-size: 1.6rem;
+            }
+        }
+    }
+}

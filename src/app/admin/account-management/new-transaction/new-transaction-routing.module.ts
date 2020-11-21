@@ -1,4 +1,4 @@
-import { DashboardComponent } from './dashboard.component';
+import { NewTransactionComponent } from './new-transaction.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
@@ -8,7 +8,7 @@ const routes: Routes = [{
   children: [
     {
       path: "",
-      component:DashboardComponent
+      component:NewTransactionComponent
     }
   ]
 }];
@@ -17,4 +17,4 @@ const routes: Routes = [{
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class DashboardRoutingModule { }
+export class NewTransactionRoutingModule { }
