@@ -15,6 +15,10 @@ const routes: Routes = [
         loadChildren: () => import('./new-transaction/new-transaction.module').then(mod => mod.NewTransactionModule)
       },
       {
+        path:"masters",
+        loadChildren: () => import('./account-master/account-master.module').then(mod => mod.AccountMasterModule)
+      },
+      {
         path:"",
         redirectTo:'dashboard',
         pathMatch:'full'

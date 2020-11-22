@@ -37,10 +37,6 @@ const routes: Routes = [
         loadChildren: () => import('./user/user.module').then(mod => mod.UserModule)
       },
       {
-        path:"account",
-        loadChildren: () => import('./account/account.module').then(mod => mod.AccountModule)
-      },
-      {
         path:"account-management",
         loadChildren: () => import('./account-management/account-management.module').then(mod => mod.AccountManagementModule)
       }

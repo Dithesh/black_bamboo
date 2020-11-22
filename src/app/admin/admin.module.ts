@@ -21,6 +21,7 @@ import { MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dial
 import { SharedModule } from '../shared/shared.module';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { TokenInterceptor } from '../shared/services/intercepter';
+import { CompanyListResolver } from './resolvers/company-list.resolver';
 
 
 @NgModule({
@@ -35,7 +36,8 @@ import { TokenInterceptor } from '../shared/services/intercepter';
   ],
   entryComponents: [ChangePasswordComponent, ChangeProfileComponent],
   providers:[
-    MatDialogModule
+    MatDialogModule,
+    CompanyListResolver
   ]
 })
 export class AdminModule { }
