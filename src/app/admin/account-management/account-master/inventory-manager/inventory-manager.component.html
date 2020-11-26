@@ -1,1 +1,97 @@
-<p>inventory-manager works!</p>
+<div class="row">
+    <div class="col">
+        <mat-form-field appearance="fill">
+            <mat-label>Company</mat-label>
+            <mat-select required [formControl]="selectedCompany">
+                <mat-option *ngFor="let item of companyList" [value]="item.id">{{ item.companyName }}</mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
+</div>
+<div class="item_table_outer mt-10">
+    <div class="table-responsive">
+        <table class="table account_table">
+            <thead>
+                <tr>
+                    <th class="ew-200">Inventory Name</th>
+                    <th class="ew-200">Price per unit</th>
+                    <th class="ew-200">Unit</th>
+                    <th class="">Description</th>
+                    <th class="ew-150">Active?</th>
+                    <!-- <th class="ew-150">Branch</th> -->
+                    <th class="ew-120">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <ng-container *ngFor="let item of inventoryList;let i =index">
+                    <tr *ngIf="(addInventoryActive && !item.id) || item.id">
+                        <td>
+                            <div class="custom_input w-50 ew-mn-250" *ngIf="!item.id || (item.id && editInventoryIndex == i)">
+                                <input type="text" class="w-100" [(ngModel)]="item.itemName">
+                                <span class="underline"></span>
+                            </div>
+                            <ng-container *ngIf="item.id && editInventoryIndex != i">
+                                {{ item.itemName }}
+                            </ng-container>
+                        </td>
+                        <td>
+                            <div class="custom_input w-50 ew-mn-250" *ngIf="!item.id || (item.id && editInventoryIndex == i)">
+                                <input type="text" class="w-100" [(ngModel)]="item.pricePerUnit">
+                                <span class="underline"></span>
+                            </div>
+                            <ng-container *ngIf="item.id && editInventoryIndex != i">
+                                {{ item.pricePerUnit }}
+                            </ng-container>
+                        </td>
+                        <td>
+                            <mat-form-field class="field-pb-0 table_select" *ngIf="!item.id || (item.id && editInventoryIndex == i)">
+                                <mat-select [(ngModel)]="item.unitId">
+                                    <mat-option value=""></mat-option>
+                                    <mat-option *ngFor="let item of unitList;" [value]="item.id">
+                                        {{ item.unitLabel }}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                            <ng-container *ngIf="item.id && editInventoryIndex != i">
+                                <ng-container *ngIf="item.unitId else noData">{{ item.unit.unitLabel }}</ng-container>
+                            </ng-container>
+                        </td>
+                        <td>
+                            <div class="custom_input w-50 ew-mn-250" *ngIf="!item.id || (item.id && editInventoryIndex == i)">
+                                <input type="text" class="w-100" [(ngModel)]="item.description">
+                                <span class="underline"></span>
+                            </div>
+                            <ng-container *ngIf="item.id && editInventoryIndex != i">
+                                <ng-container *ngIf="item.description else noData">{{ item.description }}</ng-container>
+                            </ng-container>
+                        </td>
+                        <td>
+                            <mat-slide-toggle  *ngIf="!item.id || (item.id && editInventoryIndex == i)" color="primary" [(ngModel)]="item.isActive"></mat-slide-toggle>
+                            <ng-container *ngIf="item.id && editInventoryIndex != i">
+                                <span class="status_chip active" *ngIf="item.isActive">Active</span>
+                                <span class="status_chip inactive" *ngIf="!item.isActive">Inactive</span>
+                            </ng-container>
+                        </td>
+                        <td>
+                            <button *ngIf="!item.id || editInventoryIndex == i" mat-icon-button class="small_icon_btn mr-2" type="button" (click)="saveInventory(item)"
+                                color="primary">
+                                <mat-icon>save</mat-icon>
+                            </button>
+                            <button *ngIf="item.id && editInventoryIndex != i" mat-icon-button class="small_icon_btn mr-2" color="primary" type="button" (click)="onInventoryEdit(i)">
+                                <mat-icon>edit</mat-icon>
+                            </button>
+                            <button *ngIf="item.id && editInventoryIndex != i" mat-icon-button class="small_icon_btn" color="warn" type="button" (click)="deleteInventory(i)">
+                                <mat-icon>delete_forever</mat-icon>
+                            </button>
+                            <button *ngIf="!item.id || (item.id && editInventoryIndex == i)" mat-icon-button class="small_icon_btn" color="warn" (click)="onCancelEdit()">
+                                <mat-icon>close</mat-icon>
+                            </button>
+                        </td>
+                    </tr>
+                </ng-container>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<ng-template #noData>---</ng-template>

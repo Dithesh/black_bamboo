@@ -1,1 +1,87 @@
-<p>ledger-manager works!</p>
+<div class="row">
+    <div class="col">
+        <mat-form-field appearance="fill">
+            <mat-label>Company</mat-label>
+            <mat-select required [formControl]="selectedCompany">
+                <mat-option *ngFor="let item of companyList" [value]="item.id">{{ item.companyName }}</mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
+</div>
+<div class="item_table_outer mt-10">
+    <div class="table-responsive">
+        <table class="table account_table">
+            <thead>
+                <tr>
+                    <th class="ew-200">Account Name</th>
+                    <th class="ew-200">Account Type</th>
+                    <th class="">Description</th>
+                    <th class="ew-150">Active?</th>
+                    <!-- <th class="ew-150">Branch</th> -->
+                    <th class="ew-120">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <ng-container *ngFor="let item of ledgerList;let i =index">
+                    <tr *ngIf="(addLedgerActive && !item.id) || item.id">
+                        <td>
+                            <div class="custom_input w-50 ew-mn-250" *ngIf="!item.id || (item.id && editLedgerIndex == i)">
+                                <input type="text" class="w-100" [(ngModel)]="item.ledgerName">
+                                <span class="underline"></span>
+                            </div>
+                            <ng-container *ngIf="item.id && editLedgerIndex != i">
+                                {{ item.ledgerName }}
+                            </ng-container>
+                        </td>
+                        <td>
+                            <mat-form-field class="field-pb-0 table_select" *ngIf="!item.id || (item.id && editLedgerIndex == i)">
+                                <mat-select [(ngModel)]="item.accountType">
+                                    <mat-option value=""></mat-option>
+                                    <mat-option *ngFor="let item of accountTypeList;" [value]="item">
+                                        {{ item }}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                            <ng-container *ngIf="item.id && editLedgerIndex != i">
+                                <ng-container *ngIf="item.accountType else noData">{{ item.accountType }}</ng-container>
+                            </ng-container>
+                        </td>
+                        <td>
+                            <div class="custom_input w-50 ew-mn-250" *ngIf="!item.id || (item.id && editLedgerIndex == i)">
+                                <input type="text" class="w-100" [(ngModel)]="item.description">
+                                <span class="underline"></span>
+                            </div>
+                            <ng-container *ngIf="item.id && editLedgerIndex != i">
+                                <ng-container *ngIf="item.description else noData">{{ item.description }}</ng-container>
+                            </ng-container>
+                        </td>
+                        <td>
+                            <mat-slide-toggle  *ngIf="!item.id || (item.id && editLedgerIndex == i)" color="primary" [(ngModel)]="item.isActive"></mat-slide-toggle>
+                            <ng-container *ngIf="item.id && editLedgerIndex != i">
+                                <span class="status_chip active" *ngIf="item.isActive">Active</span>
+                                <span class="status_chip inactive" *ngIf="!item.isActive">Inactive</span>
+                            </ng-container>
+                        </td>
+                        <td>
+                            <button *ngIf="!item.id || editLedgerIndex == i" mat-icon-button class="small_icon_btn mr-2" type="button" (click)="saveLedger(item)"
+                                color="primary">
+                                <mat-icon>save</mat-icon>
+                            </button>
+                            <button *ngIf="item.id && editLedgerIndex != i" mat-icon-button class="small_icon_btn mr-2" color="primary" type="button" (click)="onLedgerEdit(i)">
+                                <mat-icon>edit</mat-icon>
+                            </button>
+                            <button *ngIf="item.id && editLedgerIndex != i" mat-icon-button class="small_icon_btn" color="warn" type="button" (click)="deleteLedger(i)">
+                                <mat-icon>delete_forever</mat-icon>
+                            </button>
+                            <button *ngIf="!item.id || (item.id && editLedgerIndex == i)" mat-icon-button class="small_icon_btn" color="warn" (click)="onCancelEdit()">
+                                <mat-icon>close</mat-icon>
+                            </button>
+                        </td>
+                    </tr>
+                </ng-container>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<ng-template #noData>---</ng-template>
