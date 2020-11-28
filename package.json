@@ -24,6 +24,7 @@
     "@angular/router": "~10.0.0",
     "@auth0/angular-jwt": "^5.0.1",
     "@rxweb/reactive-form-validators": "^2.0.0",
+    "@swimlane/ngx-charts": "^16.0.0",
     "bootstrap": "^4.4.1",
     "file-saver": "^2.0.2",
     "mix-scss": "^1.1.2",

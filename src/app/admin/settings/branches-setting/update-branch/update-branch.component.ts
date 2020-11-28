@@ -14,7 +14,7 @@ export class UpdateBranchComponent implements OnInit {
   url = environment.imgUrl;
   branchId;
   userData;
-
+  companyList: any[] = [];
   form:FormGroup;
   constructor(
     private _serv: DataService,
@@ -32,8 +32,14 @@ export class UpdateBranchComponent implements OnInit {
       branchAddress: [''],
       isActive: [false],
       taxPercent: [''],
+      company_id:[''],
       kitchens: this.fb.array([]),
       orderTypes: this.fb.array([]),
+    })
+    this.route.data.subscribe(response => {
+      this.companyList = response.companyList;
+      if(this.companyList.length > 0)
+        this.form.get('company_id').setValue(this.companyList[0].id)
     })
   }
 

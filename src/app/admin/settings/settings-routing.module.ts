@@ -1,3 +1,6 @@
+import { UpdateCompanyComponent } from './company-setting/update-company/update-company.component';
+import { CompanySettingComponent } from './company-setting/company-setting.component';
+import { CompanyListResolver } from './../resolvers/company-list.resolver';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { BranchesSettingComponent } from './branches-setting/branches-setting.component';
@@ -14,15 +17,28 @@ const routes: Routes = [
   },
   {
     path:"branches",
-    component: BranchesSettingComponent
+    component: BranchesSettingComponent,
+    resolve: {
+      companyList: CompanyListResolver
+    }
   },
   {
     path:"branches/update",
-    component: UpdateBranchComponent
+    component: UpdateBranchComponent,
+    resolve: {
+      companyList: CompanyListResolver
+    }
   },
   {
     path:"branches/update/:id",
-    component: UpdateBranchComponent
+    component: UpdateBranchComponent,
+    resolve: {
+      companyList: CompanyListResolver
+    }
+  },
+  {
+    path:"company",
+    loadChildren: () => import('./company-setting/company-setting.module').then(m => m.CompanySettingModule)
   },
   {
     path:"categories",

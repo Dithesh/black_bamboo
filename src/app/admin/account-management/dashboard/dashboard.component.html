@@ -1,48 +1,121 @@
-<div class="accont_header_wrapping pa-25">
-  <h2 class="font-3_0 text-uppercase font-weight-600 mb-0">New Transaction</h2>
+<div class="accont_header_wrapping d-flex pa-25 align-items-start">
+	<h2 class="text-uppercase font-weight-500 mb-0">Dashboard</h2>
+	<div class="radio_toggle ml-auto mt-2">
+		<div class="radioBox">
+			<input type="radio" id="month" name="reportas" value="month" checked>
+			<label for="month" class="valueOne">
+				<p>Monthly</p>
+			</label>
+		</div>
+		<div class="radioBox">
+			<input type="radio" id="year" name="reportas" value="year">
+			<label for="year" class="valueTwo">
+				<p>Yearly</p>
+			</label>
+		</div>
+	</div>
 </div>
 <div class="account_body_wrapper pl-25 pr-25">
-  <div class="item_table_outer mt-50">
-    <div class="table-responsive">
-      <table class="table account_table">
-        <thead>
-          <tr>
-            <th class="ew-50"></th>
-            <th class="">Item</th>
-            <th class="ew-150">Price</th>
-            <th class="ew-150">Quantity</th>
-            <th class="ew-150">Total</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>
-              <button mat-icon-button>
-                <mat-icon>delete_forever</mat-icon>
-              </button>
-            </td>
-            <td>Food itemss</td>
-            <td>230.00</td>
-            <td>2</td>
-            <td>2103</td>
-          </tr>
-          <tr>
-            <td>
-              <button mat-icon-button>
-                <mat-icon>delete_forever</mat-icon>
-              </button>
-            </td>
-            <td>
-              <mat-form-field class="example-full-width">
-                <input matInput placeholder="Food" value="">
-              </mat-form-field>
-            </td>
-            <td>230.00</td>
-            <td>2</td>
-            <td>2103</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>  
+	<div class="row mb-50">
+		<div class="col-lg-3 col-sm-6 col-12">
+			<mat-card class="dash_card">
+				<div class="py-10">
+					<p class="font-1_8 text-accent font-weight-500">Ballance C/D</p>
+					<h1 class="mb-0 mt-20 text-primary font-weight-600">1,20,000</h1>
+				</div>
+			</mat-card>
+		</div>
+		<div class="col-lg-3 col-sm-6 col-12">
+			<mat-card class="dash_card">
+				<div class="py-10">
+					<p class="font-1_8 text-accent font-weight-500">Income</p>
+					<h1 class="mb-0 mt-20 text-primary font-weight-600">1,20,000</h1>
+				</div>
+			</mat-card>
+		</div>
+		<div class="col-lg-3 col-sm-6 col-12">
+			<mat-card class="dash_card">
+				<div class="py-10">
+					<p class="font-1_8 text-accent font-weight-500">Expense</p>
+					<h1 class="mb-0 mt-20 text-primary font-weight-600">1,20,000</h1>
+				</div>
+			</mat-card>
+		</div>
+		<div class="col-lg-3 col-sm-6 col-12">
+			<mat-card class="dash_card">
+				<div class="py-10">
+					<p class="font-1_8 text-accent font-weight-500">End Balance</p>
+					<h1 class="mb-0 mt-20 text-primary font-weight-600">1,20,000</h1>
+				</div>
+			</mat-card>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col ew-mn-100">
+			<mat-card class="dash_card p-0">
+				<div class="dash_header px-20 py-15 border-bottom border-gray">
+					<h3 class="mb-0 text-primary">Recents Transaction</h3>
+				</div>
+				<div class="pt-30">
+					<div class="chart_outer" #containerRef>
+						<ngx-charts-line-chart [view]="[containerRef.offsetWidth, (containerRef.offsetWidth*700)/1600]"
+							[scheme]="colorScheme" [legend]="legend" [showXAxisLabel]="showXAxisLabel"
+							[showYAxisLabel]="showYAxisLabel" [xAxis]="xAxis" [yAxis]="yAxis" [xAxisLabel]="xAxisLabel"
+							[yAxisLabel]="yAxisLabel" [timeline]="timeline" [results]="multi" (select)="onSelect($event)"
+							(activate)="onActivate($event)" (deactivate)="onDeactivate($event)" class="w-100">
+						</ngx-charts-line-chart>
+						<div class="clearfix"></div>
+					</div>
+				</div>
+			</mat-card>
+		</div>
+		<div class="col-auto">
+			<div class="right_status_outer">
+				<mat-card class="dash_card p-0 list_card">
+					<div class="list_header d-flex px-20 py-15 align-items-center border-bottom border-gray">
+						<h3 class="mb-0 text-primary">Recents Transaction</h3>
+						<button mat-stroked-button color="primary" class="ml-auto">View All</button>
+					</div>
+					<ul class="list-unstyled list_ul">
+						<li class="d-flex">
+							<div class="list_left flex-fill pr-15">
+								<h4 class="text-primary d-flex align-items-center mb-5"><span class="tag sales">Sales</span> #21231</h4>
+								<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquid accusamus</p>
+							</div>
+							<div class="list-right flex-auto">
+								<h4 class="text-primary mb-0">25/06/2020</h4>
+							</div>
+						</li>
+						<li class="d-flex">
+							<div class="list_left flex-fill pr-15">
+								<h4 class="text-primary d-flex align-items-center mb-5"><span class="tag purchase">Purchase</span> #21231</h4>
+								<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquid accusamus</p>
+							</div>
+							<div class="list-right flex-auto">
+								<h4 class="text-primary mb-0">25/06/2020</h4>
+							</div>
+						</li>
+						<li class="d-flex">
+							<div class="list_left flex-fill pr-15">
+								<h4 class="text-primary d-flex align-items-center mb-5"><span class="tag payment">Payment</span> #21231</h4>
+								<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquid accusamus</p>
+							</div>
+							<div class="list-right flex-auto">
+								<h4 class="text-primary mb-0">25/06/2020</h4>
+							</div>
+						</li>
+						<li class="d-flex">
+							<div class="list_left flex-fill pr-15">
+								<h4 class="text-primary d-flex align-items-center mb-5"><span class="tag recipt">Recipt</span> #21231</h4>
+								<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquid accusamus</p>
+							</div>
+							<div class="list-right flex-auto">
+								<h4 class="text-primary mb-0">25/06/2020</h4>
+							</div>
+						</li>
+					</ul>
+				</mat-card>
+			</div>
+		</div>
+	</div>
 </div>

@@ -2,11 +2,12 @@ import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
-import { FormGroup, FormBuilder } from '@angular/forms';
+import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
 import { DataService } from 'src/app/shared/services/data.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmPopupComponent } from 'src/app/shared/components/confirm-popup/confirm-popup.component';
 import { merge } from 'rxjs';
+import { ActivatedRoute } from '@angular/router';
 
 
 @Component({
@@ -19,19 +20,27 @@ export class BranchesSettingComponent implements OnInit, AfterViewInit {
   displayedColumns: string[] = ['action', 'branchCode', 'branchTitle', 'description', 'branchAddress', 'isActive'];
   dataSource;
   filterForm:FormGroup;
-
+  companyList;
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   constructor(
     private _serv: DataService,
     private fb: FormBuilder,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private route:ActivatedRoute
   ) { 
     this.filterForm = this.fb.group({
       searchString: [''],
       orderCol: [''],
-      orderType: ['']
+      orderType: [''],
+      companyFilter:['']
     });
+    this.route.data.subscribe(response => {
+      this.companyList = response.companyList;
+      if(this.companyList.length > 0){
+        this.filterForm.get('companyFilter').setValue(this.companyList[0].id);
+      }
+    })
   }
 
   ngOnInit(): void {
@@ -39,7 +48,7 @@ export class BranchesSettingComponent implements OnInit, AfterViewInit {
     // this.dataSource.paginator = this.paginator;
     this.getAllBranches();
   }
-
+  
   ngAfterViewInit() {
     
     this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
@@ -55,7 +64,7 @@ export class BranchesSettingComponent implements OnInit, AfterViewInit {
 
   getAllBranches(page=1) {
     let filterValue=this.filterForm.value;
-    this._serv.endpoint = "order-manager/branch?pageNumber="+page+"&orderType="+filterValue.orderType+"&orderCol="+filterValue.orderCol+"&searchString="+filterValue.searchString;
+    this._serv.endpoint = "order-manager/branch?pageNumber="+page+"&orderType="+filterValue.orderType+"&orderCol="+filterValue.orderCol+"&searchString="+filterValue.searchString+'&compnayId='+filterValue.companyFilter;
     this._serv.get().subscribe(response => {
       this.dataSource = response as any;
     })
