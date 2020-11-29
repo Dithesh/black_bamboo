@@ -30,6 +30,7 @@ import { DigitOnlyDirective } from './services/digit-only.directive';
 import {  RxReactiveFormsModule } from "@rxweb/reactive-form-validators"
 import {MatChipsModule} from '@angular/material/chips';
 import {MatCheckboxModule} from '@angular/material/checkbox';
+import { MatSelectFilterModule } from 'mat-select-filter';
 
 @NgModule({
   declarations: [DatexPipe, SnackbarComponent, ConfirmPopupComponent, NumberFormatterDirective, DigitOnlyDirective],
@@ -68,7 +69,8 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
     DigitOnlyDirective,
     RxReactiveFormsModule,
     MatChipsModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    MatSelectFilterModule
   ],
   providers: [
     MatButtonModule,
