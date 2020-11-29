@@ -15,10 +15,18 @@
             </div>
             <div class="col-sm 12 col-md">
                 <div class="row">
-                    <div class="col-12">
+                    <div class="col-md-4">
+                        <mat-form-field appearance="outline" class="w-100 pb-0 mb-15">
+                            <mat-label>Company</mat-label>
+                            <mat-select formControlName="company_id">
+                                <mat-option *ngFor="let item of companyList" [value]="item.id">{{ item.companyName }}</mat-option>
+                            </mat-select>
+                          </mat-form-field>
+                    </div>
+                    <div class="col-8">
                         <div class="row no-gutters flex-nowrap">
-                            <div class="col-3">
-                                <mat-form-field  appearance="outline" class="w-100 pb-0 mb-15">
+                            <div class="col-auto">
+                                <mat-form-field  appearance="outline" class="ew-150 pb-0 mb-15">
                                     <mat-label>Branch Code</mat-label>
                                     <input type="text" formControlName="branchCode" matInput>
                                 </mat-form-field>

@@ -1,6 +1,12 @@
 <div class="page_header d-flex mb-4">
     <h2 class="header_title">Branch</h2>
     <div class="ml-auto">
+        <mat-form-field appearance="outline" class="ew-250 mr-15">
+            <mat-label>Company</mat-label>
+            <mat-select [formControl]="filterForm.get('companyFilter')" (selectionChange)="getAllBranches()">
+                <mat-option *ngFor="let item of companyList" [value]="item.id">{{ item.companyName }}</mat-option>
+            </mat-select>
+        </mat-form-field>
         <button mat-raised-button color="primary" routerLink="/admin/settings/branches/update">Add New</button>
     </div>
 </div>

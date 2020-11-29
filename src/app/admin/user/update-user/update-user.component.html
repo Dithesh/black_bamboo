@@ -1,0 +1,104 @@
+
+<form [formGroup]="form" (submit)="saveUser($event)">
+    <div class="add_formWrapper">
+        <div class="row">
+            <div class="col-sm-auto">
+                <div class="product_imrBox">
+                    <!-- <input type="file" name="" id="prodctImg">
+                    <label for="prodctImg" title="Change Image"></label> -->
+                    <input type="file" name="" id="prodctImg"  (change)="handleFileInput($event)">
+                    <label for="prodctImg" title="Change Image"  [ngStyle]="{'background-image': imageSrc}"></label>
+                </div>
+            </div>
+            <div class="col-sm 12 col-md">
+
+                <!-- <div class="mb-15 mt-15 text-center">
+                <div class="profile_imrBox">
+                    <input type="file" name="" id="prodctImg">
+                    <label for="prodctImg" title="Change Image"></label>
+                </div>
+            </div> -->
+                <div class="row">
+                    <div class="col-md-6">
+                        <mat-form-field appearance="outline" class="w-100 pb-0 mb-20">
+                            <mat-label>First Name</mat-label>
+                            <input type="text" formControlName="firstName" matInput>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-md-6">
+                        <mat-form-field appearance="outline" class="w-100 pb-0 mb-20">
+                            <mat-label>Last Name</mat-label>
+                            <input type="text" formControlName="lastName" matInput>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-md-6">
+                        <mat-form-field appearance="outline" class="w-100 pb-0 mb-20">
+                            <mat-label>Mobile Number</mat-label>
+                            <input type="text" formControlName="mobileNumber" matInput>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-md-6">
+                        <mat-form-field appearance="outline" class="w-100 pb-0 mb-20">
+                            <mat-label>Email</mat-label>
+                            <input type="text" formControlName="email" matInput>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-md-6">
+                        <mat-form-field appearance="outline" class="w-100 pb-0 mb-20">
+                            <mat-label>Password</mat-label>
+                            <input type="text" formControlName="password" matInput>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-md-6">
+                        <mat-form-field appearance="outline" class="w-100 pb-0 mb-20">
+                            <mat-label>Roles</mat-label>
+                            <mat-select matNativeControl formControlName="roles">
+                                <mat-option value="Super Admin">Super Admin</mat-option>
+                                <mat-option value="Company Admin">Company Admin</mat-option>
+                                <mat-option value="Branch Admin">Branch Admin</mat-option>
+                                <mat-option value="Company Accountant">Company Accountant</mat-option>
+                                <mat-option value="Branch Accountant">Branch Accountant</mat-option>
+                                <mat-option value="Branch Order Manager">Branch Order Manager</mat-option>
+                                <mat-option value="Kitchen Manager">Kitchen Manager</mat-option>
+                                <mat-option value="Bearer">Bearer</mat-option>
+                                <mat-option value="Customer">Customer</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-md-6">
+                        <mat-form-field appearance="outline" class="w-100 pb-0 mb-15">
+                            <mat-label>Company</mat-label>
+                            <mat-select formControlName="company_id" (selectionChange)="getAllBranches()">
+                                <mat-option *ngFor="let item of companyList" [value]="item.id">{{ item.companyName }}</mat-option>
+                            </mat-select>
+                          </mat-form-field>
+                    </div>
+                    <div class="col-md-6">
+                        <mat-form-field *ngIf="form.get('roles').value != 'Super Admin'" appearance="outline"
+                        class="w-100 pb-0 mb-20">
+                        <mat-label>Branch</mat-label>
+                        <mat-select matNativeControl formControlName="branch_id">
+                            <mat-option *ngFor="let item of branchList;" [value]="item.id">{{ item.branchTitle }}
+                            </mat-option>
+                        </mat-select>
+                        </mat-form-field>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+
+        <div class="d-flex align-items-center mb-20 mt-10">
+            <p class="my-0 mr-20">Is Active?</p>
+            <mat-slide-toggle formControlName="isActive"></mat-slide-toggle>
+        </div>
+
+        <div class="">
+            <button mat-raised-button color="primary" class="mr-10"
+                type="submit">{{ (this.form.get('id').value)?'Update':'Add'}}</button>
+            <button mat-raised-button color="warn" type="button" (click)="cancelUpdate()">Cancel</button>
+        </div>
+    </div>
+</form>
+<!-- </div>
+<div class="backdrop" [class.active]="sidemenu" (click)="cancelUpdate()"></div> -->

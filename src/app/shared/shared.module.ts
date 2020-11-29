@@ -31,6 +31,7 @@ import {  RxReactiveFormsModule } from "@rxweb/reactive-form-validators"
 import {MatChipsModule} from '@angular/material/chips';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import { MatSelectFilterModule } from 'mat-select-filter';
+import { NgxChartsModule } from '@swimlane/ngx-charts';
 
 @NgModule({
   declarations: [DatexPipe, SnackbarComponent, ConfirmPopupComponent, NumberFormatterDirective, DigitOnlyDirective],
@@ -70,7 +71,8 @@ import { MatSelectFilterModule } from 'mat-select-filter';
     RxReactiveFormsModule,
     MatChipsModule,
     MatCheckboxModule,
-    MatSelectFilterModule
+    MatSelectFilterModule,
+    NgxChartsModule
   ],
   providers: [
     MatButtonModule,
