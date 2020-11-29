@@ -103,14 +103,7 @@ export class CategoriesSettingComponent implements OnInit, AfterViewInit {
     if(this.form.invalid)return;
     let formValue = this.form.value;
     this._serv.endpoint="order-manager/category";
-    let apiCall=null;
-    if(formValue.id && formValue.id != null && formValue.id !=undefined){
-      this._serv.endpoint+='/'+formValue.id;
-      apiCall = this._serv.put(formValue);
-    }else {
-      apiCall = this._serv.post(formValue);
-    }
-    apiCall.subscribe(response => {
+    this._serv.post(formValue).subscribe(response => {
       this._serv.showMessage("Category updated successfully", 'success');
       this.cancelUpdate();
       this.getAllCategories();

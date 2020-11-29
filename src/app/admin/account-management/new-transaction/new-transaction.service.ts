@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { RxwebValidators } from '@rxweb/reactive-form-validators';
+import { NumericValueType, RxwebValidators } from '@rxweb/reactive-form-validators';
 import { BehaviorSubject, merge } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import { ConfirmPopupComponent } from 'src/app/shared/components/confirm-popup/confirm-popup.component';
 import { DataService } from 'src/app/shared/services/data.service';
+import * as math from 'exact-math';
 
 
 @Injectable()
@@ -15,6 +16,15 @@ export class NewTransactionService {
     filteredAccountList;
     inventoryList;
     editInventoryIndex=0;
+    editAccountIndex: number;
+    transactionType;
+    totalHandler = {
+        itemPriceTotal: 0,
+        itemQuantityTotal: 0,
+        itemGrandTotal: 0,
+        taxAndExpenseTotal: 0,
+        transactionGrandTotal: 0
+    }
     constructor(
         private fb: FormBuilder,
         private _serv: DataService,
@@ -25,7 +35,7 @@ export class NewTransactionService {
             transactionType: ['', [Validators.required, RxwebValidators.oneOf({matchValues:["purchase", "sales","payment","receipt"]})]],
             transactionDate: [new Date()],
             transactionRefNumber: [''],
-            accountId: [''],
+            accountId: ['', [Validators.required]],
             description: [''],
             grandTotal: [''],
             branch_id: [''],
@@ -50,14 +60,15 @@ export class NewTransactionService {
     itemForm() {
         let form = this.fb.group({
             id: [''],
-            itemId: ['', [Validators.required]],
+            item: ['', [Validators.required]],
+            itemId: [''],
             quantity: ['', [Validators.required, RxwebValidators.numeric, RxwebValidators.minNumber({value: 1})]],
             amount: ['', [Validators.required, RxwebValidators.numeric, RxwebValidators.numeric, RxwebValidators.minNumber({value: 0})]],
             total: ['', [Validators.required, RxwebValidators.numeric]],
             deletedFlag: [false]
         })
-        form.get('itemId').valueChanges.subscribe(res => {
-            if(form.get('itemId').valid) {
+        form.get('item').valueChanges.subscribe(res => {
+            if(form.get('item').valid) {
                 form.get('amount').setValue(res.pricePerUnit)
             }
         })
@@ -66,10 +77,11 @@ export class NewTransactionService {
             let amount = parseFloat(form.get('amount').value);
             
             if(form.get('quantity').valid && form.get('amount').valid) {
-                form.get('total').setValue(quantity * amount)
+                form.get('total').setValue(math.mul(quantity, amount))
             }else {
                 form.get('total').setValue(0)
             }
+            this.getOrderTotal();
         })
         return form;
     }
@@ -100,7 +112,7 @@ export class NewTransactionService {
                 let control = this.items.controls[index];
                 if(this._serv.notNull(control.get('id').value)) {
                     if(control.invalid) {
-                        control.get('itemId').setValue('1');
+                        control.get('item').setValue('1');
                         control.get('amount').setValue(1);
                         control.get('quantity').setValue(1);
                         control.get('total').setValue(1);
@@ -110,6 +122,7 @@ export class NewTransactionService {
                     this.items.removeAt(index);
                 }
                 this.editInventoryIndex=undefined;
+                this.getOrderTotal();
             }
         })
     }
@@ -132,7 +145,125 @@ export class NewTransactionService {
     get accounts(){
         return this.form.get('accounts') as FormArray;
     }
+
+    accountForm() {
+        let form = this.fb.group({
+            id: [''],
+            account: ['', [Validators.required]],
+            accountId: [''],
+            amountProcessType: ['percent', [Validators.required, RxwebValidators.oneOf({matchValues:["percent", "amount"]})]],
+            amountValue: ['', [Validators.required, RxwebValidators.numeric({acceptValue:NumericValueType.Both  ,allowDecimal:true })]],
+            totalAmount: [''],
+            deletedFlag: [false]
+        })
+
+        merge(form.get('amountProcessType').valueChanges, form.get('amountValue').valueChanges).subscribe(response => {
+            let amount = parseFloat(form.get('amountValue').value);
+            
+            if(form.get('amountProcessType').valid && form.get('amountValue').valid) {
+                if(form.get('amountProcessType').value == 'percent') {
+                    // ! Todo take percentage from the items total
+                    let amountVal = math.formula(this.totalHandler.itemGrandTotal +'*'+ amount +'/'+ 100); 
+                    form.get('totalAmount').setValue(amountVal)
+                }else {
+                    form.get('totalAmount').setValue(amount)
+                }
+            }else {
+                form.get('totalAmount').setValue(0)
+            }
+            this.getOrderTotal();
+        })
+        return form;
+    }
+
+    addAnotherAccount() {
+        this.validateAccountsArray();
+        if(this.accounts.invalid) {
+            this._serv.showMessage('Please fill in valid tax or expense data', 'error');
+            return;
+        }
+        this.accounts.push(this.accountForm());
+        this.editAccountIndex = this.accounts.controls.length - 1;
+    }
+
+    onEditAccountClick(index) {
+        this.validateAccountsArray();
+        if(this.accounts.invalid) {
+            this._serv.showMessage('Please fill in valid data', 'error');
+            return;
+        }
+        this.editAccountIndex = index;
+    }
+
+    onDeleteAccount(index) {
+        let dialogRef = this.dialog.open(ConfirmPopupComponent);
+        dialogRef.afterClosed().subscribe(data => {
+            if(data) {
+                let control = this.accounts.controls[index];
+                if(this._serv.notNull(control.get('id').value)) {
+                    if(control.invalid) {
+                        control.get('account').setValue('1');
+                        control.get('amountValue').setValue(1);
+                        control.get('amountProcessType').setValue('percent');
+                        control.get('totalAmount').setValue(1);
+                        control.get('total').setValue(1);
+                    }
+                    control.get('deletedFlag').setValue(true);
+                }else {
+                    this.accounts.removeAt(index);
+                }
+                this.editAccountIndex=undefined;
+                this.getOrderTotal();
+            }
+        })
+    }
+
+    validateAccountsArray() {
+        this.accounts.controls.forEach((group:FormGroup) => {
+            // control.markAllAsTouched();
+            if(!group.get('deletedFlag').value) {
+                (<any>Object).values(group.controls).forEach((control: FormControl) => { 
+                    control.markAsTouched();
+                    control.markAsDirty();
+                }) 
+            }
+        })
+    }
     // *accounts transaction handling
+
+    
+
+    getOrderTotal() {
+        let itemPriceTotal = 0, itemGrandTotal = 0, itemQuantityTotal = 0, taxAndExpenseTotal=0, transactionGrandTotal=0;
+        this.items.value.forEach(elem => {
+            if(!elem.deletedFlag) {
+                if(!isNaN(parseFloat(elem.amount)) && elem.amount > 0) {
+                    itemPriceTotal = math.add(itemPriceTotal, elem.amount);
+                }
+                if(!isNaN(parseFloat(elem.quantity)) && elem.quantity > 0) {
+                    itemQuantityTotal = math.add(itemQuantityTotal, elem.quantity);
+                }
+                if(!isNaN(parseFloat(elem.total)) && elem.total > 0) {
+                    itemGrandTotal = math.add(itemGrandTotal, elem.total);
+                }
+            }
+        })
+        this.accounts.value.forEach(elem => {
+            if(!elem.deletedFlag) {
+                if(!isNaN(parseFloat(elem.totalAmount))) {
+                    taxAndExpenseTotal = math.add(taxAndExpenseTotal, elem.totalAmount);
+                }
+            }
+        })
+        transactionGrandTotal = itemGrandTotal + taxAndExpenseTotal;
+        this.totalHandler = {
+            itemPriceTotal: itemPriceTotal,
+            itemQuantityTotal: itemQuantityTotal,
+            itemGrandTotal: itemGrandTotal,
+            taxAndExpenseTotal: taxAndExpenseTotal,
+            transactionGrandTotal: transactionGrandTotal
+        }
+    }
 
     getAccountList() {
         this._serv.endpoint = "account-manager/ledger?status=true&companyId="+this.form.get('company_id').value;
@@ -149,6 +280,11 @@ export class NewTransactionService {
         })
     }
 
+    setTransactionType(type) {
+        this.transactionType = type;
+        this.form.get('transactionType').setValue(this.transactionType);
+    }
+
     resetForm() {
         this.items.controls=[];
         this.items.reset();
@@ -159,8 +295,35 @@ export class NewTransactionService {
         this.form.patchValue({
             company_id: formValue.company_id,
             branch_id: formValue.branch_id,
+            transactionType: this.transactionType,
             transactionDate: new Date()
         })
         this.items.push(this.itemForm());
+        // this.accounts.push(this.accountForm());
+        this.editInventoryIndex=0;
+        this.editAccountIndex=undefined;
+    }
+
+    saveFinaldata() {
+        this.validateItemsArray();
+        this.validateAccountsArray();
+        this.form.markAllAsTouched();
+        if(this.form.invalid){
+            this._serv.showMessage('Please check data before submit. Delete any unwanted empty rows.', 'error');
+            return;
+        }
+        let formData = {...this.form.value};
+        console.log(formData);
+        
+        formData.items.forEach(elem => {
+            elem.itemId = elem.item.id;
+        })
+        formData.accounts.forEach(elem => {
+            elem.accountId = elem.account.id;
+        })
+        this._serv.endpoint="account-manager/transaction";
+        this._serv.post(this.form.value).subscribe(response => {
+
+        })
     }
 }
