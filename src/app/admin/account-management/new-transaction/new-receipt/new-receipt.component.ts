@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { NewTransactionService } from '../new-transaction.service';
 
 @Component({
   selector: 'app-new-receipt',
@@ -7,7 +8,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NewReceiptComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    public _transact: NewTransactionService
+  ) { 
+    this._transact.resetData();
+    this._transact.setTransactionType('receipt');
+  }
 
   ngOnInit(): void {
   }

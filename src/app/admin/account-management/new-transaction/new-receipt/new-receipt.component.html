@@ -1,1 +1,170 @@
-<p>new-receipt works!</p>
+<div [formGroup]="_transact.form">
+    <div class="deatail_wraper mb-15">
+        <div class="row">
+            <div class="col-md-auto col-sm-6 col-12 order-1">
+                <mat-form-field appearance="fill" class="ew-300">
+                    <mat-label>To Account</mat-label>
+                    <mat-select required formControlName="accountId">
+                      <mat-select-filter [placeholder]="'Filter'" [displayMember]="'ledgerName'" [array]="_transact.accountList" (filteredReturn)="_transact.filteredAccountList =$event"></mat-select-filter>
+                      <ng-container *ngFor="let item of _transact.filteredAccountList;">
+                        <mat-option *ngIf="_transact.topAccountExclude.indexOf(item.accountType) < 0" [value]="item.id">{{ item.ledgerName }}</mat-option>
+                      </ng-container>
+                    </mat-select>
+                  </mat-form-field>
+                <!-- <mat-form-field appearance="fill" class="ew-300">
+                    <mat-label>To Account</mat-label>
+                    <input matInput value="">
+                </mat-form-field> -->
+            </div>
+            <div class="col-md-auto col-sm-6 col-12 order-2">
+                <mat-form-field appearance="fill">
+                    <mat-label>Date of transaction</mat-label>
+                    <input matInput [matDatepicker]="picker" required formControlName="transactionDate">
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>
+            </div>
+            <div class="col-md-auto ml-auto col-sm-6 col-12 order-0 order-sm-3" *ngIf="_transact.form.get('transactionRefNumber').value">
+                <div class="d-inline-flex align-items-center text-primary font-1_6">
+                    <span>Ref. No :</span> 
+                    {{ _transact.form.get('transactionRefNumber').value }} 
+                    <!-- <div class="custom_input ew-60 d-md-inline-block">
+                        <input type="text" class="w-100">
+                        <span class="underline"></span>
+                    </div> -->
+                    <!-- <button mat-icon-button class="small_icon_btn ml-10">
+                        <mat-icon>create</mat-icon>
+                    </button> -->
+                </div>
+            </div>
+        </div>
+        <!-- <p class="balance_text text-accent font-1_6 font-weight-400">Current Balance: 0.00</p> -->
+    </div> 
+
+    <ng-container>
+        <div class="d-flex align-items-center justify-content-between mt-20">
+            <h3 class="title_h3 font-weight-500 mb-5 text-primary">Summary</h3>
+            <button type="button" (click)="_transact.addAnotherAccount()" mat-button>
+                <mat-icon>add</mat-icon> Add
+            </button>
+        </div>
+        <div class="item_table_outer mt-10">
+            <div class="table-responsive">
+                <div class="table-responsive mt-10">
+                    <table class="table account_table">
+                        <tbody formArrayName="accounts">
+                            <ng-container *ngFor="let account of _transact.accounts['controls'];let i=index;">
+                                <ng-container *ngIf="!account.get('deletedFlag').value">
+                                    <tr *ngIf="_transact.editAccountIndex != i else editAccountMode">
+                                        <td class="ew-50"></td>
+                                        <td>
+                                            <a href="javascript:;" class="text-reset" (click)="_transact.onEditAccountClick(i)">{{account.get('account').value.ledgerName}}</a>
+                                        </td>
+                                        <td class="ew-150"></td>
+                                        <td class="ew-150">
+                                            {{ account.get('amountValue').value }} 
+                                            <span class="d-inline-block ml-5">
+                                                <ng-container *ngIf="account.get('amountProcessType').value == 'percent' else rupeesTemplate">
+                                                    %
+                                                </ng-container>
+                                            </span>
+                                        </td>
+                                        <td class="ew-150">
+                                            {{ account.get('totalAmount').value }}
+                                        </td>
+                                    </tr>
+                                    <ng-template #editAccountMode>
+                                        <tr [formGroupName]="i">
+                                            <td class="ew-50">
+                                                <button mat-icon-button class="small_icon_btn" color="warn" type="button" (click)="_transact.onDeleteAccount(i)">
+                                                    <mat-icon>delete_forever</mat-icon>
+                                                </button>
+                                            </td>
+                                            <td>
+                                                <mat-form-field class="field-pb-0 table_select ew-mn-300">
+                                                    <mat-select formControlName="account">
+                                                        <mat-option></mat-option>
+                                                        <ng-container *ngFor="let item of _transact.filteredExpenseAccountList;">
+                                                            <mat-option *ngIf="_transact.taxAndExpenseExclude.indexOf(item.accountType) < 0" [value]="item">{{ item.ledgerName }}</mat-option>
+                                                        </ng-container>
+                                                    </mat-select>
+                                                  </mat-form-field>
+                                            </td>
+                                            <td class="ew-150"></td>
+                                            <td class="ew-150">
+                                                
+                                                <mat-form-field class="field-pb-0 table_select ew-150">
+                                                    <input matInput formControlName="amountValue">
+                                                    <span matSuffix class="suffix_text cursor-pointer" [matMenuTriggerFor]="dropMenu">
+                                                        <ng-container *ngIf="account.get('amountProcessType').value == 'percent' else rupeesTemplate">
+                                                            %
+                                                        </ng-container>
+                                                    </span>
+                                                </mat-form-field>
+                                                <!-- <div class="custom_input suffix ew-100">
+                                                    <span class="suffix_text cursor-pointer" [matMenuTriggerFor]="dropMenu">%</span>
+                                                    <input type="text" class="w-100" value="230">
+                                                    <span class="underline"></span>
+                                                </div> -->
+                                                <mat-menu #dropMenu="matMenu" class="dropdown_small">
+                                                    <button mat-menu-item type="button" (click)="account.get('amountProcessType').setValue('percent')">Percent</button>
+                                                    <button mat-menu-item type="button" (click)="account.get('amountProcessType').setValue('amount')">Rupee</button>
+                                                </mat-menu>
+                                            </td>
+                                            <td class="ew-150">
+                                                <mat-form-field class="field-pb-0 table_select ew-150">
+                                                    <input matInput readonly formControlName="totalAmount">
+                                                </mat-form-field>
+                                            </td>
+                                        </tr>
+                                    </ng-template>
+                                    <ng-template #rupeesTemplate>
+                                        &#8377;
+                                    </ng-template>
+                                </ng-container>
+                            </ng-container>
+                            <tr *ngIf="_transact.accounts['controls'].length == 0">
+                                <td colspan="5">
+                                    No entry added
+                                </td>
+                            </tr>
+                            <!-- <tr>
+                                <td class="ew-50"></td>
+                                <td>Food itemss</td>
+                                <td class="ew-150"></td>
+                                <td class="ew-150">15 <span class="d-inline-block ml-5">%</span></td>
+                                <td class="ew-150">2103</td>
+                            </tr>
+                            <tr>
+                                <td class="ew-50"></td>
+                                <td>Food itemss</td>
+                                <td class="ew-150"></td>
+                                <td class="ew-150">
+                                    <div class="custom_input suffix ew-100">
+                                        <span class="suffix_text cursor-pointer" [matMenuTriggerFor]="dropMenu">%</span>
+                                        <input type="text" class="w-100" value="230">
+                                        <span class="underline"></span>
+                                    </div>
+                                    <mat-menu #dropMenu="matMenu" class="dropdown_small">
+                                        <button mat-menu-item>Percent</button>
+                                        <button mat-menu-item>Rupee</button>
+                                    </mat-menu>
+                                </td>
+                                <td class="ew-150">2103</td>
+                            </tr> -->
+                            <tr class="total_row">
+                                <td colspan="4" class="text-right">Grand Total</td>
+                                <td class="ew-180">{{ _transact.totalHandler.transactionGrandTotal }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </ng-container>
+
+    <div class="footer_acc_section d-flex justify-content-end">
+        <button type="button" mat-raised-button color="primary" [disabled]="_transact.form.invalid" (click)="_transact.saveFinaldata()">Save</button>
+    </div>
+
+</div>

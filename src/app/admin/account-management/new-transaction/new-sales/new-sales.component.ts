@@ -11,12 +11,9 @@ import { NewTransactionService } from '../new-transaction.service';
 })
 export class NewSalesComponent implements OnInit {
   constructor(
-    private fb: FormBuilder,
-    private route: ActivatedRoute,
-    private router: Router,
-    private _serv: DataService,
     public _transact: NewTransactionService
   ) { 
+    this._transact.resetData();
     this._transact.setTransactionType('sales');
   }
 

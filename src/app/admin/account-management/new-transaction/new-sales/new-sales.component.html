@@ -6,7 +6,9 @@
                     <mat-label>To Account</mat-label>
                     <mat-select required formControlName="accountId">
                       <mat-select-filter [placeholder]="'Filter'" [displayMember]="'ledgerName'" [array]="_transact.accountList" (filteredReturn)="_transact.filteredAccountList =$event"></mat-select-filter>
-                      <mat-option *ngFor="let item of _transact.filteredAccountList" [value]="item.id">{{ item.ledgerName }}</mat-option>
+                      <ng-container *ngFor="let item of _transact.filteredAccountList;">
+                        <mat-option *ngIf="_transact.topAccountExclude.indexOf(item.accountType) < 0" [value]="item.id">{{ item.ledgerName }}</mat-option>
+                      </ng-container>
                     </mat-select>
                   </mat-form-field>
                 <!-- <mat-form-field appearance="fill" class="ew-300">
@@ -127,6 +129,11 @@
                             </td>
                         </tr>
                     </ng-container>
+                    <tr *ngIf="_transact.items['controls'].length == 0">
+                        <td colspan="5">
+                            No entry added
+                        </td>
+                    </tr>
                     <!-- <tr>
                         <td>
                             <button mat-icon-button class="small_icon_btn" color="warn">
@@ -261,9 +268,9 @@
                                                 <mat-form-field class="field-pb-0 table_select ew-mn-300">
                                                     <mat-select formControlName="account">
                                                         <mat-option></mat-option>
-                                                      <mat-option *ngFor="let acc of _transact.accountList" [value]="acc">
-                                                          {{ acc.ledgerName }}
-                                                      </mat-option>
+                                                        <ng-container *ngFor="let item of _transact.filteredExpenseAccountList;">
+                                                            <mat-option *ngIf="_transact.taxAndExpenseExclude.indexOf(item.accountType) < 0" [value]="item">{{ item.ledgerName }}</mat-option>
+                                                        </ng-container>
                                                     </mat-select>
                                                   </mat-form-field>
                                             </td>

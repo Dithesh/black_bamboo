@@ -14,10 +14,6 @@ export interface PeriodicElement {
   number: number;
 }
 
-const TABLE_DATA: PeriodicElement[] = [
-  {action:'', name: 'jone', branch: 'Mangalore', number: 1},
-  {action:'', name: 'jony', branch: 'Kudla', number: 1},
-];
 
 @Component({
   selector: 'app-user-list',
@@ -26,7 +22,6 @@ const TABLE_DATA: PeriodicElement[] = [
 })
 export class UserListComponent implements OnInit, AfterViewInit {
 
-  displayedColumns: string[] = ['action', 'firstName', 'roles', 'branch_title', 'mobileNumber', 'email', 'isActive'];
   dataSource;
   sidemenu=false;
   form:FormGroup;
@@ -45,17 +40,7 @@ export class UserListComponent implements OnInit, AfterViewInit {
       orderCol: [''],
       orderType: ['']
     });
-    this.form = this.fb.group({
-      id: [''],
-      firstName: [''],
-      lastName: [''],
-      roles: [''],
-      email: [''],
-      mobileNumber: [''],
-      password: [''],
-      branch_id: [''],
-      isActive: [false]
-    })
+    
   }
 
   ngOnInit(): void {

@@ -80,6 +80,14 @@ export class DataService {
     }
   }
 
+  handleError({error}, defaultMsg='Could not able to process') {
+    if(error.hasOwnProperty('msg')) {
+      this.showMessage(error.msg, 'error');
+    }else {
+      this.showMessage(defaultMsg, 'error');
+    }
+  }
+
   timerUpdate(order){
     setInterval(()=> {
       order.timeDif.s++;

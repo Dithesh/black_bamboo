@@ -1,0 +1,97 @@
+<div class="accont_header_wrapping pa-25">
+    <div class="d-flex justify-content-between">
+        <h2 class="text-uppercase font-weight-500 mb-10 d-flex align-items-center justify-content-between">
+            Transaction History
+        </h2>
+        <div [hidden]="selectedMenu == 'all'">
+            <button type="button" [routerLink]="['/admin/account-management/new-transaction/'+selectedMenu]" mat-raised-button color="primary">Add {{ selectedMenu | titlecase}} Entry</button>
+        </div>
+    </div>
+</div>
+<div class="account_body_wrapper pl-25 pr-25">
+    <div class="body_inner_card">
+        <div class="tab_header">
+            <div class="tab_btn" [class.active]="selectedMenu == 'all'" (click)="selectMenu('all')">
+                <a href="javascript:;">All</a>
+            </div>
+            <div class="tab_btn" [class.active]="selectedMenu == 'sales'" (click)="selectMenu('sales')">
+                <a href="javascript:;">Sales</a>
+            </div>
+            <div class="tab_btn" [class.active]="selectedMenu == 'purchase'" (click)="selectMenu('purchase')">
+                <a href="javascript:;">Purchase</a>
+            </div>
+            <div class="tab_btn" [class.active]="selectedMenu == 'payment'" (click)="selectMenu('payment')">
+                <a href="javascript:;">Payment</a>
+            </div>
+            <div class="tab_btn" [class.active]="selectedMenu == 'receipt'" (click)="selectMenu('receipt')">
+                <a href="javascript:;">Receipt</a>
+            </div>
+        </div>
+        <div class="tab_body pa-20">
+            <div class="item_table_outer mt-10">
+                <div class="table-responsive">
+                    <table class="table account_table" matSort>
+                        <thead>
+                            <tr>
+                                <th class="ew-200" mat-sort-header="transactionRefNumber">Ref No.</th>
+                                <th class="ew-200" mat-sort-header="transactionDate">Date</th>
+                                <th class="ew-200">Account</th>
+                                <th class="" mat-sort-header="transactionType">Type</th>
+                                <th class="ew-200">Amount</th>
+                                <th class="">Description</th>
+                                <th class="ew-150">Company</th>
+                                <th class="ew-150">Branch</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            
+                            <ng-container *ngFor="let item of transactionList?.data; let i =index">
+                                <tr>
+                                    <td>
+                                        {{ item.transactionRefNumber }}
+                                    </td>
+                                    <td>{{ item.transactionDate | datex: 'DD-MM-YYYY' }}</td>
+                                    <td>
+                                        <span *ngIf="item.transactionType == 'Sales' || item.transactionType == 'Receipt'" class="text-muted">To : </span>
+                                        <span *ngIf="item.transactionType == 'Purchase' || item.transactionType == 'Payment'" class="text-muted">From : </span>
+                                        {{ item.ledger_account.ledgerName }}
+                                    </td>
+                                    <td>
+                                        <span *ngIf="item.transactionType == 'Sales'" class="tag sales">Sales</span>
+                                        <span *ngIf="item.transactionType == 'Purchase'" class="tag purchase">Purchase</span>
+                                        <span *ngIf="item.transactionType == 'Payment'" class="tag payment">Payment</span>
+                                        <span *ngIf="item.transactionType == 'Receipt'" class="tag recipt">Receipt</span>
+                                    </td>
+                                    <td>
+                                        {{ item.grandTotal }}
+                                    </td>
+                                    <td>
+                                        <ng-container *ngIf="item.description else noData">
+                                            {{ item.description }}
+                                        </ng-container>
+                                    </td>
+                                    <td>
+                                        {{ item.company?.companyName }}
+                                    </td>
+                                    <td>
+                                        <ng-container *ngIf="item.branch else noData">
+                                            {{ item.branch?.branchTitle }}
+                                        </ng-container>
+                                    </td>
+                                </tr>
+                            </ng-container>
+                            <tr *ngIf="transactionList?.total == 0">
+                                <td colspan="7">No entries to show here.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <mat-paginator [pageSizeOptions]="[10]" [length]="transactionList?.total" [pageSize]="10"></mat-paginator>
+                </div>
+            </div>
+            
+            <ng-template #noData>---</ng-template>
+        </div>
+        
+    </div>
+
+</div>

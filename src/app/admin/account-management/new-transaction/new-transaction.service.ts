@@ -7,6 +7,7 @@ import { debounceTime } from 'rxjs/operators';
 import { ConfirmPopupComponent } from 'src/app/shared/components/confirm-popup/confirm-popup.component';
 import { DataService } from 'src/app/shared/services/data.service';
 import * as math from 'exact-math';
+import { Router } from '@angular/router';
 
 
 @Injectable()
@@ -14,6 +15,7 @@ export class NewTransactionService {
     form: FormGroup;
     accountList;
     filteredAccountList;
+    filteredExpenseAccountList;
     inventoryList;
     editInventoryIndex=0;
     editAccountIndex: number;
@@ -25,10 +27,13 @@ export class NewTransactionService {
         taxAndExpenseTotal: 0,
         transactionGrandTotal: 0
     }
+    topAccountExclude = [];
+    taxAndExpenseExclude = [];
     constructor(
         private fb: FormBuilder,
         private _serv: DataService,
-        private dialog: MatDialog
+        private dialog: MatDialog,
+        private router: Router
     ){
         this.form = this.fb.group({
             id: [''],
@@ -40,7 +45,7 @@ export class NewTransactionService {
             grandTotal: [''],
             branch_id: [''],
             company_id: ['', [Validators.required]],
-            items: this.fb.array([this.itemForm()]),
+            items: this.fb.array([]),
             accounts: this.fb.array([])
         })
     }
@@ -49,6 +54,13 @@ export class NewTransactionService {
         this.resetForm();
         this.getAccountList();
         this.getInventoryList();
+        this.totalHandler = {
+            itemPriceTotal: 0,
+            itemQuantityTotal: 0,
+            itemGrandTotal: 0,
+            taxAndExpenseTotal: 0,
+            transactionGrandTotal: 0
+        }
     }
 
     
@@ -270,6 +282,7 @@ export class NewTransactionService {
         this._serv.get().subscribe(response => {
             this.accountList = response as any[];
             this.filteredAccountList = this.accountList;
+            this.filteredExpenseAccountList = this.accountList;
         })
     }
 
@@ -283,6 +296,32 @@ export class NewTransactionService {
     setTransactionType(type) {
         this.transactionType = type;
         this.form.get('transactionType').setValue(this.transactionType);
+        if(this.transactionType == 'purchase' || this.transactionType == 'sales') {
+            this.topAccountExclude = [
+                'Duties and Taxes',
+                'Direct Expense',
+                'Indirect Expense',
+                'Direct Income',
+                'Indirect Income'
+            ];
+            this.taxAndExpenseExclude = [
+                'Purchase Account',
+                'Sales Account',
+                'Sundry Creditor',
+                'Sundry Debitor',
+                'Bank Account',
+                'Cash Account'
+            ];
+        }else {
+            this.topAccountExclude = [
+                'Duties and Taxes',
+                'Direct Expense',
+                'Indirect Expense',
+                'Direct Income',
+                'Indirect Income'
+            ];
+            this.taxAndExpenseExclude = [];
+        }
     }
 
     resetForm() {
@@ -298,7 +337,7 @@ export class NewTransactionService {
             transactionType: this.transactionType,
             transactionDate: new Date()
         })
-        this.items.push(this.itemForm());
+        // this.items.push(this.itemForm());
         // this.accounts.push(this.accountForm());
         this.editInventoryIndex=0;
         this.editAccountIndex=undefined;
@@ -321,9 +360,15 @@ export class NewTransactionService {
         formData.accounts.forEach(elem => {
             elem.accountId = elem.account.id;
         })
+        
+        formData.grandTotal = this.totalHandler.transactionGrandTotal;
         this._serv.endpoint="account-manager/transaction";
-        this._serv.post(this.form.value).subscribe(response => {
-
+        this._serv.post(formData).subscribe(response => {
+            this._serv.showMessage('Entry updated successfully', 'success');
+            this.router.navigateByUrl('/admin/account-management/transaction-history');
+        }, error => {
+            let msg = 'Can not able to create '+ this.transactionType + ' entry';
+            this._serv.handleError(error, msg);
         })
     }
 }

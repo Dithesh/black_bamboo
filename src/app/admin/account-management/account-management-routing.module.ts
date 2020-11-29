@@ -15,6 +15,10 @@ const routes: Routes = [
         loadChildren: () => import('./new-transaction/new-transaction.module').then(mod => mod.NewTransactionModule)
       },
       {
+        path:"transaction-history",
+        loadChildren: () => import('./transaction-history/transaction-history.module').then(mod => mod.TransactionHistoryModule)
+      },
+      {
         path:"masters",
         loadChildren: () => import('./account-master/account-master.module').then(mod => mod.AccountMasterModule)
       },
