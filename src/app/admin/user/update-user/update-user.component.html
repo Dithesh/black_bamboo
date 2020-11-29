@@ -2,7 +2,7 @@
 <form [formGroup]="form" (submit)="saveUser($event)">
     <div class="add_formWrapper">
         <div class="row">
-            <div class="col-sm-auto">
+            <div class="col-sm-auto order-md-12">
                 <div class="product_imrBox">
                     <!-- <input type="file" name="" id="prodctImg">
                     <label for="prodctImg" title="Change Image"></label> -->
@@ -20,75 +20,80 @@
             </div> -->
                 <div class="row">
                     <div class="col-md-6">
-                        <mat-form-field appearance="outline" class="w-100 pb-0 mb-20">
+                        <mat-form-field appearance="fill" class="w-100 mb-5">
                             <mat-label>First Name</mat-label>
-                            <input type="text" formControlName="firstName" matInput>
+                            <input type="text" formControlName="firstName" matInput required>
+                            <mat-error>First Name is required</mat-error>
                         </mat-form-field>
                     </div>
                     <div class="col-md-6">
-                        <mat-form-field appearance="outline" class="w-100 pb-0 mb-20">
+                        <mat-form-field appearance="fill" class="w-100 mb-5">
                             <mat-label>Last Name</mat-label>
                             <input type="text" formControlName="lastName" matInput>
                         </mat-form-field>
                     </div>
                     <div class="col-md-6">
-                        <mat-form-field appearance="outline" class="w-100 pb-0 mb-20">
+                        <mat-form-field appearance="fill" class="w-100 mb-5">
                             <mat-label>Mobile Number</mat-label>
-                            <input type="text" formControlName="mobileNumber" matInput>
+                            <input type="text" formControlName="mobileNumber" matInput required>
+                            <mat-error>Mobile Number is required</mat-error>
                         </mat-form-field>
                     </div>
                     <div class="col-md-6">
-                        <mat-form-field appearance="outline" class="w-100 pb-0 mb-20">
+                        <mat-form-field appearance="fill" class="w-100 mb-5">
                             <mat-label>Email</mat-label>
-                            <input type="text" formControlName="email" matInput>
+                            <input type="text" formControlName="email" matInput required name="useremail" autocomplete="off" id="userEmail">
+                            <mat-error *ngIf="form.get('email').hasError('required')">Email is required</mat-error>
+                            <mat-error *ngIf="!form.get('email').hasError('required') && form.get('email').hasError('email')">Email is invalid.</mat-error>
                         </mat-form-field>
                     </div>
-                    <div class="col-md-6">
-                        <mat-form-field appearance="outline" class="w-100 pb-0 mb-20">
+                    <div class="col-md-6" [hidden]="userId">
+                        <mat-form-field appearance="fill" class="w-100 mb-5">
                             <mat-label>Password</mat-label>
-                            <input type="text" formControlName="password" matInput>
+                            <input [type]="hide ? 'password' : 'text'" formControlName="password" name="userpassword" autocomplete="off" id="userPassword" matInput [required]="!userId">
+                            <button mat-icon-button matSuffix type="button" (click)="hide = !hide">
+                                <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                            </button>
+                            <mat-error *ngIf="form.get('password').hasError('required')">Password is required</mat-error>
+                            <mat-error *ngIf="!form.get('password').hasError('required') && form.get('password').hasError('password')">
+                                Format doesn't match!. 
+                                <span matTooltip="Minimum 8 characters required. &#13; Should include one Uppercase and one lowercase letters." matTooltipClass="goresto_tooltip"><mat-icon>info</mat-icon></span>
+                            </mat-error>
                         </mat-form-field>
                     </div>
                     <div class="col-md-6">
-                        <mat-form-field appearance="outline" class="w-100 pb-0 mb-20">
+                        <mat-form-field appearance="fill" class="w-100 mb-5">
                             <mat-label>Roles</mat-label>
-                            <mat-select matNativeControl formControlName="roles">
-                                <mat-option value="Super Admin">Super Admin</mat-option>
-                                <mat-option value="Company Admin">Company Admin</mat-option>
-                                <mat-option value="Branch Admin">Branch Admin</mat-option>
-                                <mat-option value="Company Accountant">Company Accountant</mat-option>
-                                <mat-option value="Branch Accountant">Branch Accountant</mat-option>
-                                <mat-option value="Branch Order Manager">Branch Order Manager</mat-option>
-                                <mat-option value="Kitchen Manager">Kitchen Manager</mat-option>
-                                <mat-option value="Bearer">Bearer</mat-option>
-                                <mat-option value="Customer">Customer</mat-option>
+                            <mat-select matNativeControl formControlName="roles" required>
+                                <mat-option *ngFor="let role of userRoles" [value]="role">{{role}}</mat-option>
                             </mat-select>
+                            <mat-error>Role is required</mat-error>
                         </mat-form-field>
                     </div>
-                    <div class="col-md-6">
-                        <mat-form-field appearance="outline" class="w-100 pb-0 mb-15">
+                    <div class="col-md-6" [hidden]="form.get('roles').value == 'Super Admin'">
+                        <mat-form-field appearance="fill" class="w-100 mb-5">
                             <mat-label>Company</mat-label>
-                            <mat-select formControlName="company_id" (selectionChange)="getAllBranches()">
+                            <mat-select formControlName="company_id" (selectionChange)="getAllBranches()" [required]="form.get('roles').value != 'Super Admin'">
                                 <mat-option *ngFor="let item of companyList" [value]="item.id">{{ item.companyName }}</mat-option>
                             </mat-select>
+                            <mat-error>Company is required</mat-error>
                           </mat-form-field>
                     </div>
-                    <div class="col-md-6">
-                        <mat-form-field *ngIf="form.get('roles').value != 'Super Admin'" appearance="outline"
-                        class="w-100 pb-0 mb-20">
+                    <div class="col-md-6" [hidden]="form.get('roles').value == 'Super Admin' || form.get('roles').value == 'Company Admin' || form.get('roles').value == 'Company Accountant'">
+                        <mat-form-field appearance="fill" class="w-100 mb-5">
                         <mat-label>Branch</mat-label>
-                        <mat-select matNativeControl formControlName="branch_id">
+                        <mat-select matNativeControl formControlName="branch_id" [required]="form.get('roles').value != 'Super Admin' && form.get('roles').value != 'Company Admin' && form.get('roles').value != 'Company Accountant'">
                             <mat-option *ngFor="let item of branchList;" [value]="item.id">{{ item.branchTitle }}
                             </mat-option>
                         </mat-select>
+                        <mat-error>Branch is required</mat-error>
                         </mat-form-field>
                     </div>
-                    
                 </div>
             </div>
         </div>
 
-        <div class="d-flex align-items-center mb-20 mt-10">
+        <div class="d-flex align-items-center mb-20">
             <p class="my-0 mr-20">Is Active?</p>
             <mat-slide-toggle formControlName="isActive"></mat-slide-toggle>
         </div>
@@ -96,7 +101,7 @@
         <div class="">
             <button mat-raised-button color="primary" class="mr-10"
                 type="submit">{{ (this.form.get('id').value)?'Update':'Add'}}</button>
-            <button mat-raised-button color="warn" type="button" (click)="cancelUpdate()">Cancel</button>
+            <button mat-raised-button color="warn" type="button" routerLink="/admin/user/list">Cancel</button>
         </div>
     </div>
 </form>

@@ -1,3 +1,4 @@
+import { RxwebValidators } from '@rxweb/reactive-form-validators';
 import { environment } from 'src/environments/environment';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
@@ -15,10 +16,22 @@ export class UpdateUserComponent implements OnInit {
   url = environment.imgUrl;
   dataSource;
   sidemenu=false;
+  hide = true;
   form:FormGroup;
   companyList: any[] = [];
   userId;
+  loginUserDetail;
   branchList: any[];
+  userRoles = [
+    'Super Admin',
+    'Company Admin',
+    'Company Accountant',
+    'Branch Admin',
+    'Branch Accountant',
+    'Branch Order Manager',
+    'Kitchen Manager',
+    'Bearer'
+  ]
   constructor(
     private _serv: DataService,
     private fb: FormBuilder,
@@ -34,9 +47,9 @@ export class UpdateUserComponent implements OnInit {
       lastName: [''],
       roles: [''],
       company_id:[''],
-      email: [''],
+      email: ['', RxwebValidators.email()],
       mobileNumber: [''],
-      password: [''],
+      password: ['', RxwebValidators.password({validation:{minLength: 8, upperCase:true, lowerCase:true} })],
       branch_id: [''],
       isActive: [false]
     })
@@ -49,9 +62,8 @@ export class UpdateUserComponent implements OnInit {
     if(this.userId) {
       this.getUserDetails();
     }
-    // this.dataSource.sort = this.sort;
-    // this.dataSource.paginator = this.paginator;
-    // this.getAllBranches();
+    this.loginUserDetail = this._serv.getUserData()
+    this.userRoles = this.userRoles.splice(this.userRoles.indexOf(this.loginUserDetail.roles)+1, this.userRoles.length);
   }
 
   ngAfterViewInit() {
@@ -96,14 +108,7 @@ export class UpdateUserComponent implements OnInit {
     if(this.form.invalid)return;
     let formValue = this.form.value;
     this._serv.endpoint="order-manager/user";
-    let apiCall=null;
-    if(formValue.id && formValue.id != null && formValue.id !=undefined){
-      this._serv.endpoint+='/'+formValue.id;
-      apiCall = this._serv.put(formValue);
-    }else {
-      apiCall = this._serv.post(formValue);
-    }
-    apiCall.subscribe(response => {
+    this._serv.post(formValue).subscribe(response => {
       this._serv.showMessage("User updated successfully", 'success')
       this.router.navigateByUrl('/admin/user/list')
     }, ({error}) => {

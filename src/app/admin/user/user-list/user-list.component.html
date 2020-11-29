@@ -1,21 +1,21 @@
 
 <div class="item_table_outer mt-10">
     <div class="table-responsive">
-        <table class="table account_table">
+        <table class="table account_table" matSort>
             <thead>
                 <tr>
                     <th class="ew-100">Action</th>
-                    <th class="">User Name</th>
-                    <th class="ew-200">Role</th>
-                    <th class="ew-200">Branch</th>
-                    <th class="ew-200">Mobile Number</th>
-                    <th class="ew-250">Email</th>
+                    <th mat-sort-header="firstName" class="">User Name</th>
+                    <th mat-sort-header="roles" class="ew-200">Role</th>
+                    <th mat-sort-header="description" class="ew-200">Branch</th>
+                    <th mat-sort-header="mobileNumber" class="ew-200">Mobile Number</th>
+                    <th mat-sort-header="email" class="ew-250">Email</th>
                     <th class="ew-150">Is Active?</th>
                 </tr>
             </thead>
             <tbody>
                 <ng-container *ngFor="let item of dataSource?.data; let i =index">
-                    <tr>
+                    <tr *ngIf="loginUserDetail?.user_id != item.id">
                         <td>
                             <button mat-icon-button [matMenuTriggerFor]="moreOption">
                                 <mat-icon>more_vert</mat-icon>
@@ -30,7 +30,7 @@
                         </td>
                         <td>{{item.roles}}</td>
                         <td>
-                            {{item.description}}
+                            {{item.branch?.branchTitle}}
                         </td>
                         <td>
                             {{item.mobileNumber}}
@@ -45,5 +45,6 @@
                 </ng-container>
             </tbody>
         </table>
+        <mat-paginator [pageSizeOptions]="[10]" [length]="dataSource?.total" [pageSize]="10"></mat-paginator>
     </div>
 </div>

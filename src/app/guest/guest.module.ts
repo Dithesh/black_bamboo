@@ -1,3 +1,4 @@
+import { SharedModule } from 'src/app/shared/shared.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
@@ -18,7 +19,8 @@ import { MatButtonModule } from '@angular/material/button';
     FormsModule,
     ReactiveFormsModule,
     MatInputModule,
-    MatButtonModule
+    MatButtonModule,
+    SharedModule
   ]
 })
 export class GuestModule { }

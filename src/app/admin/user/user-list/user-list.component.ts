@@ -3,7 +3,7 @@ import { merge } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { DataService } from 'src/app/shared/services/data.service';
 import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
+import { MatSort, Sort } from '@angular/material/sort';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';
 
@@ -26,14 +26,14 @@ const TABLE_DATA: PeriodicElement[] = [
 })
 export class UserListComponent implements OnInit, AfterViewInit {
 
-  // displayedColumns: string[] = ['action', 'firstName', 'roles', 'branch_title', 'mobileNumber', 'email', 'isActive'];
+  displayedColumns: string[] = ['action', 'firstName', 'roles', 'branch_title', 'mobileNumber', 'email', 'isActive'];
   dataSource;
   sidemenu=false;
   form:FormGroup;
   filterForm:FormGroup;
-
-  // @ViewChild(MatSort) sort: MatSort;
-  // @ViewChild(MatPaginator) paginator: MatPaginator;
+  loginUserDetail;
+  @ViewChild(MatSort) sort: MatSort;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
   branchList: any[];
   constructor(
     private _serv: DataService,
@@ -59,22 +59,22 @@ export class UserListComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
-    // this.dataSource.sort = this.sort;
-    // this.dataSource.paginator = this.paginator;
     this.getAllUsers();
+    this.loginUserDetail = this._serv.getUserData();
+    
   }
 
   ngAfterViewInit() {
     
-    // this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
-    // merge(this.sort.sortChange, this.paginator.page, this.filterForm.get('searchString').valueChanges)
-    //   .subscribe(data => {
-    //     this.filterForm.patchValue({
-    //       orderCol: this.sort.active,
-    //       orderType: this.sort.direction
-    //     })
-    //     this.getAllUsers(this.paginator.pageIndex + 1)
-    //   });
+    this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
+    merge(this.sort.sortChange, this.paginator.page, this.filterForm.get('searchString').valueChanges)
+      .subscribe(data => {
+        this.filterForm.patchValue({
+          orderCol: this.sort.active,
+          orderType: this.sort.direction
+        })
+        this.getAllUsers(this.paginator.pageIndex + 1)
+      });
   }
 
   getAllUsers(page=1) {
@@ -100,4 +100,3 @@ export class UserListComponent implements OnInit, AfterViewInit {
     })
   }
 }
-

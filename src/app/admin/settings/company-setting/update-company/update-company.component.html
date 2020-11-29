@@ -51,8 +51,8 @@
         </div>
         
         <div class="button_wrapper mt-20">
-            <button mat-raised-button color="primary" class="mr-20">{{ (companyId)?'Update':'Add'}}</button>
-            <button mat-raised-button color="warn">Cancel</button>
+            <button mat-raised-button color="primary" type="submit" class="mr-20">{{ (companyId)?'Update':'Add'}}</button>
+            <button mat-raised-button color="warn" type="button" routerLink="/admin/settings/company/list">Cancel</button>
         </div>
     </div>
 </form>

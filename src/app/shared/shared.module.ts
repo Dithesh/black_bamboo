@@ -32,6 +32,7 @@ import {MatChipsModule} from '@angular/material/chips';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import { MatSelectFilterModule } from 'mat-select-filter';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @NgModule({
   declarations: [DatexPipe, SnackbarComponent, ConfirmPopupComponent, NumberFormatterDirective, DigitOnlyDirective],
@@ -72,7 +73,8 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
     MatChipsModule,
     MatCheckboxModule,
     MatSelectFilterModule,
-    NgxChartsModule
+    NgxChartsModule,
+    MatTooltipModule
   ],
   providers: [
     MatButtonModule,

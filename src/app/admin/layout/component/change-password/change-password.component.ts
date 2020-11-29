@@ -11,6 +11,8 @@ import { RxwebValidators } from '@rxweb/reactive-form-validators';
 })
 export class ChangePasswordComponent implements OnInit {
   form: FormGroup;
+  oldhide = true;
+  hide = true;
   constructor(
     private fb: FormBuilder,
     private _serv: DataService,
@@ -18,7 +20,7 @@ export class ChangePasswordComponent implements OnInit {
   ) { 
     this.form = this.fb.group({
       oldPassword: ['', [Validators.required]],
-      password: ['', [Validators.required]],
+      password: ['', [Validators.required, RxwebValidators.password({validation:{minLength: 8, upperCase:true, lowerCase:true} })]],
       confirmPassword: ['',[Validators.required, RxwebValidators.compare({fieldName:'password' })]]
     })
   }

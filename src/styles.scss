@@ -318,6 +318,15 @@ mat-form-field{
             }
         }
     }
+    &.mat-form-field-invalid{
+        &.mat-form-field-appearance-fill{
+            .mat-form-field-underline{
+                .mat-form-field-ripple{
+                    background-color: $color-warning;
+                }
+            }
+        }
+    }
 }
 
 
@@ -797,4 +806,10 @@ label.mat-checkbox-layout {
         }
 
     }
+}
+
+.goresto_tooltip{
+    background-color: #2e358e;
+    line-height: 1.4;
+    white-space: pre-line;
 }
