@@ -25,6 +25,7 @@ export class AddProductComponent implements OnInit {
   categoryList: any[];
   kitchenList: any[];
   userData: any;
+  companyList;
 ;
   @ViewChild(MatSort, {static: true}) sort: MatSort;
   constructor(
@@ -48,9 +49,13 @@ export class AddProductComponent implements OnInit {
         packagingCharges: [''],
         isActive: [true],
         branch_id: [''],
+        company_id:[''],
         isVeg: [false],
         isOutOfStock: [false],
         kitchen_id: [''],
+      })
+      this.route.data.subscribe(response => {
+        this.companyList = response.companyList;
       })
     }
 
@@ -107,8 +112,17 @@ export class AddProductComponent implements OnInit {
     })
   }
   
+  selectChange(type){
+    this.form.get('categories').setValue('');
+    this.form.get('kitchen_id').setValue('');
+    if(type == 'company'){
+      this.form.get('branch_id').setValue('');
+      this.getAllBranches();
+    }
+  }
+
   getAllBranches() {
-    this._serv.endpoint = "order-manager/branch?fields=id,branchTitle";
+    this._serv.endpoint = "order-manager/branch?fields=id,branchTitle&companyId="+this.form.get('company_id').value;
     this._serv.get().subscribe(response => {
       this.branchList = response as any[];
       if(this.productId == undefined && this.branchList.length > 0) {

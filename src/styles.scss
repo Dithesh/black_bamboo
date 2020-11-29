@@ -734,6 +734,10 @@ label.mat-checkbox-layout {
         font-size: 3.4rem;
     }
 }
+.only_boder{
+    box-shadow: none !important;
+    border: 1px solid #ddd;
+}
 .radio_toggle{
     display: inline-flex;
     flex-wrap: nowrap;

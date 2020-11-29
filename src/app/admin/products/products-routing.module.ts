@@ -1,3 +1,4 @@
+import { CompanyListResolver } from './../resolvers/company-list.resolver';
 import { ProductListComponent } from './product-list/product-list.component';
 import { NgModule, Component } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
@@ -19,11 +20,17 @@ const routes: Routes = [
           },
           {
             path:"update",
-            component:AddProductComponent
+            component:AddProductComponent,
+            resolve: {
+              companyList: CompanyListResolver
+            }
           },
           {
             path:"update/:id",
-            component:AddProductComponent
+            component:AddProductComponent,
+            resolve: {
+              companyList: CompanyListResolver
+            }
           },
           {
             path:"**",

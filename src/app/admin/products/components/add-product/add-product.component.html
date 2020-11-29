@@ -10,87 +10,91 @@
             </div>
             <div class="col-sm 12 col-md">
                 <div class="row">
-                    <div class="col-12">
+                    <div class="col-md-6">
                         <div class="row no-gutters flex-nowrap">
-                            <div class="col-2">
-                                <mat-form-field appearance="outline" class="w-100">
+                            <div class="col-auto pr-2">
+                                <mat-form-field appearance="fill" class="w-100 ew-140">
                                     <mat-label>No.</mat-label>
                                     <input matInput required formControlName="productNumber" type="text">
                                 </mat-form-field>
                             </div>
                             <div class="col">
-                                <mat-form-field appearance="outline" class="w-100">
+                                <mat-form-field appearance="fill" class="w-100">
                                     <mat-label>Product Name</mat-label>
                                     <input matInput required formControlName="productName" type="text">
                                 </mat-form-field>
                             </div>
                         </div>
                     </div>
-
-                    <div class="col-12 col-md-6">
-                        <mat-form-field appearance="outline" class="w-100">
-                            <mat-label>Categories</mat-label>
-                            <mat-select matNativeControl formControlName="categories" multiple>
-                                <mat-option *ngFor="let item of categoryList;" [value]="item.id">{{ item.categoryName }}</mat-option>
+                    <div class="col-12 col-lg-3 col-md-6" >
+                        <mat-form-field appearance="fill" class="w-100 mb-5">
+                            <mat-label>Company</mat-label>
+                            <mat-select formControlName="company_id" (selectionChange)="selectChange('company')" required>
+                                <mat-option *ngFor="let item of companyList" [value]="item.id">{{ item.companyName }}</mat-option>
                             </mat-select>
-                        </mat-form-field>
+                            <mat-error>Company is required</mat-error>
+                          </mat-form-field>
                     </div>
-                    <div class="col-12 col-md-6" *ngIf="userData?.roles == 'Super Admin'">
-                        <mat-form-field appearance="outline" class="w-100">
+                    <div class="col-12 col-lg-3 col-md-6" *ngIf="userData?.roles == 'Super Admin'">
+                        <mat-form-field appearance="fill" class="w-100" (selectionChange)="selectChange('branch')" >
                             <mat-label>Branch</mat-label>
                             <mat-select matNativeControl formControlName="branch_id" [required]="userData?.roles == 'Super Admin'">
                                 <mat-option *ngFor="let item of branchList;" [value]="item.id">{{ item.branchTitle }}</mat-option>
                             </mat-select>
                         </mat-form-field>
                     </div>
-                    
+                    <div class="col-12 col-lg-3 col-md-6">
+                        <mat-form-field appearance="fill" class="w-100">
+                            <mat-label>Price</mat-label>
+                            <input matInput formControlName="price" type="text">
+                        </mat-form-field>
+                    </div>
+                    <div class="col-12 col-lg-3 col-md-6">
+                        <mat-form-field appearance="fill" class="w-100">
+                            <mat-label>Packaging Charges</mat-label>
+                            <input matInput formControlName="packagingCharges" type="text">
+                        </mat-form-field>
+                    </div>
+                    <div class="col-12 col-lg-3 col-md-6">
+                        <mat-form-field appearance="fill" class="w-100">
+                            <mat-label>Kitchen</mat-label>
+                            <mat-select matNativeControl formControlName="kitchen_id" required>
+                                <mat-option *ngFor="let item of kitchenList;" [value]="item.id">{{ item.kitchenTitle }}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-12 col-lg-3 col-md-6">
+                        <mat-form-field appearance="fill" class="w-100">
+                            <mat-label>Categories</mat-label>
+                            <mat-select matNativeControl formControlName="categories" multiple>
+                                <mat-option *ngFor="let item of categoryList;" [value]="item.id">{{ item.categoryName }}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
                     <div class="col-12">
-                        <mat-form-field appearance="outline" class="w-100">
+                        <mat-form-field appearance="fill" class="w-100">
                             <mat-label>Description</mat-label>
-                            <textarea matInput formControlName="description" cdkTextareaAutosize></textarea>
+                            <textarea matInput formControlName="description" rows="3" cdkTextareaAutosize></textarea>
                         </mat-form-field>
                     </div>
                 </div>
             </div>
         </div>
-
-
-        <div class="row">
-            <div class="col-12 col-md-3">
-                <mat-form-field appearance="outline" class="w-100">
-                    <mat-label>Price</mat-label>
-                    <input matInput formControlName="price" type="text">
-                </mat-form-field>
-            </div>
-            <div class="col-12 col-md-3">
-                <mat-form-field appearance="outline" class="w-100">
-                    <mat-label>Packaging Charges</mat-label>
-                    <input matInput formControlName="packagingCharges" type="text">
-                </mat-form-field>
-            </div>
-        </div>
-
-        <div>
-            <mat-form-field appearance="outline">
-                <mat-label>Kitchen</mat-label>
-                <mat-select matNativeControl formControlName="kitchen_id" required>
-                    <mat-option *ngFor="let item of kitchenList;" [value]="item.id">{{ item.kitchenTitle }}</mat-option>
-                </mat-select>
-            </mat-form-field>
-        </div>
-        <div class="d-flex align-items-center my-10">
-            <mat-slide-toggle formControlName="isActive" color="primary">Active</mat-slide-toggle>
-        </div>
-        <div class="d-flex align-items-center my-10">
-            <mat-slide-toggle formControlName="isVeg" color="primary">Veg Only</mat-slide-toggle>
-        </div>
-        <div class="d-flex align-items-center my-10">
-            <mat-slide-toggle formControlName="isOutOfStock" color="primary">Out Of Stock</mat-slide-toggle>
+        
+        <div class="d-flex align-items-center mb-15">
+            <mat-slide-toggle formControlName="isActive" class="mr-15" color="primary">Active</mat-slide-toggle>
+            <mat-slide-toggle formControlName="isOutOfStock" class="mr-15" color="primary">Out Of Stock</mat-slide-toggle>
+            <mat-slide-toggle formControlName="isVeg" color="primary" class="mr-15">Veg Only</mat-slide-toggle>
         </div>
         
+        <!-- <div class="d-flex align-items-center my-10">
+        </div>
+        <div class="d-flex align-items-center my-10">
+        </div>
+         -->
         <div class="button_wrapper">
-            <button mat-raised-button color="primary" class="mr-20">{{ (productId)?'Update':'Add'}}</button>
-            <button mat-raised-button color="warn">Cancel</button>
+            <button mat-raised-button color="primary" class="mr-20" type="submit">{{ (productId)?'Update':'Add'}}</button>
+            <button mat-raised-button color="warn" type="button" routerLink="/admin/products/list">Cancel</button>
         </div>
     </div>
 </form>

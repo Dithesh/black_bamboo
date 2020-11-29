@@ -1,13 +1,8 @@
-<div class="page_header d-flex mb-4">
-    <h2 class="header_title" *ngIf="!branchId">Add New Branch</h2>
-    <h2 class="header_title" *ngIf="branchId">Update Branch</h2>
-</div>
-
 <form [formGroup]="form" (submit)="saveBranch($event)">
     
     <div class="add_formWrapper">
         <div class="row">
-            <div class="col-sm-auto">
+            <div class="col-sm-auto order-md-12">
                 <div class="product_imrBox">
                     <input type="file" name="" id="prodctImg"  (change)="handleFileInput($event)">
                     <label for="prodctImg" title="Change Image"  [ngStyle]="{'background-image': imageSrc}"></label>
@@ -16,7 +11,7 @@
             <div class="col-sm 12 col-md">
                 <div class="row">
                     <div class="col-md-4">
-                        <mat-form-field appearance="outline" class="w-100 pb-0 mb-15">
+                        <mat-form-field appearance="fill" class="w-100 mb-5">
                             <mat-label>Company</mat-label>
                             <mat-select formControlName="company_id">
                                 <mat-option *ngFor="let item of companyList" [value]="item.id">{{ item.companyName }}</mat-option>
@@ -25,14 +20,14 @@
                     </div>
                     <div class="col-8">
                         <div class="row no-gutters flex-nowrap">
-                            <div class="col-auto">
-                                <mat-form-field  appearance="outline" class="ew-150 pb-0 mb-15">
+                            <div class="col-auto pr-2">
+                                <mat-form-field  appearance="fill" class="ew-150 mb-5">
                                     <mat-label>Branch Code</mat-label>
                                     <input type="text" formControlName="branchCode" matInput>
                                 </mat-form-field>
                             </div>
                             <div class="col">
-                                <mat-form-field  appearance="outline" class="w-100 pb-0 mb-15">
+                                <mat-form-field  appearance="fill" class="w-100 mb-5">
                                     <mat-label>Branch Title</mat-label>
                                     <input type="text" formControlName="branchTitle" matInput>
                                 </mat-form-field>
@@ -40,29 +35,29 @@
                         </div>
                     </div>
                     <div class="col-6">
-                        <mat-form-field  appearance="outline" class="w-100 pb-0 mb-15">
+                        <mat-form-field  appearance="fill" class="w-100 mb-5">
                             <mat-label>Branch Address</mat-label>
                             <input type="text" formControlName="branchAddress" matInput>
                         </mat-form-field>
                     </div>
                     <div class="col-6">
-                        <mat-form-field  appearance="outline" class="w-100 pb-0 mb-15">
+                        <mat-form-field  appearance="fill" class="w-100 mb-5">
                             <mat-label>Tax Percentage</mat-label>
                             <input type="text" formControlName="taxPercent" matInput>
                         </mat-form-field>
                     </div>
                     
                     <div class="col-12">
-                        <mat-form-field appearance="outline" class="w-100">
+                        <mat-form-field appearance="fill" class="w-100">
                             <mat-label>Description</mat-label>
-                            <textarea matInput formControlName="description" cdkTextareaAutosize></textarea>
+                            <textarea matInput formControlName="description" rows="3" cdkTextareaAutosize></textarea>
                         </mat-form-field>
                     </div>
                 </div>
             </div>
         </div>
 
-        <mat-card class="mt-15">
+        <mat-card class="mt-15 only_boder">
             <h3 class="mb-10 d-flex justify-content-between align-items-center">
                 Kitchen Setup
                 <button mat-stroked-button color="primary" type="button" (click)="addAnotherKitchen()">+ Add</button>
@@ -72,7 +67,7 @@
                 <ng-container *ngFor="let item of kitchens['controls'];let i=index;">
                     <div class="row align-items-center" *ngIf="!item.get('deletedFlag').value" [formGroupName]="i">
                         <div class="col-sm-4">
-                            <mat-form-field  appearance="outline" class="w-100 pb-0 mb-15">
+                            <mat-form-field  appearance="fill" class="w-100 mb-5">
                                 <mat-label>Kitchen Title</mat-label>
                                 <input type="text" formControlName="kitchenTitle" matInput>
                             </mat-form-field>
@@ -85,7 +80,7 @@
             </div>
         </mat-card>
 
-        <mat-card class="mt-15">
+        <mat-card class="mt-15 only_boder">
             <h3 class="mb-10 d-flex justify-content-between align-items-center">
                 Order Type Setup
                 <button mat-stroked-button color="primary" type="button" (click)="addAnotherOrderType()">+ Add</button>
@@ -95,7 +90,7 @@
                 <ng-container *ngFor="let item of orderTypes['controls'];let i=index;">
                     <div class="row align-items-center" *ngIf="!item.get('deletedFlag').value" [formGroupName]="i">
                         <div class="col">
-                            <mat-form-field  appearance="outline" class="w-100 pb-0 mb-15">
+                            <mat-form-field  appearance="fill" class="w-100 mb-5">
                                 <mat-label>Title</mat-label>
                                 <input type="text" formControlName="orderType" matInput>
                             </mat-form-field>
