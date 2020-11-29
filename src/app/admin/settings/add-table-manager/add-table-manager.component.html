@@ -9,6 +9,14 @@
 
 
 <div class="tabels_tableWrapper table-responsive mb-40" [formGroup]="form">
+    <div class="company_id ew-300 mt-10">
+        <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Company</mat-label>
+            <mat-select formControlName="company_id" (selectionChange)="getAllBranches();getTableList()">
+                <mat-option *ngFor="let item of companyList" [value]="item.id">{{ item.companyName }}</mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
     <div class="table_outerWrapper">
         <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z2 w-100" formArrayName="tables">
             <!-- Position Column -->

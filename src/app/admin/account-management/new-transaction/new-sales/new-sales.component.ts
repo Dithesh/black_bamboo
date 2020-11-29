@@ -17,7 +17,7 @@ export class NewSalesComponent implements OnInit {
     private _serv: DataService,
     public _transact: NewTransactionService
   ) { 
-    
+    this._transact.setTransactionType('sales');
   }
 
   ngOnInit(): void {

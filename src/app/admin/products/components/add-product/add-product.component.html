@@ -78,7 +78,7 @@
         <div>
             <mat-form-field appearance="outline">
                 <mat-label>Kitchen</mat-label>
-                <mat-select matNativeControl formControlName="kitchen_id">
+                <mat-select matNativeControl formControlName="kitchen_id" required>
                     <mat-option *ngFor="let item of kitchenList;" [value]="item.id">{{ item.kitchenTitle }}</mat-option>
                 </mat-select>
             </mat-form-field>

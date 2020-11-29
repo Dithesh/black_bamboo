@@ -46,7 +46,10 @@ const routes: Routes = [
   },
   {
     path:"table-manager",
-    component:AddTableManagerComponent
+    component:AddTableManagerComponent,
+    resolve: {
+      companyList: CompanyListResolver
+    }
   },
 ];
 

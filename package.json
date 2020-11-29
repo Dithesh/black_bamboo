@@ -26,6 +26,7 @@
     "@rxweb/reactive-form-validators": "^2.0.0",
     "@swimlane/ngx-charts": "^16.0.0",
     "bootstrap": "^4.4.1",
+    "exact-math": "^2.2.3",
     "file-saver": "^2.0.2",
     "mat-select-filter": "^2.3.7",
     "mix-scss": "^1.1.2",

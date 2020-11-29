@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, AbstractControl, FormBuilder, FormArray } from '@angular/forms';
 import { BehaviorSubject } from 'rxjs';
 import { MatSort } from '@angular/material/sort';
@@ -16,6 +16,7 @@ export class AddTableManagerComponent implements OnInit {
   dataSource = new BehaviorSubject<AbstractControl[]>([]);
   branchList: any[];
   @ViewChild(MatSort, {static: true}) sort: MatSort;
+  companyList;
   userData: any;
 
   
@@ -23,14 +24,22 @@ export class AddTableManagerComponent implements OnInit {
     private _serv: DataService,
     private fb: FormBuilder,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private _det: ChangeDetectorRef
   ) {  
     
     this.form = this.fb.group({
+      company_id: [''],
       tables: this.fb.array([])
     });
-    this.getAllBranches();
-    this.getTableList();
+    
+    this.route.data.subscribe(response => {
+      this.companyList = response.companyList;
+      if(this.companyList.length > 0)
+        this.form.get('company_id').setValue(this.companyList[0].id);
+        this.getAllBranches();
+        this.getTableList();
+    })
   }
 
   ngOnInit(): void {
@@ -38,7 +47,7 @@ export class AddTableManagerComponent implements OnInit {
   }
 
   getAllBranches() {
-    this._serv.endpoint = "order-manager/branch?fields=id,branchTitle";
+    this._serv.endpoint = "order-manager/branch?fields=id,branchTitle&companyId="+this.form.get('company_id').value;
     this._serv.get().subscribe(response => {
       this.branchList = response as any[];
     })
@@ -47,16 +56,18 @@ export class AddTableManagerComponent implements OnInit {
   
   getTableList() {
 
-    this._serv.endpoint = "order-manager/table-manager";
+    this._serv.endpoint = "order-manager/table-manager?companyId="+this.form.get('company_id').value;
     this._serv.get().subscribe(response => {
       let data = response as any[];
       this.tables.controls = [];
+      this.tables.reset();
       this.dataSource.next(this.tables.controls);
       if(data.length > 0) {
         data.forEach(elem => {
           this.tables.push(this.addTable(elem));
           this.dataSource.next(this.tables.controls);
         })
+        this._det.detectChanges();
       }else {
         this.addAnotherTable()
       }
