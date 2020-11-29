@@ -1,3 +1,4 @@
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
@@ -13,72 +14,16 @@ import { ConfirmPopupComponent } from 'src/app/shared/components/confirm-popup/c
   templateUrl: './products.component.html',
   styleUrls: ['./products.component.scss']
 })
-export class ProductsComponent implements OnInit, AfterViewInit {
+export class ProductsComponent implements OnInit {
 
-  displayedColumns: string[] = ['action', 'productNumber', 'productName', 'description', 'branch', 'isActive'];
-  dataSource;
-  filterForm:FormGroup;
-
-  @ViewChild(MatSort) sort: MatSort;
-  @ViewChild(MatPaginator) paginator: MatPaginator;
-  constructor(
-    private _serv: DataService,
-    private fb: FormBuilder,
-    private dialog: MatDialog
-  ) { 
-    this.filterForm = this.fb.group({
-      searchString: [''],
-      orderCol: [''],
-      orderType: ['']
-    });
+  editId;
+  constructor(private route:ActivatedRoute, private router:Router){
   }
-
-  ngOnInit(): void {
-    this.getAllProducts();
-  }
-
-  ngAfterViewInit() {
-    
-    this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
-    merge(this.sort.sortChange, this.paginator.page, this.filterForm.get('searchString').valueChanges)
-      .subscribe(data => {
-        this.filterForm.patchValue({
-          orderCol: this.sort.active,
-          orderType: this.sort.direction
-        })
-        this.getAllProducts(this.paginator.pageIndex + 1)
-      });
-  }
-
-  getAllProducts(page=1) {
-    let filterValue=this.filterForm.value;
-    this._serv.endpoint = "order-manager/product?pageNumber="+page+"&orderType="+filterValue.orderType+"&orderCol="+filterValue.orderCol+"&searchString="+filterValue.searchString;
-    this._serv.get().subscribe(response => {
-      this.dataSource = response as any;
-    })
-  }
-
-
-  changeStatus(data) {
-    this._serv.endpoint="order-manager/product/status/"+data.id;
-    this._serv.put(data).subscribe(response => {
-      this._serv.showMessage("Product status changed successfully", 'success');
-    }, ({error}) => {
-      this._serv.showMessage(error['msg'], 'error');
-    })
-  }
-
-  deleteProduct(item) {
-    let dialogRef = this.dialog.open(ConfirmPopupComponent);
-    dialogRef.afterClosed().subscribe(data => {
-      if(data) {
-        this._serv.endpoint = "order-manager/product/"+item.id;
-        this._serv.delete().subscribe(response => {
-          this._serv.showMessage("Product deleted successfully", 'success');
-          this.getAllProducts();
-        }, ({error}) => {
-          this._serv.showMessage(error['msg'], 'error');
-        })
+  ngOnInit(){
+    this.editId = this.route.firstChild.snapshot.params.id;
+    this.router.events.subscribe(response=>{
+      if(response instanceof NavigationEnd){
+        this.editId = this.route.firstChild.snapshot.params.id;
       }
     })
   }

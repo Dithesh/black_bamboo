@@ -1,13 +1,8 @@
-<div class="page_header d-flex mb-4">
-    <h2 class="header_title" *ngIf="!productId">Add New Product</h2>
-    <h2 class="header_title" *ngIf="productId">Update Product</h2>
-</div>
-
 <form [formGroup]="form" (submit)="saveProduct($event)">
     
     <div class="add_formWrapper">
         <div class="row">
-            <div class="col-sm-auto">
+            <div class="col-sm-auto order-md-12">
                 <div class="product_imrBox">
                     <input type="file" name="" id="prodctImg"  (change)="handleFileInput($event)">
                     <label for="prodctImg" title="Change Image"  [ngStyle]="{'background-image': imageSrc}"></label>

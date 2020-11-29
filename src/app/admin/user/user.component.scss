@@ -1,24 +1,24 @@
-.right_bodyWrapper{
-    & .profile_imrBox{
-        position: relative;
-        display: inline-block;
-        overflow: hidden;
-        & input{
-            visibility: hidden;
-            position: absolute;
-        }
-        & label{
-            width: 120px;
-            height: 120px;
-            margin-bottom: 0px;
-            background-size: 100%;
-            display: block;
-            background-image: url('/assets/images/user.png');
-            background-position: center;
-            background-repeat: no-repeat;
-            border-radius: 4px;
-            border: 1px solid #857575;
-            cursor: pointer;
-        }
-    }
-}
+// .right_bodyWrapper{
+//     & .profile_imrBox{
+//         position: relative;
+//         display: inline-block;
+//         overflow: hidden;
+//         & input{
+//             visibility: hidden;
+//             position: absolute;
+//         }
+//         & label{
+//             width: 120px;
+//             height: 120px;
+//             margin-bottom: 0px;
+//             background-size: 100%;
+//             display: block;
+//             background-image: url('/assets/images/user.png');
+//             background-position: center;
+//             background-repeat: no-repeat;
+//             border-radius: 4px;
+//             border: 1px solid #857575;
+//             cursor: pointer;
+//         }
+//     }
+// }

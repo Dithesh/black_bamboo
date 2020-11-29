@@ -1,3 +1,4 @@
+import { ProductListComponent } from './product-list/product-list.component';
 import { NgModule, Component } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { ProductsComponent } from './products.component';
@@ -10,15 +11,25 @@ const routes: Routes = [
     children:[
       {
         path:"",
-        component:ProductsComponent
-      },
-      {
-        path:"update",
-        component:AddProductComponent
-      },
-      {
-        path:"update/:id",
-        component:AddProductComponent
+        component:ProductsComponent,
+        children:[
+          {
+            path:"list",
+            component:ProductListComponent
+          },
+          {
+            path:"update",
+            component:AddProductComponent
+          },
+          {
+            path:"update/:id",
+            component:AddProductComponent
+          },
+          {
+            path:"**",
+            redirectTo:"list"
+          }
+        ]
       }
     ]
   }
