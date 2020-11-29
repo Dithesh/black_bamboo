@@ -6,7 +6,6 @@ import { Routes, RouterModule } from '@angular/router';
 import { BranchesSettingComponent } from './branches-setting/branches-setting.component';
 import { CategoriesSettingComponent } from './categories-setting/categories-setting.component';
 import { AddTableManagerComponent } from './add-table-manager/add-table-manager.component';
-import { UpdateBranchComponent } from './branches-setting/update-branch/update-branch.component';
 
 
 const routes: Routes = [
@@ -17,24 +16,7 @@ const routes: Routes = [
   },
   {
     path:"branches",
-    component: BranchesSettingComponent,
-    resolve: {
-      companyList: CompanyListResolver
-    }
-  },
-  {
-    path:"branches/update",
-    component: UpdateBranchComponent,
-    resolve: {
-      companyList: CompanyListResolver
-    }
-  },
-  {
-    path:"branches/update/:id",
-    component: UpdateBranchComponent,
-    resolve: {
-      companyList: CompanyListResolver
-    }
+    loadChildren:() => import('./branches-setting/branches-setting.module').then(m=>m.BranchesSettingModule)
   },
   {
     path:"company",
