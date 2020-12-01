@@ -17,7 +17,7 @@ export class NewTransactionService {
     filteredAccountList;
     filteredExpenseAccountList;
     inventoryList;
-    editInventoryIndex=0;
+    editInventoryIndex: number;
     editAccountIndex: number;
     transactionType;
     totalHandler = {
@@ -29,6 +29,8 @@ export class NewTransactionService {
     }
     topAccountExclude = [];
     taxAndExpenseExclude = [];
+    transactionId;
+    transactionData;
     constructor(
         private fb: FormBuilder,
         private _serv: DataService,
@@ -50,8 +52,8 @@ export class NewTransactionService {
         })
     }
 
-    resetData() {
-        this.resetForm();
+    resetData(id=null) {
+        this.transactionId = id;
         this.getAccountList();
         this.getInventoryList();
         this.totalHandler = {
@@ -60,6 +62,34 @@ export class NewTransactionService {
             itemGrandTotal: 0,
             taxAndExpenseTotal: 0,
             transactionGrandTotal: 0
+        }
+        if(this._serv.notNull(this.transactionId)) {
+            this._serv.endpoint="account-manager/transaction/"+this.transactionId;
+            this._serv.get().subscribe((response:any) => {
+                this.transactionData=response;
+                this.form.patchValue({...this.transactionData, transactionType: this.transactionData.transactionType.toLowerCase()})
+                this.items.controls=[];
+                this.items.reset();
+                this.transactionData.items.forEach(elem => {
+                    
+                    let form = this.itemForm();
+                    form.patchValue(elem);
+                    this.items.push(form);
+                })
+                this.itemMapping();
+                
+                this.accounts.controls=[];
+                this.accounts.reset();
+                this.transactionData.accounts.forEach(elem => {
+                    let form = this.accountForm();
+                    form.patchValue(elem);
+                    this.accounts.push(form);
+                })
+                this.accountMapping();
+                this.getOrderTotal();
+            })
+        }else {
+            this.resetForm();
         }
     }
 
@@ -89,11 +119,17 @@ export class NewTransactionService {
             let amount = parseFloat(form.get('amount').value);
             
             if(form.get('quantity').valid && form.get('amount').valid) {
-                form.get('total').setValue(math.mul(quantity, amount))
+                form.get('total').setValue(math.mul(quantity, amount), {emitEvent: false})
             }else {
-                form.get('total').setValue(0)
+                form.get('total').setValue(0, {emitEvent: false})
             }
             this.getOrderTotal();
+            this.accounts.controls.forEach(control => {
+                this.handleAccountCalculation(control);
+            })
+            if(this.accounts.controls.length > 0) {
+                this.getOrderTotal();
+            }
         })
         return form;
     }
@@ -124,12 +160,12 @@ export class NewTransactionService {
                 let control = this.items.controls[index];
                 if(this._serv.notNull(control.get('id').value)) {
                     if(control.invalid) {
-                        control.get('item').setValue('1');
-                        control.get('amount').setValue(1);
-                        control.get('quantity').setValue(1);
-                        control.get('total').setValue(1);
+                        control.get('item').setValue('1', {emitEvent: false});
+                        control.get('amount').setValue(1, {emitEvent: false});
+                        control.get('quantity').setValue(1, {emitEvent: false});
+                        control.get('total').setValue(1, {emitEvent: false});
                     }
-                    control.get('deletedFlag').setValue(true);
+                    control.get('deletedFlag').setValue(true, {emitEvent: false});
                 }else {
                     this.items.removeAt(index);
                 }
@@ -170,22 +206,26 @@ export class NewTransactionService {
         })
 
         merge(form.get('amountProcessType').valueChanges, form.get('amountValue').valueChanges).subscribe(response => {
-            let amount = parseFloat(form.get('amountValue').value);
-            
-            if(form.get('amountProcessType').valid && form.get('amountValue').valid) {
-                if(form.get('amountProcessType').value == 'percent') {
-                    // ! Todo take percentage from the items total
-                    let amountVal = math.formula(this.totalHandler.itemGrandTotal +'*'+ amount +'/'+ 100); 
-                    form.get('totalAmount').setValue(amountVal)
-                }else {
-                    form.get('totalAmount').setValue(amount)
-                }
-            }else {
-                form.get('totalAmount').setValue(0)
-            }
+            this.handleAccountCalculation(form);
             this.getOrderTotal();
         })
         return form;
+    }
+
+    handleAccountCalculation(form) {
+        let amount = parseFloat(form.get('amountValue').value);
+            
+        if(form.get('amountProcessType').valid && form.get('amountValue').valid) {
+            if(form.get('amountProcessType').value == 'percent') {
+                // ! Todo take percentage from the items total
+                let amountVal = math.formula(this.totalHandler.itemGrandTotal +'*'+ amount +'/'+ 100); 
+                form.get('totalAmount').setValue(amountVal, {emitEvent: false})
+            }else {
+                form.get('totalAmount').setValue(amount, {emitEvent: false})
+            }
+        }else {
+            form.get('totalAmount').setValue(0, {emitEvent: false})
+        }
     }
 
     addAnotherAccount() {
@@ -283,6 +323,7 @@ export class NewTransactionService {
             this.accountList = response as any[];
             this.filteredAccountList = this.accountList;
             this.filteredExpenseAccountList = this.accountList;
+            this.accountMapping();
         })
     }
 
@@ -290,7 +331,33 @@ export class NewTransactionService {
         this._serv.endpoint = "account-manager/inventory?status=true&companyId="+this.form.get('company_id').value;
         this._serv.get().subscribe(response => {
             this.inventoryList = response as any[];
+            this.itemMapping();
+            
         })
+    }
+
+    itemMapping() {
+        if(this.transactionId) {
+            this.items.controls.forEach(control => {
+                this.inventoryList.forEach(elem => {
+                    if(control.get('item').value.id == elem.id) {
+                        control.get('item').setValue(elem);
+                    }
+                })
+            })   
+        }
+    }
+
+    accountMapping() {
+        if(this.transactionId) {
+            this.accounts.controls.forEach(control => {
+                this.accountList.forEach(elem => {
+                    if(control.get('account').value.id == elem.id) {
+                        control.get('account').setValue(elem);
+                    }
+                })
+            })   
+        }
     }
 
     setTransactionType(type) {
@@ -339,7 +406,7 @@ export class NewTransactionService {
         })
         // this.items.push(this.itemForm());
         // this.accounts.push(this.accountForm());
-        this.editInventoryIndex=0;
+        this.editInventoryIndex=undefined;
         this.editAccountIndex=undefined;
     }
 
@@ -352,7 +419,6 @@ export class NewTransactionService {
             return;
         }
         let formData = {...this.form.value};
-        console.log(formData);
         
         formData.items.forEach(elem => {
             elem.itemId = elem.item.id;

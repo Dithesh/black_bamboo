@@ -113,9 +113,9 @@
                                     </div> -->
                                 </ng-template>
                             </td>
-                            <td class="ew-150">
+                            <td class="ew-180">
                                 <ng-container *ngIf="_transact.editInventoryIndex != i else inventoryTotalPriceInput">
-                                    Price
+                                    {{item.get('total').value|currency}}
                                 </ng-container>
                                 <ng-template #inventoryTotalPriceInput>
                                     <mat-form-field class="field-pb-0 table_select ew-150">

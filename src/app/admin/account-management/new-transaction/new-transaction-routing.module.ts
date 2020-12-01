@@ -20,7 +20,15 @@ const routes: Routes = [{
       component: NewPaymentComponent
     },
     {
+      path: "payment/:id",
+      component: NewPaymentComponent
+    },
+    {
       path: "receipt",
+      component: NewReceiptComponent
+    },
+    {
+      path: "receipt/:id",
       component: NewReceiptComponent
     },
     {
@@ -28,7 +36,15 @@ const routes: Routes = [{
       component: NewPurchaseComponent
     },
     {
+      path: "purchase/:id",
+      component: NewPurchaseComponent
+    },
+    {
       path: "sales",
+      component: NewSalesComponent
+    },
+    {
+      path: "sales/:id",
       component: NewSalesComponent
     },
     {

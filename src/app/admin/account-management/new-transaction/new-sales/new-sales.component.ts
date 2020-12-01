@@ -11,9 +11,11 @@ import { NewTransactionService } from '../new-transaction.service';
 })
 export class NewSalesComponent implements OnInit {
   constructor(
-    public _transact: NewTransactionService
+    public _transact: NewTransactionService,
+    private route: ActivatedRoute
   ) { 
-    this._transact.resetData();
+    
+    this._transact.resetData(this.route.snapshot.params.id);
     this._transact.setTransactionType('sales');
   }
 

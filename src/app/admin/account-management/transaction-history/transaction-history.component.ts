@@ -2,6 +2,7 @@ import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
+import { Router } from '@angular/router';
 import { merge } from 'rxjs';
 import { DataService } from 'src/app/shared/services/data.service';
 
@@ -18,7 +19,8 @@ export class TransactionHistoryComponent implements OnInit, AfterViewInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   constructor(
     private _serv: DataService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private router: Router
   ) { 
     this.filterForm = this.fb.group({
       searchString: [''],
@@ -61,5 +63,9 @@ export class TransactionHistoryComponent implements OnInit, AfterViewInit {
       console.log(this.transactionList);
       
     })
+  }
+
+  openTransaction(item) {
+    this.router.navigateByUrl('/admin/account-management/new-transaction/'+item.transactionType.toLowerCase() + '/'+item.id)
   }
 }

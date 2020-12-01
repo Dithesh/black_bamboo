@@ -46,7 +46,7 @@
                         <tbody>
                             
                             <ng-container *ngFor="let item of transactionList?.data; let i =index">
-                                <tr>
+                                <tr (dblclick)="openTransaction(item)">
                                     <td>
                                         {{ item.transactionRefNumber }}
                                     </td>
