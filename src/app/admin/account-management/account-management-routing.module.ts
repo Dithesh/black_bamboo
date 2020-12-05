@@ -23,6 +23,10 @@ const routes: Routes = [
         loadChildren: () => import('./account-master/account-master.module').then(mod => mod.AccountMasterModule)
       },
       {
+        path:"reports",
+        loadChildren: () => import('./account-reports/account-reports.module').then(mod => mod.AccountReportsModule)
+      },
+      {
         path:"",
         redirectTo:'dashboard',
         pathMatch:'full'
