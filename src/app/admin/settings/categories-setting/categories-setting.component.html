@@ -57,6 +57,12 @@
     </div>
     <div class="right_bodyWrapper" [formGroup]="form">
         <form [formGroup]="form" (submit)="saveCategory($event)">
+            <div class="text-center mb-4">
+                <div class="product_imrBox">
+                    <input type="file" name="" id="prodctImg"  (change)="handleFileInput($event)">
+                    <label for="prodctImg" title="Change Image"  [ngStyle]="{'background-image': imageSrc}"></label>
+                </div>
+            </div>
             <mat-form-field  appearance="outline" class="w-100 pb-0 mb-15">
                 <mat-label>Category</mat-label>
                 <input type="text" formControlName="categoryName" matInput>

@@ -1,3 +1,4 @@
+import { environment } from './../../../../environments/environment';
 import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
@@ -15,6 +16,8 @@ import { merge } from 'rxjs';
 })
 export class CategoriesSettingComponent implements OnInit, AfterViewInit {
   displayedColumns: string[] = ['action', 'categoryName', 'description', 'branch', 'isActive'];
+  imageSrc="url(\'/assets/images/food.jpg\')";
+  url = environment.imgUrl;
   dataSource;
   sidemenu=false;
   form:FormGroup;
@@ -36,6 +39,7 @@ export class CategoriesSettingComponent implements OnInit, AfterViewInit {
     });
     this.form = this.fb.group({
       id: [''],
+      image: [''],
       categoryName: [''],
       description: [''],
       branch_id: [''],
@@ -70,6 +74,24 @@ export class CategoriesSettingComponent implements OnInit, AfterViewInit {
     })
   }
 
+  handleFileInput(event) {
+    var file = event.dataTransfer ? event.dataTransfer.files[0] : event.target.files[0];
+    var pattern = /image-*/;
+    var reader = new FileReader();
+    if (!file.type.match(pattern)) {
+      alert('invalid format');
+      return;
+    }
+    reader.onload = this._handleReaderLoaded.bind(this);
+    reader.readAsDataURL(file);
+  }
+  _handleReaderLoaded(file) {
+    let reader = file.target;
+    let imageSrc = reader.result;
+    this.form.get('image').setValue(imageSrc)
+    this.imageSrc = "url(\'"+imageSrc+"\')";
+  }
+
   changeStatus(data) {
     this._serv.endpoint="order-manager/category/status/"+data.id;
     this._serv.put(data).subscribe(response => {
@@ -87,7 +109,11 @@ export class CategoriesSettingComponent implements OnInit, AfterViewInit {
       }
     }else {
       this.form.patchValue(item);
-
+      if(this._serv.notNull(item.featuredImage)){
+        this.imageSrc = "url(\'"+ this.url + item.featuredImage +"\')"
+        console.log(this.imageSrc, 'img');
+        
+      }
     }
     this.sidemenu = true;
   }
