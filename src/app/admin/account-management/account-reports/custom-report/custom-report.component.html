@@ -1,38 +1,38 @@
 <div class="search_outerWrapper" [formGroup]="filterForm">
     <div class="row">
         <div class="col-md col-12">
-            <div class="checkBox_outer">
-                <div class="goresto_checkBox">
+            <div class="checkBox_outer" formGroupName="type">
+                <!-- <div class="goresto_checkBox">
                     <input type="checkbox" id="all" value="all" name="reporttype" formControlName="type">
                     <label for="all">All</label>
-                </div>
+                </div> -->
                 <div class="goresto_checkBox">
-                    <input type="checkbox" id="sales" value="sales" name="reporttype" formControlName="type">
+                    <input type="checkbox" id="sales" value="sales" name="reporttype" formControlName="Sales">
                     <label for="sales">Sales</label>
                 </div>
                 <div class="goresto_checkBox">
-                    <input type="checkbox" id="purchase" value="purchase" name="reporttype" formControlName="type">
+                    <input type="checkbox" id="purchase" value="purchase" name="reporttype" formControlName="Purchase">
                     <label for="purchase">Purchase</label>
                 </div>
                 <div class="goresto_checkBox">
-                    <input type="checkbox" id="payment" value="payment" name="reporttype" formControlName="type">
+                    <input type="checkbox" id="payment" value="payment" name="reporttype" formControlName="Payment">
                     <label for="payment">Payment</label>
                 </div>
                 <div class="goresto_checkBox">
-                    <input type="checkbox" id="receipt" value="recipt" name="reporttype" formControlName="type">
+                    <input type="checkbox" id="receipt" value="recipt" name="reporttype" formControlName="Receipt">
                     <label for="receipt">Receipt</label>
                 </div>
             </div>
         </div>
         <div class="col-md-auto col-12 ml-auto">
             <div class="toggle_box d-inline-block mr-30">
-                <mat-slide-toggle formControllName="includeOrder">Include Orders</mat-slide-toggle>
+                <mat-slide-toggle formControlName="includeOrder">Include Orders</mat-slide-toggle>
             </div>
             <mat-form-field appearance="outline">
                 <mat-label>Enter a date range</mat-label>
                 <mat-date-range-input [rangePicker]="picker">
-                  <input matStartDate formControllName="startDate" placeholder="Start date">
-                  <input matEndDate formControllName="endDate" placeholder="End date">
+                  <input matStartDate formControlName="startDate" placeholder="Start date">
+                  <input matEndDate formControlName="endDate" placeholder="End date">
                 </mat-date-range-input>
                 <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                 <mat-date-range-picker #picker></mat-date-range-picker>
@@ -54,28 +54,30 @@
         <table class="table account_table" matSort>
             <thead>
                 <tr>
-                    <th mat-sort-header="sales" >Sales</th>
-                    <th mat-sort-header="purchase" >Purchase</th>
-                    <th mat-sort-header="payment">Payment</th>
-                    <th mat-sort-header="recipt">Recipt</th>
-                    <th mat-sort-header="orders">Orders</th>
+                    <th mat-sort-header="sales" *ngIf="Sales.value">Sales</th>
+                    <th mat-sort-header="purchase" *ngIf="Purchase.value">Purchase</th>
+                    <th mat-sort-header="payment" *ngIf="Payment.value">Payment</th>
+                    <th mat-sort-header="recipt" *ngIf="Receipt.value">Recipt</th>
+                    <th mat-sort-header="orders" *ngIf="Orders.value">Orders</th>
                 </tr>
             </thead>
             <tbody>
                 <ng-container>
                     <tr>
-                        <td></td>
-                        <td>
-                            
+                        <td *ngIf="Sales.value">
+                            {{ orderSummary.salesTotal | currency }}
                         </td>
-                        <td>
-
+                        <td *ngIf="Purchase.value">
+                            {{ orderSummary.purchaseTotal | currency }}
                         </td>
-                        <td>
-                            
+                        <td *ngIf="Payment.value">
+                            {{ orderSummary.paymentTotal | currency }}
                         </td>
-                        <td>
-                            
+                        <td *ngIf="Receipt.value">
+                            {{ orderSummary.receiptTotal | currency }}
+                        </td>
+                        <td *ngIf="Orders.value">
+                            {{ orderSummary.ordersTotal | currency }}
                         </td>
                         
                     </tr>
@@ -102,38 +104,41 @@
             <thead>
                 <tr>
                     <th mat-sort-header="date" class="ew-180">Date</th>
-                    <th mat-sort-header="branchCode" class="ew-200">ID</th>
+                    <th mat-sort-header="branchCode" class="ew-200">No.</th>
                     <th mat-sort-header="type" class="ew-200">Type</th>
                     <th mat-sort-header="description">Description</th>
-                    <th mat-sort-header="branchAddress" class="ew-250">Ammount</th>
+                    <th mat-sort-header="branchAddress" class="ew-250">Amount</th>
                 </tr>
             </thead>
             <tbody>
                 <ng-container>
-                    <tr>
+                    <tr *ngFor="let item of transactionList;">
                         <td>
-                            
+                            {{ item.transactionDate | datex:'DD-MM-YYYY' }}
                         </td>
                         <td>
-                            
+                            {{ item.transactionRefNumber }}
                         </td>
                         <td>
-
+                            <span *ngIf="item.transactionType == 'Sales'" class="tag sales">Sales</span>
+                            <span *ngIf="item.transactionType == 'Purchase'" class="tag purchase">Purchase</span>
+                            <span *ngIf="item.transactionType == 'Payment'" class="tag payment">Payment</span>
+                            <span *ngIf="item.transactionType == 'Receipt'" class="tag recipt">Receipt</span>
                         </td>
                         <td>
-                            
+                            {{ item.description }}
                         </td>
                         <td>
-                            
+                            {{ item.grandTotal | currency }}
                         </td>
                         
                     </tr>
-                    <tr>
-                        <td colspan="5" *ngIf="dataSource?.data.length <= 0"> No data to display.</td>
+                    <tr *ngIf="transactionList?.length == 0">
+                        <td colspan="5"> No data to display.</td>
                     </tr>
                     <tr class="total_row">
                         <td colspan="4" >Grand Total</td>
-                        <td class="ew-180">1222</td>
+                        <td class="ew-180">{{orderSummary.transactionTotal|currency}}</td>
                     </tr>
                 </ng-container>
             </tbody>
@@ -142,46 +147,42 @@
     </div>
 </div>
 
-<hr>
-<div class="item_table_outer mt-20">
+<hr *ngIf="Orders.value">
+<div class="item_table_outer mt-20" *ngIf="Orders.value">
     <h2 class="table_title mb-10">Restaurant Orders</h2>
     <div class="table-responsive">
         <table class="table account_table" matSort>
             <thead>
                 <tr>
-                    <th mat-sort-header="date" class="ew-180">Date</th>
-                    <th mat-sort-header="branchCode" class="ew-200">ID</th>
-                    <th mat-sort-header="type" class="ew-200">Type</th>
-                    <th mat-sort-header="description">Description</th>
-                    <th mat-sort-header="branchAddress" class="ew-250">Ammount</th>
+                    <th class="ew-180">Date</th>
+                    <th class="ew-200">ID</th>
+                    <th class="ew-200">Type</th>
+                    <th class="ew-250">Amount</th>
                 </tr>
             </thead>
             <tbody>
-                <ng-container>
+                <ng-container *ngFor="let item of orderList;">
                     <tr>
                         <td>
-                            
+                            {{ item.created_at | datex:'DD-MM-YYYY'  }}
                         </td>
                         <td>
-                            
+                            {{ item.id }}
                         </td>
                         <td>
-
+                            {{ item.order_type.orderType }}
                         </td>
                         <td>
-                            
-                        </td>
-                        <td>
-                            
+                            {{ item.order_type.orderAmount }}
                         </td>
                         
                     </tr>
-                    <tr>
-                        <td colspan="5" *ngIf="dataSource?.data.length <= 0"> No data to display.</td>
+                    <tr *ngIf="orderList?.length == 0">
+                        <td colspan="4"> No data to display.</td>
                     </tr>
                     <tr class="total_row">
-                        <td colspan="4" >Grand Total</td>
-                        <td class="ew-180">1222</td>
+                        <td colspan="3" >Grand Total</td>
+                        <td class="ew-180">{{ orderSummary.ordersTotal|currency }}</td>
                     </tr>
                 </ng-container>
             </tbody>
