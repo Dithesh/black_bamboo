@@ -713,7 +713,7 @@ label.mat-checkbox-layout {
                     border-radius: 0px 10px 10px 0px;
                 }
             }
-            &:not(:last-child):hover{
+            &:not(.total_row):hover{
                 td{
                     background-color: #fff7e6;
                 }

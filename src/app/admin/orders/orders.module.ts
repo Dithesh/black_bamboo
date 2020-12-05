@@ -10,10 +10,11 @@ import { PrintOrderInvoiceComponent } from './components/print-order-invoice/pri
 import { AddOrderItemComponent } from './components/add-order-item/add-order-item.component';
 import { ServeOrderItemComponent } from './components/serve-order-item/serve-order-item.component';
 import { TableSelectionComponent } from './components/table-selection/table-selection.component';
+import { OrderListsComponent } from './components/order-lists/order-lists.component';
 
 
 @NgModule({
-  declarations: [OrdersComponent, NewOrderComponent, PrintOrderInvoiceComponent, AddOrderItemComponent, ServeOrderItemComponent, TableSelectionComponent],
+  declarations: [OrdersComponent, NewOrderComponent, PrintOrderInvoiceComponent, AddOrderItemComponent, ServeOrderItemComponent, TableSelectionComponent, OrderListsComponent],
   imports: [
     CommonModule,
     OrdersRoutingModule,

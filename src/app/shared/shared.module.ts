@@ -33,7 +33,7 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
 import { MatSelectFilterModule } from 'mat-select-filter';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { MatTooltipModule } from '@angular/material/tooltip';
-
+import {MatTabsModule} from '@angular/material/tabs';
 @NgModule({
   declarations: [DatexPipe, SnackbarComponent, ConfirmPopupComponent, NumberFormatterDirective, DigitOnlyDirective],
   imports: [
@@ -74,7 +74,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     MatCheckboxModule,
     MatSelectFilterModule,
     NgxChartsModule,
-    MatTooltipModule
+    MatTooltipModule,
+    MatTabsModule
   ],
   providers: [
     MatButtonModule,

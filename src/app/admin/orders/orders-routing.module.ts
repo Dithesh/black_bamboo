@@ -1,3 +1,4 @@
+import { OrderListsComponent } from './components/order-lists/order-lists.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { OrdersComponent } from './orders.component';
@@ -10,16 +11,26 @@ const routes: Routes = [
     children: [
       {
         path: "",
-        component: OrdersComponent
-      },
-      {
-        path: "new",
-        component:NewOrderComponent
-      },
-      {
-        path: "update/:id",
-        component:NewOrderComponent
-      },
+        component: OrdersComponent,
+        children:[
+          {
+            path:"list",
+            component:OrderListsComponent
+          },
+          {
+            path: "update",
+            component:NewOrderComponent
+          },
+          {
+            path: "update/:id",
+            component:NewOrderComponent
+          },
+          {
+            path:"**",
+            redirectTo:"list"
+          }
+        ]
+      }
     ]
   }
 ];
