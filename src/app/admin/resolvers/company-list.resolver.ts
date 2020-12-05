@@ -9,7 +9,7 @@ export class CompanyListResolver implements Resolve<any> {
     }
 
     resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-        this._serv.endpoint = "order-manager/company?status=active"
+        this._serv.endpoint = "order-manager/company?status=active";
         return this._serv.get();
     }
 }

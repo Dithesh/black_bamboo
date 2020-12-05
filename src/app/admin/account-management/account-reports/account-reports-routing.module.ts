@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { CompanyListResolver } from '../../resolvers/company-list.resolver';
 import { AccountReportsComponent } from './account-reports.component';
 import { CustomReportComponent } from './custom-report/custom-report.component';
 
@@ -11,7 +12,10 @@ const routes: Routes = [
     children: [
       {
         path: "custom",
-        component: CustomReportComponent
+        component: CustomReportComponent,
+        resolve: {
+          companyList: CompanyListResolver
+        }
       },
       {
         path: '**',
