@@ -1,3 +1,191 @@
-Select types : checkbox chip design : all, sales, purchase, payment, receipt <br>
-Toggle button to include orders <br>
-Date range picker <br>
+<div class="search_outerWrapper" [formGroup]="filterForm">
+    <div class="row">
+        <div class="col-md col-12">
+            <div class="checkBox_outer">
+                <div class="goresto_checkBox">
+                    <input type="checkbox" id="all" value="all" name="reporttype" formControlName="type">
+                    <label for="all">All</label>
+                </div>
+                <div class="goresto_checkBox">
+                    <input type="checkbox" id="sales" value="sales" name="reporttype" formControlName="type">
+                    <label for="sales">Sales</label>
+                </div>
+                <div class="goresto_checkBox">
+                    <input type="checkbox" id="purchase" value="purchase" name="reporttype" formControlName="type">
+                    <label for="purchase">Purchase</label>
+                </div>
+                <div class="goresto_checkBox">
+                    <input type="checkbox" id="payment" value="payment" name="reporttype" formControlName="type">
+                    <label for="payment">Payment</label>
+                </div>
+                <div class="goresto_checkBox">
+                    <input type="checkbox" id="receipt" value="recipt" name="reporttype" formControlName="type">
+                    <label for="receipt">Receipt</label>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-auto col-12 ml-auto">
+            <div class="toggle_box d-inline-block mr-30">
+                <mat-slide-toggle formControllName="includeOrder">Include Orders</mat-slide-toggle>
+            </div>
+            <mat-form-field appearance="outline">
+                <mat-label>Enter a date range</mat-label>
+                <mat-date-range-input [rangePicker]="picker">
+                  <input matStartDate formControllName="startDate" placeholder="Start date">
+                  <input matEndDate formControllName="endDate" placeholder="End date">
+                </mat-date-range-input>
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-date-range-picker #picker></mat-date-range-picker>
+            </mat-form-field>
+        </div>
+    </div>
+  
+    <!-- <mat-form-field appearance="outline" class="ew-250">
+        <mat-label>Company</mat-label>
+        <mat-select formControlName="companyFilter">
+            <mat-option *ngFor="let item of companyList" [value]="item.id">{{ item.companyName }}</mat-option>
+        </mat-select>
+    </mat-form-field> -->
+</div>
+
+<div class="item_table_outer mt-10">
+    <h2 class="table_title mb-10">Summary</h2>
+    <div class="table-responsive">
+        <table class="table account_table" matSort>
+            <thead>
+                <tr>
+                    <th mat-sort-header="sales" >Sales</th>
+                    <th mat-sort-header="purchase" >Purchase</th>
+                    <th mat-sort-header="payment">Payment</th>
+                    <th mat-sort-header="recipt">Recipt</th>
+                    <th mat-sort-header="orders">Orders</th>
+                </tr>
+            </thead>
+            <tbody>
+                <ng-container>
+                    <tr>
+                        <td></td>
+                        <td>
+                            
+                        </td>
+                        <td>
+
+                        </td>
+                        <td>
+                            
+                        </td>
+                        <td>
+                            
+                        </td>
+                        
+                    </tr>
+                    <!-- <tr>
+                        <td colspan="5" *ngIf="dataSource?.data.length <= 0"> No data to display.</td>
+                    </tr>
+                    <tr class="total_row">
+                        <td colspan="4" >Grand Total</td>
+                        <td class="ew-180">1222</td>
+                    </tr> -->
+                </ng-container>
+            </tbody>
+        </table>
+        <!-- <mat-paginator [pageSizeOptions]="[10]" [length]="dataSource?.total" [pageSize]="10"></mat-paginator> -->
+    </div>
+</div>
+
+<hr>
+
+<div class="item_table_outer mt-20">
+    <h2 class="table_title mb-10">Transaction</h2>
+    <div class="table-responsive">
+        <table class="table account_table" matSort>
+            <thead>
+                <tr>
+                    <th mat-sort-header="date" class="ew-180">Date</th>
+                    <th mat-sort-header="branchCode" class="ew-200">ID</th>
+                    <th mat-sort-header="type" class="ew-200">Type</th>
+                    <th mat-sort-header="description">Description</th>
+                    <th mat-sort-header="branchAddress" class="ew-250">Ammount</th>
+                </tr>
+            </thead>
+            <tbody>
+                <ng-container>
+                    <tr>
+                        <td>
+                            
+                        </td>
+                        <td>
+                            
+                        </td>
+                        <td>
+
+                        </td>
+                        <td>
+                            
+                        </td>
+                        <td>
+                            
+                        </td>
+                        
+                    </tr>
+                    <tr>
+                        <td colspan="5" *ngIf="dataSource?.data.length <= 0"> No data to display.</td>
+                    </tr>
+                    <tr class="total_row">
+                        <td colspan="4" >Grand Total</td>
+                        <td class="ew-180">1222</td>
+                    </tr>
+                </ng-container>
+            </tbody>
+        </table>
+        <!-- <mat-paginator [pageSizeOptions]="[10]" [length]="dataSource?.total" [pageSize]="10"></mat-paginator> -->
+    </div>
+</div>
+
+<hr>
+<div class="item_table_outer mt-20">
+    <h2 class="table_title mb-10">Restaurant Orders</h2>
+    <div class="table-responsive">
+        <table class="table account_table" matSort>
+            <thead>
+                <tr>
+                    <th mat-sort-header="date" class="ew-180">Date</th>
+                    <th mat-sort-header="branchCode" class="ew-200">ID</th>
+                    <th mat-sort-header="type" class="ew-200">Type</th>
+                    <th mat-sort-header="description">Description</th>
+                    <th mat-sort-header="branchAddress" class="ew-250">Ammount</th>
+                </tr>
+            </thead>
+            <tbody>
+                <ng-container>
+                    <tr>
+                        <td>
+                            
+                        </td>
+                        <td>
+                            
+                        </td>
+                        <td>
+
+                        </td>
+                        <td>
+                            
+                        </td>
+                        <td>
+                            
+                        </td>
+                        
+                    </tr>
+                    <tr>
+                        <td colspan="5" *ngIf="dataSource?.data.length <= 0"> No data to display.</td>
+                    </tr>
+                    <tr class="total_row">
+                        <td colspan="4" >Grand Total</td>
+                        <td class="ew-180">1222</td>
+                    </tr>
+                </ng-container>
+            </tbody>
+        </table>
+        <!-- <mat-paginator [pageSizeOptions]="[10]" [length]="dataSource?.total" [pageSize]="10"></mat-paginator> -->
+    </div>
+</div>

@@ -847,3 +847,38 @@ label.mat-checkbox-layout {
         box-shadow: 0px 2px 5px -1px rgba(177, 158, 242,0.53%);
     }
 }
+
+.goresto_checkBox{
+    display: inline-block;
+    position: relative;
+    margin-bottom: 5px;
+    margin-right: 10px;
+    label{
+        display: inline-block;
+        padding: 5px 10px;
+        border-radius: 30px;
+        font-weight: 500;
+        margin-bottom: 0px;
+        border: 1px solid $color-primary;
+        background-color: transparent;
+        color: $color-primary;
+        text-align: center;
+        min-width: 100px;
+        line-height: 1.5;
+        cursor: pointer;
+        -webkit-transition: .3s ease-in-out;
+        -moz-transition: .3s ease-in-out;
+        -ms-transition: .3s ease-in-out;
+        transition: .3s ease-in-out;
+    }
+    input[type="checkbox"]{
+        position: absolute;
+        visibility: hidden;
+        opacity: 0;
+        &:checked + label{
+            background-color: $color-primary;
+            color: #fff;
+        }
+    }
+
+}
