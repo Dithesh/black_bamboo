@@ -5,6 +5,7 @@ import { SnackService } from './snack.service';
 import { AbstractControl } from '@angular/forms';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { Router } from '@angular/router';
+import { permissions } from './permission-config';
 
 @Injectable({
   providedIn: 'root'
@@ -99,5 +100,21 @@ export class DataService {
         }
       }
     }, 1000)
+  }
+
+  getPermission(module, mode='read') {
+    let userData = this.getUserData();
+    let permission;
+    try {
+      permission =  permissions[module][userData.roles];
+    }catch(e) {
+      return false;
+    }
+    if(permission == 'full') {
+      return true;
+    }else if(mode == 'read' && permission == 'read'){
+      return true;
+    }
+    return false;
   }
 }

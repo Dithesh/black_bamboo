@@ -3,20 +3,23 @@
         New Transaction
     </h2>
     <div class="d-flex">
-        <mat-form-field appearance="fill" class="mr-3">
+        <mat-form-field appearance="fill" class="mr-3"  [hidden]="userData?.value != 'Super Admin'">
             <mat-label>Company</mat-label>
-            <mat-select required [formControl]="_transact.form.get('company_id')" (selectionChange)="_transact.resetData()">
-              <mat-option *ngFor="let item of companyList" [value]="item.id">{{ item.companyName }}</mat-option>
+            <mat-select required [formControl]="_transact.form.get('company_id')"  [required]="userData?.value == 'Super Admin'"
+                (selectionChange)="_transact.resetData()">
+                <mat-option *ngFor="let item of companyList" [value]="item.id">{{ item.companyName }}</mat-option>
             </mat-select>
-          </mat-form-field>
-          <mat-form-field appearance="fill">
-              <mat-label>Branch</mat-label>
-              <mat-select [formControl]="_transact.form.get('branch_id')">
-                <mat-select-filter [placeholder]="'Filter'" [displayMember]="'branchTitle'" [array]="branchList" (filteredReturn)="filteredBranchList =$event"></mat-select-filter>
+        </mat-form-field>
+        <mat-form-field appearance="fill" [hidden]="userData?.value != 'Super Admin' && userData?.value != 'Company Admin' && userData?.value != 'Company Accountant'">
+            <mat-label>Branch</mat-label>
+            <mat-select [formControl]="_transact.form.get('branch_id')">
+                <mat-select-filter [placeholder]="'Filter'" [displayMember]="'branchTitle'" [array]="branchList"
+                    (filteredReturn)="filteredBranchList =$event"></mat-select-filter>
                 <mat-option></mat-option>
-                <mat-option *ngFor="let item of filteredBranchList" [value]="item.id">{{ item.branchTitle }}</mat-option>
-              </mat-select>
-            </mat-form-field>
+                <mat-option *ngFor="let item of filteredBranchList" [value]="item.id">{{ item.branchTitle }}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
     </div>
 </div>
 <div class="account_body_wrapper pl-25 pr-25">
@@ -25,20 +28,23 @@
             <div class="tab_btn" routerLink="/admin/account-management/new-transaction/sales" routerLinkActive="active">
                 <a href="javascript:;">Sales</a>
             </div>
-            <div class="tab_btn" routerLink="/admin/account-management/new-transaction/purchase" routerLinkActive="active">
+            <div class="tab_btn" routerLink="/admin/account-management/new-transaction/purchase"
+                routerLinkActive="active">
                 <a href="javascript:;">Purchase</a>
             </div>
-            <div class="tab_btn" routerLink="/admin/account-management/new-transaction/payment" routerLinkActive="active">
+            <div class="tab_btn" routerLink="/admin/account-management/new-transaction/payment"
+                routerLinkActive="active">
                 <a href="javascript:;">Payment</a>
             </div>
-            <div class="tab_btn" routerLink="/admin/account-management/new-transaction/receipt" routerLinkActive="active">
+            <div class="tab_btn" routerLink="/admin/account-management/new-transaction/receipt"
+                routerLinkActive="active">
                 <a href="javascript:;">Receipt</a>
             </div>
         </div>
         <div class="tab_body pa-20">
             <router-outlet></router-outlet>
         </div>
-        
+
     </div>
 
 </div>

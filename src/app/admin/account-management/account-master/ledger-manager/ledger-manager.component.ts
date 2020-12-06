@@ -26,6 +26,7 @@ export class LedgerManagerComponent implements OnInit {
     'Indirect Income'
 ];
   companyList;
+  userData;
   selectedCompany = new FormControl('');
   addButtonSubscriber;
   ledgerList:any[] = [];
@@ -41,6 +42,7 @@ export class LedgerManagerComponent implements OnInit {
     private route: ActivatedRoute,
     private dialog: MatDialog
   ) { 
+    this.userData = this._serv.getUserData();
     this.route.parent.data.subscribe(response => {
       this.companyList = response.companyList;
       if(this.companyList.length > 0)

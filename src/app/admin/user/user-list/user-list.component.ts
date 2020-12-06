@@ -31,7 +31,7 @@ export class UserListComponent implements OnInit, AfterViewInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   branchList: any[];
   constructor(
-    private _serv: DataService,
+    public _serv: DataService,
     private fb: FormBuilder,
     private dialog: MatDialog
   ) { 

@@ -12,7 +12,7 @@ export class TableManagerComponent implements OnInit {
   tableList: any[];
   constructor(
     private fb: FormBuilder,
-    private _serv: DataService
+    public _serv: DataService
   ) { 
     this.form = this.fb.group({
       tables: this.fb.array([])
@@ -66,6 +66,7 @@ export class TableManagerComponent implements OnInit {
   }
 
   changeReservedStatus(table) {
+    if(!this._serv.getPermission('tables', 'full'))return;
     let value = table.value;
     this._serv.endpoint = "order-manager/table-manager/reserved/"+value.id;
     this._serv.put({isReserved: !value.isReserved}).subscribe(response => {

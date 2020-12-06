@@ -11,7 +11,7 @@ import { AddTableManagerComponent } from './add-table-manager/add-table-manager.
 const routes: Routes = [
   {
     path:"",
-    redirectTo:'branches',
+    redirectTo:'categories',
     pathMatch:'full'
   },
   {

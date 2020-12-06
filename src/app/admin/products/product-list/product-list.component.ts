@@ -6,6 +6,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { debounceTime } from 'rxjs/operators';
 
 @Component({
   selector: 'app-product-list',
@@ -21,7 +22,7 @@ export class ProductListComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   constructor(
-    private _serv: DataService,
+    public _serv: DataService,
     private fb: FormBuilder,
     private dialog: MatDialog
   ) { 
@@ -39,8 +40,9 @@ export class ProductListComponent implements OnInit {
   ngAfterViewInit() {
     
     this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
-    merge(this.sort.sortChange, this.paginator.page, this.filterForm.get('searchString').valueChanges)
-      .subscribe(data => {
+    merge(this.sort.sortChange, this.paginator.page, this.filterForm.get('searchString').valueChanges).pipe(
+      debounceTime(500)
+    ).subscribe(data => {
         this.filterForm.patchValue({
           orderCol: this.sort.active,
           orderType: this.sort.direction

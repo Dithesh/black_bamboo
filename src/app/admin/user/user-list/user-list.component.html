@@ -4,7 +4,7 @@
         <table class="table account_table" matSort>
             <thead>
                 <tr>
-                    <th class="ew-100">Action</th>
+                    <th class="ew-100"  *ngIf=" this._serv.getPermission('users', 'full')">Action</th>
                     <th mat-sort-header="firstName" class="">User Name</th>
                     <th mat-sort-header="roles" class="ew-200">Role</th>
                     <th mat-sort-header="description" class="ew-200">Branch</th>
@@ -16,7 +16,7 @@
             <tbody>
                 <ng-container *ngFor="let item of dataSource?.data; let i =index">
                     <tr *ngIf="loginUserDetail?.user_id != item.id">
-                        <td>
+                        <td  *ngIf=" this._serv.getPermission('users', 'full')">
                             <button mat-icon-button [matMenuTriggerFor]="moreOption">
                                 <mat-icon>more_vert</mat-icon>
                             </button>
@@ -43,6 +43,9 @@
                         </td>
                     </tr>
                 </ng-container>
+                <tr *ngIf="dataSource?.total == 0">
+                    <td colspan="7">No Data to display</td>
+                </tr>
             </tbody>
         </table>
         <mat-paginator [pageSizeOptions]="[10]" [length]="dataSource?.total" [pageSize]="10"></mat-paginator>
