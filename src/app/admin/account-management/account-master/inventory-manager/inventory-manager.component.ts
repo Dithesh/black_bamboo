@@ -14,6 +14,7 @@ import { MasterGlobalService } from '../services/master-global.service';
 export class InventoryManagerComponent implements OnInit {
   companyList;
   unitList;
+  userData;
   selectedCompany = new FormControl('');
   addButtonSubscriber;
   inventoryList:any[] = [];
@@ -29,6 +30,7 @@ export class InventoryManagerComponent implements OnInit {
     private route: ActivatedRoute,
     private dialog: MatDialog
   ) { 
+    this.userData = this._serv.getUserData();
     this.route.parent.data.subscribe(response => {
       this.companyList = response.companyList;
       if(this.companyList.length > 0)

@@ -4,6 +4,7 @@ import { BranchListComponent } from './branch-list/branch-list.component';
 import { BranchesSettingComponent } from './branches-setting.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { RoleGaurd } from './../../../shared/gaurd/role-gaurd';
 
 
 const routes: Routes = [
@@ -19,21 +20,36 @@ const routes: Routes = [
             component:BranchListComponent,
             resolve: {
               companyList: CompanyListResolver
-            }
+            },
+            data: {
+              module: 'branch',
+              mode: 'read'
+            },
+            canActivate: [ RoleGaurd ]
           },
           {
             path:"update",
             component: UpdateBranchComponent,
             resolve: {
               companyList: CompanyListResolver
-            }
+            },
+            data: {
+              module: 'branch',
+              mode: 'full'
+            },
+            canActivate: [ RoleGaurd ]
           },
           {
             path:"update/:id",
             component: UpdateBranchComponent,
             resolve: {
               companyList: CompanyListResolver
-            }
+            },
+            data: {
+              module: 'branch',
+              mode: 'full'
+            },
+            canActivate: [ RoleGaurd ]
           },
           {
             path:"**",

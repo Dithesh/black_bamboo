@@ -12,11 +12,13 @@ export class NewTransactionComponent implements OnInit {
   companyList;
   branchList;
   filteredBranchList;
+  userData;
   constructor(
     private route: ActivatedRoute,
     public _transact: NewTransactionService,
     private _serv: DataService
   ) { 
+    this.userData = this._serv.getUserData();
     this.route.data.subscribe(response => {
       this.companyList = response.companyList;
       if(this.companyList.length > 0) {

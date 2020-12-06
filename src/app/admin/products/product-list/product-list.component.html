@@ -14,7 +14,7 @@
         <table class="table account_table" matSort>
             <thead>
                 <tr>
-                    <th class="ew-100">Action</th>
+                    <th class="ew-100" *ngIf=" this._serv.getPermission('products', 'full')">Action</th>
                     <th mat-sort-header="productNumber" class="ew-200">Product No</th>
                     <th mat-sort-header="productName">Product Name</th>
                     <th mat-sort-header="description">Description</th>
@@ -24,7 +24,7 @@
             </thead>
             <tbody>
                 <ng-container *ngFor="let item of dataSource?.data; let i =index">
-                    <tr>
+                    <tr *ngIf=" this._serv.getPermission('products', 'full')">
                         <td>
                             <button mat-icon-button [matMenuTriggerFor]="moreOption">
                                 <mat-icon>more_vert</mat-icon>
@@ -45,10 +45,13 @@
                             {{item.branch?.branchTitle }}
                         </td>
                         <td>
-                            <mat-slide-toggle (change)="changeStatus(item)" [(ngModel)]="item.isActive"></mat-slide-toggle>
+                            <mat-slide-toggle readonly [(ngModel)]="item.isActive"></mat-slide-toggle>
                         </td>
                     </tr>
                 </ng-container>
+                <tr>
+                    <td colspan="6" *ngIf="dataSource?.total == 0">No data to display</td>
+                </tr>
             </tbody>
         </table>
         <mat-paginator  [pageSizeOptions]="[10]" [length]="dataSource?.total" [pageSize]="10" (page)="getAllProducts($event.pageIndex+1)"></mat-paginator>

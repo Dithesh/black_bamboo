@@ -17,7 +17,7 @@ import { ConfirmPopupComponent } from 'src/app/shared/components/confirm-popup/c
 export class ProductsComponent implements OnInit {
 
   editId;
-  constructor(private route:ActivatedRoute, private router:Router){
+  constructor(private route:ActivatedRoute, private router:Router, public _serv: DataService){
   }
   ngOnInit(){
     this.editId = this.route.firstChild.snapshot.params.id;

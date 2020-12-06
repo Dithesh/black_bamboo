@@ -70,19 +70,19 @@
                             <mat-error>Role is required</mat-error>
                         </mat-form-field>
                     </div>
-                    <div class="col-md-6" [hidden]="form.get('roles').value == 'Super Admin'">
+                    <div class="col-md-6" [hidden]="form.get('roles').value != 'Super Admin'">
                         <mat-form-field appearance="fill" class="w-100 mb-5">
                             <mat-label>Company</mat-label>
-                            <mat-select formControlName="company_id" (selectionChange)="getAllBranches()" [required]="form.get('roles').value != 'Super Admin'">
+                            <mat-select formControlName="company_id" (selectionChange)="getAllBranches()" [required]="form.get('roles').value == 'Super Admin'">
                                 <mat-option *ngFor="let item of companyList" [value]="item.id">{{ item.companyName }}</mat-option>
                             </mat-select>
                             <mat-error>Company is required</mat-error>
                           </mat-form-field>
                     </div>
-                    <div class="col-md-6" [hidden]="form.get('roles').value == 'Super Admin' || form.get('roles').value == 'Company Admin' || form.get('roles').value == 'Company Accountant'">
+                    <div class="col-md-6" [hidden]="form.get('roles').value != 'Super Admin' && form.get('roles').value != 'Company Admin' && form.get('roles').value != 'Company Accountant'">
                         <mat-form-field appearance="fill" class="w-100 mb-5">
                         <mat-label>Branch</mat-label>
-                        <mat-select matNativeControl formControlName="branch_id" [required]="form.get('roles').value != 'Super Admin' && form.get('roles').value != 'Company Admin' && form.get('roles').value != 'Company Accountant'">
+                        <mat-select matNativeControl formControlName="branch_id" [required]="form.get('roles').value == 'Super Admin' || form.get('roles').value == 'Company Admin' || form.get('roles').value == 'Company Accountant'">
                             <mat-option *ngFor="let item of branchList;" [value]="item.id">{{ item.branchTitle }}
                             </mat-option>
                         </mat-select>

@@ -46,7 +46,7 @@ export class NewTransactionService {
             description: [''],
             grandTotal: [''],
             branch_id: [''],
-            company_id: ['', [Validators.required]],
+            company_id: [''],
             items: this.fb.array([]),
             accounts: this.fb.array([])
         })

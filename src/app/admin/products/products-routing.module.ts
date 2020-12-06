@@ -4,6 +4,7 @@ import { NgModule, Component } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { ProductsComponent } from './products.component';
 import { AddProductComponent } from './components/add-product/add-product.component';
+import { RoleGaurd } from 'src/app/shared/gaurd/role-gaurd';
 
 
 const routes: Routes = [
@@ -16,21 +17,36 @@ const routes: Routes = [
         children:[
           {
             path:"list",
-            component:ProductListComponent
+            component:ProductListComponent,
+            data: {
+              module: 'products',
+              mode: 'read'
+            },
+            canActivate: [ RoleGaurd ]
           },
           {
             path:"update",
             component:AddProductComponent,
             resolve: {
               companyList: CompanyListResolver
-            }
+            },
+            data: {
+              module: 'products',
+              mode: 'c'
+            },
+            canActivate: [ RoleGaurd ]
           },
           {
             path:"update/:id",
             component:AddProductComponent,
             resolve: {
               companyList: CompanyListResolver
-            }
+            },
+            data: {
+              module: 'products',
+              mode: 'full'
+            },
+            canActivate: [ RoleGaurd ]
           },
           {
             path:"**",

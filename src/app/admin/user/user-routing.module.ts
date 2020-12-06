@@ -4,6 +4,7 @@ import { UserListComponent } from './user-list/user-list.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { UserComponent } from './user.component';
+import { RoleGaurd } from 'src/app/shared/gaurd/role-gaurd';
 
 
 const routes: Routes = [
@@ -13,21 +14,36 @@ const routes: Routes = [
     children:[
       {
         path:"list",
-        component: UserListComponent
+        component: UserListComponent,
+        data: {
+          module: 'users',
+          mode: 'read'
+        },
+        canActivate: [ RoleGaurd ]
       },
       {
         path:"update",
         component: UpdateUserComponent,
         resolve: {
           companyList: CompanyListResolver
-        }
+        },
+        data: {
+          module: 'users',
+          mode: 'full'
+        },
+        canActivate: [ RoleGaurd ]
       },
       {
         path:"update/:id",
         component: UpdateUserComponent,
         resolve: {
           companyList: CompanyListResolver
-        }
+        },
+        data: {
+          module: 'users',
+          mode: 'full'
+        },
+        canActivate: [ RoleGaurd ]
       },
       {
         path: "**",

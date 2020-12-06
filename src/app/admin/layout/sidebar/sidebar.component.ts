@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { DataService } from 'src/app/shared/services/data.service';
 import { LayoutService } from '../services/layout.service';
 
 @Component({
@@ -10,7 +11,8 @@ import { LayoutService } from '../services/layout.service';
 export class SidebarComponent implements OnInit {
   settingOpen=false;
   accoutnOpen=false;
-  constructor(public _layout: LayoutService, private router: Router) { }
+  constructor(public _layout: LayoutService, private router: Router, public _serv: DataService) { 
+  }
 
   ngOnInit(): void {
   }

@@ -12,7 +12,7 @@
             <div class="tab_btn" routerLink="/admin/user/list" routerLinkActive="active">
                 <a href="javascript:;">User Lists</a>
             </div>
-            <div class="tab_btn" routerLink="/admin/user/update" routerLinkActive="active pointer-none">
+            <div class="tab_btn" routerLink="/admin/user/update" routerLinkActive="active pointer-none"  *ngIf=" this._serv.getPermission('users', 'full')">
                 <a href="javascript:;">{{editId?'Update User': 'Add User'}} </a>
             </div>
             <!--<div class="tab_btn">
