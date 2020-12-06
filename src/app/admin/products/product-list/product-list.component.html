@@ -7,8 +7,6 @@
         </mat-form-field>
     </form>
 </div>
-
-
 <div class="item_table_outer mt-10">
     <div class="table-responsive">
         <table class="table account_table" matSort>
@@ -54,6 +52,6 @@
                 </tr>
             </tbody>
         </table>
-        <mat-paginator  [pageSizeOptions]="[10]" [length]="dataSource?.total" [pageSize]="10" (page)="getAllProducts($event.pageIndex+1)"></mat-paginator>
+        <mat-paginator  [pageSizeOptions]="[10]" [length]="dataSource?.total" [pageSize]="10"></mat-paginator>
     </div>
 </div>

@@ -24,7 +24,7 @@ export class AdminComponent implements OnInit {
 
   handleRouting(){
     let url = this.router.url;
-    if(url.indexOf('/admin/account') >= 0 || url.indexOf('/admin/settings/company') >= 0 || url.indexOf('/admin/user') >= 0 || url.indexOf('/admin/products') >= 0 || url.indexOf('/admin/settings/branches') >= 0) {
+    if(url.indexOf('/admin/account') >= 0 || url.indexOf('/admin/settings/company') >= 0 || url.indexOf('/admin/user') >= 0 || url.indexOf('/admin/products') >= 0 || url.indexOf('/admin/settings/branches') >= 0 || url.indexOf('/admin/order') >= 0) {
       this.noPadding = true;
     }else {
       this.noPadding = false;
