@@ -1,4 +1,4 @@
-<form [formGroup]="form">
+<!-- <form [formGroup]="form">
     <div class="page_header d-flex align-items-center justify-content-between mb-10">
         <h2 class="header_title" *ngIf="!orderId">New Order</h2>
         <h2 class="header_title" *ngIf="orderId">Edit Order : {{orderId}}</h2>
@@ -193,11 +193,12 @@
                 </div>
             </ng-container>
         </div>
-    </div>
+    </div> 
+</form>-->
 
 
 <!-- new design -->
-
+<form [formGroup]="form">
 <div class="row no-gutterd order_out_wrapper">
     <div class="col-md-auto col-12 px-0">
         <div class="left_bar">
@@ -217,8 +218,8 @@
             </ul>
         </div>
     </div>
-    <div class="col-md col-12">
-        <div class="top_flterBar d-flex align-items-center flex-wrap">
+    <div class="col-md col-12 border-left">
+        <div class="top_flterBar border-bottom d-flex align-items-center flex-wrap">
             <div>
                 <mat-chip-list aria-label="Fish selection">
                     <ng-container *ngFor="let item of orderTypeList;">
@@ -244,67 +245,320 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-md-6 col-12">
+            <div class="col-md-5 col-12  border-right">
                 <div class="product_lists">
-                    <h2 class="productHeading">Products</h2>
-                    <ul class="list-unstyled mb-0">
+                    <div class="prod_list_header align-items-center d-flex">
+                        <h2 class="productHeading">Products</h2>
+                        <mat-form-field  appearance="outline" class="ml-auto ew-250 pb-0">
+                            <mat-label>Search</mat-label>
+                            <input type="text" matInput>
+                            <mat-icon matSuffix>search</mat-icon>
+                        </mat-form-field>
+                    </div>
+                    <ul class="list-unstyled items_list_ul mb-0">
                         <li class="itemTitle">Starters</li>
                         <li class="product_items d-flex">
-                            <div class="produt_img"></div>
-                            <div class="textbox">
-                                <p>Gobi</p>
-                                <span>&#8377; 12.00</span>
-                            </div>
-                            <div class="buttonBox">
-                                <div class="input-group mb-0 ml-auto number_input">
-                                    <div class="input-group-prepend">
-                                        <button class="btn btn-outline-secondary" type="button">-</button>
-                                    </div>
-                                    <input type="text" class="form-control" digitOnly>
-                                    <div class="input-group-append">
-                                        <button class="btn btn-outline-secondary" type="button">+</button>
+                            <input type="checkbox" id="1" value="selected1">
+                            <label for="1">
+                                <div class="produt_img" style="background-image: url('/assets/images/food.jpg');"></div>
+                                <div class="textbox">
+                                    <p>Gobi</p>
+                                    <span>&#8377; 12.00</span>
+                                </div>
+                                <div class="buttonBox text-right">
+                                    <button mat-icon-button aria-label="add" class="addShowBtn pointer-none" color="primary">
+                                        <mat-icon>add_circle_outline</mat-icon>
+                                    </button>
+                                    <div class="input_add_box">
+                                        <div class="d-flex mb-5">
+                                            <mat-slide-toggle color="accent" class="mr-10">Parcel?</mat-slide-toggle>
+                                            <div class="input-group mb-0 ml-auto number_input item_btn">
+                                                <div class="input-group-prepend">
+                                                    <button class="btn btn-outline-secondary" type="button">-</button>
+                                                </div>
+                                                <input type="text" class="form-control" digitOnly>
+                                                <div class="input-group-append">
+                                                    <button class="btn btn-outline-secondary" type="button">+</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <button mat-stroked-button color="primary" class="product_addBtn ew-100 small_btn"><mat-icon>add</mat-icon> Add</button>
                                     </div>
                                 </div>
-                                <mat-slide-toggle color="primary">Parcel?</mat-slide-toggle>
-                            </div>
+                            </label>
+                        </li>
+                        <li class="product_items d-flex">
+                            <input type="checkbox" id="2" value="selected1">
+                            <label for="2">
+                                <div class="produt_img" style="background-image: url('/assets/images/food.jpg');"></div>
+                                <div class="textbox">
+                                    <p>Gobi</p>
+                                    <span>&#8377; 12.00</span>
+                                </div>
+                                <div class="buttonBox text-right">
+                                    <button mat-icon-button aria-label="add" class="addShowBtn pointer-none" color="primary">
+                                        <mat-icon>add_circle_outline</mat-icon>
+                                    </button>
+                                    <div class="input_add_box">
+                                        <div class="d-flex mb-5">
+                                            <mat-slide-toggle color="accent" class="mr-10">Parcel?</mat-slide-toggle>
+                                            <div class="input-group mb-0 ml-auto number_input item_btn">
+                                                <div class="input-group-prepend">
+                                                    <button class="btn btn-outline-secondary" type="button">-</button>
+                                                </div>
+                                                <input type="text" class="form-control" digitOnly>
+                                                <div class="input-group-append">
+                                                    <button class="btn btn-outline-secondary" type="button">+</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <button mat-stroked-button color="primary" class="product_addBtn ew-100 small_btn"><mat-icon>add</mat-icon> Add</button>
+                                    </div>
+                                </div>
+                            </label>
+                        </li>
+                        <li class="itemTitle">Juice</li>
+                        <li class="product_items d-flex">
+                            <input type="checkbox" id="3" value="selected1">
+                            <label for="3">
+                                <div class="produt_img" style="background-image: url('/assets/images/food.jpg');"></div>
+                                <div class="textbox">
+                                    <p>Gobi</p>
+                                    <span>&#8377; 12.00</span>
+                                </div>
+                                <div class="buttonBox text-right">
+                                    <button mat-icon-button aria-label="add" class="addShowBtn pointer-none" color="primary">
+                                        <mat-icon>add_circle_outline</mat-icon>
+                                    </button>
+                                    <div class="input_add_box">
+                                        <div class="d-flex mb-5">
+                                            <mat-slide-toggle color="accent" class="mr-10">Parcel?</mat-slide-toggle>
+                                            <div class="input-group mb-0 ml-auto number_input item_btn">
+                                                <div class="input-group-prepend">
+                                                    <button class="btn btn-outline-secondary" type="button">-</button>
+                                                </div>
+                                                <input type="text" class="form-control" digitOnly>
+                                                <div class="input-group-append">
+                                                    <button class="btn btn-outline-secondary" type="button">+</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <button mat-stroked-button color="primary" class="product_addBtn ew-100 small_btn"><mat-icon>add</mat-icon> Add</button>
+                                    </div>
+                                </div>
+                            </label>
                         </li>
                     </ul>
                 </div>
             </div>
-            <div class="col-md-6 col-12">
+            <div class="col-md-7 col-12 px-0">
                 <div class="right_details_box">
                     <mat-tab-group>
                         <mat-tab>
                             <ng-template mat-tab-label>
-                                <mat-icon class="example-tab-icon">thumb_up</mat-icon>
-                                Items
+                                <mat-icon class="example-tab-icon">restaurant</mat-icon>
+                                <p class="mb-0 col-12 px-0"> Items</p>
                             </ng-template>
 
-                            items
+                            <div class="tab_inner_body scroll_style items" [class.innerFooter]="items['controls'].length > 0 && !blockForms">
+                                <ng-container *ngFor="let item of items['controls'];let i=index;">
+                                    <div class="row no-gutters order_item_wrapper">
+                                        <div class="col-auto">
+                                            <div class="img_item">
+                                                <img *ngIf="item.get('featuredImage').value" [src]=" url + item.get('featuredImage').value" alt="">
+                                                <img *ngIf="!item.get('featuredImage').value" src="/assets/images/food.jpg" alt="">
+                                            </div>
+                                        </div>
+                                        <div class="col">
+                                            <div class="order_item_card" *ngIf="!item.get('deletedFlag').value">
+                                                <div class="order-details col">
+                                                    <p class="product_name">{{ item.get('productName').value }} <span class="order_item_card_strip" *ngIf="item.get('isParcel').value">Parcel</span></p>
+                                                    <p class="product_price">
+                                                        <small>Price: &nbsp;&nbsp;&nbsp;</small>
+                                                        <span>{{ item.get('price').value | currency  }}</span>
+                                                    </p>
+                                                    <p class="product_price" *ngIf="item.get('isParcel').value">
+                                                        <small>Packaging charges: &nbsp;&nbsp;&nbsp;</small>
+                                                        <span>{{ item.get('packagingCharges').value | currency  }}</span>
+                                                    </p>
+                                                    <p class="product_price">
+                                                        <small>Total: &nbsp;&nbsp;&nbsp;</small>
+                                                        <span>{{ item.get('totalPrice').value | currency }}</span>
+                                                    </p>
+                                                    <button type="button" mat-stroked-button color="warn" class="mt-15" *ngIf="item.get('productionRejectedQuantity').value > 0" (click)="handleRejectedItems(item)">Remove Rejected</button>
+                                                </div>
+                                                <div class="action_menu col-auto">
+                                                    <div class="input-group mb-0 ml-auto number_input item_btn">
+                                                        <div class="input-group-prepend">
+                                                            <button class="btn btn-outline-secondary" type="button" (click)="handleNumberControl(item, 'prev', i)">-</button>
+                                                        </div>
+                                                        <input type="text" class="form-control" [formControl]="item.get('quantity')" (keyup)="handleNumberControl(item, 'text', i)" digitOnly>
+                                                        <div class="input-group-append">
+                                                            <button class="btn btn-outline-secondary" type="button" (click)="handleNumberControl(item, 'next', i)">+</button>
+                                                        </div>
+                                                    </div>
+                                                    <div class="d-flex mt-15">
+                                                        <p class="text-success px-2 mb-0">Served: <b>{{ item.get('servedItems').value }}</b></p>
+                                                        <p class="text-accent px-2 mb-0">Kitchen: <b>{{ item.get('quantity').value - item.get('servedItems').value - item.get('productionRejectedQuantity').value}}</b></p>
+                                                        <p class="text-danger pl-2 mb-0">Rejected: <b>{{ item.get('productionRejectedQuantity').value }}</b></p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </ng-container>
+                            </div>
+                            <div class="row no-gutters align-items-center border-top py-5" *ngIf="items['controls'].length > 0 && !blockForms">
+                                <div class="col-6 px-15">
+                                    <h3 class="completeText">Serve Order</h3>
+                                </div>
+                                <div class="col-6 px-15">
+                                    <button mat-stroked-button color="accent" type="button" class="w-100 rounded-0" (click)="serveOrderItem()">
+                                        <mat-icon>done_all</mat-icon>
+                                        Serve Items
+                                    </button>
+                                </div>
+                            </div>
 
                         </mat-tab>
                         <mat-tab>
                             <ng-template mat-tab-label>
-                                <mat-icon class="example-tab-icon">thumb_up</mat-icon>
-                                Table
+                                <mat-icon class="example-tab-icon">view_module</mat-icon>
+                                <p class="mb-0 col-12 px-0"> Table</p>
                             </ng-template>
-                            table
+                            <div class="tab_inner_body scroll_style table">
+                                <app-table-selection [form]="form" [blockForms]="blockForms"></app-table-selection>
+                            </div>
+
                         </mat-tab>
                         <mat-tab>
                             <ng-template mat-tab-label>
-                                <mat-icon class="example-tab-icon">thumb_up</mat-icon>
-                                Customer
+                                <mat-icon class="example-tab-icon">supervisor_account</mat-icon>
+                                <p class="mb-0 col-12 px-0"> Customer</p>
                             </ng-template>
-                            customer
+
+                            <div class="tab_inner_body scroll_style">
+                                <div class="row mt-15">
+                                    <div class="col-md-6 col-12">
+                                        <mat-form-field appearance="outline" class="w-100">
+                                            <mat-label>Customer Name</mat-label>
+                                            <input formControlName="customerName" matInput>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-md-6 col-12">
+                                        <mat-form-field appearance="outline" class="w-100">
+                                            <mat-label>Mobile Number</mat-label>
+                                            <input formControlName="mobileNumber" matInput>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-12">
+                                        <mat-form-field appearance="outline" class="w-100">
+                                            <mat-label>Customer Address</mat-label>
+                                            <textarea formControlName="customerAddress" matInput></textarea>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-12">
+                                        <mat-form-field appearance="outline" class="w-100">
+                                            <mat-label>Related Info</mat-label>
+                                            <textarea formControlName="relatedInfo" matInput></textarea>
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                            </div>
                         </mat-tab>
                         <mat-tab>
                             <ng-template mat-tab-label>
-                                <mat-icon class="example-tab-icon">thumb_up</mat-icon>
-                                Bill
+                                <mat-icon class="example-tab-icon">receipt</mat-icon>
+                                <p class="mb-0 col-12 px-0"> Bill</p>
                             </ng-template>
-                            Bill
+                            <div class="tab_inner_body scroll_style bill innerFooter">
+                                <div class="delivery_box">
+                                    <mat-form-field appearance="outline" class="w-100 inline-input">
+                                        <mat-label>Deliver Charge (Optional)</mat-label>
+                                        <input matInput  [formControl]="form.get('deliverCharge')" (change)="handleFinalPricing()" digitOnly [decimal]="true">
+                                    </mat-form-field>
+                                </div>
+                                <div class="billing_wrapper">
+                                    <div class="billing_strip">
+                                        <p class="title">Order Item Total</p>
+                                        <span class="value_section">{{ form.get('orderItemTotal').value | currency }}</span>
+                                    </div>
+                                    <div class="billing_strip">
+                                        <p class="title">Delivery Charge</p>
+                                        <span class="value_section">{{ form.get('deliverCharge').value | currency }}</span>
+                                    </div>
+                                    <div class="billing_strip" *ngIf="form.get('packingCharge').value">
+                                        <p class="title">Total Pkg Charge</p>
+                                        <span class="value_section">{{ form.get('packingCharge').value | currency }}</span>
+                                    </div>
+                                    
+                                    <div class="billing_strip" *ngIf="!form.get('taxDisabled').value">
+                                        <p class="title">CGST <small class="text-muted">({{ ((form.get('taxPercent').value > 0)?(form.get('taxPercent').value/2):0) | number : '2.2' }}%)</small></p>
+                                        <span class="value_section">{{ form.get('cgst').value | currency }}</span>
+                                    </div>
+                                    <div class="billing_strip" *ngIf="!form.get('taxDisabled').value">
+                                        <p class="title">SGST <small class="text-muted">({{ ((form.get('taxPercent').value > 0)?(form.get('taxPercent').value/2):0) | number : '2.2' }}%)</small></p>
+                                        <span class="value_section">{{ form.get('sgst').value | currency }}</span>
+                                    </div>
+                                    <div class="billing_strip">
+                                        <p class="title">Grand Total</p>
+                                        <span class="value_section">{{ form.get('orderAmount').value | currency }}</span>
+                                    </div>
+                                </div>
+                                <div class="remaning_box">
+                                    <h4>Ballance Change Caluclator</h4>
+                                    <div class="d-flex align-items-center">
+                                        <div class="col px-0">
+                                            <mat-form-field appearance="outline" class="w-100 inline-input order-calc" *ngIf="!blockForms">
+                                                <!-- <mat-label>Received</mat-label> -->
+                                                <input matInput digitOnly placeholder="Received" [formControl]="calAmount" [decimal]="true">
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="col-auto">
+                                            <div class="bal_change_box ew-150">
+                                                
+                                                <p><span>Return</span> : {{ calAmount.value - form.get('orderAmount').value  }}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                            <div class="row no-gutters align-items-center border-top py-5">
+                                <div class="col-6 px-15">
+                                    <h3 class="completeText">Complete Order</h3>
+                                </div>
+                                <div class="col-6 px-15">
+                                    <button mat-flat-button color="success" class="w-100 rounded-0" type="button"
+                                    *ngIf="form.get('orderStatus').value != 'completed' && form.get('orderStatus').value != 'cancelled' && !blockForms"  
+                                    (click)="saveOrder('complete')">Mark as Paid</button>
+                                </div>
+                            </div>
                         </mat-tab>
                       </mat-tab-group>
+
+                    <div class="tab_footer border-top">
+                        <div class="row no-gutters align-items-center">
+                            <div class="ammount_box col">
+                                <h3><span>Order Amount :</span> {{ form.get('orderAmount').value | currency }}</h3>
+                            </div>
+                            <div class="saveBtn_box col-auto">
+                                <button mat-flat-button color="primary" class="ew-150 rounded-0" 
+                                *ngIf="form.get('orderStatus').value != 'completed' && form.get('orderStatus').value != 'cancelled' && !blockForms"  
+                                (click)="saveOrder('confirm')"><mat-icon>save</mat-icon>  Save</button>
+                            </div>
+                            <div class="printBtn_box col-auto" *ngIf="form.get('orderStatus').value == 'completed'">
+                                <button mat-flat-button color="accent" class="ew-140 rounded-0" (click)="printOrder()"><mat-icon>print</mat-icon>  Print</button>
+                                <button mat-flat-button aria-label="" color="accent" class="ew-40 rounded-0" [matMenuTriggerFor]="moreOption">
+                                    <mat-icon>arrow_drop_down</mat-icon>
+                                </button>
+                                <mat-menu #moreOption="matMenu">
+                                    <button mat-menu-item>Item 1</button>
+                                    <button mat-menu-item>Item 2</button>
+                                  </mat-menu>
+                            </div>
+                        </div>        
+                    </div>
                 </div>
             </div>
         </div>

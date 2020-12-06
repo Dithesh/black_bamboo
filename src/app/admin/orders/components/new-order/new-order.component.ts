@@ -22,7 +22,7 @@ import { ConfirmPopupComponent } from 'src/app/shared/components/confirm-popup/c
 export class NewOrderComponent implements OnInit, OnDestroy {
   
 
-
+  calAmount = new FormControl('');
   @ViewChild(MatSort, {static: true}) sort: MatSort;
   step = 1;
   rating;
@@ -86,6 +86,7 @@ export class NewOrderComponent implements OnInit, OnDestroy {
       relatedInfo: [''],
       customerName: [''],
       mobileNumber: [''],
+      customerAddress:[''],
       cgst: [''],
       sgst: [''],
       igst: [''],
@@ -233,26 +234,25 @@ export class NewOrderComponent implements OnInit, OnDestroy {
   }
 
   
-  manageTables() {
-    
-    let dialogRef = this.dialog.open(TableSelectionComponent, {
-      width: '1200px',
-      data: {
-        tables: this.tables,
-        blockForm: this.blockForms
-      }
-    });
+  // manageTables() {
+  //   let dialogRef = this.dialog.open(TableSelectionComponent, {
+  //     width: '1200px',
+  //     data: {
+  //       tables: this.tables,
+  //       blockForm: this.blockForms
+  //     }
+  //   });
 
-    dialogRef.afterClosed().subscribe(response => {
-      if(response){
-        this.tables.controls=[];
-        this.tables.reset();
-        response.controls.forEach(control => {
-          this.tables.push(control);
-        })
-      }
-    })
-  }
+  //   dialogRef.afterClosed().subscribe(response => {
+  //     if(response){
+  //       this.tables.controls=[];
+  //       this.tables.reset();
+  //       response.controls.forEach(control => {
+  //         this.tables.push(control);
+  //       })
+  //     }
+  //   })
+  // }
 
   serveOrderItem() {
     let dialogRef = this.dialog.open(ServeOrderItemComponent, {

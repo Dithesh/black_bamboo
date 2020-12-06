@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, Input } from '@angular/core';
 import { FormGroup, FormBuilder, FormArray } from '@angular/forms';
 import { DataService } from 'src/app/shared/services/data.service';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
@@ -9,25 +9,25 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
   styleUrls: ['./table-selection.component.scss']
 })
 export class TableSelectionComponent implements OnInit {
-  form: FormGroup;
-  blockForms=false;
+  // form: FormGroup;
+  // blockForms=false;
   orderId;
   tableList:any[]=[];
+  @Input('form') form:FormGroup;
+  @Input('blockForms') blockForms;
   constructor(
     private fb: FormBuilder, 
-    private _serv: DataService, 
-    @Inject(MAT_DIALOG_DATA) private data,
-    public dialogRef: MatDialogRef<TableSelectionComponent>) { 
-    this.form = this.fb.group({
-      tables: this.fb.array([])
-    })
+    private _serv: DataService) { 
+    // this.form = this.fb.group({
+    //   tables: this.fb.array([])
+    // })
   }
 
   ngOnInit(): void {
-    this.blockForms=this.data.blockForm;
-    this.data.tables.controls.forEach(control => {
-      this.tables.push(control);
-    })
+    // this.blockForms=this.data.blockForm;
+    // this.data.tables.controls.forEach(control => {
+    //   this.tables.push(control);
+    // })
   }
 
 
@@ -44,14 +44,14 @@ export class TableSelectionComponent implements OnInit {
     })
   }
 
-  saveTableInfo() {
-    let tableData = this.form.value;
-    // tableData.tables = tableData.tables.map((table:any) => {
-    //   return {
-    //     ...table,
-    //     chairs: table.chairs.filter(chair => (chair.isSelected && chair.permission == 'full')).map(chair => chair.chairId).join(',')
-    //   }
-    // }).filter(table => table.chairs != "")
-    this.dialogRef.close(this.tables);
-  }
+  // saveTableInfo() {
+  //   let tableData = this.form.value;
+  //   // tableData.tables = tableData.tables.map((table:any) => {
+  //   //   return {
+  //   //     ...table,
+  //   //     chairs: table.chairs.filter(chair => (chair.isSelected && chair.permission == 'full')).map(chair => chair.chairId).join(',')
+  //   //   }
+  //   // }).filter(table => table.chairs != "")
+  //   // this.dialogRef.close(this.tables);
+  // }
 }

@@ -179,6 +179,27 @@ mat-form-field{
             box-shadow: none;
         }
     }
+    &.item_btn{
+        & .btn{
+            font-size: 1.6rem;
+            line-height: 1;
+            width: 28px;    
+            height: 25px;
+            background-color: #f2f2f2;
+            color: #2e358e;
+            border-color: #aeb4fb;
+            padding: 0;
+        }
+        & .form-control{
+           height: 25px;
+           padding: 2px 5px;
+           background: transparent;
+           border-color: #aeb4fb;
+            &:focus{
+                box-shadow: none;
+            }
+        }
+    }
 }
 .success-snackbar{ 
     background-color: #009519;
@@ -881,4 +902,16 @@ label.mat-checkbox-layout {
         }
     }
 
+}
+
+.small_btn{
+    height: 25px;
+    line-height: 23px !important;
+    font-size: 1.4rem;
+    mat-icon{
+        height: 20px;
+        width: 20px;
+        line-height: 18px;
+        font-size: 1.6rem;
+    }
 }

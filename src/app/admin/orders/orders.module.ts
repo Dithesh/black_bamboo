@@ -23,8 +23,7 @@ import { OrderListsComponent } from './components/order-lists/order-lists.compon
   ],
   entryComponents: [
     AddOrderItemComponent,
-    ServeOrderItemComponent,
-    TableSelectionComponent
+    ServeOrderItemComponent
   ]
 })
 export class OrdersModule { }
