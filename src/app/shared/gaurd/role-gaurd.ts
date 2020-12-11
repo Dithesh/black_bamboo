@@ -8,15 +8,16 @@ import { DataService } from './../services/data.service';
 export class RoleGaurd implements CanActivate {
   constructor(public _serv: DataService, public router: Router) {}
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
-    console.log('let');
     let module = route.data.module;
     let mode = route.data.mode;
     let permission = this._serv.getPermission(module, mode);
     if(permission) {
         return true;
     }
-    this._serv.showMessage('You done have access to this module', 'error');
-    this.router.navigateByUrl('/admin/dashboard');
+    this._serv.showMessage('You don\'t have access to this module', 'error');
+    if(this._serv.getUserData()) {
+      this.router.navigateByUrl('/admin/dashboard');
+    }
     return false;
   }
 }

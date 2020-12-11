@@ -65,6 +65,17 @@ export const permissions = {
         'Kitchen Manager' : 'denied', 
         'Bearer' : 'denied'
     },
+    'user-attendance' : {
+        'Super Admin': 'full',
+        'Company Admin': 'full',
+        'Company Accountant' : 'read', 
+        'Branch Admin' : 'full', 
+        'Branch Accountant' : 'read', 
+        'Branch Manager' : 'full', 
+        'Branch Order Manager' : 'denied', 
+        'Kitchen Manager' : 'denied', 
+        'Bearer' : 'denied'
+    },
     'products': {
         'Super Admin': 'full',
         'Company Admin': 'full',

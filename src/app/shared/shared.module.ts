@@ -26,6 +26,7 @@ import {MatExpansionModule} from '@angular/material/expansion';
 import { CarouselModule } from 'ngx-owl-carousel-o';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import { NumberFormatterDirective } from './services/number-formater.directive';
+import { FixedHeaderDirective } from './services/fixed-header.directive';
 import { DigitOnlyDirective } from './services/digit-only.directive';
 import {  RxReactiveFormsModule } from "@rxweb/reactive-form-validators"
 import {MatChipsModule} from '@angular/material/chips';
@@ -34,8 +35,9 @@ import { MatSelectFilterModule } from 'mat-select-filter';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import {MatTabsModule} from '@angular/material/tabs';
+
 @NgModule({
-  declarations: [DatexPipe, SnackbarComponent, ConfirmPopupComponent, NumberFormatterDirective, DigitOnlyDirective],
+  declarations: [DatexPipe, SnackbarComponent, ConfirmPopupComponent, NumberFormatterDirective, DigitOnlyDirective, FixedHeaderDirective],
   imports: [
     CommonModule,
     MatButtonModule,
@@ -75,7 +77,8 @@ import {MatTabsModule} from '@angular/material/tabs';
     MatSelectFilterModule,
     NgxChartsModule,
     MatTooltipModule,
-    MatTabsModule
+    MatTabsModule,
+    FixedHeaderDirective
   ],
   providers: [
     MatButtonModule,

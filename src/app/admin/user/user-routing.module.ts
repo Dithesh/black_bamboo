@@ -46,6 +46,18 @@ const routes: Routes = [
         canActivate: [ RoleGaurd ]
       },
       {
+        path:"attendance",
+        loadChildren: () => import('./attendance/attendance.module').then(m => m.AttendanceModule),
+        resolve: {
+          companyList: CompanyListResolver
+        },
+        data: {
+          module: 'user-attendance',
+          mode: 'read'
+        },
+        canActivate: [ RoleGaurd ]
+      },
+      {
         path: "**",
         redirectTo: "list"
       }

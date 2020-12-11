@@ -77,7 +77,7 @@ export class DataService {
       
     }else {
       this.router.navigateByUrl('/');
-      return;
+      return undefined;
     }
   }
 

@@ -1,0 +1,36 @@
+.date_change_wrapper {
+    .mat-button-toggle-standalone, .mat-button-toggle-group {
+        box-shadow: 0px 1px 4px #dedfef;
+
+        .mat-button-toggle {
+            color: #000;
+
+            & .date_seperator {
+                font-size: 12px;
+                padding: 0px 15px;
+                color:#a9a5a5;
+            }
+            &.mat-button-toggle-checked {
+                background-color: inherit;
+                color: inherit;
+            }
+
+        }
+    }
+}
+
+.account_table {
+    tr {
+        & td {
+            white-space: nowrap;
+        }
+        .title_row {
+            min-width: 200px;
+        }
+        .date_row {
+            width: 50px;
+            font-size: 12px;
+            text-align: center;
+        }
+    }
+}
