@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { DataService } from 'src/app/shared/services/data.service';
 import * as moment from 'moment';
 
@@ -7,16 +7,17 @@ import * as moment from 'moment';
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss']
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent implements OnInit, OnDestroy {
   ongoingorders: any;
   completedOrders: any;
+  timeoutController;
   constructor(
     private _serv: DataService
   ) { }
 
   ngOnInit(): void {
     this.getData();
-    setInterval(() => {
+    this.timeoutController = setInterval(() => {
       this.getData();
     },120000)
   }
@@ -56,6 +57,12 @@ export class DashboardComponent implements OnInit {
     this._serv.get().subscribe(response => {
       this.completedOrders = response as any;
     })
+  }
+
+  ngOnDestroy() {
+    if(this.timeoutController) {
+      clearInterval(this.timeoutController);
+    }
   }
 
 }

@@ -5,7 +5,7 @@ import { OwlOptions } from 'ngx-owl-carousel-o';
 import { FormGroup, FormBuilder, FormArray, AbstractControl, FormControl } from '@angular/forms';
 import { DataService } from 'src/app/shared/services/data.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable, of } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { PrintOrderInvoiceComponent } from '../print-order-invoice/print-order-invoice.component';
 import { AddOrderItemComponent } from '../add-order-item/add-order-item.component';
@@ -13,6 +13,7 @@ import { environment } from 'src/environments/environment';
 import { TableSelectionComponent } from '../table-selection/table-selection.component';
 import { ServeOrderItemComponent } from '../serve-order-item/serve-order-item.component';
 import { ConfirmPopupComponent } from 'src/app/shared/components/confirm-popup/confirm-popup.component';
+import { debounceTime, map, startWith } from 'rxjs/operators';
 
 @Component({
   selector: 'app-new-order',
@@ -26,6 +27,7 @@ export class NewOrderComponent implements OnInit, OnDestroy {
   @ViewChild(MatSort, {static: true}) sort: MatSort;
   step = 1;
   rating;
+  selectedCategory='all';
   
   // customOptions: OwlOptions = {
   //   loop: false,
@@ -63,7 +65,9 @@ export class NewOrderComponent implements OnInit, OnDestroy {
   selectedOrderType: any;
   tableList: any[];
   orderId;
-  productList: any[];
+  productList: any[] = [];
+  filteredProductList: Observable<any[]>;
+  searchProductControl = new FormControl('');
   branchList: any[];
   blockForms: boolean;
   userData: any;
@@ -107,21 +111,82 @@ export class NewOrderComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.userData = this._serv.getUserData();
+    if(this.userData.roles == 'Super Admin' || this.userData.roles == 'Company Admin' || this.userData.roles == 'Company Accountant') {
+      this.blockForms=true;
+      this.form.disable();
+    }
     if(this.orderId) {
       this.getOrderDetail();
     }else {
-      if(this.userData.roles != 'Super Admin') {
+      if(this.userData.roles != 'Super Admin' && this.userData.roles != 'Company Admin' && this.userData.roles != 'Company Accountant') {
         this.form.get('branch_id').setValue(this.userData.branch_id);
         this.getBranchDetail(this.userData.branch_id);
       }
     }
-    if(this.userData.roles == 'Super Admin') {
-      this.getAllBranches();
-    }
+    // if(this.userData.roles == 'Super Admin') {
+    //   this.getAllBranches();
+    // }
     this.getTableInfo();
+    this.getAllProducts();
 
     window.addEventListener('keydown', this.keyListener, true);
   }
+
+  _filterProductList(value) {
+    value = value?value:"";
+    value = value.toLowerCase();
+    // alert(1)
+    console.log(this.productList, value);
+    let productList = [...this.productList]
+    // return [];
+    let list = []
+    productList.forEach(x => {
+      let item = {...x};
+      item.products = item.products.filter(y => 
+        (
+          y.productName.toLowerCase().includes(value)
+        ));
+        list.push(item);
+    })
+    console.log(list);
+    return list;
+  }
+
+  onAddItem(element, item) {
+        let quantity = parseInt((item.quantity)?item.quantity:1);
+        let form:FormGroup = this.addOrderItem();
+        let isNew=true;
+        if(!this.selectedOrderType.tableRequired) {
+          item.isParcel = true;
+        }
+        this.items.controls.forEach((control:FormGroup) => {
+            if(!control.get('deletedFlag').value && control.get('productId').value == item.id && control.get('isParcel').value == item.isParcel) {
+                quantity+=parseInt(control.get('quantity').value)
+                form = control;
+                isNew=false;
+            }
+        })
+        form.patchValue({
+            productId: item.id,
+            productName: item.productName,
+            featuredImage: item.featuredImage,
+            isParcel: item.isParcel,
+            price: item.price,
+            quantity: quantity,
+            packagingCharges: (item.isParcel)?item.packagingCharges:'0'
+        })
+        if(isNew) {
+          this.items.push(form);
+        }
+        this.getOrderItemTotal(form);
+        element.checked = false;
+        item.quantity = 1;
+        item.isParcel = false;
+  }
+
+
+
+
   addOrderItem() {
     return this.fb.group({
       id: [''],
@@ -145,48 +210,72 @@ export class NewOrderComponent implements OnInit, OnDestroy {
     return this.form.get('items') as FormArray;
   }
 
-  addNewOrderItem() {
-    if(this.blockForms)return;
-    let dialogRef = this.dialog.open(AddOrderItemComponent, {
-      width: '500px',
-      autoFocus: false,
-      data: {
-        orderItems: this.items.value
-      }
-    });
-
-    dialogRef.afterClosed().subscribe(response => {
-      if(response) {
-        let removeElement=[];
-        this.items.controls.forEach(control => {
-          if(control.get('isParcel').value == response.isParcel) {
-            response.items.forEach((elem, index) => {
-              if(control.get('productId').value == elem.id) {
-                removeElement.unshift(index);
-              }
-            })
+  getAllProducts() {
+    this._serv.endpoint="order-manager/product/category-based-product";
+    this._serv.get().subscribe(response => {
+      this.productList = (response as any[]).map(item => {
+        item.products = item.products.map(product => {
+          return {
+            ...product,
+            isParcel: false,
+            quantity: 1
           }
         })
-        removeElement.sort(function(a, b){return b-a}); //sort indexes
-        removeElement.forEach(index => {
-          response.items.splice(index, 1);
-        })
-        response.items.forEach(item => {
-          let form = this.addOrderItem();
-          form.patchValue({
-            productId: item.id,
-            productName: item.productName,
-            featuredImage: item.featuredImage,
-            isParcel: response.isParcel,
-            price: item.price,
-            packagingCharges: (response.isParcel)?item.packagingCharges:'0'
-          })
-          this.items.push(form);
-          this.getOrderItemTotal(form);
-        })
-      }
+        return item;
+      });
+      // this.filteredProductList = of(this.productList);
+      
+    this.filteredProductList = this.searchProductControl.valueChanges.pipe(
+      startWith(''),
+      map(value => this._filterProductList(value))
+    );
+      console.log(this.productList);
+      
     })
   }
+
+  // addNewOrderItem() {
+  //   if(this.blockForms)return;
+  //   let dialogRef = this.dialog.open(AddOrderItemComponent, {
+  //     width: '500px',
+  //     autoFocus: false,
+  //     data: {
+  //       orderItems: this.items.value
+  //     }
+  //   });
+
+  //   dialogRef.afterClosed().subscribe(response => {
+  //     if(response) {
+  //       let removeElement=[];
+  //       this.items.controls.forEach(control => {
+  //         if(control.get('isParcel').value == response.isParcel) {
+  //           response.items.forEach((elem, index) => {
+  //             if(control.get('productId').value == elem.id) {
+  //               removeElement.unshift(index);
+  //             }
+  //           })
+  //         }
+  //       })
+  //       removeElement.sort(function(a, b){return b-a}); //sort indexes
+  //       removeElement.forEach(index => {
+  //         response.items.splice(index, 1);
+  //       })
+  //       response.items.forEach(item => {
+  //         let form = this.addOrderItem();
+  //         form.patchValue({
+  //           productId: item.id,
+  //           productName: item.productName,
+  //           featuredImage: item.featuredImage,
+  //           isParcel: response.isParcel,
+  //           price: item.price,
+  //           packagingCharges: (response.isParcel)?item.packagingCharges:'0'
+  //         })
+  //         this.items.push(form);
+  //         this.getOrderItemTotal(form);
+  //       })
+  //     }
+  //   })
+  // }
 
   getOrderItemTotal(orderItem) {
     let itemValue = orderItem.value;
@@ -309,19 +398,19 @@ export class NewOrderComponent implements OnInit, OnDestroy {
 
   
 
-  getAllBranches() {
-    this._serv.endpoint = "order-manager/branch?fields=id,branchTitle";
-    this._serv.get().subscribe(response => {
-      this.branchList = response as any[];
-      if(this.orderId == undefined && this.branchList.length > 0) {
-        this.form.get('branch_id').setValue(this.branchList[0].id);
-        this.getBranchDetail(this.branchList[0].id);
-        this.form.get('branch_id').valueChanges.subscribe(value => {
-          this.getBranchDetail(value);
-        })
-      }
-    })
-  }
+  // getAllBranches() {
+  //   this._serv.endpoint = "order-manager/branch?fields=id,branchTitle";
+  //   this._serv.get().subscribe(response => {
+  //     this.branchList = response as any[];
+  //     if(this.orderId == undefined && this.branchList.length > 0) {
+  //       this.form.get('branch_id').setValue(this.branchList[0].id);
+  //       this.getBranchDetail(this.branchList[0].id);
+  //       this.form.get('branch_id').valueChanges.subscribe(value => {
+  //         this.getBranchDetail(value);
+  //       })
+  //     }
+  //   })
+  // }
 
   getOrderDetail() {
     this._serv.endpoint = "order-manager/order/"+this.orderId;
@@ -345,7 +434,7 @@ export class NewOrderComponent implements OnInit, OnDestroy {
         taxPercent: response.taxPercent,
       });
 
-      if(response.orderStatus == 'completed' || response.orderStatus == 'cancelled' || response.rejectedCount > 0) {
+      if(response.orderStatus == 'completed' || response.orderStatus == 'cancelled' || response.rejectedCount > 0 || this.userData.roles == 'Super Admin' || this.userData.roles == 'Company Admin' || this.userData.roles == 'Company Accountant') {
         this.blockForms = true;
         this.form.disable();
       }else {
@@ -380,6 +469,20 @@ export class NewOrderComponent implements OnInit, OnDestroy {
       this.getBranchDetail(response.branch_id);
       this.handleFinalPricing();
     })
+  }
+
+  handleOrderQuantityInput(item, type) {
+    let current = item.quantity;
+    if(type == 'next') {
+      current++;
+    }else if(type == 'prev') {
+      current--;
+    }
+
+    if(current <= 0) {
+      current=1;
+    }
+    item.quantity=current;
   }
 
   handleNumberControl(formControl, type, index) {
@@ -519,10 +622,38 @@ export class NewOrderComponent implements OnInit, OnDestroy {
 
   changeOrderType(orderTypeId, from='funtion') {
     if(this.blockForms && from=='button')return;
+    if(from == 'button' && this.items.controls.length > 0) {
+      let dialogRef = this.dialog.open(ConfirmPopupComponent, {
+        data: {
+          message: "Changing order type will clear the items. Will you confirm?"
+        }
+      });
+      dialogRef.afterClosed().subscribe(data => {
+        if(data) {
+          this.processOrderTypeChange(orderTypeId, true);
+        }
+      })
+    }else {
+      this.processOrderTypeChange(orderTypeId);
+    }
+    
+  }
+
+  processOrderTypeChange(orderTypeId, isClearRequired=false){
     this.orderTypeList.forEach(elem => {
       if(elem.id == orderTypeId) {
         this.selectedOrderType = elem;
         this.form.get('orderType').setValue(orderTypeId)
+        if(isClearRequired) {
+          this.items.controls.forEach((elem, index) => {
+            if(this._serv.notNull(elem.get('id').value)) {
+              elem.get('deletedFlag').setValue(true);
+            }else {
+              this.items.removeAt(index);
+            }
+          })
+          this.handleFinalPricing();
+        }
       }
     })
   }

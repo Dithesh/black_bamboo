@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { OrdersComponent } from './orders.component';
 import { NewOrderComponent } from './components/new-order/new-order.component';
+import { RoleGaurd } from 'src/app/shared/gaurd/role-gaurd';
 
 
 const routes: Routes = [
@@ -15,15 +16,30 @@ const routes: Routes = [
         children:[
           {
             path:"list",
-            component:OrderListsComponent
+            component:OrderListsComponent,
+            data: {
+              module: 'orders',
+              mode: 'read'
+            },
+            canActivate: [ RoleGaurd ]
           },
           {
             path: "update",
-            component:NewOrderComponent
+            component:NewOrderComponent,
+            data: {
+              module: 'orders',
+              mode: 'read'
+            },
+            canActivate: [ RoleGaurd ]
           },
           {
             path: "update/:id",
-            component:NewOrderComponent
+            component:NewOrderComponent,
+            data: {
+              module: 'orders',
+              mode: 'read'
+            },
+            canActivate: [ RoleGaurd ]
           },
           {
             path:"**",

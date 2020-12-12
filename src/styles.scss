@@ -1468,7 +1468,7 @@ label.mat-checkbox-layout {
             &.product_items{
                 position: relative;
                 margin: 10px 0px;
-                label{
+                & > label{
                     display: block;
                     margin-bottom: 0px;
                     display: flex;
@@ -1520,7 +1520,7 @@ label.mat-checkbox-layout {
                         display: none;
                     }
                 }
-                input[type="checkbox"]{
+                input[type="radio"]{
                     position: absolute;
                     opacity: 0;
                     visibility: hidden;
