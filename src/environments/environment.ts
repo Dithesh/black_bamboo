@@ -4,12 +4,12 @@
 
 export const environment = {
   production: false,
-  // apiUrl: "http://hosting.goresto.in/api/",
-  // domain: "http://hosting.goresto.in",
-  // imgUrl: "http://hosting.goresto.in"
-  apiUrl: "http://192.168.1.222:8000/api/",
-  domain: "http://192.168.1.222:8000",
-  imgUrl: "http://192.168.1.222:8000",
+  apiUrl: "http://hosting.goresto.in/api/",
+  domain: "http://hosting.goresto.in",
+  imgUrl: "http://hosting.goresto.in"
+  // apiUrl: "http://192.168.1.222:8000/api/",
+  // domain: "http://192.168.1.222:8000",
+  // imgUrl: "http://192.168.1.222:8000",
   
   // apiUrl: "http://127.0.0.1:8000/api/",
   // domain: "http://127.0.0.1:8000",

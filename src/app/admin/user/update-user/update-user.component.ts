@@ -73,10 +73,13 @@ export class UpdateUserComponent implements OnInit {
   getUserDetails(){
     this._serv.endpoint = "order-manager/user/"+this.userId;
     this._serv.get().subscribe((data:any) => {
-      this.form.patchValue(data);
+      this.form.patchValue({...data, password: ""});
       
       if(this._serv.notNull(data.profilePic)){
         this.imageSrc = "url(\'"+ this.url + data.profilePic +"\')"
+      }
+      if(this._serv.notNull(this.form.get('company_id').value)) {
+        this.getAllBranches()
       }
     })
 }
@@ -105,8 +108,10 @@ export class UpdateUserComponent implements OnInit {
   saveUser(event=null) {
     if(event!=null)event.preventDefault();
     this.form.markAllAsTouched();
+    console.log(this.form);
     if(this.form.invalid)return;
     let formValue = this.form.value;
+    console.log(formValue);
     this._serv.endpoint="order-manager/user";
     this._serv.post(formValue).subscribe(response => {
       this._serv.showMessage("User updated successfully", 'success')
