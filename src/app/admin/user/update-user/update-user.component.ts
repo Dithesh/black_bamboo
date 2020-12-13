@@ -51,7 +51,8 @@ export class UpdateUserComponent implements OnInit {
       mobileNumber: [''],
       password: ['', RxwebValidators.password({validation:{minLength: 8, upperCase:true, lowerCase:true} })],
       branch_id: [''],
-      isActive: [false]
+      isActive: [true],
+      attendaceRequired: [false]
     })
     this.route.data.subscribe(response => {
       this.companyList = response.companyList;
