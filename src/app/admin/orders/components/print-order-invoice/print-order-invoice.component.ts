@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-print-order-invoice',
@@ -9,12 +9,18 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 export class PrintOrderInvoiceComponent implements OnInit {
   orderData;
   constructor(
-    @Inject(MAT_DIALOG_DATA) private data
+    @Inject(MAT_DIALOG_DATA) private data,
+    private ref: MatDialogRef<PrintOrderInvoiceComponent>
   ) { 
     this.orderData = data.orderData;
   }
 
   ngOnInit(): void {
+    setTimeout(() =>{
+      window.print();}, 1500)
   }
 
+  printPage(){
+    window.print();
+  }
 }

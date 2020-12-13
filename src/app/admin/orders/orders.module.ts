@@ -5,7 +5,6 @@ import { OrdersRoutingModule } from './orders-routing.module';
 import { OrdersComponent } from './orders.component';
 import { NewOrderComponent } from './components/new-order/new-order.component';
 import { SharedModule } from 'src/app/shared/shared.module';
-import {NgxPrintModule} from 'ngx-print';
 import { PrintOrderInvoiceComponent } from './components/print-order-invoice/print-order-invoice.component';
 import { AddOrderItemComponent } from './components/add-order-item/add-order-item.component';
 import { ServeOrderItemComponent } from './components/serve-order-item/serve-order-item.component';
@@ -18,8 +17,7 @@ import { OrderListsComponent } from './components/order-lists/order-lists.compon
   imports: [
     CommonModule,
     OrdersRoutingModule,
-    SharedModule,
-    NgxPrintModule
+    SharedModule
   ],
   entryComponents: [
     AddOrderItemComponent,

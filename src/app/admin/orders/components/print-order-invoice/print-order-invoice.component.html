@@ -2,7 +2,7 @@
     <p class="centered">
         <b class="title">Black bamboo restaurant</b>
         <br>Mukka, surathkal</p>
-    <table class="m-auto">
+    <table class="table">
         <thead>
             <tr>
                 <th class="quantity">Q.</th>
@@ -15,7 +15,7 @@
                 <tr>
                     <td class="quantity">x{{ item.quantity }}</td>
                     <td class="description">{{ item.productName }}</td>
-                    <td class="price">{{ item.price | currency: '':'' }}</td>
+                    <td class="price">{{ item.totalPrice | currency: '':'' }}</td>
                 </tr>
             </ng-container>
             <tr>
@@ -49,6 +49,4 @@
         <br>Visit again</p>
 </div>
 
-<button printSectionId="print-section"
-[useExistingCss]="true"
-mat-button ngxPrint>Print</button>
+<button class="hidden-print" (click)="printPage()">Print</button>
