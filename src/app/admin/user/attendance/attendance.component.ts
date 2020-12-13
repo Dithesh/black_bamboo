@@ -72,7 +72,9 @@ export class AttendanceComponent implements OnInit {
         previousData: previousData
       }
     })
-    dialogRef
+    dialogRef.afterClosed().subscribe(response => {
+      this.getUserAttendance();
+    })
   }
 
 }
