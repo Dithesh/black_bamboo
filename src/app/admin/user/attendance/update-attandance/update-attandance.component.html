@@ -1,4 +1,39 @@
-<p>{{ user.firstName }}</p>
+<!-- <p>{{ user.firstName }}</p>
 <p>{{ user.lastName }}</p>
-<p>{{ date }}</p>
-<button (click)="saveForm()">Save</button>
+<p>{{ date }}</p> -->
+<div class="outer_wrapper">
+    <div class="attendence_outer">
+        <div class="header_wrapper mb-30 d-flex align-items-center justify-content-between">
+            <h3 class="mb-0 font-weight-600 text-uppercase">Attendance Update</h3>
+            <button mat-icon-button (click)="closeDilog()">
+                <mat-icon>close</mat-icon>
+            </button>
+        </div>
+    </div>
+    <div class="body_box">
+        <div [formGroup]="form">
+            <p><span>Name :</span> {{user.firstName}} {{user.lastName}}</p>
+            <p><span>Date :</span> {{date}}</p>
+            
+            <div class="d-flex align-items-center mb-15">
+                <p class="mb-0"><span>Present </span></p>
+                <div class="toogle_outer">
+                    <div class="attendence_toggle">
+                        <input type="checkbox" formControlName="isPresent" id="isPresent">
+                        <label for="isPresent">
+                            <span class="no">No</span>
+                            <span class="yes">Yes</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <mat-form-field  appearance="fill" class="w-100 mb-5">
+                <mat-label>Discription</mat-label>
+                <textarea matInput formControlName="description" rows="3" cdkTextareaAutosize></textarea>
+            </mat-form-field>
+        </div>
+        <div class="text-right">
+            <button mat-flat-button type="submit" color="primary" (click)="saveForm()">Save</button>
+        </div>
+    </div>
+</div>
