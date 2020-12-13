@@ -23,24 +23,20 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>
-                        d
-                    </td>
-                    <td>d</td>
-                    <td>
-                        d
-                    </td>
-                    <td>
-                        d
-                    </td>
-                    <td>
-                        d
-                    </td>
-                    <td>
-                        d
-                    </td>
-                </tr>
+                <ng-container *ngFor="let user of attendanceList;let ui = index;">
+                    <tr>
+                        <td>
+                            {{ user.firstName }} {{ user.lastName }} <small class="text-muted ml-10">({{user.presentCount}}/{{dateSet.length}})</small>
+                        </td>
+                        <ng-container *ngFor="let date of dateSet;">
+                            <td class="date_row" [class.not_added] = "!user.attendanceList.hasOwnProperty(date)" (click)="updateAttendance(user, date)">
+                                <ng-container *ngIf="user.attendanceList.hasOwnProperty(date)">
+                                    <span [class.present]="user.attendanceList[date].isPresent" [class.absent]="!user.attendanceList[date].isPresent"></span>
+                                </ng-container>
+                            </td>
+                        </ng-container>
+                    </tr>
+                </ng-container>
             </tbody>
         </table>
     </div>
