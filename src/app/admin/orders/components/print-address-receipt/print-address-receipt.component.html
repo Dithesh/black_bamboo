@@ -26,4 +26,9 @@
     <p class="centered">Thank You :(</p>
 </div>
 
-<button class="hidden-print" (click)="printPage()">Print</button>
+<div class="hidden-print text-center ew-300">
+    <h3>Do you want to print again?</h3>
+    
+    <button mat-flat-button (click)="cancelPrint()" color="warn" class="mr-20">Cancel</button>
+    <button mat-flat-button (click)="printPage()" color="primary">Print</button>
+</div>

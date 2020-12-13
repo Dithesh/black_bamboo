@@ -17,10 +17,13 @@ export class PrintAddressReceiptComponent implements OnInit {
 
   ngOnInit(): void {
     setTimeout(() =>{
-      window.print();}, 1500)
+      window.print();}, 500)
   }
 
   printPage(){
     window.print();
+  }
+  cancelPrint(){
+    this.ref.close();
   }
 }
