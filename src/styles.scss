@@ -78,6 +78,7 @@ html, body {
 .scroll_style{
     &::-webkit-scrollbar {
         width: 5px;
+        height: 5px;
     }
     &::-webkit-scrollbar-track {
         background-color: transparent;

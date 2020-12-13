@@ -1,0 +1,60 @@
+.outer_wrapper{
+    width: 400px;
+    .body_box{
+        p{
+            font-size: 14px;
+            font-weight: 500;
+            span{
+                display: inline-block;
+                min-width: 80px;
+            }
+        }
+    }
+}
+.attendence_toggle{
+    position: relative;
+    width: 50px;
+    background-color: #eee;
+    border-radius: 30px;
+    height: 25px;
+    overflow: hidden;
+    label{
+        display: flex;
+        flex-wrap: nowrap;
+        margin-bottom: 0px;
+        width: 100px;
+        position: absolute;
+        left: 0;
+        height: 100%;
+        top: 0;
+        -webkit-transition: .3s ease-in-out;
+        -moz-transition: .3s ease-in-out;
+        -ms-transition: .3s ease-in-out;
+        transition: .3s ease-in-out;
+        cursor: pointer;
+        span{
+            display: inline-block;
+            flex: 0 0 50%;
+            max-width: 50%;
+            font-size: 12px;
+            line-height: 25px;
+            text-align: center;
+            color: #fff;
+            &.yes{
+                background-color: rgb(18, 131, 14);
+            }
+            &.no{
+                background-color: rgb(134, 20, 20);
+            }
+        }
+    }
+    input[type="checkbox"]{
+        position: absolute;
+        visibility: hidden;
+        opacity: 0;
+        &:checked + label{
+            left: -50px;
+        }
+    }
+
+}

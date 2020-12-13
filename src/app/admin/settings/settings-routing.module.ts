@@ -24,7 +24,7 @@ const routes: Routes = [
   },
   {
     path:"categories",
-    component:CategoriesSettingComponent
+    loadChildren: () => import('./categories-setting/categories-setting.module').then(m => m.CategoriesSettingModule)
   },
   {
     path:"table-manager",

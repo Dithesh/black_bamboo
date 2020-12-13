@@ -27,13 +27,15 @@ export class UpdateAttandanceComponent implements OnInit {
       user_id: [data.user.id],
       effectedDate: [data.date],
       isPresent: [(data.previousData)?data.previousData.isPresent:true],
-      description: [(data.previousData)?data.previousData.description:false]
+      description: [(data.previousData)?data.previousData.description:'']
     })
   }
 
   ngOnInit(): void {
   }
-
+  closeDilog(){
+    this.dialogRef.close();
+  }
   saveForm() {
     this._serv.endpoint="order-manager/user-attendance";
     this._serv.post(this.form.value).subscribe(response => {

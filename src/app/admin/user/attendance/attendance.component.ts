@@ -66,6 +66,7 @@ export class AttendanceComponent implements OnInit {
     let previousData = user.attendanceList.hasOwnProperty(day) ? user.attendanceList[day]:null;
     let date = moment(this.startDate).format('YYYY-MM') + "-" + day;
     let dialogRef = this.dialog.open(UpdateAttandanceComponent, {
+      autoFocus:false,
       data: {
         user: user,
         date: date,
