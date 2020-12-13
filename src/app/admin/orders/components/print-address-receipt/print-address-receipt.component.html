@@ -1,0 +1,29 @@
+<div class="ticket only-print" id="print-section">
+    <p class="centered">
+        <b class="title">Black bamboo restaurant</b>
+        <br>Mukka, surathkal</p>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>To</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>{{ orderData.customerName }}</td>
+            </tr>
+            <tr>
+                <td>{{ orderData.mobileNumber }}</td>
+            </tr>
+            <tr>
+                <td>{{ orderData.customerAddress }}</td>
+            </tr>
+            <tr>
+                <td>{{ orderData.relatedInfo }}</td>
+            </tr>
+        </tbody>
+    </table>
+    <p class="centered">Thank You :(</p>
+</div>
+
+<button class="hidden-print" (click)="printPage()">Print</button>

@@ -560,14 +560,14 @@
                                 *ngIf="form.get('orderStatus').value != 'completed' && form.get('orderStatus').value != 'cancelled' && !blockForms"  
                                 (click)="saveOrder('confirm')"><mat-icon>save</mat-icon>  Save</button>
                             </div>
-                            <div class="printBtn_box col-auto" *ngIf="form.get('orderStatus').value == 'completed'">
+                            <div class="printBtn_box col-auto" *ngIf="orderId">
                                 <button mat-flat-button color="accent" class="ew-140 rounded-0" (click)="printOrder()"><mat-icon>print</mat-icon>  Print</button>
                                 <button mat-flat-button aria-label="" color="accent" class="ew-40 rounded-0" [matMenuTriggerFor]="moreOption">
                                     <mat-icon>arrow_drop_down</mat-icon>
                                 </button>
                                 <mat-menu #moreOption="matMenu">
-                                    <button mat-menu-item>Item 1</button>
-                                    <button mat-menu-item>Item 2</button>
+                                    <button mat-menu-item type="button" (click)="printAddress()">Address Print</button>
+                                    <button mat-menu-item type="button" (click)="printAddress()">KOT</button>
                                   </mat-menu>
                             </div>
                         </div>        

@@ -1654,6 +1654,11 @@ label.mat-checkbox-layout {
 }
 // New order design end
 
+    
+.only-print,
+.only-print * {
+    display: none !important;
+}
 @media print { 
     
     html, body { 
@@ -1686,5 +1691,10 @@ label.mat-checkbox-layout {
     .hidden-print,
     .hidden-print * {
         display: none !important;
+    }
+
+    .only-print,
+    .only-print * {
+        display: block !important;
     }
 }

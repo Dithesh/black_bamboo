@@ -14,6 +14,7 @@ import { TableSelectionComponent } from '../table-selection/table-selection.comp
 import { ServeOrderItemComponent } from '../serve-order-item/serve-order-item.component';
 import { ConfirmPopupComponent } from 'src/app/shared/components/confirm-popup/confirm-popup.component';
 import { debounceTime, map, startWith } from 'rxjs/operators';
+import { PrintAddressReceiptComponent } from '../print-address-receipt/print-address-receipt.component';
 
 @Component({
   selector: 'app-new-order',
@@ -88,9 +89,9 @@ export class NewOrderComponent implements OnInit, OnDestroy {
       id: [''],
       branch_id: [''],
       relatedInfo: [''],
+      customerAddress:[''],
       customerName: [''],
       mobileNumber: [''],
-      customerAddress:[''],
       cgst: [''],
       sgst: [''],
       igst: [''],
@@ -420,6 +421,7 @@ export class NewOrderComponent implements OnInit, OnDestroy {
         id: response.id,
         branch_id: response.branch_id,
         relatedInfo: response.relatedInfo,
+        customerAddress: response.customerAddress,
         customerName: (response.customer)?response.customer.customerName:"",
         mobileNumber: (response.customer)?response.customer.mobileNumber:"",
         cgst: response.cgst,
@@ -591,6 +593,17 @@ export class NewOrderComponent implements OnInit, OnDestroy {
       orderData = this.form.value;
     }
     this.dialog.open(PrintOrderInvoiceComponent, {
+      data: {
+        orderData: orderData
+      }
+    })
+  }
+
+  printAddress(orderData=null) {
+    if(!this._serv.notNull(orderData)) {
+      orderData = this.form.value;
+    }
+    this.dialog.open(PrintAddressReceiptComponent, {
       data: {
         orderData: orderData
       }
