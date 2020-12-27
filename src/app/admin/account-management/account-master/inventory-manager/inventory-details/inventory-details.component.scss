@@ -1,0 +1,17 @@
+.detailsBox{
+    p{
+        margin-bottom: 10px;
+        font-size: 1.6rem;
+        &.discriptionText{
+            font-size: 1.4rem;
+        }
+        .titleText{
+            font-weight: 500;
+            display: inline-block;
+            min-width: 150px;
+            font-size: 1.6rem;
+            color: #757575;
+        }
+        
+    }
+}

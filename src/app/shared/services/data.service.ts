@@ -69,7 +69,7 @@ export class DataService {
       const helper = new JwtHelperService();
       let decoded = helper.decodeToken(token);
       if(helper.isTokenExpired(token)){
-        this.router.navigateByUrl('/');
+        this.router.navigateByUrl('/guest/signin');
         return;
       }
       //user_id, roles
