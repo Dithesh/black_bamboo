@@ -1,7 +1,7 @@
 <div class="accont_header_wrapping pa-25">
     <h2 class="text-uppercase font-weight-500 mb-0 d-flex align-items-center justify-content-between">
         Masters
-        <div *ngIf="currentModule != 'settings'">
+        <div *ngIf="currentModule == 'inventory' || currentModule == 'ledger' || currentModule == 'unit'">
             <button type="button" (click)="onAddClick()" mat-raised-button color="primary">Add {{ currentModule | titlecase}}</button>
         </div>
     </h2>

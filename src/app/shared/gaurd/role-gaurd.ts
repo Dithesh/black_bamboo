@@ -11,6 +11,8 @@ export class RoleGaurd implements CanActivate {
     let module = route.data.module;
     let mode = route.data.mode;
     let permission = this._serv.getPermission(module, mode);
+    console.log(module, mode, permission);
+    
     if(permission) {
         return true;
     }

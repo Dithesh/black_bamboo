@@ -18,7 +18,8 @@ const routes: Routes = [
     children: [
       {
         path: "inventory",
-        component: InventoryManagerComponent
+        loadChildren: ()=> import('./inventory-manager/inventory-manager.module').then(mod => mod.InventoryManagerModule)
+        // component: InventoryManagerComponent
       },
       {
         path: "ledger",

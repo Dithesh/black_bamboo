@@ -1,0 +1,27 @@
+<form [formGroup]=form (submit)="confirmUpdate($event)">
+    <div class="dialog_header font-1_8 font-weight-600">Update Stock</div>
+    <div class="dilogBody py-20">
+        <mat-form-field appearance="fill" class="w-100 mb-5">
+            <mat-label>Transaction Type</mat-label>
+            <mat-select formControlName="transactionType" required>
+                <mat-option value="Damaged Item">Damaged Item</mat-option>
+                <mat-option value="Wastage">Wastage</mat-option>
+                <mat-option value="Used For Order">Used For Order</mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <mat-form-field  appearance="fill" class="w-100 mb-5">
+            <mat-label>Quantity</mat-label>
+            <input type="text" matInput formControlName="quantity" required>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" class="w-100">
+            <mat-label>Description</mat-label>
+            <textarea matInput rows="2" cdkTextareaAutosize formControlName="description" ></textarea>
+        </mat-form-field>
+    </div>
+    <div class="dilaog_footer text-primary">
+        <button mat-stroked-button color="primary" type="submit" class="mr-20">Update</button>
+        <button mat-flat-button color="warn" type="button" (click)="closeDilog()">Cancel</button>
+    </div>
+</form>

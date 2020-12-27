@@ -27,7 +27,8 @@ export class AccountMasterComponent implements OnInit, OnDestroy {
 
   onAddClick() {
     if(this.currentModule == 'inventory') {
-      this._global.inventoryAdd.next(true);
+      this.router.navigateByUrl('/admin/account-management/masters/inventory/update');
+      // this._global.inventoryAdd.next(true);
     } else if(this.currentModule == 'ledger') {
       this._global.ledgerAdd.next(true);
     } else if(this.currentModule == 'unit') {

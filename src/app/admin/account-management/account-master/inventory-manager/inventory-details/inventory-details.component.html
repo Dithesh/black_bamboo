@@ -1,0 +1,47 @@
+<div class="row">
+    <div class="col-xl-3 col-lg-4 col-md-5 col-12 border-right">
+        <div class="detailsBox">
+            <p><span class="titleText">Inventory  Name </span>: &nbsp; {{inventoryData?.itemName}}</p>
+            <p><span class="titleText">Company Name </span>: &nbsp; {{inventoryData?.company.companyName}}</p>
+            <p><span class="titleText">Available Stock </span>: &nbsp; {{inventoryData?.availableStock}}</p>
+            <p><span class="titleText">Price per  {{inventoryData?.unit.unitLabel}}</span>: &nbsp; {{inventoryData?.pricePerUnit}}</p>
+            <p><span class="titleText">Status </span><span [ngClass]="{'text-success': (inventoryData?.isActive), 'text-danger': !(inventoryData?.isActive)}">: &nbsp; {{(inventoryData?.isActive)?'Active':'Inactive'}}</span></p>
+            <p class="discriptionText"><span class="titleText">Description </span> <br> {{inventoryData?.description}}</p>
+        </div>
+        <div class="text-center">
+            <button mat-flat-button color="primary" class="mt-20 text-uppercase" (click)="updateStockDetails()">Update Inventory</button>
+        </div>
+    </div>
+    <div class="col-xl-9 col-lg-8 col-md-7 col-12">
+        <h3 class="title_h3">History</h3>
+        <div class="table-responsive">
+            <table class="table account_table">
+                <thead>
+                    <tr>
+                        <th class="ew-200">Date</th>
+                        <th>Description</th>
+                        <th class="ew-150">Type</th>
+                        <th class="ew-100">Qty</th>
+                        <th class="ew-150">Price per Unit</th>
+                        <th class="ew-100">Total</th>
+                        <!-- <th lass="ew-200">Updated By</th> -->
+                    </tr>
+                </thead>
+                <tbody>
+                    <ng-container *ngFor="let item of inventoryHistoryList?.data; let i = index;">
+                        <tr class="cursor-pointer no-outline">
+                            <td>{{item.transactionDate | datex:'DD-MM-YYY'}}</td>
+                            <td>{{item.description}}</td>
+                            <td>{{item.transactionType}}</td>
+                            <td>{{item.quantity}}</td>
+                            <td>{{item.pricePerUnit}}</td>
+                            <td>{{item.totalAmount}}</td>
+                            <!-- <td>{{item.}}</td> -->
+                        </tr>
+                    </ng-container>
+                </tbody>
+            </table>
+            <mat-paginator [pageSizeOptions]="[20]" [length]="inventoryHistoryList?.total" [pageSize]="20"></mat-paginator>
+        </div>
+    </div>
+</div>
