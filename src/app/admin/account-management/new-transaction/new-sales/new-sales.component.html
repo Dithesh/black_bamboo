@@ -99,7 +99,7 @@
                             </td>
                             <td class="ew-150">
                                 <ng-container *ngIf="_transact.editInventoryIndex != i else inventoryQuantityInput">
-                                    15 <span class="d-inline-block ml-5">KG</span>
+                                    {{ item.get('quantity').value }} <span class="d-inline-block ml-5">KG</span>
                                 </ng-container>
                                 <ng-template #inventoryQuantityInput>
                                     <mat-form-field class="field-pb-0 table_select ew-120">
@@ -347,6 +347,12 @@
         </div>
     </ng-container>
 
+    <div>
+        <mat-form-field appearance="fill" class="w-100">
+            <mat-label>Description</mat-label>
+            <textarea matInput placeholder="Enter Description text here" formControlName="description"></textarea>
+        </mat-form-field>
+    </div>
     <div class="footer_acc_section d-flex justify-content-end">
         <button type="button" mat-raised-button color="primary" [disabled]="_transact.form.invalid" (click)="_transact.saveFinaldata()">Save</button>
     </div>

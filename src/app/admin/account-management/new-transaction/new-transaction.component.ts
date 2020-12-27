@@ -13,12 +13,14 @@ export class NewTransactionComponent implements OnInit {
   branchList;
   filteredBranchList;
   userData;
+  transactionId;
   constructor(
     private route: ActivatedRoute,
     public _transact: NewTransactionService,
     private _serv: DataService
   ) { 
     this.userData = this._serv.getUserData();
+    
     this.route.data.subscribe(response => {
       this.companyList = response.companyList;
       if(this.companyList.length > 0) {
@@ -30,6 +32,7 @@ export class NewTransactionComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.transactionId = this.route.firstChild.snapshot.params.id;
   }
 
   getBranchList() {

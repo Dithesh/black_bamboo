@@ -21,6 +21,8 @@ export class SigninComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    localStorage.clear();
+    localStorage.removeItem('lock_token');
     this.form = this.fb.group({
       username: ['', [Validators.required]],
       password: ['', [Validators.required]]

@@ -82,7 +82,9 @@ export class DataService {
   }
 
   handleError({error}, defaultMsg='Could not able to process') {
-    if(error.hasOwnProperty('msg')) {
+    if(error.hasOwnProperty('errors')) {
+      this.showMessage(error.errors[Object.keys(error.errors)[0]][0], 'error');
+    }else if(error.hasOwnProperty('msg')) {
       this.showMessage(error.msg, 'error');
     }else {
       this.showMessage(defaultMsg, 'error');

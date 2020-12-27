@@ -50,8 +50,6 @@ export class HeaderComponent implements OnInit {
   }
 
   signOut() {
-    localStorage.clear();
-    localStorage.removeItem('lock_token');
     this.router.navigateByUrl('/guest/signin');
   }
 }

@@ -54,14 +54,14 @@
 		<div class="col ew-mn-100">
 			<mat-card class="dash_card p-0">
 				<div class="dash_header px-20 py-15 border-bottom border-gray">
-					<h3 class="mb-0 text-primary">Recents Transaction</h3>
+					<h3 class="mb-0 text-primary">Monthly Transaction</h3>
 				</div>
 				<div class="pt-30">
 					<div class="chart_outer" #containerRef>
 						<ngx-charts-line-chart [view]="[containerRef.offsetWidth, (containerRef.offsetWidth*700)/1600]"
 							[scheme]="colorScheme" [legend]="legend" [showXAxisLabel]="showXAxisLabel"
 							[showYAxisLabel]="showYAxisLabel" [xAxis]="xAxis" [yAxis]="yAxis" [xAxisLabel]="xAxisLabel"
-							[yAxisLabel]="yAxisLabel" [timeline]="timeline" [results]="multi" (select)="onSelect($event)"
+							[yAxisLabel]="yAxisLabel" [timeline]="timeline" [results]="dashStats" (select)="onSelect($event)"
 							(activate)="onActivate($event)" (deactivate)="onDeactivate($event)" class="w-100">
 						</ngx-charts-line-chart>
 						<div class="clearfix"></div>
@@ -74,19 +74,26 @@
 				<mat-card class="dash_card p-0 list_card">
 					<div class="list_header d-flex px-20 py-15 align-items-center border-bottom border-gray">
 						<h3 class="mb-0 text-primary">Recents Transaction</h3>
-						<button mat-stroked-button color="primary" class="ml-auto">View All</button>
+						<button mat-stroked-button color="primary" class="ml-auto" type="button" routerLink="/admin/account-management/transaction-history">View All</button>
 					</div>
 					<ul class="list-unstyled list_ul">
-						<li class="d-flex">
-							<div class="list_left flex-fill pr-15">
-								<h4 class="text-primary d-flex align-items-center mb-5"><span class="tag sales">Sales</span> #21231</h4>
-								<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquid accusamus</p>
-							</div>
-							<div class="list-right flex-auto">
-								<h4 class="text-primary mb-0">25/06/2020</h4>
-							</div>
-						</li>
-						<li class="d-flex">
+						<ng-container *ngFor="let item of transactionList;">
+							<li class="d-flex" (dblclick)="openTransaction(item)">
+								<div class="list_left flex-fill pr-15">
+									<h4 class="text-primary d-flex align-items-center mb-5">
+                                        <span *ngIf="item.transactionType == 'Sales'" class="tag sales">Sales</span>
+                                        <span *ngIf="item.transactionType == 'Purchase'" class="tag purchase">Purchase</span>
+                                        <span *ngIf="item.transactionType == 'Payment'" class="tag payment">Payment</span>
+                                        <span *ngIf="item.transactionType == 'Receipt'" class="tag recipt">Receipt</span>
+										#{{ item.transactionRefNumber}}</h4>
+									<p>{{ item.description?item.description:'No Description Added'}}</p>
+								</div>
+								<div class="list-right flex-auto">
+									<h4 class="text-primary mb-0">{{ item.transactionDate | datex: 'DD-MM-YYYY' }}</h4>
+								</div>
+							</li>
+						</ng-container>
+						<!-- <li class="d-flex">
 							<div class="list_left flex-fill pr-15">
 								<h4 class="text-primary d-flex align-items-center mb-5"><span class="tag purchase">Purchase</span> #21231</h4>
 								<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquid accusamus</p>
@@ -112,7 +119,7 @@
 							<div class="list-right flex-auto">
 								<h4 class="text-primary mb-0">25/06/2020</h4>
 							</div>
-						</li>
+						</li> -->
 					</ul>
 				</mat-card>
 			</div>

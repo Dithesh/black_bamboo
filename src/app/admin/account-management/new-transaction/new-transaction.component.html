@@ -1,6 +1,6 @@
 <div class="accont_header_wrapping pa-25 d-flex justify-content-between">
     <h2 class="text-uppercase font-weight-500 mb-0">
-        New Transaction
+        {{_transact.form.get('id').value ? 'Update Transaction' :'New Transaction'}}
     </h2>
     <div class="d-flex">
         <mat-form-field appearance="fill" class="mr-3"  [hidden]="userData?.value != 'Super Admin'">
