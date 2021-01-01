@@ -19,6 +19,7 @@ export class InventoryStockUpdateComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) private data:any
   ) { 
     this.form = this.fb.group({
+      managerId: [''],
       inventoryId:[''],
       transactionType:[''],
       quantity:[''],
@@ -26,6 +27,7 @@ export class InventoryStockUpdateComponent implements OnInit {
     })
     if(data.id){
       this.form.get('inventoryId').setValue(data.id);
+      this.form.get('managerId').setValue(data.managerId);
     }
   }
 
@@ -57,6 +59,7 @@ export class InventoryStockUpdateComponent implements OnInit {
       // this.savingUpdate=false;
       let message ='updated successfully';
       this._serv.showMessage(message, 'success');
+      this.dialogRef.close();
     }, ({error}) => {
       if(error.hasOwnProperty('msg')) {
         this._serv.showMessage(error.msg, 'error');

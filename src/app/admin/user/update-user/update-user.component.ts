@@ -64,7 +64,9 @@ export class UpdateUserComponent implements OnInit {
       this.getUserDetails();
     }
     this.loginUserDetail = this._serv.getUserData()
-    this.userRoles = this.userRoles.splice(this.userRoles.indexOf(this.loginUserDetail.roles)+1, this.userRoles.length);
+    if(this.loginUserDetail.roles != 'Super Admin'){
+      this.userRoles = this.userRoles.splice(this.userRoles.indexOf(this.loginUserDetail.roles)+1, this.userRoles.length);
+    }
   }
 
   ngAfterViewInit() {

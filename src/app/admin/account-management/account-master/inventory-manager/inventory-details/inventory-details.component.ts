@@ -56,7 +56,8 @@ export class InventoryDetailsComponent implements OnInit, AfterViewInit {
     let dialogRef = this.dialog.open(InventoryStockUpdateComponent, {
       autoFocus:false,
       data: {
-        id:this.inventoryId
+        id:this.inventoryId,
+        managerId: this.inventoryData.managerId
       }
     })
     dialogRef.afterClosed().subscribe(response => {

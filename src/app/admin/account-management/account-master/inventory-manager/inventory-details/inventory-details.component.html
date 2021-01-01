@@ -5,6 +5,7 @@
             <p><span class="titleText">Company Name </span>: &nbsp; {{inventoryData?.company.companyName}}</p>
             <p><span class="titleText">Available Stock </span>: &nbsp; {{inventoryData?.availableStock}}</p>
             <p><span class="titleText">Price per  {{inventoryData?.unit.unitLabel}}</span>: &nbsp; {{inventoryData?.pricePerUnit}}</p>
+            <p><span class="titleText">Last Purchase</span>: &nbsp; {{inventoryData?.lastPurchasedPrice}}</p>
             <p><span class="titleText">Status </span><span [ngClass]="{'text-success': (inventoryData?.isActive), 'text-danger': !(inventoryData?.isActive)}">: &nbsp; {{(inventoryData?.isActive)?'Active':'Inactive'}}</span></p>
             <p class="discriptionText"><span class="titleText">Description </span> <br> {{inventoryData?.description}}</p>
         </div>
