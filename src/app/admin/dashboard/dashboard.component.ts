@@ -19,7 +19,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.getData();
     this.timeoutController = setInterval(() => {
       this.getData();
-    },120000)
+    },80000)
   }
 
   getData() {

@@ -1,6 +1,6 @@
 <div class="row buttons_row">
     <div class="col-lg-3 col-md-6">
-        <div class="clickBox" routerLink="/admin/order/new">
+        <div class="clickBox" routerLink="/admin/order/update">
             Create New Order
         </div>
     </div>
@@ -43,6 +43,7 @@
                             <ng-container *ngIf="item.order_tables && item.order_tables.length > 0">
                                 <p class="mb-0">Tables : <ng-container *ngFor="let t of item.order_tables; let ti=index;let last=last">{{ t.table.tableId }} <ng-container *ngIf="!last">, </ng-container></ng-container> </p> 
                             </ng-container>
+                            <small class="text-success" *ngIf="item.readyCount > 0">{{ item.readyCount }} Item Ready<br/></small>
                             <small>Bearer: {{ item.bearer.firstName }} {{ item.bearer.lastName }}</small>
                         </div>
                         <div class="orderBox_footer">
