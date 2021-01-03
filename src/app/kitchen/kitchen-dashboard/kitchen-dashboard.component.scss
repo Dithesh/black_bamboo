@@ -1,21 +1,42 @@
 .main_title {
-    font-size: 2rem;
-    font-weight: 500;
     margin: 20px 0px;
-    letter-spacing: 0.2px;
     color: #1f1b1b;
+    min-height: 37px;
+    @media(max-width: 990px){
+        margin-top: 0px;
+    }
+    h3{
+        letter-spacing: 0.2px;
+        font-size: 2rem;
+        font-weight: 500;
+        margin-bottom: 0px;
+    }
 }
-
+.tabBox{
+    @media(max-width: 990px){
+        background-color: #fff;
+        border-radius: 15px;
+        box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        margin-bottom: 20px;
+    }
+}
 .item_wraper {
-    height: calc(100vh - 135px);
-    overflow-y: auto;
+    @media(min-width: 991px){
+        height: calc(100vh - 135px);
+        overflow-y: auto;
+    }
     & .kitchen_card {
         background-color: #fff;
         border-radius: 20px;
         box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
         padding: 20px;
         margin: 3px 5px 20px;
-    
+        @media(max-width: 990px){
+            box-shadow:none;
+            border: 1px solid #d8d8d8;
+            border-radius: 10px;
+        }
         & .order_id {
     
         }

@@ -1,6 +1,6 @@
 <app-kitchen-header></app-kitchen-header>
 <mat-sidenav-container (backdropClick)="_layout.isOpened=false" [class.menu-close]="!_layout.isOpened && _layout.menuMode == 'side'">
-    <mat-sidenav-content>
+    <mat-sidenav-content class="tab_min_height">
         <router-outlet></router-outlet>
     </mat-sidenav-content>
     <mat-sidenav position="end" [(opened)]="_layout.isOpened">
