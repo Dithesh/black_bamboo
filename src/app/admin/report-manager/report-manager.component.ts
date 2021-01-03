@@ -1,3 +1,4 @@
+import { merge } from 'rxjs';
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { DataService } from 'src/app/shared/services/data.service';
@@ -46,6 +47,18 @@ export class ReportManagerComponent implements OnInit {
       this.getAllBranches();
     }
   }
+  // ngAfterViewInit() {
+    
+  //   this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
+  //   merge(this.sort.sortChange, this.paginator.page, this.filterForm.get('searchString').valueChanges, this.filterForm.get('orderStatus').valueChanges, this.filterForm.get('endDate').valueChanges)
+  //     .subscribe(data => {
+  //       this.filterForm.patchValue({
+  //         orderCol: this.sort.active,
+  //         orderType: this.sort.direction
+  //       }, { emitEvent: false })
+  //       this.getOrderList(this.paginator.pageIndex + 1)
+  //     });
+  // }
 
 
   getAllBranches() {
