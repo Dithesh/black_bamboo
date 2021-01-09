@@ -19,7 +19,7 @@ export class PrintOrderInvoiceComponent implements OnInit {
     setTimeout(() =>{
       window.print();}, 500)
   }
-
+  
   printPage(){
     window.print();
   }

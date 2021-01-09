@@ -214,6 +214,7 @@
                                                     <div class="d-flex mt-15">
                                                         <p class="text-success px-2 mb-0">Served: <b>{{ item.get('servedItems').value }}</b></p>
                                                         <p class="text-accent px-2 mb-0">Kitchen: <b>{{ item.get('quantity').value - item.get('servedItems').value - item.get('productionRejectedQuantity').value}}</b></p>
+                                                        <p class="text-primary px-2 mb-0">Ready: <b>{{ item.get('productionReadyQuantity').value - item.get('servedItems').value}}</b></p>
                                                         <p class="text-danger pl-2 mb-0">Rejected: <b>{{ item.get('productionRejectedQuantity').value }}</b></p>
                                                     </div>
                                                 </div>
