@@ -72,6 +72,7 @@ html, body {
     font-weight: 400;
     color: #3a3a3a;
 }
+@include scroll-bar(5px, #f2f2f2, $color-primary, 20px) 
 .mat-elevation-z4{
     box-shadow: 0px 3px 10px #CCCEE9;
 }
@@ -104,11 +105,19 @@ button:focus {
 .text-warning{
     color: $color-warning !important;
 }
+.border-radius-5{
+    border-radius: 5px;
+}
 .transition{
     -webkit-transition: .3s ease-in-out;
     -ms-transition: .3s ease-in-out;
     -moz-transition: .3s ease-in-out;
     transition: .3s ease-in-out;
+}
+.no_outline{
+    &:focus{
+        outline: none;
+    }
 }
 .title_h3{
     font-size: 2.4rem !important;
@@ -979,6 +988,7 @@ label.mat-checkbox-layout {
     p{
         margin-bottom: 0px;
         font-weight: 500;
+        font-size: 1.2rem;
         span{
             font-weight: 400;
             display: inline-block;
@@ -1656,8 +1666,7 @@ label.mat-checkbox-layout {
 // New order design end
 
     
-.only-print,
-.only-print * {
+.only-print{
     display: none !important;
 }
 @media print { 
@@ -1694,8 +1703,7 @@ label.mat-checkbox-layout {
         display: none !important;
     }
 
-    .only-print,
-    .only-print * {
-        display: block !important;
+    .only-print{
+        display:block !important;
     }
 }

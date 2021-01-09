@@ -417,6 +417,10 @@ export class NewOrderComponent implements OnInit, OnDestroy {
     this._serv.endpoint = "order-manager/order/"+this.orderId;
     this._serv.get().subscribe((response: any) => {
       this.orderData=response;
+
+      // console.log(response.order_items,'order data');
+      
+
       this.form.patchValue({
         id: response.id,
         branch_id: response.branch_id,
@@ -447,6 +451,7 @@ export class NewOrderComponent implements OnInit, OnDestroy {
       this.items.controls = [];
       this.items.reset();
       response.order_items.forEach(item => {
+        
         let orderItem = this.addOrderItem();
         if(this.blockForms == true)orderItem.disable();
         orderItem.patchValue({
@@ -465,6 +470,8 @@ export class NewOrderComponent implements OnInit, OnDestroy {
           featuredImage: item.product.featuredImage,
           deletedFlag: false
         });
+        // console.log('pussing');
+        
         this.items.push(orderItem);
         this.getOrderItemTotal(orderItem);
       })
@@ -590,7 +597,7 @@ export class NewOrderComponent implements OnInit, OnDestroy {
 
   printOrder(orderData=null) {
     if(!this._serv.notNull(orderData)) {
-      orderData = this.form.value;
+      orderData = this.form.getRawValue();
     }
     this.dialog.open(PrintOrderInvoiceComponent, {
       data: {
@@ -601,8 +608,10 @@ export class NewOrderComponent implements OnInit, OnDestroy {
 
   printAddress(orderData=null) {
     if(!this._serv.notNull(orderData)) {
-      orderData = this.form.value;
+      orderData = this.form.getRawValue();
     }
+    // console.log(this.form.value, ' passign data');
+    
     this.dialog.open(PrintAddressReceiptComponent, {
       data: {
         orderData: orderData

@@ -6,7 +6,11 @@
     border-radius: 5px;
     overflow: hidden;
 }
-
+.tab_min_height{
+    @media(max-width: 990px){
+        min-height: calc(100vh - 65px);
+    }
+}
 .item_card {
     display: flex;
     margin-bottom: 20px;

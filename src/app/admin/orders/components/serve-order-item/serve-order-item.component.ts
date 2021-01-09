@@ -26,7 +26,7 @@ export class ServeOrderItemComponent implements OnInit {
   handleNumberControl(formControl, type) {
     let value = formControl.get('servedItems').value;
     if(isNaN(value) || value == null || value == undefined || value == "")value=0;
-    if(type == 'next' && value < parseInt(formControl.get('quantity').value)) {
+    if(type == 'next' && value < parseInt(formControl.get('productionReadyQuantity').value)) {
       value++;
     }else if(type == 'prev' && value > 0) {
       value--;
@@ -35,7 +35,7 @@ export class ServeOrderItemComponent implements OnInit {
   }
 
   getpendingItems(item) {
-    return  parseInt(item.get('quantity').value) - parseInt(item.get('servedItems').value)
+    return  parseInt(item.get('productionReadyQuantity').value) - parseInt(item.get('servedItems').value)
   }
 
   closeItem() {
