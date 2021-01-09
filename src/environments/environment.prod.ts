@@ -1,6 +1,6 @@
 export const environment = {
   production: true,
-  apiUrl: "http://hosting.goresto.in/api/",
-  domain: "http://hosting.goresto.in",
-  imgUrl: "http://hosting.goresto.in/public",
+  apiUrl: "https://connect.runrestro.com/api/",
+  domain: "https://connect.runrestro.com",
+  imgUrl: "https://connect.runrestro.com",
 };
