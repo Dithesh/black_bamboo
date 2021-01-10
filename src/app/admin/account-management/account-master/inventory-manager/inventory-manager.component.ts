@@ -32,6 +32,8 @@ export class InventoryManagerComponent implements OnInit {
   ) { 
     this.userData = this._serv.getUserData();
     this.route.parent.parent.data.subscribe(response => {
+      console.log(response,'data');
+      
       this.companyList = response.companyList;
       if(this.companyList.length > 0)
         this.selectedCompany.setValue(this.companyList[0].id)
@@ -52,10 +54,7 @@ export class InventoryManagerComponent implements OnInit {
     this.addInventoryActive=false;
     this._serv.endpoint = "account-manager/inventory?companyId="+this.selectedCompany.value;
     this._serv.get().subscribe((response:any[]) => {
-      this.inventoryList = response;
-      if(this.inventoryList.length == 0) {
-        this.addInventoryActive=true;
-      }      
+      this.inventoryList = response;     
       // this.addNewInventory();
     })
   }

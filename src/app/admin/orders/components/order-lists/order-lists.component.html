@@ -71,6 +71,11 @@
                         </td>
                     </tr>
                 </ng-container>
+                <tr *ngIf="dataSource?.total == 0">
+                    <td colspan="7">
+                        No data to display
+                    </td>
+                </tr>
             </tbody>
         </table>
         <!-- <mat-paginator  [pageSizeOptions]="[10]" [length]="dataSource?.total" [pageSize]="10" (page)="getAllProducts($event.pageIndex+1)"></mat-paginator> -->

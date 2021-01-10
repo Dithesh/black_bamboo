@@ -41,7 +41,7 @@ export class UpdateAttandanceComponent implements OnInit {
     this._serv.post(this.form.value).subscribe(response => {
       this._serv.showMessage('Attendance updated successfully.', 'success');
       this.dialogRef.close();
-    }, ({error}) => {
+    }, (error) => {
       this._serv.handleError(error);
     })
   }

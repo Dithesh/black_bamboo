@@ -93,7 +93,7 @@ export class AddTableManagerComponent implements OnInit {
       tableId: [''],
       description: [''],
       noOfChair: [''],
-      isActive: [''],
+      isActive: [true],
       branch_id: [''],
       deletedFlag: [false]
     });

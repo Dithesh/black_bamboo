@@ -56,6 +56,11 @@
                         </td>
                     </tr>
                 </ng-container>
+                    <tr *ngIf="inventoryList.length <= 0">
+                        <td colspan="7">
+                            No data to display
+                        </td>
+                    </tr>
             </tbody>
         </table>
     </div>
