@@ -6,7 +6,7 @@ export const environment = {
   production: false,
   apiUrl: "http://runrestro.in/api/",
   domain: "http://runrestro.in",
-  imgUrl: "http://runrestro.in"
+  imgUrl: "http://runrestro.in/public"
   // apiUrl: "http://192.168.1.222:8000/api/",
   // domain: "http://192.168.1.222:8000",
   // imgUrl: "http://192.168.1.222:8000",

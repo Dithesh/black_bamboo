@@ -3,6 +3,7 @@ import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { DataService } from 'src/app/shared/services/data.service';
 import * as XLSX from 'xlsx'; 
+import * as math from 'exact-math';
 import * as moment from 'moment';
 
 @Component({
@@ -18,6 +19,7 @@ export class ReportManagerComponent implements OnInit {
   orderTypeList: any[];
   fileName= 'ExcelSheet.xlsx';
   dataSource: any;
+  totalOrderAmount = 0;
   @ViewChild('reportTable') reportTable:any;
   branchDetail: any;
   userData: any;
@@ -101,13 +103,19 @@ export class ReportManagerComponent implements OnInit {
                             + "&orderCol="+filterValue.orderCol
     this._serv.get().subscribe(response => {
       this.dataSource = response as any;
+      this.getTotal();
     })
+    
   }
-
+  getTotal(){
+    this.dataSource.forEach(element => {
+      this.totalOrderAmount = math.add(this.totalOrderAmount, parseInt(element.orderAmount));
+    });
+  }
   exportToExcel() {
-    this.displayedColumns = ['id', 'orderAmount', 'orderStatus', 'created_at'];
-    setTimeout(() => {
-      const ws: XLSX.WorkSheet =XLSX.utils.table_to_sheet(this.reportTable._elementRef.nativeElement)
+    // this.displayedColumns = ['id', 'orderAmount', 'orderStatus', 'created_at'];
+    // setTimeout(() => {
+      const ws: XLSX.WorkSheet =XLSX.utils.table_to_sheet(this.reportTable.nativeElement)
  
       /* generate workbook and add the worksheet */
       const wb: XLSX.WorkBook = XLSX.utils.book_new();
@@ -115,7 +123,7 @@ export class ReportManagerComponent implements OnInit {
  
       /* save to file */
       XLSX.writeFile(wb, this.fileName);
-      this.displayedColumns = ['action', 'id', 'orderAmount', 'orderStatus', 'created_at'];
-    }, 1000)
+      // this.displayedColumns = ['action', 'id', 'orderAmount', 'orderStatus', 'created_at'];
+    // }, 1000)
   }
 }

@@ -360,7 +360,7 @@
                             <div class="saveBtn_box col-auto">
                                 <button mat-flat-button color="primary" class="ew-150 rounded-0" 
                                 *ngIf="form.get('orderStatus').value != 'completed' && form.get('orderStatus').value != 'cancelled' && !blockForms"  
-                                (click)="saveOrder('confirm')"><mat-icon>save</mat-icon>  Save</button>
+                                (click)="saveOrder('confirm')" [disabled]="orderProcessing"><mat-icon>save</mat-icon>  Save</button>
                             </div>
                             <div class="printBtn_box col-auto" *ngIf="orderId">
                                 <button mat-flat-button color="accent" class="ew-140 rounded-0" (click)="printOrder()"><mat-icon>print</mat-icon>  Print</button>

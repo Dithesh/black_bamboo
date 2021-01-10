@@ -28,6 +28,7 @@ export class NewOrderComponent implements OnInit, OnDestroy {
   @ViewChild(MatSort, {static: true}) sort: MatSort;
   step = 1;
   rating;
+  orderProcessing = false;
   selectedCategory='all';
   
   // customOptions: OwlOptions = {
@@ -347,6 +348,7 @@ export class NewOrderComponent implements OnInit, OnDestroy {
   serveOrderItem() {
     let dialogRef = this.dialog.open(ServeOrderItemComponent, {
       width: '500px',
+      autoFocus:false,
       data: {
         form: this.items
       }
@@ -577,10 +579,12 @@ export class NewOrderComponent implements OnInit, OnDestroy {
   }
 
   updateOrder(orderData) {
+    if(this.orderProcessing) return;
+    this.orderProcessing = true;
     this._serv.endpoint="order-manager/order";
     this._serv.post(orderData).subscribe((response:any) => {
       this._serv.showMessage("Order saved successfully", 'success');
-
+      this.orderProcessing = false;
       if(orderData.orderStatus == "completed") {
         this.printOrder(orderData);
         this.orderId = response.id;
@@ -589,9 +593,8 @@ export class NewOrderComponent implements OnInit, OnDestroy {
         this.router.navigateByUrl('/admin/order');
       }
     }, ({error}) => {
-      console.log(error);
-      
       this._serv.showMessage(error['msg'], 'error');
+      this.orderProcessing = false;
     })
   }
 

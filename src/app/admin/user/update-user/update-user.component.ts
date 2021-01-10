@@ -17,6 +17,7 @@ export class UpdateUserComponent implements OnInit {
   dataSource;
   sidemenu=false;
   hide = true;
+  processingAction=false;
   form:FormGroup;
   companyList: any[] = [];
   userId;
@@ -109,18 +110,23 @@ export class UpdateUserComponent implements OnInit {
   }
 
   saveUser(event=null) {
+    if(this.processingAction) return
+    
     if(event!=null)event.preventDefault();
     this.form.markAllAsTouched();
     console.log(this.form);
     if(this.form.invalid)return;
+    this.processingAction = true;
     let formValue = this.form.value;
-    console.log(formValue);
+    // console.log(formValue);
     this._serv.endpoint="order-manager/user";
     this._serv.post(formValue).subscribe(response => {
       this._serv.showMessage("User updated successfully", 'success')
       this.router.navigateByUrl('/admin/user/list')
+      this.processingAction = false;
     }, ({error}) => {
       this._serv.showMessage(error['msg'], 'error');
+      this.processingAction = false;
     })
   }
 

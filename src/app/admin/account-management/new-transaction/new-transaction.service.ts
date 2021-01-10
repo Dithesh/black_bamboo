@@ -31,6 +31,7 @@ export class NewTransactionService {
     taxAndExpenseExclude = [];
     transactionId;
     transactionData;
+    processingAction = false;
     constructor(
         private fb: FormBuilder,
         private _serv: DataService,
@@ -411,6 +412,7 @@ export class NewTransactionService {
     }
 
     saveFinaldata() {
+        if(this.processingAction) return;
         this.validateItemsArray();
         this.validateAccountsArray();
         this.form.markAllAsTouched();
@@ -428,13 +430,16 @@ export class NewTransactionService {
         })
         
         formData.grandTotal = this.totalHandler.transactionGrandTotal;
+        this.processingAction = true;
         this._serv.endpoint="account-manager/transaction";
         this._serv.post(formData).subscribe(response => {
             this._serv.showMessage('Entry updated successfully', 'success');
             this.router.navigateByUrl('/admin/account-management/transaction-history');
+            this.processingAction= false;
         }, error => {
             let msg = 'Can not able to create '+ this.transactionType + ' entry';
             this._serv.handleError(error, msg);
+            this.processingAction = false;
         })
     }
 }
