@@ -555,10 +555,10 @@ export class NewOrderComponent implements OnInit, OnDestroy {
       return;
     }else if(type == "complete") {
       orderData.orderStatus = "completed";
-      message = "Data will be freezed after completion. Are you sure want to procede?";
+      message = "Data will be freezed after completion. Are you sure want to proceed?";
     }else if(type == 'cancel') {
       orderData.orderStatus = "cancelled";
-      message = "Data will be freezed after cancelling. Are you sure want to procede?";
+      message = "Data will be freezed after cancelling. Are you sure want to proceed?";
     }
 
     this.takeConfirmation(orderData, message);

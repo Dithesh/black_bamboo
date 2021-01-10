@@ -92,7 +92,7 @@ export class AddTableManagerComponent implements OnInit {
       id: [''],
       tableId: [''],
       description: [''],
-      noOfChair: [''],
+      noOfChair: [4],
       isActive: [true],
       branch_id: [''],
       deletedFlag: [false]
@@ -119,7 +119,17 @@ export class AddTableManagerComponent implements OnInit {
     this.dataSource.next(this.tables.controls);
   }
 
-  
+  handelClickChairQty(item, type){
+    let currentVal = item.get('noOfChair').value;
+    if(type == 'next') {
+      currentVal++;
+      item.get('noOfChair').setValue(currentVal);
+    }else if(type == 'prev' && currentVal >= 2) {
+      currentVal--;
+      item.get('noOfChair').setValue(currentVal);
+    }
+    
+  }
 
   saveTableManager(event=null) {
     if(event!=null)event.preventDefault();

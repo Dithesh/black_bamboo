@@ -50,11 +50,11 @@
                 <td mat-cell *matCellDef="let element; let i=index;" [formGroupName]="i">
                     <div class="input-group mb-0 number_input mr-20">
                         <div class="input-group-prepend">
-                          <button class="btn btn-outline-secondary" type="button" id="button-addon1">-</button>
+                          <button class="btn btn-outline-secondary" type="button" (click)="handelClickChairQty(element, 'prev')">-</button>
                         </div>
                         <input type="text" class="form-control" formControlName="noOfChair">
                         <div class="input-group-append">
-                            <button class="btn btn-outline-secondary" type="button" id="button-addon1">+</button>
+                            <button class="btn btn-outline-secondary" type="button" (click)="handelClickChairQty(element,'next')">+</button>
                           </div>
                     </div>
                 </td>
