@@ -4,7 +4,7 @@
     <div class="col-md-auto col-12 px-0" [class.pointer-none]="blockForms">
         <div class="left_bar">
             <div class="left_header">
-                <h2>Order Id: {{orderId ? orderId : '--'}}</h2>
+                <h2>#{{orderId ? orderId : '--'}}</h2>
                 <div class="order_timeBox ml-auto">
                     <p><span>From:</span> {{orderData?.bearer.firstName}} {{orderData?.bearer.lastName}} <span class="ml-15">At: </span> {{orderData?.created_at | datex:'DD-MM-YYYY hh:mm a'}}</p>
                 </div>
@@ -281,7 +281,7 @@
                                 </div>
                             </div>
                         </mat-tab>
-                        <mat-tab>
+                        <mat-tab *ngIf="items['controls'].length > 0">
                             <ng-template mat-tab-label>
                                 <mat-icon class="example-tab-icon">receipt</mat-icon>
                                 <p class="mb-0 col-12 px-0"> Bill</p>

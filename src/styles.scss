@@ -1417,7 +1417,8 @@ label.mat-checkbox-layout {
         padding: 15px;
         h2{
             margin-bottom: 5px;
-            font-size: 20px;
+            font-size: 18px;
+            color: $color-primary;
         }
     }
     .left_title{
@@ -1666,9 +1667,9 @@ label.mat-checkbox-layout {
 // New order design end
 
     
-// .only-print{
-//     display: none !important;
-// }
+.only-print{
+    display: none !important;
+}
 @media print { 
     
     html, body { 
@@ -1680,7 +1681,6 @@ label.mat-checkbox-layout {
             padding: 0!important;
         }
     }
-    
     app-root {
         display: none !important;
     }
@@ -1696,7 +1696,6 @@ label.mat-checkbox-layout {
     .mat-dialog-container {
         box-shadow: none !important;
         padding: 0 !important;
-        width: 100%;
     }
 
     
