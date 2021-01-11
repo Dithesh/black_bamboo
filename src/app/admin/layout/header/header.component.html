@@ -24,7 +24,7 @@
                     </mat-menu>
                 </li> -->
                 <li class="mr-20">
-                    <button mat-icon-button class="syncBtn">
+                    <button *ngIf="isOffline" type="button" mat-icon-button class="syncBtn"  [class.on]="syncOn" (click)="synchronizeData()">
                         <mat-icon>autorenew</mat-icon>
                     </button>
                 </li>
