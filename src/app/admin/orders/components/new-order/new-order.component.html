@@ -61,7 +61,7 @@
                             <mat-icon matSuffix>search</mat-icon>
                         </mat-form-field>
                     </div>
-                    <ul class="list-unstyled items_list_ul mb-0">
+                    <ul class="list-unstyled items_list_ul mb-0 scroll_bar">
                         <ng-container *ngFor="let cat of filteredProductList | async; let ci = index;">
                             <ng-container *ngIf="cat.products.length > 0 && (selectedCategory == cat.id || selectedCategory == 'all')" >
                                 <li class="itemTitle">{{ cat.categoryName }}</li>

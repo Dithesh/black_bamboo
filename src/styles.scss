@@ -156,6 +156,81 @@ h3.page_title {
         margin-bottom: 20px;
     }
 }
+// sync btn
+.syncBtn{
+    animation-name: rotateSlow;
+    animation-fill-mode: forwards;
+    animation-iteration-count: infinite;
+    transform: rotate(0deg);
+    animation-duration: 30s;
+    &.on{
+        animation-name: rotate;
+        animation-fill-mode: forwards;
+        animation-iteration-count: infinite;
+        animation-duration: 0.9s;
+        animation-delay: 0s;
+    }
+}
+
+@-webkit-keyframes rotateSlow {
+    0%   { transform: rotate(0deg); }
+    10%   { transform: rotate(90deg); }
+    20%   { transform: rotate(90deg); }
+    25%   { transform: rotate(90deg); }
+    35%   { transform: rotate(180deg); }
+    40%   { transform: rotate(180deg); }
+    50%   { transform: rotate(180deg); }
+    60%   { transform: rotate(270deg); }
+    70%   { transform: rotate(270deg); }
+    75%   { transform: rotate(270deg); }
+    85%   { transform: rotate(360deg); }
+    90%   { transform: rotate(360deg); }
+    100% { transform: rotate(360deg); }
+  }
+  @-moz-keyframes rotateSlow {
+    0%   { transform: rotate(0deg); }
+    10%   { transform: rotate(90deg); }
+    20%   { transform: rotate(90deg); }
+    25%   { transform: rotate(90deg); }
+    35%   { transform: rotate(180deg); }
+    40%   { transform: rotate(180deg); }
+    50%   { transform: rotate(180deg); }
+    60%   { transform: rotate(270deg); }
+    70%   { transform: rotate(270deg); }
+    75%   { transform: rotate(270deg); }
+    85%   { transform: rotate(360deg); }
+    90%   { transform: rotate(360deg); }
+    100% { transform: rotate(360deg); }
+  }
+  @keyframes rotateSlow {
+    0%   { transform: rotate(0deg); }
+    10%   { transform: rotate(90deg); }
+    20%   { transform: rotate(90deg); }
+    25%   { transform: rotate(90deg); }
+    35%   { transform: rotate(180deg); }
+    40%   { transform: rotate(180deg); }
+    50%   { transform: rotate(180deg); }
+    60%   { transform: rotate(270deg); }
+    70%   { transform: rotate(270deg); }
+    75%   { transform: rotate(270deg); }
+    85%   { transform: rotate(360deg); }
+    90%   { transform: rotate(360deg); }
+    100% { transform: rotate(360deg); }
+  }
+
+  @-webkit-keyframes rotate {
+    0%   { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+  @-moz-keyframes rotate {
+    0%   { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+  @keyframes rotate {
+    0%   { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+
 
 // inner page css
 .page_header{
@@ -1510,11 +1585,12 @@ label.mat-checkbox-layout {
         }
     }
     .items_list_ul{
-        max-height: calc(100vh - 245px);
+        max-height: calc(100vh - 425px);
         overflow-y: auto;
         overflow-x: hidden;
         margin: 0px -15px;
         padding: 0px 15px;
+        min-height: 373px;
         // margin: 0px -15px;
         li{
             &.itemTitle{

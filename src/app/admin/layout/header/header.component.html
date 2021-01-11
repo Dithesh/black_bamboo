@@ -23,6 +23,11 @@
                         </ul>
                     </mat-menu>
                 </li> -->
+                <li class="mr-20">
+                    <button mat-icon-button class="syncBtn">
+                        <mat-icon>autorenew</mat-icon>
+                    </button>
+                </li>
                 <li>
                     <div class="profile_box" [matMenuTriggerFor]="profileMenu" [ngStyle]="{'background-image': imgSrc}"></div>
                     <mat-menu #profileMenu="matMenu" class="notification_menu profile_menu">
