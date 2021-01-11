@@ -437,9 +437,9 @@ export class NewTransactionService {
             this.router.navigateByUrl('/admin/account-management/transaction-history');
             this.processingAction= false;
         }, error => {
+            this.processingAction = false;
             let msg = 'Can not able to create '+ this.transactionType + ' entry';
             this._serv.handleError(error, msg);
-            this.processingAction = false;
         })
     }
 }

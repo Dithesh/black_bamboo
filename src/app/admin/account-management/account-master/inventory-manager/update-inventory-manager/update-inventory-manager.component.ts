@@ -73,7 +73,11 @@ export class UpdateInventoryManagerComponent implements OnInit {
         this.router.navigateByUrl('/admin/account-management/masters/inventory/update/'+response.id);
       }
       this._serv.showMessage(message, 'success');
+      this.form.get('itemName').setValue('');
+      this.form.get('pricePerUnit').setValue('');
+      this.form.get('description').setValue('');
     }, ({error}) => {
+      this.savingUpdate=false;
       if(error.hasOwnProperty('msg')) {
         this._serv.showMessage(error.msg, 'error');
       }else {

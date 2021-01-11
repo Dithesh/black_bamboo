@@ -1510,6 +1510,11 @@ label.mat-checkbox-layout {
         }
     }
     .items_list_ul{
+        max-height: calc(100vh - 245px);
+        overflow-y: auto;
+        overflow-x: hidden;
+        margin: 0px -15px;
+        padding: 0px 15px;
         // margin: 0px -15px;
         li{
             &.itemTitle{
