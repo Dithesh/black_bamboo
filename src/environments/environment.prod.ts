@@ -1,9 +1,9 @@
 export const environment = {
   production: true,
-  apiUrl: "https://connect.runrestro.com/api/",
-  domain: "https://connect.runrestro.com",
-  imgUrl: "https://connect.runrestro.com",
+  apiUrl: "http://192.168.43.144:8000/api/",
+  domain: "http://192.168.43.144:8000",
+  imgUrl: "http://192.168.43.144:8000",
 
   
-  isOffline: false
+  isOffline: true
 };

@@ -37,7 +37,7 @@
                                     <ng-container *ngIf="orderItem.acceptPendingQuantity > 0">
                                         <div class="item_list">
                                             <!-- <div class="item_name"> -->
-                                                <mat-checkbox class="item_name mb-0" [(ngModel)]="orderItem.isAcceptSelected" (change)="checkSelectAll(item, 'accept')"><span [class.text-accent]="orderItem.isParcel">{{ orderItem.product.productName }}</span></mat-checkbox>
+                                                <mat-checkbox class="item_name mb-0" [(ngModel)]="orderItem.isAcceptSelected" (change)="checkSelectAll(item, 'accept')"><span [class.text-accent]="orderItem.isParcel">{{ orderItem.product.productName }} <ng-container *ngIf="orderItem.advancedPriceTitle">({{ orderItem.advancedPriceTitle }})</ng-container></span></mat-checkbox>
                                             <!-- </div> -->
                                             <div class="quantity">{{ orderItem.acceptPendingQuantity }}</div>
                                             <div class="action_buttons">
@@ -104,7 +104,7 @@
                                     <ng-container *ngIf="orderItem.readyPendingQuantity > 0">
                                         <div class="item_list">
                                             <!-- <div class="item_name"> -->
-                                                <mat-checkbox class="item_name mb-0" [(ngModel)]="orderItem.isReadySelected" (change)="checkSelectAll(item, 'ready')"><span [class.text-accent]="orderItem.isParcel">{{ orderItem.product.productName }}</span></mat-checkbox>
+                                                <mat-checkbox class="item_name mb-0" [(ngModel)]="orderItem.isReadySelected" (change)="checkSelectAll(item, 'ready')"><span [class.text-accent]="orderItem.isParcel">{{ orderItem.product.productName }} <ng-container *ngIf="orderItem.advancedPriceTitle">({{ orderItem.advancedPriceTitle }})</ng-container></span></mat-checkbox>
                                             <!-- </div> -->
                                             <div class="quantity">{{ orderItem.readyPendingQuantity }}</div>
                                             <div class="action_buttons">
