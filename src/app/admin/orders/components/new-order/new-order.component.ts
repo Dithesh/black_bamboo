@@ -162,7 +162,7 @@ export class NewOrderComponent implements OnInit, OnDestroy {
           item.isParcel = true;
         }
         this.items.controls.forEach((control:FormGroup) => {
-            if(!control.get('deletedFlag').value && control.get('productId').value == item.id && control.get('isParcel').value == item.isParcel) {
+            if(!control.get('deletedFlag').value && control.get('productId').value == item.id && control.get('isParcel').value == item.isParcel && control.get('advancedPriceId').value == item.advancedPriceId) {
                 quantity+=parseInt(control.get('quantity').value)
                 form = control;
                 isNew=false;
@@ -174,6 +174,8 @@ export class NewOrderComponent implements OnInit, OnDestroy {
             featuredImage: item.featuredImage,
             isParcel: item.isParcel,
             price: item.price,
+            advancedPriceId: item.advancedPriceId,
+            advancedPriceTitle: item.advancedPriceTitle,
             quantity: quantity,
             packagingCharges: (item.isParcel)?item.packagingCharges:'0'
         })
@@ -196,6 +198,8 @@ export class NewOrderComponent implements OnInit, OnDestroy {
       productName: [''],
       isParcel: [''],
       price: ['0.00'],
+      advancedPriceId: [''],
+      advancedPriceTitle: [''],
       quantity: ['1'],
       servedItems: ['0'],
       productionAcceptedQuantity: ['0'],
@@ -217,10 +221,20 @@ export class NewOrderComponent implements OnInit, OnDestroy {
     this._serv.get().subscribe(response => {
       this.productList = (response as any[]).map(item => {
         item.products = item.products.map(product => {
+          let advancedPriceId = "", advancedPriceTitle="", price = product.price;
+
+          if(product.isAdvancedPricing && product.advanced_pricing.length > 0) {
+            advancedPriceId = product.advanced_pricing[0].id;
+            advancedPriceTitle = product.advanced_pricing[0].title;
+            price = product.advanced_pricing[0].price;
+          }
           return {
             ...product,
             isParcel: false,
-            quantity: 1
+            quantity: 1,
+            price: price,
+            advancedPriceId: advancedPriceId,
+            advancedPriceTitle: advancedPriceTitle,
           }
         })
         return item;
@@ -236,6 +250,14 @@ export class NewOrderComponent implements OnInit, OnDestroy {
     })
   }
 
+  handleProductPriceChange(item) {
+    item.advanced_pricing.forEach(elem => {
+      if(elem.id == item.advancedPriceId) {
+        item.price = elem.price;
+        item.advancedPriceTitle = elem.title;
+      }
+    })
+  }
   // addNewOrderItem() {
   //   if(this.blockForms)return;
   //   let dialogRef = this.dialog.open(AddOrderItemComponent, {
@@ -367,35 +389,37 @@ export class NewOrderComponent implements OnInit, OnDestroy {
     this._serv.get().subscribe(response => {
       this.tableList = response as any[];
       this.tables.controls=[];
-      this.tableList.forEach(t => {
-        let chairs = [];
-        let selectedChairs = t.selectedChairs.split(",").filter(x => x!="");
-        
-        let orderSelectedChairs = t.orderSelectedChairs.split(",").filter(x => x!="");
-        t.chairs.forEach(elem => {
-          if(elem != "") {
-            let permission = "full";
-            if(selectedChairs.indexOf(elem.toString()) >= 0) permission="blocked";
-            if(orderSelectedChairs.indexOf(elem.toString()) >= 0) permission="full";
-            let group = this.fb.group( {
-              chairId: [elem],
-              permission: [permission],
-              isSelected: [(permission=='full' && orderSelectedChairs.indexOf(elem.toString()) < 0)?false:true]
-            });
-            if(this.blockForms)group.disable();
-            chairs.push(group)
-          }
+      if(Array.isArray(this.tableList)) {
+        this.tableList.forEach(t => {
+          let chairs = [];
+          let selectedChairs = t.selectedChairs.split(",").filter(x => x!="");
+          
+          let orderSelectedChairs = t.orderSelectedChairs.split(",").filter(x => x!="");
+          t.chairs.forEach(elem => {
+            if(elem != "") {
+              let permission = "full";
+              if(selectedChairs.indexOf(elem.toString()) >= 0) permission="blocked";
+              if(orderSelectedChairs.indexOf(elem.toString()) >= 0) permission="full";
+              let group = this.fb.group( {
+                chairId: [elem],
+                permission: [permission],
+                isSelected: [(permission=='full' && orderSelectedChairs.indexOf(elem.toString()) < 0)?false:true]
+              });
+              if(this.blockForms)group.disable();
+              chairs.push(group)
+            }
+          })
+  
+          this.tables.push(this.fb.group({
+            id: [t.id],
+            tableId: [t.tableId],
+            noOfChair: [t.noOfChair],
+            isReserved: [t.isReserved],
+            chairs: this.fb.array(chairs)
+          }))
+          
         })
-
-        this.tables.push(this.fb.group({
-          id: [t.id],
-          tableId: [t.tableId],
-          noOfChair: [t.noOfChair],
-          isReserved: [t.isReserved],
-          chairs: this.fb.array(chairs)
-        }))
-        
-      })
+      }
     })
   }
 
@@ -462,6 +486,8 @@ export class NewOrderComponent implements OnInit, OnDestroy {
           productName: item.product.productName,
           isParcel: item.isParcel,
           price: item.price,
+          advancedPriceId: item.advancedPriceId,
+          advancedPriceTitle: item.advancedPriceTitle,
           quantity: item.quantity,
           servedItems: item.servedQuantity,
           productionAcceptedQuantity: item.productionAcceptedQuantity,

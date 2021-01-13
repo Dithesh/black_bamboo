@@ -72,7 +72,8 @@ html, body {
     font-weight: 400;
     color: #3a3a3a;
 }
-@include scroll-bar(5px, #f2f2f2, $color-primary, 20px) 
+@include scroll-bar(5px, #f2f2f2, $color-primary, 20px);
+
 .mat-elevation-z4{
     box-shadow: 0px 3px 10px #CCCEE9;
 }
@@ -88,6 +89,24 @@ html, body {
         background-color: #c8c8c8;
         border-radius: 10px;
         // outline: 1px solid slategrey;
+    }
+}
+.bg-primary{
+    background-color: $color-primary !important;
+    color: #fff;
+    &:hover,
+    &:focus{
+        background-color: $color-primary !important;
+        color: #fff;
+    }
+}
+button.bg-primary{
+    background-color: $color-primary !important;
+    color: #fff;
+    &:hover,
+    &:focus{
+        background-color: $color-primary !important;
+        color: #fff;
     }
 }
 button:focus {
@@ -1787,5 +1806,24 @@ label.mat-checkbox-layout {
 
     .only-print{
         display:block !important;
+    }
+}
+
+// select box
+.variation_select{
+    margin-bottom: 5px;
+    .mat-form-field-wrapper{
+        padding-bottom: 0px;
+        .mat-form-field-flex {
+            .mat-form-field-infix{
+                padding: 7px 0px 7px !important;
+                font-size: 1.2rem;
+                .mat-select-arrow-wrapper{
+                    .mat-select-arrow{
+                        border-width: 3px;
+                    }
+                }
+            }
+        }
     }
 }
