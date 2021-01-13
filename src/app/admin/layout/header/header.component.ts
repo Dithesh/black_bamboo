@@ -15,7 +15,9 @@ import { environment } from 'src/environments/environment';
 export class HeaderComponent implements OnInit {
   url = environment.imgUrl;
   currentUser;
-  imgSrc = "url('assets/images/user.png')"
+  imgSrc = "url('assets/images/user.png')";
+  isOffline = environment.isOffline;
+  syncOn=false;
   constructor(
     public _layout: LayoutService, 
     private dialog:MatDialog, 
@@ -51,5 +53,15 @@ export class HeaderComponent implements OnInit {
 
   signOut() {
     this.router.navigateByUrl('/guest/signin');
+  }
+
+  synchronizeData() {
+    this.syncOn = true;
+    this._serv.endpoint="sync";
+    this._serv.get().subscribe(response => {
+      this.syncOn = false;
+    }, error => {
+      this.syncOn = false;
+    })
   }
 }
