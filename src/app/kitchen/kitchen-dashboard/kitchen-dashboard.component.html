@@ -1,136 +1,137 @@
 <div class="container-fluid">
-    <div class="text-right my-3 d-lg-none">
+    <div class="text-right mt-10">
         <button mat-stroked-button type="button" color="primary" (click)="_layout.isOpened=true">Consolidated</button>
     </div>
-    <div class="row">
-        <div class="col-12 col-lg-4 col-xl-3">
-            <div class="tabBox">
-                <div class="main_title">
-                    <h3>New Orders</h3>
-                </div>
-                <div class="item_wraper scroll_style">
+    <mat-tab-group class="mt-20 tabBox">
+        <mat-tab>
+          <ng-template mat-tab-label>
+            
+            <span [matBadge]="newOrders.length>0 ? newOrders.length : ''" matBadgeOverlap="false">New Orders &nbsp;</span>
+          </ng-template>
+          <div class="px-15">
+                <div class="row item_wraper mt-20">         
                     <ng-container *ngFor="let item of newOrders;let i=index;">
-                        <div class="kitchen_card">
-                            <div class="d-flex flex-wrap justify-content-between">
-                                <div class="order_id">
-                                    #{{ item.id }}
+                        <div class="col-xl-3 col-lg-4 col-sm-6 col-12">
+                            <div class="kitchen_card">
+                                <div class="d-flex flex-wrap justify-content-between">
+                                    <div class="order_id">
+                                        #{{ item.id }}
+                                    </div>
+                                    <div class="timer">
+                                        
+                                        <svg class="mr-5" xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.0" width="16px" height="16px" viewBox="0 0 128 128" xml:space="preserve"><g><path d="M63.88 0A63.88 63.88 0 1 1 0 63.88 63.88 63.88 0 0 1 63.88 0zm0 11.88a52 52 0 1 1-52 52 52 52 0 0 1 52-52zm0 46.2a5.8 5.8 0 1 1-5.8 5.8 5.8 5.8 0 0 1 5.8-5.8z" fill-rule="evenodd" fill="#aaaaaa" fill-opacity="1"/><path d="M58.25 5h11.3v59h-11.3V5z" fill="#aaaaaa" fill-opacity="1"/><animateTransform attributeName="transform" type="rotate" from="0 64 64" to="360 64 64" dur="2700ms" repeatCount="indefinite" *ngIf="true"></animateTransform></g></svg>
+                                        
+                                        <ng-container *ngIf="item.timeDif.h > 0">{{ item.timeDif.h | number : '2.0'}} : </ng-container>{{ item.timeDif.i | number : '2.0'}} : {{ item.timeDif.s | number : '2.0'}}
+                                    </div>
                                 </div>
-                                <div class="timer">
+                                <div class="d-flex justify-content-between mt-10">
                                     
-                                    <svg class="mr-5" xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.0" width="16px" height="16px" viewBox="0 0 128 128" xml:space="preserve"><g><path d="M63.88 0A63.88 63.88 0 1 1 0 63.88 63.88 63.88 0 0 1 63.88 0zm0 11.88a52 52 0 1 1-52 52 52 52 0 0 1 52-52zm0 46.2a5.8 5.8 0 1 1-5.8 5.8 5.8 5.8 0 0 1 5.8-5.8z" fill-rule="evenodd" fill="#aaaaaa" fill-opacity="1"/><path d="M58.25 5h11.3v59h-11.3V5z" fill="#aaaaaa" fill-opacity="1"/><animateTransform attributeName="transform" type="rotate" from="0 64 64" to="360 64 64" dur="2700ms" repeatCount="indefinite" *ngIf="true"></animateTransform></g></svg>
-                                    
-                                    <ng-container *ngIf="item.timeDif.h > 0">{{ item.timeDif.h | number : '2.0'}} : </ng-container>{{ item.timeDif.i | number : '2.0'}} : {{ item.timeDif.s | number : '2.0'}}
+                                    <div class="tables">
+                                        <ng-container *ngIf="item.order_tables.length > 0">
+                                            Tables: <ng-container *ngFor="let table of item.order_tables;">{{ table.table.tableId }}</ng-container>
+                                        </ng-container>
+                                    </div>
+                                    <mat-slide-toggle [(ngModel)]="item.acceptSelectAll" (change)="selectAll(item, item.acceptSelectAll,  'accept')">Select All</mat-slide-toggle>
                                 </div>
-                            </div>
-                            <div class="d-flex justify-content-between mt-10">
                                 
-                                <div class="tables">
-                                    <ng-container *ngIf="item.order_tables.length > 0">
-                                        Tables: <ng-container *ngFor="let table of item.order_tables;">{{ table.table.tableId }}</ng-container>
-                                    </ng-container>
-                                </div>
-                                <mat-slide-toggle [(ngModel)]="item.acceptSelectAll" (change)="selectAll(item, item.acceptSelectAll,  'accept')">Select All</mat-slide-toggle>
-                            </div>
-                            
-                            <div class="item_container">
-                                <ng-container *ngFor="let orderItem of item.order_items;let ii=index;">
-                                    <ng-container *ngIf="orderItem.acceptPendingQuantity > 0">
-                                        <div class="item_list">
-                                            <!-- <div class="item_name"> -->
-                                                <mat-checkbox class="item_name mb-0" [(ngModel)]="orderItem.isAcceptSelected" (change)="checkSelectAll(item, 'accept')"><span [class.text-accent]="orderItem.isParcel">{{ orderItem.product.productName }} <ng-container *ngIf="orderItem.advancedPriceTitle">({{ orderItem.advancedPriceTitle }})</ng-container></span></mat-checkbox>
-                                            <!-- </div> -->
-                                            <div class="quantity">{{ orderItem.acceptPendingQuantity }}</div>
-                                            <div class="action_buttons">
-                                                <button mat-icon-button class="mat-icon-success" type="button" (click)="updateSingleItem(orderItem, 'accept')">
-                                                    <mat-icon>check_circle</mat-icon>
-                                                </button>
-                                                <button mat-icon-button color="warn" type="button" (click)="updateSingleItem(orderItem, 'reject')">
-                                                    <mat-icon>remove_circle</mat-icon>
-                                                </button>
+                                <div class="item_container">
+                                    <ng-container *ngFor="let orderItem of item.order_items;let ii=index;">
+                                        <ng-container *ngIf="orderItem.acceptPendingQuantity > 0">
+                                            <div class="item_list">
+                                                <!-- <div class="item_name"> -->
+                                                    <mat-checkbox class="item_name mb-0" [(ngModel)]="orderItem.isAcceptSelected" (change)="checkSelectAll(item, 'accept')"><span [class.text-accent]="orderItem.isParcel">{{ orderItem.product.productName }} <ng-container *ngIf="orderItem.advancedPriceTitle">({{ orderItem.advancedPriceTitle }})</ng-container></span></mat-checkbox>
+                                                <!-- </div> -->
+                                                <div class="quantity">{{ orderItem.acceptPendingQuantity }}</div>
+                                                <div class="action_buttons">
+                                                    <button mat-icon-button class="mat-icon-success" type="button" (click)="updateSingleItem(orderItem, 'accept')">
+                                                        <mat-icon>check_circle</mat-icon>
+                                                    </button>
+                                                    <button mat-icon-button color="warn" type="button" (click)="updateSingleItem(orderItem, 'reject')">
+                                                        <mat-icon>remove_circle</mat-icon>
+                                                    </button>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </ng-container>
-                                </ng-container>
-                            </div>
-                            <div class="d-flex justify-content-between align-items-center mt-10">
-                                <div>
-                                    <ng-container *ngIf="getSelectedItemCount(item, 'accept') > 0">
-                                        <button mat-stroked-button color="primary" class="mr-10" type="button"  (click)="updateMultipleItems(item, 'accept')">Accept</button>
-                                        <button mat-stroked-button color="warn" type="button"  (click)="updateMultipleItems(item, 'reject')">Reject</button>
+                                        </ng-container>
                                     </ng-container>
                                 </div>
-                                <p class="text-muted mb-0 py-10"><small>From:</small> {{item.bearer.firstName}} {{ item.bearer.lastName }}</p>
+                                <div class="d-flex justify-content-between align-items-center mt-10">
+                                    <div>
+                                        <ng-container *ngIf="getSelectedItemCount(item, 'accept') > 0">
+                                            <button mat-stroked-button color="primary" class="mr-10" type="button"  (click)="updateMultipleItems(item, 'accept')">Accept</button>
+                                            <button mat-stroked-button color="warn" type="button"  (click)="updateMultipleItems(item, 'reject')">Reject</button>
+                                        </ng-container>
+                                    </div>
+                                    <p class="text-muted mb-0 py-10"><small>From:</small> {{item.bearer.firstName}} {{ item.bearer.lastName }}</p>
+                                </div>
                             </div>
                         </div>
                     </ng-container>
                 </div>
             </div>
-            
-        </div>
-        <div class="col-12 col-lg-8 col-xl-9">
-            <div class="tabBox">
-                <div class="main_title d-flex justify-content-between">
-                    <h3>Accepted Orders</h3>
-                    <button mat-stroked-button type="button" class="d-none d-lg-inline-block" color="primary" (click)="_layout.isOpened=true">Consolidated</button>
-                </div>
-                
-                <div class="row item_wraper scroll_style">
-                    
-                    <div class="col-12 col-lg-6 col-xl-4" *ngFor="let item of readyOrders;let i=index;">
-                        <div class="kitchen_card">
-                            <div class="d-flex flex-wrap justify-content-between">
-                                <div class="order_id">
-                                    #{{ item.id }}
-                                </div>
-                                <div class="timer">
-                                    
-                                    <svg class="mr-5" xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.0" width="16px" height="16px" viewBox="0 0 128 128" xml:space="preserve"><g><path d="M63.88 0A63.88 63.88 0 1 1 0 63.88 63.88 63.88 0 0 1 63.88 0zm0 11.88a52 52 0 1 1-52 52 52 52 0 0 1 52-52zm0 46.2a5.8 5.8 0 1 1-5.8 5.8 5.8 5.8 0 0 1 5.8-5.8z" fill-rule="evenodd" fill="#aaaaaa" fill-opacity="1"/><path d="M58.25 5h11.3v59h-11.3V5z" fill="#aaaaaa" fill-opacity="1"/><animateTransform attributeName="transform" type="rotate" from="0 64 64" to="360 64 64" dur="2700ms" repeatCount="indefinite" *ngIf="true"></animateTransform></g></svg>
-                                    
-                                    <ng-container *ngIf="item.timeDif.h > 0">{{ item.timeDif.h | number : '2.0'}} : </ng-container>{{ item.timeDif.i | number : '2.0'}} : {{ item.timeDif.s | number : '2.0'}}
-                                </div>
+        </mat-tab>
+      
+        <mat-tab>
+          <ng-template mat-tab-label>
+            <span [matBadge]="readyOrders.length>0 ? readyOrders.length : ''" matBadgeOverlap="false">Accepted Orders &nbsp;</span>
+          </ng-template>
+
+          <div class="px-15">
+            <div class="row item_wraper mt-20">
+                <div class="col-xl-3 col-lg-4 col-sm-6 col-12" *ngFor="let item of readyOrders;let i=index;">
+                    <div class="kitchen_card">
+                        <div class="d-flex flex-wrap justify-content-between">
+                            <div class="order_id">
+                                #{{ item.id }}
                             </div>
-                            <div class="d-flex justify-content-between mt-10">
+                            <div class="timer">
                                 
-                                <div class="tables">
-                                    <ng-container *ngIf="item.order_tables.length > 0">
-                                        Tables: <ng-container *ngFor="let table of item.order_tables;">{{ table.table.tableId }}</ng-container>
-                                    </ng-container>
-                                </div>
-                                <mat-slide-toggle [(ngModel)]="item.readySelectAll" (change)="selectAll(item, item.readySelectAll,  'ready')">Select All</mat-slide-toggle>
+                                <svg class="mr-5" xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.0" width="16px" height="16px" viewBox="0 0 128 128" xml:space="preserve"><g><path d="M63.88 0A63.88 63.88 0 1 1 0 63.88 63.88 63.88 0 0 1 63.88 0zm0 11.88a52 52 0 1 1-52 52 52 52 0 0 1 52-52zm0 46.2a5.8 5.8 0 1 1-5.8 5.8 5.8 5.8 0 0 1 5.8-5.8z" fill-rule="evenodd" fill="#aaaaaa" fill-opacity="1"/><path d="M58.25 5h11.3v59h-11.3V5z" fill="#aaaaaa" fill-opacity="1"/><animateTransform attributeName="transform" type="rotate" from="0 64 64" to="360 64 64" dur="2700ms" repeatCount="indefinite" *ngIf="true"></animateTransform></g></svg>
+                                
+                                <ng-container *ngIf="item.timeDif.h > 0">{{ item.timeDif.h | number : '2.0'}} : </ng-container>{{ item.timeDif.i | number : '2.0'}} : {{ item.timeDif.s | number : '2.0'}}
                             </div>
+                        </div>
+                        <div class="d-flex justify-content-between mt-10">
                             
-                            <div class="item_container">
-                                <ng-container *ngFor="let orderItem of item.order_items;let ii=index;">
-                                    <ng-container *ngIf="orderItem.readyPendingQuantity > 0">
-                                        <div class="item_list">
-                                            <!-- <div class="item_name"> -->
-                                                <mat-checkbox class="item_name mb-0" [(ngModel)]="orderItem.isReadySelected" (change)="checkSelectAll(item, 'ready')"><span [class.text-accent]="orderItem.isParcel">{{ orderItem.product.productName }} <ng-container *ngIf="orderItem.advancedPriceTitle">({{ orderItem.advancedPriceTitle }})</ng-container></span></mat-checkbox>
-                                            <!-- </div> -->
-                                            <div class="quantity">{{ orderItem.readyPendingQuantity }}</div>
-                                            <div class="action_buttons">
-                                                <button mat-button class="mat-icon-success" type="button" (click)="updateSingleItem(orderItem, 'ready')">
-                                                    <mat-icon>done</mat-icon> Ready
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </ng-container>
+                            <div class="tables">
+                                <ng-container *ngIf="item.order_tables.length > 0">
+                                    Tables: <ng-container *ngFor="let table of item.order_tables;">{{ table.table.tableId }}</ng-container>
                                 </ng-container>
                             </div>
-                            <div class="d-flex justify-content-between align-items-center mt-10">
-                                <div>
-                                    <ng-container *ngIf="getSelectedItemCount(item, 'ready') > 0">
-                                        
-                                        <button mat-stroked-button color="primary" class="mr-10" (click)="updateMultipleItems(item, 'ready')">
-                                            <mat-icon>done_all</mat-icon> Ready
-                                        </button>
-                                    </ng-container>
-                                </div>
-                                <p class="text-muted mb-0 py-10"><small>From:</small> {{item.bearer.firstName}} {{ item.bearer.lastName }}</p>
+                            <mat-slide-toggle [(ngModel)]="item.readySelectAll" (change)="selectAll(item, item.readySelectAll,  'ready')">Select All</mat-slide-toggle>
+                        </div>
+                        
+                        <div class="item_container">
+                            <ng-container *ngFor="let orderItem of item.order_items;let ii=index;">
+                                <ng-container *ngIf="orderItem.readyPendingQuantity > 0">
+                                    <div class="item_list">
+                                        <!-- <div class="item_name"> -->
+                                            <mat-checkbox class="item_name mb-0" [(ngModel)]="orderItem.isReadySelected" (change)="checkSelectAll(item, 'ready')"><span [class.text-accent]="orderItem.isParcel">{{ orderItem.product.productName }} <ng-container *ngIf="orderItem.advancedPriceTitle">({{ orderItem.advancedPriceTitle }})</ng-container></span></mat-checkbox>
+                                        <!-- </div> -->
+                                        <div class="quantity">{{ orderItem.readyPendingQuantity }}</div>
+                                        <div class="action_buttons">
+                                            <button mat-button class="mat-icon-success" type="button" (click)="updateSingleItem(orderItem, 'ready')">
+                                                <mat-icon>done</mat-icon> Ready
+                                            </button>
+                                        </div>
+                                    </div>
+                                </ng-container>
+                            </ng-container>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center mt-10">
+                            <div>
+                                <ng-container *ngIf="getSelectedItemCount(item, 'ready') > 0">
+                                    
+                                    <button mat-stroked-button color="primary" class="mr-10" (click)="updateMultipleItems(item, 'ready')">
+                                        <mat-icon>done_all</mat-icon> Ready
+                                    </button>
+                                </ng-container>
                             </div>
+                            <p class="text-muted mb-0 py-10"><small>From:</small> {{item.bearer.firstName}} {{ item.bearer.lastName }}</p>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
+          </div>
+        </mat-tab>
+      </mat-tab-group>
 </div>
