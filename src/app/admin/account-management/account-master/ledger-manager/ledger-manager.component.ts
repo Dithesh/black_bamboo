@@ -68,11 +68,19 @@ export class LedgerManagerComponent implements OnInit {
     this.addLedgerActive=false;
     this._serv.endpoint = "account-manager/ledger?companyId="+this.selectedCompany.value;
     this._serv.get().subscribe((response:any[]) => {
-      this.ledgerList = response;
-      if(this.ledgerList.length == 0) {
-        this.addLedgerActive=true;
-      }      
-      this.addNewLedger();
+      if(Array.isArray(response)) {
+        this.ledgerList = response;
+        if(this.ledgerList.length == 0) {
+          this.addLedgerActive=true;
+        }      
+        this.addNewLedger();
+      }else {
+        
+        if(this.ledgerList.length == 0) {
+          this.addLedgerActive=true;
+        }      
+        this.addNewLedger();
+      }
     })
   }
 
