@@ -33,6 +33,7 @@ export class UpdateInventoryManagerComponent implements OnInit {
       this.getInventoryDetails(this.inventoryId);
     }
     this.userData = this._serv.getUserData();
+  
     this.route.parent.parent.data.subscribe(response => {
       this.companyList = response.companyList;
       if(this.companyList.length > 0)

@@ -2,7 +2,7 @@
     <div class="add_formWrapper">
         
         <div class="row">
-            <div class="col-lg-3 col-sm-6 col-12">
+            <div class="col-lg-3 col-sm-6 col-12" *ngIf="userData?.roles == 'Super Admin'">
                 <mat-form-field appearance="fill" class="w-100 mb-5">
                     <mat-label>Company</mat-label>
                     <mat-select required formControlName="company_id">
