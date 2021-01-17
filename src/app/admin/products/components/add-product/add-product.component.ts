@@ -5,7 +5,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmPopupComponent } from 'src/app/shared/components/confirm-popup/confirm-popup.component';
 import { SnackService } from 'src/app/shared/services/snack.service';
-import { FormGroup, FormBuilder, FormArray, AbstractControl } from '@angular/forms';
+import { FormGroup, FormBuilder, FormArray, AbstractControl, FormControl } from '@angular/forms';
 import { DataService } from 'src/app/shared/services/data.service';
 import { BehaviorSubject } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -45,6 +45,8 @@ export class AddProductComponent implements OnInit {
         featuredImage: [''],
         image: [''],
         price: [''],
+        isAdvancedPricing:[false],
+        pricingGroups: this.fb.array([this.addAdvancePrice()]),
         taxPercent: [''],
         packagingCharges: [''],
         isActive: [true],
@@ -73,6 +75,31 @@ export class AddProductComponent implements OnInit {
     this.getAllCategories();
   }
 
+  get pricingGroups(){
+    return this.form.get('pricingGroups') as FormArray;
+  }
+
+  addAdvancePrice(){
+    return this.fb.group({
+      id:[''],
+      title:[''],
+      price:[''],
+      deletedFlag:[false]
+    })
+  }
+
+  addAnotherAdvancePrice() {
+    this.pricingGroups.push(this.addAdvancePrice());
+  }
+
+  removeAdvancePrice(item, index){
+    if(this._serv.notNull(item.get('id').value)) {
+      item.get('deletedFlag').setValue(true);
+    }else {
+      this.pricingGroups.removeAt(index);
+    }
+  }
+
   getProductDetails() {
     this._serv.endpoint = "order-manager/product/"+this.productId;
     this._serv.get().subscribe((data:any) => {
@@ -84,6 +111,12 @@ export class AddProductComponent implements OnInit {
         
         this.imageSrc = "url(\'"+ this.url + data.featuredImage +"\')"
       }
+      this.pricingGroups.controls = [];
+      data.advanced_pricing.forEach(elem => {
+        let form = this.addAdvancePrice();
+        form.patchValue(elem);
+        this.pricingGroups.push(form);
+      })
       // data.tables.forEach(elem => {
       //   this.tables.push(this.addTable(elem));
       //   this.dataSource.next(this.tables.controls);

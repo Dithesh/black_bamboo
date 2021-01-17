@@ -2,7 +2,7 @@
     
     <div class="add_formWrapper">
         <div class="row">
-            <div class="col-sm-auto order-md-12">
+            <div class="col-sm-auto">
                 <div class="product_imrBox">
                     <input type="file" name="" id="prodctImg"  (change)="handleFileInput($event)">
                     <label for="prodctImg" title="Change Image"  [ngStyle]="{'background-image': imageSrc}"></label>
@@ -10,74 +10,110 @@
             </div>
             <div class="col-sm 12 col-md">
                 <div class="row">
-                    <div class="col-md-6">
-                        <div class="row no-gutters flex-nowrap">
-                            <div class="col-auto pr-2">
-                                <mat-form-field appearance="fill" class="w-100 ew-140">
-                                    <mat-label>No.</mat-label>
-                                    <input matInput required formControlName="productNumber" type="text">
+                    <div class="col-lg-8 col-sm-12">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="row no-gutters flex-nowrap">
+                                    <div class="col-auto pr-2">
+                                        <mat-form-field appearance="fill" class="w-100 ew-140">
+                                            <mat-label>No.</mat-label>
+                                            <input matInput required formControlName="productNumber" type="text">
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col">
+                                        <mat-form-field appearance="fill" class="w-100">
+                                            <mat-label>Product Name</mat-label>
+                                            <input matInput required formControlName="productName" type="text">
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6" [hidden]="userData?.roles != 'Super Admin'">
+                                <mat-form-field appearance="fill" class="w-100 mb-5">
+                                    <mat-label>Company</mat-label>
+                                    <mat-select formControlName="company_id" (selectionChange)="selectChange('company')"  [required]="userData?.roles == 'Super Admin'">
+                                        <mat-option *ngFor="let item of companyList" [value]="item.id">{{ item.companyName }}</mat-option>
+                                    </mat-select>
+                                    <mat-error>Company is required</mat-error>
+                                  </mat-form-field>
+                            </div>
+                            <div class="col-12 col-md-6" [hidden]="userData?.roles != 'Super Admin' && userData?.roles != 'Company Admin' && userData?.roles != 'Company Accountant'">
+                                <mat-form-field appearance="fill" class="w-100" (selectionChange)="selectChange('branch')" >
+                                    <mat-label>Branch</mat-label>
+                                    <mat-select matNativeControl formControlName="branch_id"  [required]="userData?.roles == 'Super Admin' || userData?.roles == 'Company Admin' || userData?.roles == 'Company Accountant'">
+                                        <mat-option *ngFor="let item of branchList;" [value]="item.id">{{ item.branchTitle }}</mat-option>
+                                    </mat-select>
                                 </mat-form-field>
                             </div>
-                            <div class="col">
+                            
+                            <div class="col-12 col-md-6">
                                 <mat-form-field appearance="fill" class="w-100">
-                                    <mat-label>Product Name</mat-label>
-                                    <input matInput required formControlName="productName" type="text">
+                                    <mat-label>Packaging Charges</mat-label>
+                                    <input matInput formControlName="packagingCharges" type="text">
+                                </mat-form-field>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <mat-form-field appearance="fill" class="w-100">
+                                    <mat-label>Kitchen</mat-label>
+                                    <mat-select matNativeControl formControlName="kitchen_id" required>
+                                        <mat-option *ngFor="let item of kitchenList;" [value]="item.id">{{ item.kitchenTitle }}</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <mat-form-field appearance="fill" class="w-100">
+                                    <mat-label>Categories</mat-label>
+                                    <mat-select matNativeControl formControlName="categories" multiple>
+                                        <mat-option *ngFor="let item of categoryList;" [value]="item.id">{{ item.categoryName }}</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-12">
+                                <mat-form-field appearance="fill" class="w-100">
+                                    <mat-label>Description</mat-label>
+                                    <textarea matInput formControlName="description" rows="3" cdkTextareaAutosize></textarea>
                                 </mat-form-field>
                             </div>
                         </div>
                     </div>
-                    <div class="col-12 col-lg-3 col-md-6" [hidden]="userData?.value != 'Super Admin'">
-                        <mat-form-field appearance="fill" class="w-100 mb-5">
-                            <mat-label>Company</mat-label>
-                            <mat-select formControlName="company_id" (selectionChange)="selectChange('company')"  [required]="userData?.value == 'Super Admin'">
-                                <mat-option *ngFor="let item of companyList" [value]="item.id">{{ item.companyName }}</mat-option>
-                            </mat-select>
-                            <mat-error>Company is required</mat-error>
-                          </mat-form-field>
-                    </div>
-                    <div class="col-12 col-lg-3 col-md-6" [hidden]="userData?.value != 'Super Admin' && userData?.value != 'Company Admin' && userData?.value != 'Company Accountant'">
-                        <mat-form-field appearance="fill" class="w-100" (selectionChange)="selectChange('branch')" >
-                            <mat-label>Branch</mat-label>
-                            <mat-select matNativeControl formControlName="branch_id"  [required]="userData?.value == 'Super Admin' || userData?.value == 'Company Admin' || userData?.value == 'Company Accountant'">
-                                <mat-option *ngFor="let item of branchList;" [value]="item.id">{{ item.branchTitle }}</mat-option>
-                            </mat-select>
-                        </mat-form-field>
-                    </div>
-                    <div class="col-12 col-lg-3 col-md-6">
-                        <mat-form-field appearance="fill" class="w-100">
-                            <mat-label>Price</mat-label>
-                            <input matInput formControlName="price" type="text">
-                        </mat-form-field>
-                    </div>
-                    <div class="col-12 col-lg-3 col-md-6">
-                        <mat-form-field appearance="fill" class="w-100">
-                            <mat-label>Packaging Charges</mat-label>
-                            <input matInput formControlName="packagingCharges" type="text">
-                        </mat-form-field>
-                    </div>
-                    <div class="col-12 col-lg-3 col-md-6">
-                        <mat-form-field appearance="fill" class="w-100">
-                            <mat-label>Kitchen</mat-label>
-                            <mat-select matNativeControl formControlName="kitchen_id" required>
-                                <mat-option *ngFor="let item of kitchenList;" [value]="item.id">{{ item.kitchenTitle }}</mat-option>
-                            </mat-select>
-                        </mat-form-field>
-                    </div>
-                    <div class="col-12 col-lg-3 col-md-6">
-                        <mat-form-field appearance="fill" class="w-100">
-                            <mat-label>Categories</mat-label>
-                            <mat-select matNativeControl formControlName="categories" multiple>
-                                <mat-option *ngFor="let item of categoryList;" [value]="item.id">{{ item.categoryName }}</mat-option>
-                            </mat-select>
-                        </mat-form-field>
-                    </div>
-                    <div class="col-12">
-                        <mat-form-field appearance="fill" class="w-100">
-                            <mat-label>Description</mat-label>
-                            <textarea matInput formControlName="description" rows="3" cdkTextareaAutosize></textarea>
-                        </mat-form-field>
+                    <div class="col-lg-4 col-md-6">
+                        <div class="title_div d-flex align-items-center mb-15">
+                            <h3 class="my-0 font-1_4 font-weight-500">{{form.get('isAdvancedPricing').value ? 'Price Variation' : 'Price'}}</h3>
+                            <button mat-button color="primary" *ngIf="form.get('isAdvancedPricing').value" class="ml-10" type="button" (click)="addAnotherAdvancePrice()">Add +</button>
+                            <div class="ml-auto">
+                                <mat-slide-toggle color="secandary" formControlName="isAdvancedPricing">Advance</mat-slide-toggle>
+                            </div>
+                        </div>
+                        <div class="" *ngIf="!form.get('isAdvancedPricing').value">
+                            <mat-form-field appearance="fill" class="w-100">
+                                <mat-label>Price</mat-label>
+                                <input matInput formControlName="price" type="text">
+                            </mat-form-field>
+                        </div>
+                        <div *ngIf="form.get('isAdvancedPricing').value" formArrayName="pricingGroups">
+                            <ng-container *ngFor="let item of pricingGroups['controls']; let i=index;">
+                                <div class="row flex-nowrap gutters-10" *ngIf="!item.get('deletedFlag').value" [formGroupName]="i">
+                                    <div class="col ew-mn-50">
+                                        <mat-form-field appearance="fill" class="w-100">
+                                            <mat-label>Title</mat-label>
+                                            <input matInput formControlName="title" type="text">
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col ew-mn-50">
+                                        <mat-form-field appearance="fill" class="w-100">
+                                            <mat-label>Price</mat-label>
+                                            <input matInput formControlName="price" type="text">
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-auto">
+                                        <button mat-button color="warn" type="button" (click)="removeAdvancePrice(item, i)">Remove -</button>
+                                    </div>
+                                </div>
+                            </ng-container>
+                        </div>
                     </div>
                 </div>
+                
             </div>
         </div>
         
