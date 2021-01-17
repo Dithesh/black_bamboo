@@ -73,6 +73,8 @@ html, body {
     color: #3a3a3a;
 }
 @include scroll-bar(5px, #f2f2f2, $color-primary, 20px);
+@include bootstrap-breakpoint('xxl', 1400px);
+@include bootstrap-breakpoint('xxxl', 1600px);
 
 .mat-elevation-z4{
     box-shadow: 0px 3px 10px #CCCEE9;
@@ -1830,9 +1832,37 @@ label.mat-checkbox-layout {
 
 .tabBox{
     .mat-tab-label{
-        font-size: 2.2rem;
+        font-size: 2rem;
         font-weight: 500;
         opacity: 1;
-        width: 20%;
+        min-width: 20%;
+        text-transform: uppercase;
+        @media(max-width: 990px){
+            font-size: 1.4rem;
+            min-width: 33.33%;
+            .mat-tab-label-content{
+                white-space: pre-wrap;
+            }
+        }
     }
+    .mat-tab-body{
+        .mat-tab-body-content{
+            padding-bottom: 20px;
+            height: calc(100vh - 135px);
+            overflow-y: auto;
+            &::-webkit-scrollbar {
+                width: 5px;
+                height: 5px;
+            }
+            &::-webkit-scrollbar-track {
+                background-color: transparent;
+            }
+            &::-webkit-scrollbar-thumb {
+                background-color: #c8c8c8;
+                border-radius: 10px;
+            }
+            
+        }
+    }
+    
 }

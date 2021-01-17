@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { LayoutService } from 'src/app/admin/layout/services/layout.service';
 import { DataService } from 'src/app/shared/services/data.service';
+import { environment } from 'src/environments/environment';
 import { SharedKitchenService } from '../shared/shared-kitchen.service';
 
 @Component({
@@ -12,8 +13,9 @@ export class KitchenDashboardComponent implements OnInit {
   newOrders=[];
   readyOrders=[];
   consolidatedItems=[];
-
-  constructor(private _kitchen: SharedKitchenService, private _serv: DataService, public _layout: LayoutService) { }
+  tabSelectedindex=0;
+  url = environment.imgUrl;
+  constructor(public _kitchen: SharedKitchenService, private _serv: DataService, public _layout: LayoutService) { }
 
   ngOnInit(): void {
     this._kitchen.kirchenChangeService.subscribe(response => {

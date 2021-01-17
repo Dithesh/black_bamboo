@@ -81,7 +81,7 @@
                                                 </button>
                                                 <div class="input_add_box">
 
-                                                            <mat-form-field appearance="outline" class="ew-100 variation_select" *ngIf="item.advanced_pricing.length > 0">
+                                                            <mat-form-field appearance="outline" class="ew-100 variation_select" *ngIf="item.advanced_pricing && item.advanced_pricing.length > 0">
                                                                 <mat-select [(ngModel)]="item.advancedPriceId" [ngModelOptions]="{standalone: true}" (selectionChange)="handleProductPriceChange(item)">
                                                                     <ng-container *ngFor="let tt of item.advanced_pricing;">
                                                                         <mat-option [value]="tt.id"> {{tt.title}} </mat-option>
