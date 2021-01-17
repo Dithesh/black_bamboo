@@ -18,12 +18,12 @@
                     <td class="price">{{ item.totalPrice | currency: '':'' }}</td>
                 </tr>
             </ng-container>
-            <tr>
+            <tr *ngIf="!orderData?.taxDisabled">
                 <td class="quantity"></td>
                 <th class="description">CGST</th>
                 <th class="price">{{ orderData?.cgst | currency: '':'' }}</th>
             </tr>
-            <tr>
+            <tr  *ngIf="!orderData?.taxDisabled">
                 <td class="quantity"></td>
                 <th class="description">SGST</th>
                 <th class="price">{{ orderData?.sgst | currency: '':'' }}</th>
