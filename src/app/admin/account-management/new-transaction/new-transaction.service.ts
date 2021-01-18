@@ -8,6 +8,7 @@ import { ConfirmPopupComponent } from 'src/app/shared/components/confirm-popup/c
 import { DataService } from 'src/app/shared/services/data.service';
 import * as math from 'exact-math';
 import { Router } from '@angular/router';
+import * as moment from 'moment';
 
 
 @Injectable()
@@ -420,7 +421,10 @@ export class NewTransactionService {
             this._serv.showMessage('Please check data before submit. Delete any unwanted empty rows.', 'error');
             return;
         }
-        let formData = {...this.form.value};
+        let formData = {
+            ...this.form.value,
+            transactionDate: moment(this.form.value.transactionDate).format('YYYY-MM-DD')
+        };
         
         formData.items.forEach(elem => {
             elem.itemId = elem.item.id;

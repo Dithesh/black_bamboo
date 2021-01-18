@@ -159,13 +159,13 @@ export class DashboardComponent implements OnInit {
       response.forEach(elem => {
         let salesAmount = 0, purchaseAmount=0, paymentAmount=0, receiptAmount=0;
         elem.stats.forEach(stat => {
-          if(stat.transactionType == 'Sales') {
+          if(stat.transactionType == 'sales') {
             salesAmount = stat.amount;
-          } else if(stat.transactionType == 'Purchase') {
+          } else if(stat.transactionType == 'purchase') {
             purchaseAmount = stat.amount;
-          } else if(stat.transactionType == 'Payment') {
+          } else if(stat.transactionType == 'payment') {
             paymentAmount = stat.amount;
-          } else if(stat.transactionType == 'Receipt') {
+          } else if(stat.transactionType == 'receipt') {
             receiptAmount = stat.amount;
           }
         })
