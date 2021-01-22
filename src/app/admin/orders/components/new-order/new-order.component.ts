@@ -65,6 +65,7 @@ export class NewOrderComponent implements OnInit, OnDestroy {
   form:FormGroup;
   orderTypeList:any[] = [];
   selectedOrderType: any;
+  paymentMethodList:any[] = [];
   tableList: any[];
   orderId;
   productList: any[] = [];
@@ -105,6 +106,7 @@ export class NewOrderComponent implements OnInit, OnDestroy {
       orderType: [''],
       taxDisabled: [false],
       taxPercent: [0],
+      paymentMethod: [''],
       tables: this.fb.array([]),
       items: this.fb.array([]),
     })
@@ -464,6 +466,7 @@ export class NewOrderComponent implements OnInit, OnDestroy {
         orderType: response.orderType,
         taxDisabled: response.taxDisabled,
         taxPercent: response.taxPercent,
+        paymentMethod: response.paymentMethod
       });
 
       if(response.orderStatus == 'completed' || response.orderStatus == 'cancelled' || response.rejectedCount > 0 || this.userData.roles == 'Super Admin' || this.userData.roles == 'Company Admin' || this.userData.roles == 'Company Accountant') {
@@ -651,6 +654,7 @@ export class NewOrderComponent implements OnInit, OnDestroy {
   getBranchDetail(branch_id) {
     if(!this._serv.notNull(branch_id)){
       this.orderTypeList=[];
+      this.paymentMethodList = [];
       return;
     }
     
@@ -662,6 +666,13 @@ export class NewOrderComponent implements OnInit, OnDestroy {
         this.form.get('taxPercent').setValue(this.branchDetail.taxPercent);
       }
       this.handleFinalPricing();
+      this.paymentMethodList = response.payment_methods as any[];
+      
+      if(this.branchDetail && this.paymentMethodList.length > 0 && !this._serv.notNull(this.orderId)) {
+        this.form.get('paymentMethod').setValue(this.paymentMethodList[0].id);
+      }
+
+
       this.orderTypeList = response.order_types as any[];
       if(!this._serv.notNull(this.orderId) && this.orderTypeList.filter.length > 0) {
         this.changeOrderType(this.orderTypeList[0].id);

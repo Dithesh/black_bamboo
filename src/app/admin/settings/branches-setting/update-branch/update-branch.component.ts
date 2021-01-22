@@ -35,6 +35,7 @@ export class UpdateBranchComponent implements OnInit {
       company_id:[''],
       kitchens: this.fb.array([]),
       orderTypes: this.fb.array([]),
+      paymentMethods: this.fb.array([]),
     })
     this.route.data.subscribe(response => {
       this.companyList = response.companyList;
@@ -47,6 +48,30 @@ export class UpdateBranchComponent implements OnInit {
     this.userData = this._serv.getUserData();
     if(this.branchId) {
       this.getBranchDetails();
+    }
+  }
+
+  get paymentMethods() {
+    return this.form.get('paymentMethods') as FormArray;
+  }
+
+  addNewPaymentMethod() {
+    return this.fb.group({
+      id: [''],
+      methodTitle: [''],
+      deletedFlag: [false]
+    })
+  }
+
+  addAnotherPaymentMethod() {
+    this.paymentMethods.push(this.addNewPaymentMethod());
+  }
+
+  deletePaymentMethod(item, index) {
+    if(this._serv.notNull(item.get('id').value)) {
+      item.get('deletedFlag').setValue(true);
+    }else {
+      this.paymentMethods.removeAt(index);
     }
   }
 
@@ -109,7 +134,6 @@ export class UpdateBranchComponent implements OnInit {
         this.imageSrc = "url(\'"+ this.url + data.branchLogo +"\')"
       }
 
-      console.log(data);
       data.kitchens.forEach(elem => {
         let form = this.addNewKitchen();
         form.patchValue(elem);
@@ -119,6 +143,11 @@ export class UpdateBranchComponent implements OnInit {
         let form = this.addOrderType();
         form.patchValue(elem);
         this.orderTypes.push(form);
+      })
+      data.payment_methods.forEach(elem => {
+        let form = this.addNewPaymentMethod();
+        form.patchValue(elem);
+        this.paymentMethods.push(form);
       })
       // data.tables.forEach(elem => {
       //   this.tables.push(this.addTable(elem));

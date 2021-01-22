@@ -295,17 +295,34 @@
                         </mat-tab>
                         <mat-tab *ngIf="items['controls'].length > 0">
                             <ng-template mat-tab-label>
-                                <mat-icon class="example-tab-icon">receipt</mat-icon>
-                                <p class="mb-0 col-12 px-0"> Bill</p>
+                                <mat-icon class="example-tab-icon">local_offer</mat-icon>
+                                <p class="mb-0 col-12 px-0"> Extras</p>
                             </ng-template>
                             <div class="tab_inner_body scroll_style bill innerFooter">
-                                <div class="delivery_box">
+                                <div class="delivery_box mt-20">
                                     <mat-form-field appearance="outline" class="w-100 inline-input">
                                         <mat-label>Deliver Charge (Optional)</mat-label>
                                         <input matInput  [formControl]="form.get('deliverCharge')" (change)="handleFinalPricing()" digitOnly [decimal]="true">
                                     </mat-form-field>
                                 </div>
+                            </div>
+                        </mat-tab>
+                        <mat-tab *ngIf="items['controls'].length > 0">
+                            <ng-template mat-tab-label>
+                                <mat-icon class="example-tab-icon">receipt</mat-icon>
+                                <p class="mb-0 col-12 px-0"> Bill</p>
+                            </ng-template>
+                            <div class="tab_inner_body scroll_style bill innerFooter">
+                                <!-- <div class="delivery_box">
+                                    <mat-form-field appearance="outline" class="w-100 inline-input">
+                                        <mat-label>Deliver Charge (Optional)</mat-label>
+                                        <input matInput  [formControl]="form.get('deliverCharge')" (change)="handleFinalPricing()" digitOnly [decimal]="true">
+                                    </mat-form-field>
+                                </div> -->
                                 <div class="billing_wrapper">
+                                    <div class="billing_strip">
+                                        <p class="main_title">Order Summary</p>
+                                    </div>
                                     <div class="billing_strip">
                                         <p class="title">Order Item Total</p>
                                         <span class="value_section">{{ form.get('orderItemTotal').value | currency }}</span>
@@ -349,6 +366,15 @@
                                         </div>
                                     </div>
                                     
+                                </div>
+                            </div>
+                            <div class="row no-gutters align-items-center border-top py-5">
+                                <div class="col-12 px-15">
+                                    <mat-chip-list aria-label="Method selection">
+                                        <ng-container *ngFor="let item of paymentMethodList;">
+                                            <mat-chip color="primary" [selected]="item.id == form.get('paymentMethod').value" (click)="form.get('paymentMethod').setValue(item.id)">{{ item.methodTitle }}</mat-chip>
+                                        </ng-container>
+                                      </mat-chip-list>
                                 </div>
                             </div>
                             <div class="row no-gutters align-items-center border-top py-5">

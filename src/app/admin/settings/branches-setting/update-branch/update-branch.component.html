@@ -110,6 +110,29 @@
         </mat-card>
 
 
+        <mat-card class="mt-15 only_boder">
+            <h3 class="mb-10 d-flex justify-content-between align-items-center">
+                Payment Method Setup
+                <button mat-stroked-button color="primary" type="button" (click)="addAnotherPaymentMethod()">+ Add</button>
+            </h3>
+    
+            <div formArrayName="paymentMethods">
+                <ng-container *ngFor="let item of paymentMethods['controls'];let i=index;">
+                    <div class="row align-items-center" *ngIf="!item.get('deletedFlag').value" [formGroupName]="i">
+                        <div class="col-sm-4">
+                            <mat-form-field  appearance="fill" class="w-100 mb-5">
+                                <mat-label>Method Title</mat-label>
+                                <input type="text" formControlName="methodTitle" matInput>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-auto">
+                            <button mat-button color="primary" type="button" class="mb-15" (click)="deletePaymentMethod(item, i)">- Delete</button>
+                        </div>
+                    </div>
+                </ng-container>
+            </div>
+        </mat-card>
+
 
         <div class="row align-items-center flex-wrap mb-15">
             <div class="col-12">
