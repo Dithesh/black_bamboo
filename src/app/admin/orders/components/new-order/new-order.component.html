@@ -237,13 +237,19 @@
                             </div>
                             <div class="row no-gutters align-items-center border-top py-5" *ngIf="items['controls'].length > 0 && !blockForms">
                                 <div class="col-6 px-15">
-                                    <h3 class="completeText">Serve Order</h3>
+                                    <button mat-flat-button color="warn" type="button" class="ew-200 mw-100 rounded-0">
+                                        Cancel
+                                        <mat-icon>close</mat-icon>
+                                    </button>
                                 </div>
                                 <div class="col-6 px-15">
-                                    <button mat-stroked-button color="accent" type="button" class="w-100 rounded-0" (click)="serveOrderItem()">
-                                        <mat-icon>done_all</mat-icon>
-                                        Serve Items
-                                    </button>
+                                    <div class="d-flex align-items-center">
+                                        <h3 class="completeText mr-15 ew-150">Serve Order</h3>
+                                        <button mat-stroked-button color="accent" type="button" class="w-100 rounded-0" (click)="serveOrderItem()">
+                                            <mat-icon>done_all</mat-icon>
+                                            Serve Items
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
 
