@@ -236,12 +236,7 @@
                                 </ng-container>
                             </div>
                             <div class="row no-gutters align-items-center border-top py-5" *ngIf="items['controls'].length > 0 && !blockForms">
-                                <div class="col-6 px-15">
-                                    <button mat-flat-button color="warn" type="button" class="ew-200 mw-100 rounded-0">
-                                        Cancel
-                                        <mat-icon>close</mat-icon>
-                                    </button>
-                                </div>
+                                
                                 <div class="col-6 px-15">
                                     <div class="d-flex align-items-center">
                                         <h3 class="completeText mr-15 ew-150">Serve Order</h3>
@@ -325,7 +320,7 @@
                                         <input matInput  [formControl]="form.get('deliverCharge')" (change)="handleFinalPricing()" digitOnly [decimal]="true">
                                     </mat-form-field>
                                 </div> -->
-                                <div class="billing_wrapper">
+                                <div class="billing_wrapper mt-30 mb-30">
                                     <div class="billing_strip">
                                         <p class="main_title">Order Summary</p>
                                     </div>
@@ -383,14 +378,26 @@
                                       </mat-chip-list>
                                 </div>
                             </div>
-                            <div class="row no-gutters align-items-center border-top py-5">
+                            <div class="row no-gutters align-items-center border-top py-5"  *ngIf="form.get('orderStatus').value != 'completed' && form.get('orderStatus').value != 'cancelled' && !blockForms">
                                 <div class="col-6 px-15">
                                     <h3 class="completeText">Complete Order</h3>
                                 </div>
                                 <div class="col-6 px-15">
-                                    <button mat-flat-button color="success" class="w-100 rounded-0" type="button"
+                                    <div class="printBtn_box col-auto d-flex">
+                                        <button mat-flat-button color="success" class="w-100  rounded-0" (click)="saveOrder('complete')"> Mark as Paid</button>
+                                        <button mat-flat-button aria-label="" color="warn" class="ew-40 rounded-0"  (click)="saveOrder('cancel')">
+                                            <mat-icon>close</mat-icon>
+                                        </button>
+                                    </div>
+                                    <!-- <button mat-flat-button color="success" class="w-100 rounded-0" type="button"
                                     *ngIf="form.get('orderStatus').value != 'completed' && form.get('orderStatus').value != 'cancelled' && !blockForms"  
                                     (click)="saveOrder('complete')">Mark as Paid</button>
+                                    <div class="col-6 px-15">
+                                        <button mat-flat-button color="warn" type="button" class="ew-200 mw-100 rounded-0">
+                                            Cancel
+                                            <mat-icon>close</mat-icon>
+                                        </button>
+                                    </div> -->
                                 </div>
                             </div>
                         </mat-tab>

@@ -10,13 +10,13 @@ export const environment = {
   // apiUrl: "http://192.168.43.144:8000/api/",
   // domain: "http://192.168.43.144:8000",
   // imgUrl: "http://192.168.43.144:8000",
-  apiUrl: "https://connect.runrestro.com/api/",
-  domain: "https://connect.runrestro.com",
-  imgUrl: "https://connect.runrestro.com/public",
+  // apiUrl: "https://connect.runrestro.com/api/",
+  // domain: "https://connect.runrestro.com",
+  // imgUrl: "https://connect.runrestro.com/public",
   
-  // apiUrl: "http://127.0.0.1:8000/api/",
-  // domain: "http://127.0.0.1:8000",
-  // imgUrl: "http://127.0.0.1:8000",
+  apiUrl: "http://127.0.0.1:8000/api/",
+  domain: "http://127.0.0.1:8000",
+  imgUrl: "http://127.0.0.1:8000",
 
   isOffline: true
 };
