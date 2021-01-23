@@ -462,6 +462,7 @@ export class NewOrderComponent implements OnInit, OnDestroy {
         orderAmount: response.orderAmount,
         packingCharge: response.packingCharge,
         deliverCharge: response.deliverCharge,
+        discountAmount: response.discountAmount,
         orderStatus: response.orderStatus,
         orderType: response.orderType,
         taxDisabled: response.taxDisabled,

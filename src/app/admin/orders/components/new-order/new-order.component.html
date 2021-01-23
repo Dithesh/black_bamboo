@@ -306,6 +306,12 @@
                                         <input matInput  [formControl]="form.get('deliverCharge')" (change)="handleFinalPricing()" digitOnly [decimal]="true">
                                     </mat-form-field>
                                 </div>
+                                <div class="delivery_box mt-20">
+                                    <mat-form-field appearance="outline" class="w-100 inline-input">
+                                        <mat-label>Discount Ammount</mat-label>
+                                        <input matInput  [formControl]="form.get('deliverCharge')" (change)="handleFinalPricing()" digitOnly [decimal]="true">
+                                    </mat-form-field>
+                                </div>
                             </div>
                         </mat-tab>
                         <mat-tab *ngIf="items['controls'].length > 0">
