@@ -180,11 +180,7 @@ export class NewOrderComponent implements OnInit, OnDestroy {
           item.isParcel = true;
         }
         this.items.controls.forEach((control:FormGroup) => {
-          console.log(control.get('deletedFlag').value, "deletedGlag");
-          console.log(control.get('productId').value, item.id, "productId");
-          console.log(control.get('isParcel').value,item.isParcel, "parcel");
           item.advancedPriceId = this._serv.notNull(item.advancedPriceId)?item.advancedPriceId:null;
-          console.log(control.get('advancedPriceId').value,item.advancedPriceId, "aadvanced");
           let controlAdvancedPrice = this._serv.notNull(control.get('advancedPriceId').value)?control.get('advancedPriceId').value:"";
           let existingItemPrice = this._serv.notNull(item.advancedPriceId)?item.advancedPriceId:"";
 
@@ -648,7 +644,7 @@ export class NewOrderComponent implements OnInit, OnDestroy {
         this.orderId = response.id;
         this.getOrderDetail();
       }else {
-        this.router.navigateByUrl('/admin/order');
+        this.router.navigateByUrl('/admin/dashboard');
       }
     }, ({error}) => {
       this._serv.showMessage(error['msg'], 'error');
@@ -659,9 +655,25 @@ export class NewOrderComponent implements OnInit, OnDestroy {
   printOrder(orderData=null) {
     if(!this._serv.notNull(orderData)) {
       orderData = this.form.getRawValue();
+
+      if(this.selectedOrderType.tableRequired) {
+        orderData.tables = orderData.tables.map((table:any) => {
+          return {
+            ...table,
+            chairs: table.chairs.filter(chair => (chair.isSelected && chair.permission == 'full')).map(chair => chair.chairId).join(',')
+          }
+        }).filter(table => table.chairs != "");
+      }else {
+        orderData.tables=[];
+      }
+    }
+    if(!this._serv.notNull(orderData.id)) {
+      this._serv.showMessage('Save the order first', 'error');
+      return;
     }
     this.dialog.open(PrintOrderInvoiceComponent, {
       data: {
+        savedOrderData: this.orderData,
         orderData: orderData,
         branchData: this.branchDetail,
         companyData : this.companyDetails,
