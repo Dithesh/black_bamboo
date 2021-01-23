@@ -99,9 +99,10 @@ export class NewOrderComponent implements OnInit, OnDestroy {
       sgst: [''],
       igst: [''],
       orderItemTotal: [''],
+      discountReason: [''],
+      discountValue: [''],
       orderAmount: [''],
       packingCharge: [''],
-      extraCharge: [''],
       deliverCharge: [''],
       orderStatus: ['new'],
       orderType: [''],
@@ -179,7 +180,15 @@ export class NewOrderComponent implements OnInit, OnDestroy {
           item.isParcel = true;
         }
         this.items.controls.forEach((control:FormGroup) => {
-            if(!control.get('deletedFlag').value && control.get('productId').value == item.id && control.get('isParcel').value == item.isParcel && control.get('advancedPriceId').value == item.advancedPriceId) {
+          console.log(control.get('deletedFlag').value, "deletedGlag");
+          console.log(control.get('productId').value, item.id, "productId");
+          console.log(control.get('isParcel').value,item.isParcel, "parcel");
+          item.advancedPriceId = this._serv.notNull(item.advancedPriceId)?item.advancedPriceId:null;
+          console.log(control.get('advancedPriceId').value,item.advancedPriceId, "aadvanced");
+          let controlAdvancedPrice = this._serv.notNull(control.get('advancedPriceId').value)?control.get('advancedPriceId').value:"";
+          let existingItemPrice = this._serv.notNull(item.advancedPriceId)?item.advancedPriceId:"";
+
+            if(!control.get('deletedFlag').value && control.get('productId').value == item.id && control.get('isParcel').value == item.isParcel && controlAdvancedPrice == existingItemPrice) {
                 quantity+=parseInt(control.get('quantity').value)
                 form = control;
                 isNew=false;
@@ -352,11 +361,16 @@ export class NewOrderComponent implements OnInit, OnDestroy {
       sgst = tax/2;
     }
     grandTotal += tax;
+
+    let discountValue = parseFloat(this.form.get('discountValue').value);
+    if(!isNaN(discountValue) && discountValue > 0) {
+      grandTotal = grandTotal - discountValue;
+    }
+
     this.form.patchValue({
       orderItemTotal: totalPrice,
       orderAmount: grandTotal,
       packingCharge: '',
-      extraCharge: '',
       cgst: cgst,
       sgst: sgst,
       igst: '',
@@ -475,7 +489,8 @@ export class NewOrderComponent implements OnInit, OnDestroy {
         orderAmount: response.orderAmount,
         packingCharge: response.packingCharge,
         deliverCharge: response.deliverCharge,
-        discountAmount: response.discountAmount,
+        discountValue: response.discountValue,
+        discountReason: response.discountReason,
         orderStatus: response.orderStatus,
         orderType: response.orderType,
         taxDisabled: response.taxDisabled,

@@ -308,8 +308,14 @@
                                 </div>
                                 <div class="delivery_box mt-20">
                                     <mat-form-field appearance="outline" class="w-100 inline-input">
+                                        <mat-label>Discount Reason</mat-label>
+                                        <input matInput  [formControl]="form.get('discountReason')" (change)="handleFinalPricing()" digitOnly [decimal]="true">
+                                    </mat-form-field>
+                                </div>
+                                <div class="delivery_box mt-20">
+                                    <mat-form-field appearance="outline" class="w-100 inline-input">
                                         <mat-label>Discount Ammount</mat-label>
-                                        <input matInput  [formControl]="form.get('deliverCharge')" (change)="handleFinalPricing()" digitOnly [decimal]="true">
+                                        <input matInput  [formControl]="form.get('discountValue')" (change)="handleFinalPricing()" digitOnly [decimal]="true">
                                     </mat-form-field>
                                 </div>
                             </div>
@@ -350,6 +356,10 @@
                                     <div class="billing_strip" *ngIf="!form.get('taxDisabled').value">
                                         <p class="title">SGST <small class="text-muted">({{ ((form.get('taxPercent').value > 0)?(form.get('taxPercent').value/2):0) | number : '2.2' }}%)</small></p>
                                         <span class="value_section">{{ form.get('sgst').value | currency }}</span>
+                                    </div>
+                                    <div class="billing_strip" *ngIf="!form.get('taxDisabled').value">
+                                        <p class="title">Discount</p>
+                                        <span class="value_section">{{ form.get('discountValue').value | currency }}</span>
                                     </div>
                                     <div class="billing_strip">
                                         <p class="title">Grand Total</p>
