@@ -47,7 +47,7 @@
             </thead>
             <tbody>
                 <ng-container *ngFor="let item of dataSource?.data; let i =index">
-                    <tr [ngClass]="{'highlight': (item.orderStatus == 'new' && (item.rejectedCount > 0 || (item.timeDif.h * 60 + item.timeDif.i) > 20))}">
+                    <tr [ngClass]="{'highlight': (item.orderStatus == 'new' && (item.rejectedCount > 0 || (item.timeDif.h * 60 + item.timeDif.i) > 20))}" [class.completedRow]="item.orderStatus == 'completed'" [class.canceledRow]="item.orderStatus == 'cancelled'">
                         <td>
                             <button mat-icon-button type="button" [routerLink]="['/admin/order/update/'+item.id]">
                                 <mat-icon>create</mat-icon>

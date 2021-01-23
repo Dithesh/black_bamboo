@@ -10,7 +10,7 @@
                 </div>
             </div>
             <h3 class="left_title">Categories</h3>
-            <ul class="list-unstyled mb-0 category_list">
+            <ul class="list-unstyled mb-0 category_list scroll_bar">
                 <li [class.active]="selectedCategory == 'all'" (click)="selectedCategory = 'all'"><div class="product_img" style="background-image: url('/assets/images/food.jpg');"></div><span>All</span></li>
                 <ng-container *ngFor="let item of productList;let i = index;">
                     <li [class.active]="selectedCategory == item.id" (click)="selectedCategory = item.id">

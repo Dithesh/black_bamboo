@@ -883,6 +883,12 @@ label.mat-checkbox-layout {
                     border-radius: 0px 10px 10px 0px;
                 }
             }
+            &.completedRow{
+                background-color: rgba(31, 255 ,48, 0.22);
+            }
+            &.canceledRow{
+                background-color: rgba(255, 72 ,31, 0.22);;
+            }
             &:not(.total_row):hover{
                 td{
                     background-color: #fff7e6;
@@ -1532,6 +1538,7 @@ label.mat-checkbox-layout {
         margin-bottom: 0px;
     }
     .category_list{
+        max-height: calc(100vh - 340px);
         li{
             position: relative;
             padding: 10px 15px;
@@ -1604,6 +1611,7 @@ label.mat-checkbox-layout {
     padding: 15px;
     // border-bottom: 1px solid #ddd;
 }
+
 .product_lists{
     .prod_list_header{
         padding: 10px 0px;
@@ -1777,7 +1785,7 @@ label.mat-checkbox-layout {
 
     
 .only-print{
-    // display: none !important;
+    display: none !important;
 }
 @media print { 
     
