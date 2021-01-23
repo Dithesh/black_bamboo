@@ -1,17 +1,25 @@
 <div class="ticket only-print" id="print-section">
     <p class="centered">
-        <b class="title">{{companyData?.companyName}}</b>
-        <br>{{branchData?.branchTitle}} {{branchData?.branchAddress}}</p>
-    <div class="flex justify-content-between">
-        <p class="mb-0">Order By :</p>
-        <p class="mb-0">Date By :</p>
+        <b class="title">{{savedOrderData?.branch.branchTitle}}</b>
+        <br>{{savedOrderData?.branch.branchAddress}}</p>
+    <div class="d-flex justify-content-between">
+        <p class="mb-0">By : {{ savedOrderData?.bearer.firstName }} {{ savedOrderData?.bearer.lastName }}</p>
+        <p class="mb-0">{{ savedOrderData?.created_at | datex: 'DD-MM-YYYY hh:mm:i' }}</p>
+    </div>
+    <div>
+        <ng-container *ngFor="let item of orderData?.tables; let i=index;">
+            {{ item.tableId }} 
+            <ng-container *ngIf="i != (orderData?.tables.length - 1)">
+                , 
+            </ng-container>
+        </ng-container>
     </div>
     <table class="table">
         <thead>
             <tr>
                 <th class="quantity">Q.</th>
                 <th class="description">Desc.</th>
-                <th class="price">$$</th>
+                <th class="price">Rs.</th>
             </tr>
         </thead>
         <tbody>
@@ -32,15 +40,20 @@
                 <th class="description">SGST</th>
                 <th class="price">{{ orderData?.sgst | currency: '':'' }}</th>
             </tr>
-            <tr *ngIf="orderData?.deliverCharge">
+            <tr *ngIf="orderData?.deliverCharge && orderData?.deliverCharge > 0">
                 <td class="quantity"></td>
                 <th class="description">Del. Chrg.</th>
                 <th class="price">{{ orderData?.deliverCharge | currency: '':'' }}</th>
             </tr>
-            <tr *ngIf="orderData?.packingCharge">
+            <tr *ngIf="orderData?.packingCharge && orderData?.packingCharge > 0">
                 <td class="quantity"></td>
                 <th class="description">Pkg. Chrg.</th>
                 <th class="price">{{ orderData?.packingCharge | currency: '':'' }}</th>
+            </tr>
+            <tr *ngIf="orderData?.discountValue && orderData?.discountValue > 0">
+                <td class="quantity"></td>
+                <th class="description">Discount</th>
+                <th class="price">{{ orderData?.discountValue | currency: '':'' }}</th>
             </tr>
             <tr>
                 <th class="quantity"></th>

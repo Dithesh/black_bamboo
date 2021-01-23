@@ -11,6 +11,7 @@ export class PrintOrderInvoiceComponent implements OnInit {
   branchData;
   companyData;
   userData;
+  savedOrderData;
   constructor(
     @Inject(MAT_DIALOG_DATA) private data,
     private ref: MatDialogRef<PrintOrderInvoiceComponent>
@@ -19,10 +20,8 @@ export class PrintOrderInvoiceComponent implements OnInit {
     this.branchData = data.branchData;
     this.companyData = data.companyData;
     this.userData = data.userData;
+    this.savedOrderData = data.savedOrderData;
     console.log(this.orderData, 'data order');
-    console.log(this.branchData, ' data branch');
-    console.log(this.companyData,'companty data');
-    console.log(this.userData,'data')
     
     
   }
