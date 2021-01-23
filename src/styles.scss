@@ -1539,6 +1539,7 @@ label.mat-checkbox-layout {
     }
     .category_list{
         max-height: calc(100vh - 340px);
+        overflow-y: auto;
         li{
             position: relative;
             padding: 10px 15px;
