@@ -30,7 +30,7 @@ export class NewOrderComponent implements OnInit, OnDestroy {
   rating;
   orderProcessing = false;
   selectedCategory='all';
-  
+  companyDetails;
   // customOptions: OwlOptions = {
   //   loop: false,
   //   mouseDrag: true,
@@ -77,6 +77,7 @@ export class NewOrderComponent implements OnInit, OnDestroy {
   url = environment.imgUrl;
   orderData: any;
   branchDetail: any;
+  orderDetails: any;
   keyListener = this.shortCutKeyHandler.bind(this);
 
   constructor(
@@ -115,9 +116,14 @@ export class NewOrderComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.userData = this._serv.getUserData();
+    
+    if(this.userData.company_id){
+      this.getCompanyDetails(this.userData.company_id);
+    }
     if(this.userData.roles == 'Super Admin' || this.userData.roles == 'Company Admin' || this.userData.roles == 'Company Accountant') {
       this.blockForms=true;
       this.form.disable();
+      
     }
     if(this.orderId) {
       this.getOrderDetail();
@@ -125,6 +131,7 @@ export class NewOrderComponent implements OnInit, OnDestroy {
       if(this.userData.roles != 'Super Admin' && this.userData.roles != 'Company Admin' && this.userData.roles != 'Company Accountant') {
         this.form.get('branch_id').setValue(this.userData.branch_id);
         this.getBranchDetail(this.userData.branch_id);
+        
       }
     }
     // if(this.userData.roles == 'Super Admin') {
@@ -135,6 +142,14 @@ export class NewOrderComponent implements OnInit, OnDestroy {
 
     window.addEventListener('keydown', this.keyListener, true);
   }
+
+  getCompanyDetails(id){
+      this._serv.endpoint = "order-manager/company/"+id;
+      this._serv.get().subscribe((data:any) => {
+        this.companyDetails = data;
+      })
+  }
+
 
   _filterProductList(value) {
     value = value?value:"";
@@ -445,8 +460,6 @@ export class NewOrderComponent implements OnInit, OnDestroy {
     this._serv.endpoint = "order-manager/order/"+this.orderId;
     this._serv.get().subscribe((response: any) => {
       this.orderData=response;
-
-      // console.log(response.order_items,'order data');
       
 
       this.form.patchValue({
@@ -634,7 +647,10 @@ export class NewOrderComponent implements OnInit, OnDestroy {
     }
     this.dialog.open(PrintOrderInvoiceComponent, {
       data: {
-        orderData: orderData
+        orderData: orderData,
+        branchData: this.branchDetail,
+        companyData : this.companyDetails,
+        userData : this.userData,
       }
     })
   }
