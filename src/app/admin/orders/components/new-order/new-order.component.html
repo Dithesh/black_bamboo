@@ -22,7 +22,7 @@
         </div>
     </div>
     <div class="col-md col-12 border-left">
-        <div class="top_flterBar border-bottom d-flex align-items-center flex-wrap">
+        <div class="top_flterBar border-bottom d-flex align-items-center flex-wrap" [class.completedStatus]="orderData?.orderStatus == 'completed'" [class.cancelledStatus]="orderData?.orderStatus == 'cancelled'">
             <div>
                 <mat-chip-list aria-label="Fish selection">
                     <ng-container *ngFor="let item of orderTypeList;">
@@ -40,12 +40,18 @@
             <div *ngIf="orderData?.rejectedCount <= 0 && (orderData?.timeDif.h * 60 + orderData?.timeDif.i) <= 20 && orderData?.orderStatus == 'new'" class="status_box ml-auto warn">
                 On Going
             </div>
-            <div *ngIf="orderData?.orderStatus == 'cancelled'" class="status_box ml-auto red">
+
+            <div *ngIf="orderData?.orderStatus == 'cancelled'" class="status_box ml-auto red cursor-pointer" [matMenuTriggerFor]="changeStatusMenu">
                 Cancelled
             </div>
-            <div *ngIf="orderData?.orderStatus == 'completed'" class="status_box ml-auto">
+            <div *ngIf="orderData?.orderStatus == 'completed'" class="status_box ml-auto cursor-pointer" [matMenuTriggerFor]="changeStatusMenu">
                 Completed
             </div>
+            <mat-menu #changeStatusMenu="matMenu" xPosition="before">
+                <button mat-menu-item *ngIf="orderData?.orderStatus != 'completed'" (click)="changeOrderStatusBack('completed')">Change To Completed</button>
+                <button mat-menu-item *ngIf="orderData?.orderStatus != 'cancelled'" (click)="changeOrderStatusBack('cancelled')">Change To Cancelled</button>
+                <button mat-menu-item (click)="changeOrderStatusBack('new')">Change To On Going</button>
+            </mat-menu>
         </div>
         <div class="row">
             <div class="col-md-5 col-12  border-right" [class.pointer-none]="blockForms">
@@ -321,7 +327,7 @@
                                 </div>
                             </div>
                             <div class="row no-gutters align-items-center border-top py-5">
-                                <div class="col-12 px-15">
+                                <div class="col-12 px-15" [class.pointer-none]="blockForms">
                                     <mat-chip-list aria-label="Method selection">
                                         <ng-container *ngFor="let item of paymentMethodList;">
                                             <mat-chip color="primary" [selected]="item.id == form.get('paymentMethod').value" (click)="form.get('paymentMethod').setValue(item.id)">{{ item.methodTitle }}</mat-chip>
