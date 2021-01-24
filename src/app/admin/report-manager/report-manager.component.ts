@@ -17,6 +17,7 @@ export class ReportManagerComponent implements OnInit {
   displayedColumns: string[] = ['action', 'id', 'orderAmount', 'orderStatus', 'created_at'];
   filterForm:FormGroup;
   orderTypeList: any[];
+  paymentMethodList: any[];
   fileName= 'ExcelSheet.xlsx';
   dataSource: any;
   totalOrderAmount = 0;
@@ -31,6 +32,7 @@ export class ReportManagerComponent implements OnInit {
     this.filterForm = this.fb.group({
       searchString: [''],
       orderStatus: [''],
+      paymentMethod: [''],
       typeOfOrder: [''],
       branch_id: [''],
       startDate: [''],
@@ -73,6 +75,7 @@ export class ReportManagerComponent implements OnInit {
   getBranchDetail(branch_id) {
     if(!this._serv.notNull(branch_id)){
       this.orderTypeList=[];
+      this.paymentMethodList=[];
       return;
     }
     
@@ -80,6 +83,7 @@ export class ReportManagerComponent implements OnInit {
     this._serv.get().subscribe((response:any) => {
       this.branchDetail = response;
       this.orderTypeList = response.order_types as any[];
+      this.paymentMethodList = response.payment_methods as any[];
     })
   }
 
@@ -97,6 +101,7 @@ export class ReportManagerComponent implements OnInit {
                             + "&orderStatus="+filterValue.orderStatus
                             + "&branch_id="+filterValue.branch_id
                             + "&typeOfOrder="+filterValue.typeOfOrder
+                            + "&paymentMethod="+filterValue.paymentMethod
                             + "&startDate="+startDate
                             + "&endDate="+endDate
                             + "&orderType="+filterValue.orderType
