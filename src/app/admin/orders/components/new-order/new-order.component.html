@@ -212,25 +212,25 @@
                                     <div class="col-md-6 col-12">
                                         <mat-form-field appearance="outline" class="w-100">
                                             <mat-label>Customer Name</mat-label>
-                                            <input formControlName="customerName" matInput>
+                                            <input formControlName="customerName" matInput (change)="isDirty=true">
                                         </mat-form-field>
                                     </div>
                                     <div class="col-md-6 col-12">
                                         <mat-form-field appearance="outline" class="w-100">
                                             <mat-label>Mobile Number</mat-label>
-                                            <input formControlName="mobileNumber" matInput>
+                                            <input formControlName="mobileNumber" matInput (change)="isDirty=true">
                                         </mat-form-field>
                                     </div>
                                     <div class="col-12">
                                         <mat-form-field appearance="outline" class="w-100">
                                             <mat-label>Customer Address</mat-label>
-                                            <textarea formControlName="customerAddress" matInput></textarea>
+                                            <textarea formControlName="customerAddress" matInput (change)="isDirty=true"></textarea>
                                         </mat-form-field>
                                     </div>
                                     <div class="col-12">
                                         <mat-form-field appearance="outline" class="w-100">
                                             <mat-label>Related Info</mat-label>
-                                            <textarea formControlName="relatedInfo" matInput></textarea>
+                                            <textarea formControlName="relatedInfo" matInput (change)="isDirty=true"></textarea>
                                         </mat-form-field>
                                     </div>
                                 </div>
@@ -245,19 +245,19 @@
                                 <div class="delivery_box mt-20">
                                     <mat-form-field appearance="outline" class="w-100 inline-input">
                                         <mat-label>Deliver Charge (Optional)</mat-label>
-                                        <input matInput  [formControl]="form.get('deliverCharge')" (change)="handleFinalPricing()" digitOnly [decimal]="true">
+                                        <input matInput  [formControl]="form.get('deliverCharge')" (change)="handleFinalPricing(true)" digitOnly [decimal]="true">
                                     </mat-form-field>
                                 </div>
                                 <div class="delivery_box mt-20">
                                     <mat-form-field appearance="outline" class="w-100 inline-input">
                                         <mat-label>Discount Reason</mat-label>
-                                        <input matInput  [formControl]="form.get('discountReason')" (change)="handleFinalPricing()" digitOnly [decimal]="true">
+                                        <input matInput  [formControl]="form.get('discountReason')" (change)="handleFinalPricing(true)" digitOnly [decimal]="true">
                                     </mat-form-field>
                                 </div>
                                 <div class="delivery_box mt-20">
                                     <mat-form-field appearance="outline" class="w-100 inline-input">
                                         <mat-label>Discount Ammount</mat-label>
-                                        <input matInput  [formControl]="form.get('discountValue')" (change)="handleFinalPricing()" digitOnly [decimal]="true">
+                                        <input matInput  [formControl]="form.get('discountValue')" (change)="handleFinalPricing(true)" digitOnly [decimal]="true">
                                     </mat-form-field>
                                 </div>
                             </div>

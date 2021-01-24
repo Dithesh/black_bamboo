@@ -264,7 +264,8 @@ export class NewOrderComponent implements OnInit, OnDestroy {
     this.handleFinalPricing();
   }
 
-  handleFinalPricing() {
+  handleFinalPricing(shouldBeDirty=false) {
+    if(shouldBeDirty)this.isDirty=true;
     let orderItems = this.items.value;
     let totalPrice = 0;
     let grandTotal = 0;
