@@ -1619,6 +1619,13 @@ label.mat-checkbox-layout {
     margin-right: -15px;
     padding: 15px;
     // border-bottom: 1px solid #ddd;
+
+    &.completedStatus {
+        background-color: rgba(179, 216, 105, 0.42);
+    }
+    &.cancelledStatus {
+        background-color: rgba(#fad7d0, 0.42);
+    }
 }
 
 .product_lists{

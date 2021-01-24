@@ -537,10 +537,17 @@ export class NewOrderComponent implements OnInit, OnDestroy {
       // if(orderData.orderStatus == "completed") {
       //   this.printOrder(orderData);
       // }
-        this.orderId = response.id;
-        // this.getOrderDetail();
-      // }else {
+      if(this._serv.notNull(this.orderId)) {
+        this.getOrderDetail();
+        if(orderData.orderStatus == "completed") {
+          this.printOrder(orderData);
+        }
+      }else {
         this.router.navigateByUrl('/admin/order/update/'+response.id);
+      }
+        // this.orderId = response.id;
+      // }else {
+        // this.router.navigateByUrl('/admin/order/update/'+response.id);
       // }
     }, ({error}) => {
       this._serv.showMessage(error['msg'], 'error');
@@ -705,6 +712,15 @@ export class NewOrderComponent implements OnInit, OnDestroy {
       e.preventDefault();
       this.saveOrder('confirm');
     }
+  }
+
+  changeOrderStatusBack(status) {
+    this._serv.endpoint = "order-manager/order/change-order-status";
+    this._serv.post({id: this.orderId, status: status}).subscribe(response => {
+      this.getOrderDetail();
+    }, ({error}) => {
+      this._serv.showMessage(error['msg'], 'error');
+    })
   }
 
 
