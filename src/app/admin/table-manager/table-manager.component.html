@@ -7,7 +7,20 @@
         <ng-container *ngFor="let item of tables['controls'];let ti=index;">
             <div class="table_col" [class.reserved]="item.get('isReserved').value" [formGroupName]="ti">
                 <div class="row ew-130 mx-auto position-relative h-100 no-gutters">
-                    <span class="table_circle" (click)="changeReservedStatus(item)">{{ item.get('tableId').value }}</span>
+                    <span class="table_circle">
+                        {{ item.get('tableId').value }}
+                        <ng-container *ngIf="item.get('runningOrderIds').value.length > 1">
+                            <button class="ordersMenuBtn" mat-button [matMenuTriggerFor]="menu">{{item.get('runningOrderIds').value.length}}</button>
+                                <mat-menu #menu="matMenu">
+                                    <ng-container *ngFor="let order of item.get('runningOrderIds').value">
+                                        <button mat-menu-item (click)="gotoOrder(order)">{{order}}</button>
+                                    </ng-container>
+                                </mat-menu>
+                        </ng-container>
+                        <ng-container *ngIf="item.get('runningOrderIds').value.length == 1">
+                            <button class="ordersMenuBtn" mat-button (click)="gotoOrder(item.get('runningOrderIds').value[0])">1</button>
+                        </ng-container>
+                    </span>
                     <ng-container formArrayName="chairs">
                         <!-- <div class="table_innerBox col-auto order-1" *ngIf="item.get('chairs')['controls'].length > 0">
                             <div class="table_seat_checkBox vertical" formGroupName="0">

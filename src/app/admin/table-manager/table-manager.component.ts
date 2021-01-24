@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, FormArray } from '@angular/forms';
 import { DataService } from 'src/app/shared/services/data.service';
@@ -12,7 +13,8 @@ export class TableManagerComponent implements OnInit {
   tableList: any[];
   constructor(
     private fb: FormBuilder,
-    public _serv: DataService
+    public _serv: DataService,
+    private router: Router
   ) { 
     this.form = this.fb.group({
       tables: this.fb.array([])
@@ -48,6 +50,7 @@ export class TableManagerComponent implements OnInit {
         id: [t.id],
         tableId: [t.tableId],
         noOfChair: [t.noOfChair],
+        runningOrderIds:[t.runningOrderIds],
         isReserved: [t.isReserved],
         chairs: this.fb.array(chairs)
       }))
@@ -64,7 +67,9 @@ export class TableManagerComponent implements OnInit {
       this.addTables();
     })
   }
-
+  gotoOrder(orderId){
+    this.router.navigateByUrl('/admin/order/update/'+orderId)
+  }
   changeReservedStatus(table) {
     if(!this._serv.getPermission('tables', 'full'))return;
     let value = table.value;

@@ -11,7 +11,7 @@ export class PrintKotComponent implements OnInit {
   branchData;
   companyData;
   userData;
-  orderList:[] = [];
+  itemGroup={};
   savedOrderData;
   constructor(
     @Inject(MAT_DIALOG_DATA) private data,
@@ -24,9 +24,12 @@ export class PrintKotComponent implements OnInit {
     this.savedOrderData = data.savedOrderData;
     
     // if(data.orderData.items){
-    //   let itemGroup = [];
-    //   this.orderData.forEach(items => {
-    //     item
+    //   this.orderData.items.forEach(item => {
+    //     if(!this.itemGroup.hasOwnProperty(item.orderGroup)){
+    //       this.itemGroup[item.orderGroup]=[];
+    //     }
+    //     this.itemGroup[item.orderGroup].push(item)
+
     //   });
     // }
     
