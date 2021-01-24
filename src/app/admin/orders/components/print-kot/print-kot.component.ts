@@ -21,6 +21,8 @@ export class PrintKotComponent implements OnInit {
     this.companyData = data.companyData;
     this.userData = data.userData;
     this.savedOrderData = data.savedOrderData;
+    console.log(this.orderData);
+    
   }
 
   ngOnInit(): void {
