@@ -4,7 +4,10 @@
         <br>{{savedOrderData?.branch.branchAddress}}</p>
     <div class="d-flex justify-content-between">
         <p class="mb-0">By : {{ savedOrderData?.bearer.firstName }} {{ savedOrderData?.bearer.lastName }}</p>
-        <p class="mb-0">{{ savedOrderData?.created_at | datex: 'DD-MM-YYYY hh:mm:i' }}</p>
+        <p class="mb-0">{{ savedOrderData?.created_at | datex: 'DD-MM-YYYY hh:mm A' }}</p>
+    </div>
+    <div class="d-flex justify-content-between">
+        <p class="mb-0">#{{ savedOrderData?.id }}</p>
     </div>
     <div>
         <ng-container *ngFor="let item of orderData?.tables; let i=index;">
@@ -26,7 +29,7 @@
             <ng-container *ngFor="let item of orderData?.items;let i=index;">
                 <tr>
                     <td class="quantity">x{{ item.quantity }}</td>
-                    <td class="description">{{ item.productName }}</td>
+                    <td class="description">{{ item.productName }} {{item.advancedPriceTitle ? '('+ item.advancedPriceTitle +')' : ''}}</td>
                     <td class="price">{{ item.totalPrice | currency: '':'' }}</td>
                 </tr>
             </ng-container>

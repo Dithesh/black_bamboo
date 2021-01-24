@@ -21,7 +21,7 @@ export class PrintOrderInvoiceComponent implements OnInit {
     this.companyData = data.companyData;
     this.userData = data.userData;
     this.savedOrderData = data.savedOrderData;
-    console.log(this.orderData, 'data order');
+    console.log(this.savedOrderData, 'data order');
     
     
   }

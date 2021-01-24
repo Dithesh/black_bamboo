@@ -18,9 +18,6 @@
                         <span>{{ item.categoryName }}</span>
                     </li>
                 </ng-container>
-                <!-- <li><div class="product_img" style="background-image: url('/assets/images/food.jpg');"></div><span>Nonveg</span></li>
-                <li><div class="product_img" style="background-image: url('/assets/images/food.jpg');"></div><span>Starter</span></li>
-                <li><div class="product_img" style="background-image: url('/assets/images/food.jpg');"></div><span>Juices</span></li> -->
             </ul>
         </div>
     </div>
@@ -31,7 +28,7 @@
                     <ng-container *ngFor="let item of orderTypeList;">
                         <mat-chip *ngIf="item.isActive" color="primary" [selected]="item.id == form.get('orderType').value" (click)="changeOrderType(item.id, 'button')">{{ item.orderType }}</mat-chip>
                     </ng-container>
-                  </mat-chip-list>
+                </mat-chip-list>
             </div>
 
             <div *ngIf="orderData?.rejectedCount > 0 && orderData?.orderStatus == 'new'" class="status_box ml-auto red">
@@ -63,7 +60,7 @@
                     </div>
                     <ul class="list-unstyled items_list_ul mb-0 scroll_bar">
                         <ng-container *ngFor="let cat of filteredProductList | async; let ci = index;">
-                            <ng-container *ngIf="cat.products.length > 0 && (selectedCategory == cat.id || selectedCategory == 'all')" >
+                            <ng-container *ngIf="cat.products?.length > 0 && (selectedCategory == cat.id || selectedCategory == 'all')" >
                                 <li class="itemTitle">{{ cat.categoryName }}</li>
                                 <ng-container *ngFor="let item of cat.products;">
                                     <li class="product_items d-flex">
@@ -81,7 +78,7 @@
                                                 </button>
                                                 <div class="input_add_box">
 
-                                                            <mat-form-field appearance="outline" class="ew-100 variation_select" *ngIf="item.advanced_pricing && item.advanced_pricing.length > 0">
+                                                            <mat-form-field appearance="outline" class="ew-100 variation_select" *ngIf="item.advanced_pricing && item.advanced_pricing?.length > 0">
                                                                 <mat-select [(ngModel)]="item.advancedPriceId" [ngModelOptions]="{standalone: true}" (selectionChange)="handleProductPriceChange(item)">
                                                                     <ng-container *ngFor="let tt of item.advanced_pricing;">
                                                                         <mat-option [value]="tt.id"> {{tt.title}} </mat-option>
@@ -112,67 +109,6 @@
                             </ng-container>
                         </ng-container>
                         
-                        <!-- <li class="product_items d-flex">
-                            <input type="checkbox" id="2" value="selected1">
-                            <label for="2">
-                                <div class="produt_img" style="background-image: url('/assets/images/food.jpg');"></div>
-                                <div class="textbox">
-                                    <p>Gobi</p>
-                                    <span>&#8377; 12.00</span>
-                                </div>
-                                <div class="buttonBox text-right">
-                                    <button mat-icon-button aria-label="add" class="addShowBtn pointer-none" color="primary">
-                                        <mat-icon>add_circle_outline</mat-icon>
-                                    </button>
-                                    <div class="input_add_box">
-                                        <div class="d-flex mb-5">
-                                            <mat-slide-toggle color="accent" class="mr-10">Parcel?</mat-slide-toggle>
-                                            <div class="input-group mb-0 ml-auto number_input item_btn">
-                                                <div class="input-group-prepend">
-                                                    <button class="btn btn-outline-secondary" type="button">-</button>
-                                                </div>
-                                                <input type="text" class="form-control" digitOnly>
-                                                <div class="input-group-append">
-                                                    <button class="btn btn-outline-secondary" type="button">+</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <button mat-stroked-button color="primary" class="product_addBtn ew-100 small_btn"><mat-icon>add</mat-icon> Add</button>
-                                    </div>
-                                </div>
-                            </label>
-                        </li>
-                        <li class="itemTitle">Juice</li>
-                        <li class="product_items d-flex">
-                            <input type="checkbox" id="3" value="selected1">
-                            <label for="3">
-                                <div class="produt_img" style="background-image: url('/assets/images/food.jpg');"></div>
-                                <div class="textbox">
-                                    <p>Gobi</p>
-                                    <span>&#8377; 12.00</span>
-                                </div>
-                                <div class="buttonBox text-right">
-                                    <button mat-icon-button aria-label="add" class="addShowBtn pointer-none" color="primary">
-                                        <mat-icon>add_circle_outline</mat-icon>
-                                    </button>
-                                    <div class="input_add_box">
-                                        <div class="d-flex mb-5">
-                                            <mat-slide-toggle color="accent" class="mr-10">Parcel?</mat-slide-toggle>
-                                            <div class="input-group mb-0 ml-auto number_input item_btn">
-                                                <div class="input-group-prepend">
-                                                    <button class="btn btn-outline-secondary" type="button">-</button>
-                                                </div>
-                                                <input type="text" class="form-control" digitOnly>
-                                                <div class="input-group-append">
-                                                    <button class="btn btn-outline-secondary" type="button">+</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <button mat-stroked-button color="primary" class="product_addBtn ew-100 small_btn"><mat-icon>add</mat-icon> Add</button>
-                                    </div>
-                                </div>
-                            </label>
-                        </li> -->
                     </ul>
                 </div>
             </div>
@@ -340,7 +276,7 @@
                                         <p class="title">Order Item Total</p>
                                         <span class="value_section">{{ form.get('orderItemTotal').value | currency }}</span>
                                     </div>
-                                    <div class="billing_strip">
+                                    <div class="billing_strip" *ngIf="form.get('deliverCharge').value && form.get('deliverCharge').value > 0">
                                         <p class="title">Delivery Charge</p>
                                         <span class="value_section">{{ form.get('deliverCharge').value | currency }}</span>
                                     </div>
@@ -357,11 +293,11 @@
                                         <p class="title">SGST <small class="text-muted">({{ ((form.get('taxPercent').value > 0)?(form.get('taxPercent').value/2):0) | number : '2.2' }}%)</small></p>
                                         <span class="value_section">{{ form.get('sgst').value | currency }}</span>
                                     </div>
-                                    <div class="billing_strip" *ngIf="!form.get('taxDisabled').value">
+                                    <div class="billing_strip" *ngIf="form.get('discountValue').value && form.get('discountValue').value > 0">
                                         <p class="title">Discount</p>
                                         <span class="value_section">{{ form.get('discountValue').value | currency }}</span>
                                     </div>
-                                    <div class="billing_strip">
+                                    <div class="billing_strip totalAmountText">
                                         <p class="title">Grand Total</p>
                                         <span class="value_section">{{ form.get('orderAmount').value | currency }}</span>
                                     </div>
@@ -371,7 +307,6 @@
                                     <div class="d-flex align-items-center">
                                         <div class="col px-0">
                                             <mat-form-field appearance="outline" class="w-100 inline-input order-calc">
-                                                <!-- <mat-label>Received</mat-label> -->
                                                 <input matInput digitOnly placeholder="Received" [formControl]="calAmount" [decimal]="true">
                                             </mat-form-field>
                                         </div>
@@ -400,7 +335,7 @@
                                 </div>
                                 <div class="col-6 px-15">
                                     <div class="printBtn_box col-auto d-flex">
-                                        <button mat-flat-button color="success" class="w-100  rounded-0" (click)="saveOrder('complete')"> Mark as Paid</button>
+                                        <button mat-flat-button color="success" class="w-100  rounded-0" (click)="saveOrder('complete')"> Complete Order</button>
                                         <button mat-flat-button aria-label="" color="warn" class="ew-40 rounded-0"  (click)="saveOrder('cancel')">
                                             <mat-icon>close</mat-icon>
                                         </button>
@@ -416,13 +351,27 @@
                                     </div> -->
                                 </div>
                             </div>
+                            <div class="row no-gutters align-items-center border-top py-5"  *ngIf="form.get('orderStatus').value == 'completed' || form.get('orderStatus').value == 'cancelled' || blockForms">
+                               
+                                <div class="col-auto ml-auto px-15">
+                                    <div class="printBtn_box ew-150">
+                                        <button mat-stroked-button color="primary" class="w-100  rounded-0"> Reopen</button>
+                                    </div>
+                                </div>
+                            </div>
                         </mat-tab>
                       </mat-tab-group>
 
                     <div class="tab_footer border-top">
                         <div class="row no-gutters align-items-center">
-                            <div class="ammount_box col">
-                                <h3><span>Order Amount :</span> {{ form.get('orderAmount').value | currency }}</h3>
+                            <div class="col">
+                                <div class="ammount_box d-flex">
+                                    <div class="d-inline-block orderAmuntChip mr-10" [class.paid]="form.get('isPaid').value">{{ form.get('orderAmount').value | currency }}</div>
+                                    <div class="d-inline-flex align-items-center">
+                                        <p class="my-0 mr-20 font-weight-500 font-1_6">Paid ?</p>
+                                        <mat-slide-toggle [formControl]="form.get('isPaid')"></mat-slide-toggle>
+                                    </div>
+                                </div>
                             </div>
                             <div class="saveBtn_box col-auto">
                                 <button mat-flat-button color="primary" class="ew-150 rounded-0" 

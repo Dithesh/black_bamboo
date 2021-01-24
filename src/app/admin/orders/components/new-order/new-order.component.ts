@@ -31,37 +31,7 @@ export class NewOrderComponent implements OnInit, OnDestroy {
   orderProcessing = false;
   selectedCategory='all';
   companyDetails;
-  // customOptions: OwlOptions = {
-  //   loop: false,
-  //   mouseDrag: true,
-  //   touchDrag: true,
-  //   pullDrag: false,
-  //   autoplay:false,
-  //   dots: false,
-  //   navSpeed: 700,
-  //   margin:0,
-  //   nav: true,
-  //   navText: ['<img src="assets/images/return.svg">', '<img src="assets/images/next.svg">'],
-  //   responsive: {
-  //     0: {
-  //       items: 2
-  //     },
-  //     400: {
-  //       items: 2
-  //     },
-  //     760: {
-  //       items: 3
-  //     },
-  //     990: {
-  //       items: 4
-  //     },
-  //     1200: {
-  //       items: 5
-  //     }
-  //   },
-    
-  // }
-
+  
   form:FormGroup;
   orderTypeList:any[] = [];
   selectedOrderType: any;
@@ -108,6 +78,7 @@ export class NewOrderComponent implements OnInit, OnDestroy {
       orderType: [''],
       taxDisabled: [false],
       taxPercent: [0],
+      isPaid:[false],
       paymentMethod: [''],
       tables: this.fb.array([]),
       items: this.fb.array([]),
@@ -712,7 +683,7 @@ export class NewOrderComponent implements OnInit, OnDestroy {
       this.handleFinalPricing();
       this.paymentMethodList = response.payment_methods as any[];
       
-      if(this.branchDetail && this.paymentMethodList.length > 0 && !this._serv.notNull(this.orderId)) {
+      if(this.branchDetail && this.paymentMethodList && this.paymentMethodList.length > 0 && !this._serv.notNull(this.orderId)) {
         this.form.get('paymentMethod').setValue(this.paymentMethodList[0].id);
       }
 
