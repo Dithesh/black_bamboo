@@ -2,15 +2,15 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 @Component({
-  selector: 'app-print-address-receipt',
-  templateUrl: './print-address-receipt.component.html',
-  styleUrls: ['./print-address-receipt.component.scss']
+  selector: 'app-print-kot',
+  templateUrl: './print-kot.component.html',
+  styleUrls: ['./print-kot.component.scss']
 })
-export class PrintAddressReceiptComponent implements OnInit {
+export class PrintKotComponent implements OnInit {
   orderData;
   constructor(
     @Inject(MAT_DIALOG_DATA) private data,
-    private ref: MatDialogRef<PrintAddressReceiptComponent>
+    private ref: MatDialogRef<PrintKotComponent>
   ) { 
     this.orderData = data.orderData;
   }

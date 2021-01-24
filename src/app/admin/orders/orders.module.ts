@@ -10,11 +10,11 @@ import { AddOrderItemComponent } from './components/add-order-item/add-order-ite
 import { ServeOrderItemComponent } from './components/serve-order-item/serve-order-item.component';
 import { TableSelectionComponent } from './components/table-selection/table-selection.component';
 import { OrderListsComponent } from './components/order-lists/order-lists.component';
-import { PrintAddressReceiptComponent } from './components/print-address-receipt/print-address-receipt.component';
+import { PrintKotComponent } from './components/print-kot/print-kot.component';
 
 
 @NgModule({
-  declarations: [OrdersComponent, NewOrderComponent, PrintOrderInvoiceComponent, AddOrderItemComponent, ServeOrderItemComponent, TableSelectionComponent, OrderListsComponent, PrintAddressReceiptComponent],
+  declarations: [OrdersComponent, NewOrderComponent, PrintOrderInvoiceComponent, AddOrderItemComponent, ServeOrderItemComponent, TableSelectionComponent, OrderListsComponent, PrintKotComponent],
   imports: [
     CommonModule,
     OrdersRoutingModule,
@@ -23,7 +23,7 @@ import { PrintAddressReceiptComponent } from './components/print-address-receipt
   entryComponents: [
     AddOrderItemComponent,
     ServeOrderItemComponent,
-    PrintAddressReceiptComponent
+    PrintKotComponent
   ]
 })
 export class OrdersModule { }

@@ -14,7 +14,7 @@ import { TableSelectionComponent } from '../table-selection/table-selection.comp
 import { ServeOrderItemComponent } from '../serve-order-item/serve-order-item.component';
 import { ConfirmPopupComponent } from 'src/app/shared/components/confirm-popup/confirm-popup.component';
 import { debounceTime, map, startWith } from 'rxjs/operators';
-import { PrintAddressReceiptComponent } from '../print-address-receipt/print-address-receipt.component';
+import { PrintKotComponent } from '../print-kot/print-kot.component';
 
 @Component({
   selector: 'app-new-order',
@@ -251,49 +251,7 @@ export class NewOrderComponent implements OnInit, OnDestroy {
       }
     })
   }
-  // addNewOrderItem() {
-  //   if(this.blockForms)return;
-  //   let dialogRef = this.dialog.open(AddOrderItemComponent, {
-  //     width: '500px',
-  //     autoFocus: false,
-  //     data: {
-  //       orderItems: this.items.value
-  //     }
-  //   });
-
-  //   dialogRef.afterClosed().subscribe(response => {
-  //     if(response) {
-  //       let removeElement=[];
-  //       this.items.controls.forEach(control => {
-  //         if(control.get('isParcel').value == response.isParcel) {
-  //           response.items.forEach((elem, index) => {
-  //             if(control.get('productId').value == elem.id) {
-  //               removeElement.unshift(index);
-  //             }
-  //           })
-  //         }
-  //       })
-  //       removeElement.sort(function(a, b){return b-a}); //sort indexes
-  //       removeElement.forEach(index => {
-  //         response.items.splice(index, 1);
-  //       })
-  //       response.items.forEach(item => {
-  //         let form = this.addOrderItem();
-  //         form.patchValue({
-  //           productId: item.id,
-  //           productName: item.productName,
-  //           featuredImage: item.featuredImage,
-  //           isParcel: response.isParcel,
-  //           price: item.price,
-  //           packagingCharges: (response.isParcel)?item.packagingCharges:'0'
-  //         })
-  //         this.items.push(form);
-  //         this.getOrderItemTotal(form);
-  //       })
-  //     }
-  //   })
-  // }
-
+  
   getOrderItemTotal(orderItem) {
     let itemValue = orderItem.value;
     let price = (itemValue.price)?parseFloat(itemValue.price):0;
@@ -344,26 +302,6 @@ export class NewOrderComponent implements OnInit, OnDestroy {
     })
   }
 
-  
-  // manageTables() {
-  //   let dialogRef = this.dialog.open(TableSelectionComponent, {
-  //     width: '1200px',
-  //     data: {
-  //       tables: this.tables,
-  //       blockForm: this.blockForms
-  //     }
-  //   });
-
-  //   dialogRef.afterClosed().subscribe(response => {
-  //     if(response){
-  //       this.tables.controls=[];
-  //       this.tables.reset();
-  //       response.controls.forEach(control => {
-  //         this.tables.push(control);
-  //       })
-  //     }
-  //   })
-  // }
 
   serveOrderItem() {
     let dialogRef = this.dialog.open(ServeOrderItemComponent, {
@@ -422,20 +360,6 @@ export class NewOrderComponent implements OnInit, OnDestroy {
   }
 
   
-
-  // getAllBranches() {
-  //   this._serv.endpoint = "order-manager/branch?fields=id,branchTitle";
-  //   this._serv.get().subscribe(response => {
-  //     this.branchList = response as any[];
-  //     if(this.orderId == undefined && this.branchList.length > 0) {
-  //       this.form.get('branch_id').setValue(this.branchList[0].id);
-  //       this.getBranchDetail(this.branchList[0].id);
-  //       this.form.get('branch_id').valueChanges.subscribe(value => {
-  //         this.getBranchDetail(value);
-  //       })
-  //     }
-  //   })
-  // }
 
   getOrderDetail() {
     this._serv.endpoint = "order-manager/order/"+this.orderId;
@@ -610,13 +534,14 @@ export class NewOrderComponent implements OnInit, OnDestroy {
     this._serv.post(orderData).subscribe((response:any) => {
       this._serv.showMessage("Order saved successfully", 'success');
       this.orderProcessing = false;
-      if(orderData.orderStatus == "completed") {
-        this.printOrder(orderData);
+      // if(orderData.orderStatus == "completed") {
+      //   this.printOrder(orderData);
+      // }
         this.orderId = response.id;
-        this.getOrderDetail();
-      }else {
-        this.router.navigateByUrl('/admin/dashboard');
-      }
+        // this.getOrderDetail();
+      // }else {
+        this.router.navigateByUrl('/admin/order/update/'+response.id);
+      // }
     }, ({error}) => {
       this._serv.showMessage(error['msg'], 'error');
       this.orderProcessing = false;
@@ -659,7 +584,7 @@ export class NewOrderComponent implements OnInit, OnDestroy {
     }
     // console.log(this.form.value, ' passign data');
     
-    this.dialog.open(PrintAddressReceiptComponent, {
+    this.dialog.open(PrintKotComponent, {
       data: {
         orderData: orderData
       }
