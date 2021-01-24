@@ -33,7 +33,7 @@ th.price {
     // width: 125px;
     // max-width: 125px;
     word-break: break-all;
-    text-align: right;
+    // text-align: right;
 }
 
 .centered {
@@ -56,5 +56,15 @@ p {
 
     &.title {
         font-size: 1.2rem;
+    }
+}
+.customerAddress{
+    border: 1px dashed #000;
+    border-left: none;
+    border-right: none;
+    p{
+        font-size: 1rem;
+        font-weight: 400;
+        margin-bottom: 5px;
     }
 }
