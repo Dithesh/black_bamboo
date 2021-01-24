@@ -201,6 +201,7 @@ export class NewOrderComponent implements OnInit, OnDestroy {
       packagingCharges: ['0.00'],
       totalPrice: ['0.00'],
       featuredImage: [''],
+      orderGroup: [''],
       deletedFlag: [false]
     })
   }
@@ -419,6 +420,7 @@ export class NewOrderComponent implements OnInit, OnDestroy {
           packagingCharges: item.packagingCharges,
           totalPrice: item.totalPrice,
           featuredImage: item.product.featuredImage,
+          orderGroup: item.orderGroup,
           deletedFlag: false
         });
         // console.log('pussing');
