@@ -8,11 +8,19 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 })
 export class PrintKotComponent implements OnInit {
   orderData;
+  branchData;
+  companyData;
+  userData;
+  savedOrderData;
   constructor(
     @Inject(MAT_DIALOG_DATA) private data,
     private ref: MatDialogRef<PrintKotComponent>
   ) { 
     this.orderData = data.orderData;
+    this.branchData = data.branchData;
+    this.companyData = data.companyData;
+    this.userData = data.userData;
+    this.savedOrderData = data.savedOrderData;
   }
 
   ngOnInit(): void {

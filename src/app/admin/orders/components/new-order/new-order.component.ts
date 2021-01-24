@@ -582,11 +582,27 @@ export class NewOrderComponent implements OnInit, OnDestroy {
     if(!this._serv.notNull(orderData)) {
       orderData = this.form.getRawValue();
     }
-    // console.log(this.form.value, ' passign data');
-    
+    if(this.selectedOrderType.tableRequired) {
+      orderData.tables = orderData.tables.map((table:any) => {
+        return {
+          ...table,
+          chairs: table.chairs.filter(chair => (chair.isSelected && chair.permission == 'full')).map(chair => chair.chairId).join(',')
+        }
+      }).filter(table => table.chairs != "");
+    }else {
+      orderData.tables=[];
+    }
+    if(!this._serv.notNull(orderData.id)) {
+      this._serv.showMessage('Save the order first', 'error');
+      return;
+    }
     this.dialog.open(PrintKotComponent, {
       data: {
-        orderData: orderData
+        savedOrderData: this.orderData,
+        orderData: orderData,
+        branchData: this.branchDetail,
+        companyData : this.companyDetails,
+        userData : this.userData,
       }
     })
   }
