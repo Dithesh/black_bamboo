@@ -113,6 +113,7 @@ export class ReportManagerComponent implements OnInit {
     
   }
   getTotal(){
+    this.totalOrderAmount=0;
     this.dataSource.forEach(element => {
       this.totalOrderAmount = math.add(this.totalOrderAmount, parseInt(element.orderAmount));
     });
