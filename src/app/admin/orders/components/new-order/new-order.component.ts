@@ -371,6 +371,7 @@ export class NewOrderComponent implements OnInit, OnDestroy {
     this._serv.endpoint = "order-manager/order/" + this.orderId;
     this._serv.get().subscribe((response: any) => {
       this.orderData = response;
+      
 
 
       this.form.patchValue({
@@ -387,6 +388,7 @@ export class NewOrderComponent implements OnInit, OnDestroy {
         packingCharge: response.packingCharge,
         deliverCharge: response.deliverCharge,
         discountValue: response.discountValue,
+        isPaid: response.isPaid,
         discountReason: response.discountReason,
         orderStatus: response.orderStatus,
         orderType: response.orderType,
