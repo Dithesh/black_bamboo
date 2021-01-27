@@ -11,6 +11,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   ongoingorders: any;
   completedOrders: any;
   timeoutController;
+  orderTimerController=[];
   constructor(
     private _serv: DataService
   ) { }
@@ -38,12 +39,28 @@ export class DashboardComponent implements OnInit, OnDestroy {
                             + "&orderCol=updated_at"
     this._serv.get().subscribe((response:any) => {
       this.ongoingorders=[];
+      this.orderTimerController.forEach(elem => {
+        clearInterval(elem);
+      })
+      this.orderTimerController=[];
       response.forEach(elem => {
-        this._serv.timerUpdate(elem);
+        this.orderTimerController.push(this._serv.timerUpdate(elem));
         this.ongoingorders.push(elem);
       });
     })
   }
+
+  // getCurrentTimeDiff(stater) {
+  //   let current = moment(new Date());
+  //   // var duration = moment.duration(current.diff(elem));
+  //   // var hours = duration.asHours();
+
+  //   var hrs = moment.utc(current.diff(stater)).format("HH");
+  //   var min = moment.utc(current.diff(stater)).format("mm");
+  //   var sec = moment.utc(current.diff(stater)).format("ss");
+  //   // console.log([hrs, min, sec].join(':'));
+  //   return [hrs, min, sec].join(':');
+  // }
 
   getDashboardCompletedOrders() {
     let startDate = moment(new Date()).format('YYYY-MM-DD');
@@ -63,6 +80,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
     if(this.timeoutController) {
       clearInterval(this.timeoutController);
     }
+    this.orderTimerController.forEach(elem => {
+      clearInterval(elem);
+    })
+    this.orderTimerController=[];
   }
 
 }

@@ -92,16 +92,12 @@ export class DataService {
   }
 
   timerUpdate(order){
-    setInterval(()=> {
-      order.timeDif.s++;
-      if(order.timeDif.s >= 60) {
-        order.timeDif.s=0;
-        order.timeDif.i++;
-        if(order.minutes >= 60) {
-          order.timeDif.h++;
-        }
+    return setInterval(()=> {
+      order.timeDif.i++;
+      if(order.minutes >= 60) {
+        order.timeDif.h++;
       }
-    }, 1000)
+    }, 60000)
   }
 
   getPermission(module, mode='read') {

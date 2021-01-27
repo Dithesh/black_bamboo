@@ -36,7 +36,7 @@
                                 
                                 <svg class="mr-5 mb-2" xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.0" width="14px" height="14px" viewBox="0 0 128 128" xml:space="preserve"><g><path d="M63.88 0A63.88 63.88 0 1 1 0 63.88 63.88 63.88 0 0 1 63.88 0zm0 11.88a52 52 0 1 1-52 52 52 52 0 0 1 52-52zm0 46.2a5.8 5.8 0 1 1-5.8 5.8 5.8 5.8 0 0 1 5.8-5.8z" fill-rule="evenodd" fill="#aaaaaa" fill-opacity="1"/><path d="M58.25 5h11.3v59h-11.3V5z" fill="#aaaaaa" fill-opacity="1"/><animateTransform attributeName="transform" type="rotate" from="0 64 64" to="360 64 64" dur="2700ms" repeatCount="indefinite" *ngIf="true"></animateTransform></g></svg>
                                 
-                                <ng-container *ngIf="item.timeDif.h > 0">{{ item.timeDif.h | number : '2.0'}} : </ng-container>{{ item.timeDif.i | number : '2.0'}} : {{ item.timeDif.s | number : '2.0'}}
+                                {{ item.timeDif.h | number : '2.0'}} : {{ item.timeDif.i | number : '2.0'}}
                             </span>
                         </div>
                         <div class="orderBox_body">
