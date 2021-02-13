@@ -199,6 +199,7 @@ export class NewOrderComponent implements OnInit, OnDestroy {
       servedItems: ['0'],
       productionAcceptedQuantity: ['0'],
       productionReadyQuantity: ['0'],
+      kot_pending: ['0'],
       productionRejectedQuantity: ['0'],
       packagingCharges: ['0.00'],
       totalPrice: ['0.00'],
@@ -424,6 +425,7 @@ export class NewOrderComponent implements OnInit, OnDestroy {
           productionAcceptedQuantity: item.productionAcceptedQuantity,
           productionReadyQuantity: item.productionReadyQuantity,
           productionRejectedQuantity: item.productionRejectedQuantity,
+          kot_pending: item.kot_pending,
           packagingCharges: item.packagingCharges,
           totalPrice: item.totalPrice,
           featuredImage: item.product.featuredImage,
@@ -616,7 +618,12 @@ export class NewOrderComponent implements OnInit, OnDestroy {
       this._serv.showMessage('Save the order first', 'error');
       return;
     }
-    this.dialog.open(PrintKotComponent, {
+    orderData.items = orderData.items.filter(item => item.kot_pending > 0);
+    if(orderData.items.length <= 0)return;
+
+
+
+    let ref = this.dialog.open(PrintKotComponent, {
       data: {
         savedOrderData: this.orderData,
         orderData: orderData,
@@ -625,6 +632,13 @@ export class NewOrderComponent implements OnInit, OnDestroy {
         userData: this.userData,
       }
     })
+    ref.afterClosed().subscribe(response => {
+      this._serv.endpoint = "order-manager/order/kot-print"
+      this._serv.post({items: orderData.items}).subscribe(response => {
+        this.getOrderDetail();
+      })
+    })
+    
   }
 
   getBranchDetail(branch_id) {
