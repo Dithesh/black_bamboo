@@ -8,11 +8,26 @@ const routes: Routes = [
   {
     path: "",
     component: ReportManagerComponent,
-    data: {
-      module: 'order-report',
-      mode: 'full'
-    },
-    canActivate: [ RoleGaurd ]
+    children: [
+      { 
+        path: 'order-report', 
+        loadChildren: () => import('./order-report/order-report.module').then(m => m.OrderReportModule),
+        data: {
+          module: 'order-report',
+          mode: 'full'
+        },
+        canActivate: [ RoleGaurd ]
+      },
+      { 
+        path: 'item-sale-report', 
+        loadChildren: () => import('./item-sale-report/item-sale-report.module').then(m => m.ItemSaleReportModule) 
+      },
+      {
+        path: "**",
+        pathMatch: 'full',
+        redirectTo: "order-report"
+      }
+    ]
   }
 ];
 

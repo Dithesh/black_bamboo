@@ -6,6 +6,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort, Sort } from '@angular/material/sort';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';
+import { ChangePasswordComponent } from '../change-password/change-password.component';
 
 export interface PeriodicElement {
   action:any;
@@ -83,5 +84,13 @@ export class UserListComponent implements OnInit, AfterViewInit {
         })
       }
     })
+  }
+
+  changeOtherUserPassword(user) {
+    let dialogRf = this.dialog.open(ChangePasswordComponent, {
+      data: {
+        userId: user.id
+      }
+    });
   }
 }

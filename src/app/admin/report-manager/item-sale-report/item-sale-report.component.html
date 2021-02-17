@@ -1,0 +1,70 @@
+<div class="search_outerWrapper"  [formGroup]="filterForm">
+    <div class="row gutters-10 justify-content-end">
+        <div class="col-xl-2 col-md-4 col-sm-6 col-12">
+            <mat-form-field appearance="outline" class="w-100 pb-0">
+                <mat-label>Search</mat-label>
+                <input matInput placeholder="Placeholder" formControlName="searchString">
+                <mat-icon matSuffix>search</mat-icon>
+            </mat-form-field>
+        </div>
+        <div class="col-xl-2 col-md-4 col-sm-6 col-12">
+            <mat-form-field appearance="outline" class="w-100 pb-0">
+                <mat-label>Date range</mat-label>
+                <mat-date-range-input [rangePicker]="picker">
+                    <input matStartDate placeholder="Start date" formControlName="startDate">
+                    <input matEndDate placeholder="End date" formControlName="endDate">
+                </mat-date-range-input>
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-date-range-picker #picker></mat-date-range-picker>
+            </mat-form-field>
+        </div>
+        <div class="col-xl-auto col-md-2 col-sm-6 col-12">
+            <button mat-raised-button class="mr-10" type="button" (click)="getOrderItemSalesList($event)" color="primary">Generate</button>
+            <button mat-mini-fab color="primary" type="button" class="ml-auto" (click)="exportToExcel()">
+                <mat-icon>get_app</mat-icon>
+            </button>
+        </div>
+
+    </div>
+</div>
+
+
+
+<div class="mt-20">
+    <div class="table-responsive">
+        <table class="table account_table" #reportTable>
+            <thead>
+                <tr>
+                    <th>Item Name</th>
+                    <th></th>
+                    <th>Sold?</th>
+                </tr>
+            </thead>
+            <tbody>
+                <ng-container *ngFor="let item of itemList; let i =index">
+                    <tr *ngIf="item.isSingle">
+                        <td colspan="2">
+                            {{item.productName }}
+                        </td>
+                        <td>
+                            {{ item['items'][0].total }}
+                        </td>
+                    </tr>
+                    <ng-container *ngIf="!item.isSingle">
+                        <tr *ngFor="let elem of item['items']; let ii =index">
+                            <td [attr.rowspan]="item['items'].length" *ngIf="ii == 0">
+                                {{elem.productName }}
+                            </td>
+                            <td>
+                                {{elem.title}}
+                            </td>
+                            <td>
+                                {{ elem.total }}
+                            </td>
+                        </tr>
+                    </ng-container>
+                </ng-container>
+            </tbody>
+        </table>
+    </div>
+</div>

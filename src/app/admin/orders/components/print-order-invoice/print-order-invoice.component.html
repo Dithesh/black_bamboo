@@ -1,13 +1,17 @@
 <div class="ticket only-print" id="print-section">
     <p class="centered">
         <b class="title">{{savedOrderData?.branch.branchTitle}}</b>
-        <br>{{savedOrderData?.branch.branchAddress}}</p>
+        <br>{{savedOrderData?.branch.branchAddress}}
+        <ng-container *ngIf="savedOrderData && savedOrderData.branch.gstNumber">
+            <br>GST : {{savedOrderData?.branch.gstNumber}}
+        </ng-container>
+    </p>
     <div class="d-flex justify-content-between">
         <p class="mb-0">By : {{ savedOrderData?.bearer.firstName }} {{ savedOrderData?.bearer.lastName }}</p>
         <p class="mb-0">{{ savedOrderData?.created_at | datex: 'DD-MM-YYYY hh:mm A' }}</p>
     </div>
     <div class="d-flex justify-content-between">
-        <p class="mb-0">#{{ savedOrderData?.id }}</p>
+        <p class="mb-0">No : #{{ savedOrderData?.id | slice:15:20 }}</p>
     </div>
     <div>
         <ng-container *ngFor="let item of orderData?.tables; let i=index;">

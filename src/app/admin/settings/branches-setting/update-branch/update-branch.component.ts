@@ -30,6 +30,7 @@ export class UpdateBranchComponent implements OnInit {
       branchTitle: [''],
       description: [''],
       branchAddress: [''],
+      gstNumber: [''],
       isActive: [false],
       taxPercent: [''],
       company_id:[''],

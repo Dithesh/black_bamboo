@@ -36,18 +36,22 @@
         <table class="table account_table" matSort>
             <thead>
                 <tr>
+                    <th *ngIf="loginUserDetail?.roles == 'Super Admin' || loginUserDetail?.roles == 'Company Admin' || loginUserDetail?.roles == 'Branch Admin' || loginUserDetail?.roles == 'Company Accountant'"></th>
                     <th class="ew-100">Action</th>
-                    <th mat-sort-header="id" class="ew-200">Order No</th>
+                    <th mat-sort-header="id" class="ew-200">No.</th>
                     <th mat-sort-header="bearer">Bearer</th>
                     <th>Tables</th>
-                    <th mat-sort-header="orderAmount" class="ew-250">Order Amount</th>
-                    <th mat-sort-header="orderStatus">Order Status </th>
-                    <th mat-sort-header="created_at">Ordered Time</th>
+                    <th mat-sort-header="orderAmount" class="ew-200">Order Amount</th>
+                    <th mat-sort-header="orderStatus">Status </th>
+                    <th mat-sort-header="created_at">Time</th>
                 </tr>
             </thead>
             <tbody>
                 <ng-container *ngFor="let item of dataSource?.data; let i =index">
                     <tr [ngClass]="{'highlight': (item.orderStatus == 'new' && (item.rejectedCount > 0 || (item.timeDif.h * 60 + item.timeDif.i) > 20))}" [class.completedRow]="item.orderStatus == 'completed'" [class.canceledRow]="item.orderStatus == 'cancelled'">
+                        <td *ngIf="loginUserDetail?.roles == 'Super Admin' || loginUserDetail?.roles == 'Company Admin' || loginUserDetail?.roles == 'Branch Admin' || loginUserDetail?.roles == 'Company Accountant'">
+                            <mat-checkbox [(ngModel)]="item.isSelected"></mat-checkbox>
+                        </td>
                         <td>
                             <button mat-icon-button type="button" [routerLink]="['/admin/order/update/'+item.id]">
                                 <mat-icon>create</mat-icon>
@@ -79,6 +83,13 @@
             </tbody>
         </table>
         <!-- <mat-paginator  [pageSizeOptions]="[10]" [length]="dataSource?.total" [pageSize]="10" (page)="getAllProducts($event.pageIndex+1)"></mat-paginator> -->
-        <mat-paginator [pageSizeOptions]="[10]" [length]="dataSource?.total" [pageSize]="10"></mat-paginator>
+        <div class="row no-gutters">
+            <div class="col-auto">
+                <button *ngIf="getSelectedOrderCount() > 0" type="button" (click)="deleteSelectedOrders()" color="warn" mat-raised-button>Delete Selected</button>
+            </div>
+            <div class="col">
+                <mat-paginator [pageSizeOptions]="[10]" [length]="dataSource?.total" [pageSize]="10"></mat-paginator>
+            </div>
+        </div>
     </div>
 </div>

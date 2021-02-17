@@ -5,6 +5,8 @@ import { MatSort } from '@angular/material/sort';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import * as moment from 'moment';
+import { ConfirmPopupComponent } from 'src/app/shared/components/confirm-popup/confirm-popup.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-order-lists',
@@ -15,6 +17,7 @@ export class OrderListsComponent implements OnInit {
   orderStatus=['new', 'accepted', 'prepairing', 'packing', 'dispatched', 'delivered', 'completed', 'cancelled'];
   
   dataSource;
+  loginUserDetail;
   filterOn=false;
   filterForm:FormGroup;
 
@@ -23,7 +26,8 @@ export class OrderListsComponent implements OnInit {
 
   constructor(
     private _serv: DataService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private dialog: MatDialog
   ) { 
     this.filterForm = this.fb.group({
       searchString: [''],
@@ -36,6 +40,7 @@ export class OrderListsComponent implements OnInit {
   }
 
   ngOnInit(): void {
+      this.loginUserDetail = this._serv.getUserData();
       this.getOrderList();
   }
 
@@ -68,6 +73,40 @@ export class OrderListsComponent implements OnInit {
                             + "&orderCol="+filterValue.orderCol
     this._serv.get().subscribe(response => {
       this.dataSource = response as any;
+      this.dataSource.data = this.dataSource.data.map(x => {
+        return {
+          ...x,
+          isSelected: false
+        }
+      })
+    })
+  }
+
+  getSelectedOrderCount(){
+    let count=0;
+    if(this.dataSource){
+      this.dataSource.data.forEach(elem=>{
+        if(elem.isSelected){
+          count++;
+        }
+      })
+    }
+    return count;
+  }
+
+  deleteSelectedOrders() {
+    let dialogRef = this.dialog.open(ConfirmPopupComponent);
+    dialogRef.afterClosed().subscribe(data => {
+      if(data) {
+        let orderIds = this.dataSource.data.filter(x => x.isSelected).map(x => x.id);
+        this._serv.endpoint = 'order-manager/order/'+orderIds.join(',');
+        this._serv.delete().subscribe(response => {
+          this._serv.showMessage('Orders deleted successfully', 'success');
+          this.getOrderList();
+        }, ({error}) => {
+          this._serv.showMessage(error['msg'], 'error');
+        })
+      }
     })
   }
 
