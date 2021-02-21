@@ -127,8 +127,8 @@ export class DashboardComponent implements OnInit {
     this._serv.endpoint = "account-manager/transaction?pageNumber="+page
                     + "&perPage=10"
                     + "&transactionType="
-                    + "&orderCol=updated_at"
-                    + "&orderType=desc"
+                    + "&orderCol=transactionDate"
+                    + "&orderType=asc"
     this._serv.get().subscribe(response => {
       this.transactionList = response['data'] as any;
       

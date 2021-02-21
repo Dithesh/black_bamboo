@@ -15,6 +15,7 @@ import { ServeOrderItemComponent } from '../serve-order-item/serve-order-item.co
 import { ConfirmPopupComponent } from 'src/app/shared/components/confirm-popup/confirm-popup.component';
 import { debounceTime, map, startWith } from 'rxjs/operators';
 import { PrintKotComponent } from '../print-kot/print-kot.component';
+import * as math from 'exact-math';
 
 @Component({
   selector: 'app-new-order',
@@ -79,6 +80,7 @@ export class NewOrderComponent implements OnInit, OnDestroy {
       orderType: [''],
       taxDisabled: [false],
       taxPercent: [0],
+      roundOfAmount: [0],
       isPaid: [false],
       paymentMethod: [''],
       tables: this.fb.array([]),
@@ -297,10 +299,19 @@ export class NewOrderComponent implements OnInit, OnDestroy {
       grandTotal = grandTotal - discountValue;
     }
 
+    let [integer, decimal] = grandTotal.toString().split('.');
+    grandTotal = parseInt(integer);
+    let roundOfAmount = (decimal)?parseFloat('0.'+decimal):0;
+    // console.log(math.div(grandTotal, ));
+    
+
+    math
+
     this.form.patchValue({
       orderItemTotal: totalPrice,
       orderAmount: grandTotal,
       packingCharge: '',
+      roundOfAmount: roundOfAmount,
       cgst: cgst,
       sgst: sgst,
       igst: '',

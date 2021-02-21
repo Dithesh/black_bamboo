@@ -39,12 +39,12 @@
             </ng-container>
             <tr *ngIf="!orderData?.taxDisabled">
                 <td class="quantity"></td>
-                <th class="description">CGST</th>
+                <th class="description">CGST <small class="text-muted">({{ ((orderData?.taxPercent > 0)?(orderData?.taxPercent/2):0) | number : '2.2' }}%)</small></th>
                 <th class="price">{{ orderData?.cgst | currency: '':'' }}</th>
             </tr>
             <tr  *ngIf="!orderData?.taxDisabled">
                 <td class="quantity"></td>
-                <th class="description">SGST</th>
+                <th class="description">SGST <small class="text-muted">({{ ((orderData?.taxPercent > 0)?(orderData?.taxPercent/2):0) | number : '2.2' }}%)</small></th>
                 <th class="price">{{ orderData?.sgst | currency: '':'' }}</th>
             </tr>
             <tr *ngIf="orderData?.deliverCharge && orderData?.deliverCharge > 0">
@@ -61,6 +61,11 @@
                 <td class="quantity"></td>
                 <th class="description">Discount</th>
                 <th class="price">{{ orderData?.discountValue | currency: '':'' }}</th>
+            </tr>
+            <tr *ngIf="orderData?.roundOfAmount && orderData?.roundOfAmount > 0">
+                <td class="quantity"></td>
+                <th class="description">Round Off</th>
+                <th class="price">- {{ orderData?.roundOfAmount | currency: '':'' }}</th>
             </tr>
             <tr>
                 <th class="quantity"></th>
