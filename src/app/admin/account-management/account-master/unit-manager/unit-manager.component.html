@@ -64,16 +64,18 @@
                         <td>
                             <button *ngIf="!item.id || editUnitIndex == i" mat-icon-button class="small_icon_btn mr-2" type="button" (click)="saveUnit(item)"
                                 color="primary">
-                                <mat-icon>save</mat-icon>
+                                <img src="assets/images/icons/SAVE.svg" alt="" class="icon_img">
                             </button>
                             <button *ngIf="item.id && editUnitIndex != i" mat-icon-button class="small_icon_btn mr-2" color="primary" type="button" (click)="onUnitEdit(i)">
-                                <mat-icon>edit</mat-icon>
+                                <!-- <mat-icon>edit</mat-icon> -->
+                                <img src="assets/images/icons/EDIT.svg" alt="" class="icon_img">
                             </button>
                             <button *ngIf="item.id && editUnitIndex != i" mat-icon-button class="small_icon_btn" color="warn" type="button" (click)="deleteUnit(i)">
-                                <mat-icon>delete_forever</mat-icon>
+                                <!-- <img src="assets/images/icons/TRASHBIN.svg" alt="" class="icon_img"> -->
+                                <img src="assets/images/icons/TRASHBIN.svg" alt="" class="icon_img">
                             </button>
                             <button *ngIf="!item.id || (item.id && editUnitIndex == i)" mat-icon-button class="small_icon_btn" color="warn" (click)="onCancelEdit()">
-                                <mat-icon>close</mat-icon>
+                                <img src="assets/images/icons/CLOSE.svg" alt="" class="icon_img">
                             </button>
                         </td>
                     </tr>

@@ -6,7 +6,7 @@
 
         </span> 
         <button type="button" class="ml-3" mat-icon-button (click)="_layout.isOpened = !_layout.isOpened">
-            <mat-icon>menu</mat-icon>
+            <img src="assets/images/icons/SIDEMENU.svg" alt="" class="icon_img">
         </button>
         <!-- <span>Resto App</span> -->
         <div class="header_navigation">
@@ -25,7 +25,8 @@
                 </li> -->
                 <li class="mr-20">
                     <button *ngIf="isOffline" type="button" mat-icon-button class="syncBtn"  [class.on]="syncOn" (click)="synchronizeData()">
-                        <mat-icon>autorenew</mat-icon>
+                        <!-- <mat-icon>autorenew</mat-icon> -->
+                        <img src="assets/images/icons/SYNC.svg" alt="" class="icon_img">
                     </button>
                 </li>
                 <li>

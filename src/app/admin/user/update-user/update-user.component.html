@@ -52,12 +52,14 @@
                             <mat-label>Password</mat-label>
                             <input [type]="hide ? 'password' : 'text'" formControlName="password" name="userpassword" autocomplete="off" id="userPassword" matInput [required]="!userId">
                             <button mat-icon-button matSuffix type="button" (click)="hide = !hide">
-                                <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                                <!-- <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon> -->
+                                <img *ngIf="!hide" src="assets/images/icons/EYE_OPEN.svg" alt="">
+                                <img *ngIf="hide" src="assets/images/icons/EYE_CLOSED.svg" alt="">
                             </button>
                             <mat-error *ngIf="form.get('password').hasError('required')">Password is required</mat-error>
                             <mat-error *ngIf="!form.get('password').hasError('required') && form.get('password').hasError('password')">
                                 Format doesn't match!. 
-                                <span matTooltip="Minimum 8 characters required. &#13; Should include one Uppercase and one lowercase letters." matTooltipClass="goresto_tooltip"><mat-icon>info</mat-icon></span>
+                                <span matTooltip="Minimum 8 characters required. &#13; Should include one Uppercase and one lowercase letters." matTooltipClass="goresto_tooltip"><img src="assets/images/icons/INFO.svg" alt="" class="icon_img"></span>
                             </mat-error>
                         </mat-form-field>
                     </div>
