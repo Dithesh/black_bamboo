@@ -80,7 +80,7 @@
                                             </div>
                                             <div class="buttonBox text-right">
                                                 <button mat-icon-button aria-label="add" class="addShowBtn pointer-none" color="primary">
-                                                    <mat-icon>add_circle_outline</mat-icon>
+                                                    <img src="assets/images/icons/ADDROUND.svg" alt="" class="icon_img">
                                                 </button>
                                                 <div class="input_add_box">
 
@@ -106,7 +106,7 @@
                                                             </div>
                                                         </div>
                                                     
-                                                    <button type="button" (click)="onAddItem(element, item)" mat-flat-button color="primary" class="product_addBtn ew-100 small_btn"><mat-icon>add</mat-icon> Add</button>
+                                                    <button type="button" (click)="onAddItem(element, item)" mat-flat-button color="primary" class="product_addBtn ew-100 small_btn"><img src="assets/images/icons/ADD.svg" alt="" class="icon_img"> Add</button>
                                                 </div>
                                             </div>
                                         </label>
@@ -183,7 +183,7 @@
                                     <div class="d-flex align-items-center">
                                         <h3 class="completeText mr-15 ew-150">Serve Order</h3>
                                         <button mat-stroked-button color="accent" type="button" class="w-100 rounded-0" (click)="serveOrderItem()">
-                                            <mat-icon>done_all</mat-icon>
+                                            <img src="assets/images/icons/DONEDOUBLETICK.svg" alt="" class="icon_img">
                                             Serve Items
                                         </button>
                                     </div>
@@ -347,7 +347,7 @@
                                     <div class="printBtn_box col-auto d-flex">
                                         <button mat-flat-button color="success" class="w-100  rounded-0" (click)="saveOrder('complete')"> Complete Order</button>
                                         <button mat-flat-button aria-label="" color="warn" class="ew-40 rounded-0"  (click)="saveOrder('cancel')">
-                                            <mat-icon>close</mat-icon>
+                                            <img src="assets/images/icons/CLOSE.svg" alt="" class="icon_img">
                                         </button>
                                     </div>
                                     <!-- <button mat-flat-button color="success" class="w-100 rounded-0" type="button"
@@ -356,7 +356,7 @@
                                     <div class="col-6 px-15">
                                         <button mat-flat-button color="warn" type="button" class="ew-200 mw-100 rounded-0">
                                             Cancel
-                                            <mat-icon>close</mat-icon>
+                                            <img src="assets/images/icons/CLOSE.svg" alt="" class="icon_img">
                                         </button>
                                     </div> -->
                                 </div>
@@ -386,12 +386,12 @@
                             <div class="saveBtn_box col-auto">
                                 <button mat-flat-button color="primary" class="ew-150 rounded-0" 
                                 *ngIf="form.get('orderStatus').value != 'completed' && form.get('orderStatus').value != 'cancelled' && !blockForms"  
-                                (click)="saveOrder('confirm')" [disabled]="orderProcessing"><mat-icon>save</mat-icon>  Save</button>
+                                (click)="saveOrder('confirm')" [disabled]="orderProcessing"><img src="assets/images/icons/SAVE.svg" alt="" class="icon_img">  Save</button>
                             </div>
                             <div class="printBtn_box col-auto" *ngIf="orderId">
-                                <button mat-flat-button color="accent" class="ew-140 rounded-0" (click)="printOrder()"><mat-icon>print</mat-icon>  Print</button>
+                                <button mat-flat-button color="accent" class="ew-140 rounded-0" (click)="printOrder()"><img src="assets/images/icons/PRINT.svg" alt="" class="icon_img">  Print</button>
                                 <button mat-flat-button aria-label="" color="accent" class="ew-40 rounded-0" [matMenuTriggerFor]="moreOption">
-                                    <mat-icon>arrow_drop_down</mat-icon>
+                                    <img src="assets/images/icons/ARROWDOWN.svg" alt="" class="icon_img">
                                 </button>
                                 <mat-menu #moreOption="matMenu">
                                     <button mat-menu-item type="button" (click)="printAddress()">Address Print</button>

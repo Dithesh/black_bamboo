@@ -2,11 +2,11 @@
     <div class="date_change_wrapper">
         <mat-button-toggle-group appearance="legacy">
             <mat-button-toggle (click)="moveCalendarMonths('prev')">
-                <mat-icon>navigate_before</mat-icon>
+                <img src="assets/images/icons/ARROWLEFT.svg" alt="" class="icon_img">
             </mat-button-toggle>
             <mat-button-toggle>{{ startDate |datex: 'DD MMM, YYYY' }} <span class="date_seperator">To</span> {{ endDate |datex: 'DD MMM, YYYY' }}</mat-button-toggle>
             <mat-button-toggle (click)="moveCalendarMonths('next')">
-                <mat-icon>navigate_next</mat-icon>
+                <img src="assets/images/icons/ARROWRIGHT.svg" alt="" class="icon_img">
             </mat-button-toggle>
         </mat-button-toggle-group>
     </div>

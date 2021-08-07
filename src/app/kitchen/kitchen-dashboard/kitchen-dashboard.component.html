@@ -41,7 +41,7 @@
                                         <div class="quantity">{{ orderItem.readyPendingQuantity }}</div>
                                         <div class="action_buttons">
                                             <button mat-button class="mat-icon-success" type="button" (click)="updateSingleItem(orderItem, 'ready')">
-                                                <mat-icon>done</mat-icon> Ready
+                                                <img src="assets/images/icons/TICK.svg" alt="" class="icon_img"> Ready
                                             </button>
                                         </div>
                                     </div>
@@ -53,7 +53,7 @@
                                 <ng-container *ngIf="getSelectedItemCount(item, 'ready') > 0">
                                     
                                     <button mat-stroked-button color="primary" class="mr-10" (click)="updateMultipleItems(item, 'ready')">
-                                        <mat-icon>done_all</mat-icon> Ready
+                                        <img src="assets/images/icons/DONEDOUBLETICK.svg" alt="" class="icon_img"> Ready
                                     </button>
                                 </ng-container>
                             </div>
@@ -105,10 +105,10 @@
                                                   <div class="quantity">{{ orderItem.acceptPendingQuantity }}</div>
                                                   <div class="action_buttons">
                                                       <button mat-icon-button class="mat-icon-success" type="button" (click)="updateSingleItem(orderItem, 'accept')">
-                                                          <mat-icon>check_circle</mat-icon>
+                                                          <img src="assets/images/icons/DONE_circle.svg" alt="" class="icon_img">
                                                       </button>
                                                       <button mat-icon-button color="warn" type="button" (click)="updateSingleItem(orderItem, 'reject')">
-                                                          <mat-icon>remove_circle</mat-icon>
+                                                          <img src="assets/images/icons/CLOSECIRCLE_outline.svg" alt="" class="icon_img">
                                                       </button>
                                                   </div>
                                               </div>

@@ -1925,3 +1925,17 @@ label.mat-checkbox-layout {
     }
     
 }
+
+// icon change
+.icon_img{
+    max-width: 32px;
+}
+.mat-form-field{
+    &.mat-form-field-appearance-outline {
+        .mat-form-field-wrapper {
+            .mat-form-field-suffix{
+                top: 0;
+            }
+        }
+    }
+}
