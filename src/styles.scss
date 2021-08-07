@@ -1,3 +1,4 @@
+@use '~@angular/material' as mat;
 
 
 
@@ -50,11 +51,11 @@
 
 @import 'mix-scss/scss/lib.scss';
 
-@include mat-core();
-$frontExpoSmart-primary: mat-palette($md-frontexpo-blue);
-$frontExpoSmart-accent: mat-palette($md-frontexpo-orange, A200, A100, A400);
-$frontExpoSmart-warn: mat-palette($md-frontexpo-red);
-$frontExpoSmart-theme: mat-light-theme((
+@include mat.core();
+$frontExpoSmart-primary: mat.define-palette($md-frontexpo-blue);
+$frontExpoSmart-accent: mat.define-palette($md-frontexpo-orange, A200, A100, A400);
+$frontExpoSmart-warn: mat.define-palette($md-frontexpo-red);
+$frontExpoSmart-theme: mat.define-light-theme((
   color: (
     primary: $frontExpoSmart-primary,
     accent: $frontExpoSmart-accent,
@@ -62,7 +63,7 @@ $frontExpoSmart-theme: mat-light-theme((
     success: $frontExpoSmart-warn,
   )
 ));
-@include angular-material-theme($frontExpoSmart-theme);
+@include mat.all-component-themes($frontExpoSmart-theme);
 
 html, body {
     height: 100%;
