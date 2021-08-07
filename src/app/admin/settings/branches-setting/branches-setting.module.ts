@@ -5,10 +5,11 @@ import { CommonModule } from '@angular/common';
 
 import { BranchesSettingRoutingModule } from './branches-setting-routing.module';
 import { BranchListComponent } from './branch-list/branch-list.component';
+import { TableSetupComponent } from './table-setup/table-setup.component';
 
 
 @NgModule({
-  declarations: [BranchListComponent, UpdateBranchComponent],
+  declarations: [BranchListComponent, UpdateBranchComponent, TableSetupComponent],
   imports: [
     CommonModule,
     BranchesSettingRoutingModule,

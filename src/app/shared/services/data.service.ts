@@ -12,9 +12,9 @@ import { permissions } from './permission-config';
 })
 export class DataService {
   apiUrl = environment.apiUrl;
-  endpoint = "";
+  endpoint = '';
   constructor(private http: HttpClient
-    ,private snakBar:SnackService, private router: Router) { }
+    ,         private snakBar: SnackService, private router: Router) { }
 
   get() {
     return this.http.get(this.apiUrl + this.endpoint);
@@ -33,58 +33,58 @@ export class DataService {
   }
 
   formArrayCount(formArray) {
-    let count=0;
+    let count = 0;
     formArray.controls.forEach(elem => {
-      if(!elem.get('deletedFlag').value) {
+      if (!elem.get('deletedFlag').value) {
         count++;
       }
-    })
+    });
     return count;
   }
 
   showMessage(message, type) {
-    this.snakBar.openSnackBar(message,'close',type);
+    this.snakBar.openSnackBar(message, 'close', type);
   }
- 
+
   autoCompleteMatch(control: AbstractControl) {
       const selection: any = control.value;
 
-      if (typeof selection === 'string' && selection != "") {
+      if (typeof selection === 'string' && selection != '') {
           return { incorrect: true };
       }
       return null;
   }
 
   notNull(value) {
-    return value != "" && value != null && value != undefined;
+    return value != '' && value != null && value != undefined;
   }
 
   getUserData(key  = 'lock_token') {
-    let token = localStorage.getItem(key);
+    const token = localStorage.getItem(key);
     return this.deocodeToken(token);
   }
 
   deocodeToken(token) {
-    if(this.notNull(token)) {
+    if (this.notNull(token)) {
       const helper = new JwtHelperService();
-      let decoded = helper.decodeToken(token);
-      if(helper.isTokenExpired(token)){
+      const decoded = helper.decodeToken(token);
+      if (helper.isTokenExpired(token)){
         this.router.navigateByUrl('/guest/signin');
         return;
       }
-      //user_id, roles
+      // user_id, roles
       return decoded;
-      
+
     }else {
       this.router.navigateByUrl('/guest/signin');
       return undefined;
     }
   }
 
-  handleError({error}, defaultMsg='Could not able to process') {
-    if(error.hasOwnProperty('errors')) {
+  handleError({error}, defaultMsg= 'Could not able to process') {
+    if (error.hasOwnProperty('errors')) {
       this.showMessage(error.errors[Object.keys(error.errors)[0]][0], 'error');
-    }else if(error.hasOwnProperty('msg')) {
+    }else if (error.hasOwnProperty('msg')) {
       this.showMessage(error.msg, 'error');
     }else {
       this.showMessage(defaultMsg, 'error');
@@ -92,25 +92,25 @@ export class DataService {
   }
 
   timerUpdate(order){
-    return setInterval(()=> {
+    return setInterval(() => {
       order.timeDif.i++;
-      if(order.minutes >= 60) {
+      if (order.minutes >= 60) {
         order.timeDif.h++;
       }
-    }, 60000)
+    }, 60000);
   }
 
-  getPermission(module, mode='read') {
-    let userData = this.getUserData();
+  getPermission(module, mode= 'read') {
+    const userData = this.getUserData();
     let permission;
     try {
       permission =  permissions[module][userData.roles];
-    }catch(e) {
+    }catch (e) {
       return false;
     }
-    if(permission == 'full') {
+    if (permission == 'full') {
       return true;
-    }else if(mode == 'read' && permission == 'read'){
+    }else if (mode == 'read' && permission == 'read'){
       return true;
     }
     return false;

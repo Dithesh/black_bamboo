@@ -3,7 +3,7 @@
     <mat-sidenav [mode]="_layout.menuMode" [(opened)]="_layout.isOpened" [fixedInViewport]="false">
         <app-sidebar></app-sidebar>
     </mat-sidenav>
-    <mat-sidenav-content [class.p-0]="noPadding">
+    <mat-sidenav-content class="p-0">
         <router-outlet></router-outlet>
     </mat-sidenav-content>
 </mat-sidenav-container>

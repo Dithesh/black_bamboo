@@ -5,41 +5,45 @@ import { AdminComponent } from './admin.component';
 
 const routes: Routes = [
   {
-    path: "",
+    path: '',
     component: AdminComponent,
     children: [
       {
-        path: "dashboard",
+        path: 'dashboard',
         loadChildren: () => import('./dashboard/dashboard.module').then(mod => mod.DashboardModule)
       },
       {
-        path: "order",
+        path: 'order',
         loadChildren: () => import('./orders/orders.module').then(mod => mod.OrdersModule)
       },
       {
-        path :"settings",
+        path : 'settings',
         loadChildren: () => import('./settings/settings.module').then(mod => mod.SettingsModule)
       },
       {
-        path:"products",
+        path: 'products',
         loadChildren: () => import('./products/products.module').then(mod => mod.ProductsModule)
       },
       {
-        path:"tables",
+        path: 'tables',
         loadChildren: () => import('./table-manager/table-manager.module').then(mod => mod.TableManagerModule)
       },
       {
-        path:"reports",
+        path: 'reports',
         loadChildren: () => import('./report-manager/report-manager.module').then(mod => mod.ReportManagerModule)
       },
       {
-        path:"user",
+        path: 'user',
         loadChildren: () => import('./user/user.module').then(mod => mod.UserModule)
       },
       {
-        path:"account-management",
+        path: 'account-management',
         loadChildren: () => import('./account-management/account-management.module').then(mod => mod.AccountManagementModule)
-      }
+      },
+      {
+        path: 'categories',
+        loadChildren: () => import('./categories-setting/categories-setting.module').then(m => m.CategoriesSettingModule)
+      },
     ]
   }
 ];

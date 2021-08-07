@@ -31,8 +31,18 @@
                                 <img src="assets/images/icons/MORE.svg" alt="" class="icon_img">
                             </button>
                             <mat-menu #moreOption="matMenu">
-                                <button mat-menu-item type="button" [routerLink]="['/admin/settings/branches/update/'+item.id]"><img src="assets/images/icons/EDIT.svg" alt="" class="icon_img"> Edit</button>
-                                <button mat-menu-item type="button" (click)="deleteBranch(item)"><img src="assets/images/icons/TRASHBIN.svg" alt="" class="icon_img">Delete</button>
+                                <button mat-menu-item type="button" [routerLink]="['/admin/settings/branches/update/'+item.id]">
+                                  <img src="assets/images/icons/EDIT.svg" alt="" class="icon_img mr-3">
+                                  Edit
+                                </button>
+                                <button mat-menu-item type="button" (click)="deleteBranch(item)">
+                                  <img src="assets/images/icons/TRASHBIN.svg" alt="" class="icon_img mr-3">
+                                  Delete
+                                </button>
+                                <button mat-menu-item type="button" [routerLink]="['/admin/settings/branches/tables/'+item.id]">
+                                  <img src="assets/images/icons/TRASHBIN.svg" alt="" class="icon_img mr-3">
+                                  Tables
+                                </button>
                             </mat-menu>
                         </td>
                         <td>

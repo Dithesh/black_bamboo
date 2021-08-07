@@ -5,19 +5,20 @@ import { BranchesSettingComponent } from './branches-setting.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { RoleGaurd } from './../../../shared/gaurd/role-gaurd';
+import {TableSetupComponent} from "./table-setup/table-setup.component";
 
 
 const routes: Routes = [
   {
-    path:"",
-    children:[
+    path: '',
+    children: [
       {
-        path:"",
-        component:BranchesSettingComponent,
-        children:[
+        path: '',
+        component: BranchesSettingComponent,
+        children: [
           {
-            path:"list",
-            component:BranchListComponent,
+            path: 'list',
+            component: BranchListComponent,
             resolve: {
               companyList: CompanyListResolver
             },
@@ -28,7 +29,7 @@ const routes: Routes = [
             canActivate: [ RoleGaurd ]
           },
           {
-            path:"update",
+            path: 'update',
             component: UpdateBranchComponent,
             resolve: {
               companyList: CompanyListResolver
@@ -40,7 +41,16 @@ const routes: Routes = [
             canActivate: [ RoleGaurd ]
           },
           {
-            path:"update/:id",
+            path: 'tables/:id',
+            component: TableSetupComponent,
+            // data: {
+            //   module: 'branch-table-setup',
+            //   mode: 'full'
+            // },
+            // canActivate: [ RoleGaurd ]
+          },
+          {
+            path: 'update/:id',
             component: UpdateBranchComponent,
             resolve: {
               companyList: CompanyListResolver
@@ -52,8 +62,8 @@ const routes: Routes = [
             canActivate: [ RoleGaurd ]
           },
           {
-            path:"**",
-            redirectTo:"list"
+            path: '**',
+            redirectTo: 'list'
           },
         ]
       }

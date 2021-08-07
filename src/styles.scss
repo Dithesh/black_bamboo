@@ -64,11 +64,11 @@ $frontExpoSmart-theme: mat-light-theme((
 ));
 @include angular-material-theme($frontExpoSmart-theme);
 
-html, body { 
-    height: 100%; 
+html, body {
+    height: 100%;
     font-size: 10px;
-    margin: 0; 
-    // font-family: 'Poppins', sans-serif; 
+    margin: 0;
+    // font-family: 'Poppins', sans-serif;
     font-weight: 400;
     color: #3a3a3a;
 }
@@ -151,7 +151,7 @@ h3.page_title {
 .gutters-10{
     margin-right: -5px;
     margin-left: -5px;
-  
+
     > .col,
     > [class*="col-"] {
       padding-right: 5px;
@@ -332,7 +332,7 @@ mat-form-field{
         & .btn{
             font-size: 1.6rem;
             line-height: 1;
-            width: 28px;    
+            width: 28px;
             height: 25px;
             background-color: #f2f2f2;
             color: #2e358e;
@@ -350,19 +350,19 @@ mat-form-field{
         }
     }
 }
-.success-snackbar{ 
+.success-snackbar{
     background-color: #009519;
     & button{
         color: #000;
     }
 }
-.error-snackbar{ 
+.error-snackbar{
     background-color:$color-warning;
     & button{
         color: #000;
     }
 }
-.info-snackbar{ 
+.info-snackbar{
     background-color:$color-accent;
     & button{
         color: #000;
@@ -421,7 +421,7 @@ mat-form-field{
                     border-top: 0px solid transparent;
                     padding: 10px 0px 12px;
                 }
-                
+
             }
             & .mat-form-field-outline{
                 top: 0;
@@ -433,7 +433,7 @@ mat-form-field{
                     height: 2em !important;
                 }
             }
-            
+
             & .mat-select-arrow-wrapper{
                 transform: translateY(10%);
             }
@@ -504,7 +504,7 @@ mat-form-field{
 .mat-slide-toggle {
     height: 14px;
     line-height: 14px;
-    
+
     & .mat-slide-toggle-label {
         & .mat-slide-toggle-bar {
             height: 14px;
@@ -528,7 +528,7 @@ mat-form-field{
     }
 
     &.mat-checked {
-        
+
         & .mat-slide-toggle-label {
             & .mat-slide-toggle-bar {
 
@@ -545,7 +545,7 @@ mat-form-field{
 .mat-raised-button.sm_btn {
     line-height: 28px;
 }
-.mat-icon-button.sm_btn {    
+.mat-icon-button.sm_btn {
     width: 18px;
     height: 18px;
     line-height: 18px;
@@ -574,7 +574,7 @@ table {
         & .inline_edit {
             position: relative;
             min-width: 50px;
-            & input, 
+            & input,
             & select {
                 width: 100%;
                 height: 100%;
@@ -582,16 +582,16 @@ table {
                 background-color: transparent;
                 -webkit-appearance: none;
                 -moz-appearance: none;
-            
+
                 &:focus {
                     outline: none;
                 }
             }
-        
+
             & select::-ms-expand {
                 display: none;
             }
-        
+
             & .error_spin {
                 display: none;
             }
@@ -612,7 +612,7 @@ table {
                     // border-radius: 50%;
                     // color: #ffffff;
                     // font-size: 12px;
-        
+
                     & .mat-icon {
                         width: 14px;
                         height: 14px;
@@ -727,9 +727,9 @@ label.mat-checkbox-layout {
                 width: 100%;
             }
         }
-    }   
+    }
     &.suffix{
-        input{   
+        input{
             padding-right: 20px;
         }
     }
@@ -935,7 +935,7 @@ label.mat-checkbox-layout {
             -webkit-transition: .3s ease-in-out;
                 -ms-transition: .3s ease-in-out;
                 -moz-transition: .3s ease-in-out;
-                transition: .3s ease-in-out;    
+                transition: .3s ease-in-out;
             &:after{
                 content: "";
                 position: absolute;
@@ -947,7 +947,7 @@ label.mat-checkbox-layout {
                 -webkit-transition: .3s ease-in-out;
                 -ms-transition: .3s ease-in-out;
                 -moz-transition: .3s ease-in-out;
-                transition: .3s ease-in-out;    
+                transition: .3s ease-in-out;
                 background-color: $color-primary;
             }
             &.valueOne{
@@ -1081,7 +1081,7 @@ label.mat-checkbox-layout {
     }
 }
 
-.order_timeBox{    
+.order_timeBox{
     margin-right: 10px;
     background: #2e358e0d;
     padding: 5px 15px;
@@ -1324,7 +1324,7 @@ label.mat-checkbox-layout {
     display: grid;
     grid-template-columns: 1fr 300px;
     grid-auto-rows:110px auto;
-    grid-template-areas: 
+    grid-template-areas:
             "customer billing"
             "order billing";
 
@@ -1337,7 +1337,7 @@ label.mat-checkbox-layout {
         height: auto;
         grid-template-columns: 1fr;
         grid-auto-rows: minmax(min-content, max-content);
-        grid-template-areas: 
+        grid-template-areas:
                 "customer"
                 "order"
                 "billing";
@@ -1363,7 +1363,7 @@ label.mat-checkbox-layout {
         display: flex;
     }
 
-    
+
     @media (max-width: 1200px) {
         border-left: none;
     }
@@ -1428,7 +1428,7 @@ label.mat-checkbox-layout {
 // order item design
 .order_item_wrapper {
     margin-bottom: 15px;
-    
+
     & .img_item {
         width: 90px;
         height: 90px;
@@ -1452,15 +1452,15 @@ label.mat-checkbox-layout {
         box-shadow:0px 1px 6px rgba(46, 53, 142, 0.2);
         border-radius: 5px;
         position: relative;
-    
+
         &:not(:last-child) {
             margin-bottom: 2rem;
         }
-    
-    
+
+
         & .order-details {
-            padding: 15px; 
-    
+            padding: 15px;
+
             & p.product_name {
                 margin: 0;
                 font-size: 20px;
@@ -1489,14 +1489,14 @@ label.mat-checkbox-layout {
 
             }
         }
-    
+
         & .action_menu {
             padding: 15px 15px 15px 0px;
             align-self: flex-end;
         }
-    
-    
-    
+
+
+
     }
 }
 // order item design end
@@ -1827,13 +1827,13 @@ label.mat-checkbox-layout {
 }
 // New order design end
 
-    
+
 .only-print{
     display: none !important;
 }
-@media print { 
-    
-    html, body { 
+@media print {
+
+    html, body {
         color: #000000 !important;
         margin: 0 !important;
         padding: 0 !important;
@@ -1859,7 +1859,7 @@ label.mat-checkbox-layout {
         padding: 0 !important;
     }
 
-    
+
     .hidden-print,
     .hidden-print * {
         display: none !important;
@@ -1920,16 +1920,21 @@ label.mat-checkbox-layout {
                 background-color: #c8c8c8;
                 border-radius: 10px;
             }
-            
+
         }
     }
-    
+
 }
 
 // icon change
 .icon_img{
-    max-width: 32px;
+    max-width: 20px;
+
+    &.sub_menu_arrow {
+      max-width: 10px;
+    }
 }
+
 .mat-form-field{
     &.mat-form-field-appearance-outline {
         .mat-form-field-wrapper {

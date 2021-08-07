@@ -35,7 +35,7 @@ import { CompanyListResolver } from './resolvers/company-list.resolver';
     SharedModule,
   ],
   entryComponents: [ChangePasswordComponent, ChangeProfileComponent],
-  providers:[
+  providers: [
     MatDialogModule,
     CompanyListResolver
   ]

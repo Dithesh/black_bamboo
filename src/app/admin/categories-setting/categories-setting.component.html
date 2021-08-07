@@ -1,18 +1,18 @@
 <div class="accont_header_wrapping pa-25">
     <h2 class="text-uppercase font-weight-500 mb-0 d-flex align-items-center justify-content-between">
-        Setting
+        Categories
         <!-- <div>
-            <button mat-raised-button color="primary" routerLink="/admin/settings/company/update">Add New</button>
+            <button mat-raised-button color="primary" routerLink="/admin/company/update">Add New</button>
         </div> -->
     </h2>
 </div>
 <div class="account_body_wrapper pl-25 pr-25">
     <div class="body_inner_card">
         <div class="tab_header">
-            <div class="tab_btn" routerLink="/admin/settings/categories/list" routerLinkActive="active">
+            <div class="tab_btn" routerLink="/admin/categories/list" routerLinkActive="active">
                 <a href="javascript:;">Category</a>
             </div>
-            <div class="tab_btn" routerLink="/admin/settings/categories/update" routerLinkActive="active pointer-none">
+            <div class="tab_btn" routerLink="/admin/categories/update" routerLinkActive="active pointer-none">
                 <a href="javascript:;">{{editId?'Update Category': 'Add Category'}} </a>
             </div>
             <!--<div class="tab_btn">
@@ -25,7 +25,7 @@
         <div class="tab_body pa-20">
             <router-outlet></router-outlet>
         </div>
-        
+
     </div>
 
 </div>

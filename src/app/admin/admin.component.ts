@@ -23,12 +23,20 @@ export class AdminComponent implements OnInit {
   }
 
   handleRouting(){
-    let url = this.router.url;
-    if(url.indexOf('/admin/account') >= 0 || url.indexOf('/admin/settings/company') >= 0 || url.indexOf('/admin/user') >= 0 || url.indexOf('/admin/products') >= 0 || url.indexOf('/admin/settings/branches') >= 0 || url.indexOf('/admin/order') >= 0 || url.indexOf('/admin/settings/categories') >= 0  || url.indexOf('/admin/reports') >= 0)  {
-      this.noPadding = true;
-    }else {
-      this.noPadding = false;
-    }
+    // let url = this.router.url;
+    // let noPaddingArray = [
+    //   '/admin/account',
+    //   '/admin/settings/company',
+    //   '/admin/user',
+    //   '/admin/products',
+    //
+    // ];
+    // if(url.indexOf('/admin/account') >= 0 || url.indexOf('/admin/settings/company') >= 0 || url.indexOf('/admin/user') >= 0 ||
+    //   url.indexOf('/admin/products') >= 0 || url.indexOf('/admin/settings/branches') >= 0 || url.indexOf('/admin/order') >= 0 || url.indexOf('/admin/settings/categories') >= 0  || url.indexOf('/admin/reports') >= 0)  {
+    //   this.noPadding = true;
+    // }else {
+    //   this.noPadding = false;
+    // }
   }
 
 }

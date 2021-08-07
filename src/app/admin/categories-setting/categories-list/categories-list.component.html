@@ -18,7 +18,7 @@
                                 <img src="assets/images/icons/MORE.svg" alt="" class="icon_img">
                             </button>
                             <mat-menu #moreOption="matMenu">
-                                <button mat-menu-item type="button" [routerLink]="['/admin/settings/categories/update/'+item.id]"><img src="assets/images/icons/EDIT.svg" alt="" class="icon_img"> Edit</button>
+                                <button mat-menu-item type="button" [routerLink]="['/admin/categories/update/'+item.id]"><img src="assets/images/icons/EDIT.svg" alt="" class="icon_img"> Edit</button>
                                 <button mat-menu-item type="button" (click)="deleteCategory(item)"><img src="assets/images/icons/TRASHBIN.svg" alt="" class="icon_img">Delete</button>
                             </mat-menu>
                         </td>
@@ -29,7 +29,7 @@
                         <td>
                             {{item.branch?.branchTitle}}
                         </td>
-                        
+
                         <td>
                             <mat-slide-toggle color="accent" (change)="changeStatus(item)" [(ngModel)]="item.isActive"></mat-slide-toggle>
                         </td>

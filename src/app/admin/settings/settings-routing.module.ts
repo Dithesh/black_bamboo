@@ -11,7 +11,7 @@ import { AddTableManagerComponent } from './add-table-manager/add-table-manager.
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'categories',
+    redirectTo: 'company',
     pathMatch: 'full'
   },
   {
@@ -21,10 +21,6 @@ const routes: Routes = [
   {
     path: 'company',
     loadChildren: () => import('./company-setting/company-setting.module').then(m => m.CompanySettingModule)
-  },
-  {
-    path: 'categories',
-    loadChildren: () => import('../categories-setting/categories-setting.module').then(m => m.CategoriesSettingModule)
   },
   {
     path: 'table-manager',
