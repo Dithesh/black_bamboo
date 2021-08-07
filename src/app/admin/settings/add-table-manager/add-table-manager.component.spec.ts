@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { AddTableManagerComponent } from './add-table-manager.component';
 
@@ -6,7 +6,7 @@ describe('AddTableManagerComponent', () => {
   let component: AddTableManagerComponent;
   let fixture: ComponentFixture<AddTableManagerComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ AddTableManagerComponent ]
     })
