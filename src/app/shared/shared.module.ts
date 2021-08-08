@@ -23,12 +23,11 @@ import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import { ConfirmPopupComponent } from './components/confirm-popup/confirm-popup.component';
 import {MatBadgeModule} from '@angular/material/badge';
 import {MatExpansionModule} from '@angular/material/expansion';
-import { CarouselModule } from 'ngx-owl-carousel-o';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import { NumberFormatterDirective } from './services/number-formater.directive';
 import { FixedHeaderDirective } from './services/fixed-header.directive';
 import { DigitOnlyDirective } from './services/digit-only.directive';
-import {  RxReactiveFormsModule } from "@rxweb/reactive-form-validators"
+import {  RxReactiveFormsModule } from '@rxweb/reactive-form-validators'
 import {MatChipsModule} from '@angular/material/chips';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import { MatSelectFilterModule } from 'mat-select-filter';
@@ -56,7 +55,7 @@ import {MatTabsModule} from '@angular/material/tabs';
     MatRippleModule,
     MatSortModule,
     MatDatepickerModule,
-    MatNativeDateModule, 
+    MatNativeDateModule,
     MatMenuModule,
     MatCardModule,
     DatexPipe,
@@ -67,7 +66,6 @@ import {MatTabsModule} from '@angular/material/tabs';
     ConfirmPopupComponent,
     MatBadgeModule,
     MatExpansionModule,
-    CarouselModule,
     MatAutocompleteModule,
     NumberFormatterDirective,
     DigitOnlyDirective,
@@ -84,7 +82,7 @@ import {MatTabsModule} from '@angular/material/tabs';
     MatButtonModule,
     {provide: ErrorStateMatcher, useClass: ShowOnDirtyErrorStateMatcher},
     {provide: DEFAULT_CURRENCY_CODE, useValue: 'INR'},
-    
+
   ]
 })
 export class SharedModule { }

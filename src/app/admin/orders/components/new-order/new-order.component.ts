@@ -1,7 +1,5 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatSort } from '@angular/material/sort';
-import { MatTableDataSource } from '@angular/material/table';
-import { OwlOptions } from 'ngx-owl-carousel-o';
 import { FormGroup, FormBuilder, FormArray, AbstractControl, FormControl } from '@angular/forms';
 import { DataService } from 'src/app/shared/services/data.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -303,7 +301,7 @@ export class NewOrderComponent implements OnInit, OnDestroy {
     grandTotal = parseInt(integer);
     let roundOfAmount = (decimal)?parseFloat('0.'+decimal):0;
     // console.log(math.div(grandTotal, ));
-    
+
 
     math
 
@@ -378,12 +376,12 @@ export class NewOrderComponent implements OnInit, OnDestroy {
 
 
   getOrderDetail() {
-    
+
     this.isDirty=false;
     this._serv.endpoint = "order-manager/order/" + this.orderId;
     this._serv.get().subscribe((response: any) => {
       this.orderData = response;
-      
+
 
 
       this.form.patchValue({
@@ -649,7 +647,7 @@ export class NewOrderComponent implements OnInit, OnDestroy {
         this.getOrderDetail();
       })
     })
-    
+
   }
 
   getBranchDetail(branch_id) {
