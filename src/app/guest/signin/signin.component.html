@@ -16,8 +16,8 @@
                     <input matInput formControlName="password" [type]="hide ? 'password' : 'text'" placeholder="" name="loginpassword" id="loginPassword">
                     <button mat-icon-button matSuffix type="button" (click)="hide = !hide">
                         <!-- <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon> -->
-                        <img *ngIf="!hide" src="assets/images/icons/EYE_OPEN.svg" alt="">
-                        <img *ngIf="hide" src="assets/images/icons/EYE_CLOSED.svg" alt="">
+                        <img *ngIf="!hide" src="assets/images/icons/EYE_OPEN.svg" class="icon_img" alt="">
+                        <img *ngIf="hide" src="assets/images/icons/EYE_CLOSED.svg" class="icon_img" alt="">
                     </button>
                 </mat-form-field>
             </mat-card-content>

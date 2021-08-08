@@ -74,6 +74,23 @@ html, body {
     font-weight: 400;
     color: #3a3a3a;
 }
+
+// =========================theme color custom========================
+.mat-toolbar.mat-primary,
+.mat-primary .mat-pseudo-checkbox-checked, .mat-primary .mat-pseudo-checkbox-indeterminate,
+.mat-flat-button.mat-primary, .mat-raised-button.mat-primary, .mat-fab.mat-primary, .mat-mini-fab.mat-primary,
+.mat-slide-toggle.mat-primary.mat-checked .mat-slide-toggle-thumb{
+    background: #2e388d;
+}
+.mat-form-field.mat-form-field-appearance-outline .mat-form-field-wrapper .mat-form-field-flex:hover .mat-form-field-outline-thick{
+    color: #2e388d;
+}
+
+.mat-slide-toggle.mat-primary.mat-checked .mat-slide-toggle-bar{
+    background-color: rgba(46, 56, 141, 0.54);
+}
+
+// ======================= end theming=============================
 @include scroll-bar(5px, #f2f2f2, $color-primary, 20px);
 @include bootstrap-breakpoint('xxl', 1400px);
 @include bootstrap-breakpoint('xxxl', 1600px);
@@ -1931,7 +1948,7 @@ label.mat-checkbox-layout {
 // icon change
 .icon_img{
     max-width: 20px;
-
+    width: 20px;
     &.sub_menu_arrow {
       max-width: 10px;
     }
