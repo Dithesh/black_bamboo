@@ -34,6 +34,7 @@ import { MatSelectFilterModule } from 'mat-select-filter';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import {MatTabsModule} from '@angular/material/tabs';
+import {MatDialogModule} from "@angular/material/dialog";
 
 @NgModule({
   declarations: [DatexPipe, SnackbarComponent, ConfirmPopupComponent, NumberFormatterDirective, DigitOnlyDirective, FixedHeaderDirective],
@@ -76,10 +77,10 @@ import {MatTabsModule} from '@angular/material/tabs';
     NgxChartsModule,
     MatTooltipModule,
     MatTabsModule,
-    FixedHeaderDirective
+    FixedHeaderDirective,
+    MatDialogModule,
   ],
   providers: [
-    MatButtonModule,
     {provide: ErrorStateMatcher, useClass: ShowOnDirtyErrorStateMatcher},
     {provide: DEFAULT_CURRENCY_CODE, useValue: 'INR'},
 
