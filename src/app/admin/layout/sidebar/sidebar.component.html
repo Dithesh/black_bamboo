@@ -33,7 +33,7 @@
         </li>
         <li routerLinkActive="active" *ngIf=" this._serv.getPermission('category-master', 'read')">
             <a href="javascript:;" routerLink="/admin/categories" matRipple [matRippleUnbounded]="false">
-                <img src="assets/images/icons/USER.svg" alt="" class="icon_img"> <span class="d-inline-block ml-3">Category</span>
+                <img src="assets/images/icons/CATEGORY_fill.svg" alt="" class="icon_img"> <span class="d-inline-block ml-3">Category</span>
             </a>
         </li>
         <li routerLinkActive="subOpen" class="have_submenu" *ngIf=" this._serv.getPermission('setting-menu', 'read')">
