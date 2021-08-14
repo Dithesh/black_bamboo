@@ -1,1 +1,49 @@
-<p>table-setup works!</p>
+<div class="item_table_outer mt-10">
+  <div class="d-flex justify-content-between align-items-center">
+    <h2>{{ brandDetails?.branchTitle }}</h2>
+    <button mat-raised-button color="primary" type="button" class="mb-20" (click)="updateTable()">Add New</button>
+  </div>
+    <div class="table-responsive">
+        <table class="table account_table" matSort>
+            <thead>
+                <tr>
+                    <th class="ew-100">Action</th>
+                    <th mat-sort-header="tableId">Table NO</th>
+                    <th mat-sort-header="description">Description</th>
+                    <th mat-sort-header="noOfChair" class="ew-200">Number Of Chairs</th>
+                    <th class="ew-150">Is Active?</th>
+                </tr>
+            </thead>
+            <tbody>
+                <ng-container *ngFor="let item of tableList?.data; let i =index">
+                    <tr>
+                        <td>
+                            <button mat-icon-button [matMenuTriggerFor]="moreOption">
+                                <img src="assets/images/icons/MORE.svg" alt="" class="icon_img">
+                            </button>
+                            <mat-menu #moreOption="matMenu">
+                                <button mat-menu-item type="button" (click)="updateTable(item)"><img src="assets/images/icons/EDIT.svg" alt="" class="icon_img mr-3"> Edit</button>
+                                <button mat-menu-item type="button" (click)="deleteTable(item)"><img src="assets/images/icons/TRASHBIN.svg" alt="" class="icon_img mr-3">Delete</button>
+                            </mat-menu>
+                        </td>
+                        <td>
+                            {{item.tableId }}
+                        </td>
+                        <td>{{item.description}}</td>
+                        <td>
+                            {{item.noOfChair}}
+                        </td>
+
+                        <td>
+                            <mat-slide-toggle color="accent" style="pointer-events: none;" [(ngModel)]="item.isActive"></mat-slide-toggle>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="5" *ngIf="tableList?.data.length <= 0"> No data to display.</td>
+                    </tr>
+                </ng-container>
+            </tbody>
+        </table>
+        <mat-paginator [pageSizeOptions]="[10]" [length]="tableList?.total" [pageSize]="10"></mat-paginator>
+    </div>
+</div>

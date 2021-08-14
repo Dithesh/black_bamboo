@@ -12,14 +12,14 @@
             <div class="tab_btn" routerLink="/admin/settings/branches/list" routerLinkActive="active">
                 <a href="javascript:;">Branch Lists</a>
             </div>
-            <div class="tab_btn" routerLink="/admin/settings/branches/update" routerLinkActive="active pointer-none">
-                <a href="javascript:;">{{editId?'Branch Product': 'Add Branch'}} </a>
+            <div class="tab_btn" [routerLink]="[branchTable? '' : '/admin/settings/branches/update']" routerLinkActive="active pointer-none">
+                <a href="javascript:;">{{branchTable? 'Branch Tables' : editId? 'Branch Update' : 'Add Branch'}} </a>
             </div>
         </div>
         <div class="tab_body pa-20">
             <router-outlet></router-outlet>
         </div>
-        
+
     </div>
 
 </div>

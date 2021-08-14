@@ -20,6 +20,12 @@ export class DataService {
     return this.http.get(this.apiUrl + this.endpoint);
   }
 
+  getByParam(params= {}) {
+    return this.http.get(this.apiUrl + this.endpoint, {
+      params
+    });
+  }
+
   post(data) {
     return this.http.post(this.apiUrl + this.endpoint, data);
   }

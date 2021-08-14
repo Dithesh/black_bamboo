@@ -53,11 +53,6 @@
                         Branches
                     </a>
                 </li>
-                <li routerLinkActive="active" *ngIf=" this._serv.getPermission('table-master', 'read')">
-                    <a href="javascript:;" routerLink="/admin/settings/table-manager" matRipple>
-                        Table Manager
-                    </a>
-                </li>
             </ul>
         </li>
         <li routerLinkActive="subOpen" class="have_submenu" *ngIf=" this._serv.getPermission('accounting-menu', 'full')">

@@ -6,6 +6,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { RoleGaurd } from './../../../shared/gaurd/role-gaurd';
 import {TableSetupComponent} from "./table-setup/table-setup.component";
+import {BranchTableListResolver} from "./table-setup/branch-table-list.resolver";
 
 
 const routes: Routes = [
@@ -41,8 +42,11 @@ const routes: Routes = [
             canActivate: [ RoleGaurd ]
           },
           {
-            path: 'tables/:id',
+            path: 'update/tables/:id',
             component: TableSetupComponent,
+            resolve: {
+              tableList: BranchTableListResolver
+            },
             // data: {
             //   module: 'branch-table-setup',
             //   mode: 'full'

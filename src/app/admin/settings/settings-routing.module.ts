@@ -5,7 +5,6 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { BranchesSettingComponent } from './branches-setting/branches-setting.component';
 import { CategoriesSettingComponent } from '../categories-setting/categories-setting.component';
-import { AddTableManagerComponent } from './add-table-manager/add-table-manager.component';
 
 
 const routes: Routes = [
@@ -21,13 +20,6 @@ const routes: Routes = [
   {
     path: 'company',
     loadChildren: () => import('./company-setting/company-setting.module').then(m => m.CompanySettingModule)
-  },
-  {
-    path: 'table-manager',
-    component: AddTableManagerComponent,
-    resolve: {
-      companyList: CompanyListResolver
-    }
   },
 ];
 

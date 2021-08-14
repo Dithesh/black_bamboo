@@ -1,0 +1,31 @@
+<form [formGroup]="form" (submit)="updateTable($event)">
+    <div class="popup_formWrapper">
+        <h3>{{ form.get('id').value == '' ? 'Add table' : 'Update table' }}</h3>
+        <mat-form-field appearance="outline" class="w-100 mb-10">
+            <mat-label>Table ID</mat-label>
+            <input matInput formControlName="tableId">
+            <mat-error *ngIf="form.get('tableId').hasError('required')">ID is required</mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="w-100 mb-10">
+            <mat-label>Description</mat-label>
+            <input matInput formControlName="description">
+            <mat-error *ngIf="form.get('description').hasError('required')">Description is required</mat-error>
+        </mat-form-field>
+
+        <mat-label>No Of Chairs</mat-label>
+        <div class="input-group mb-0 number_input mb-20">
+            <div class="input-group-prepend">
+              <button class="btn btn-outline-secondary" type="button" (click)="handelClickChairQty('prev')">-</button>
+            </div>
+            <input type="text" class="form-control" formControlName="noOfChair">
+            <div class="input-group-append">
+                <button class="btn btn-outline-secondary" type="button" (click)="handelClickChairQty('next')">+</button>
+              </div>
+        </div>
+          <mat-slide-toggle color="accent" formControlName="isActive">Is Active?</mat-slide-toggle>
+
+    </div>
+    <div class="popup_Btnfooter text-center">
+        <button mat-raised-button color="primary" type="submit" class="ew-100">Save</button>
+    </div>
+</form>
