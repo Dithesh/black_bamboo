@@ -2,7 +2,6 @@ export const permissions = {
     company: {
         'Super Admin': 'full',
         'Company Admin': 'denied',
-        'Company Accountant' : 'denied',
         'Branch Admin' : 'denied',
         'Branch Accountant' : 'denied',
         'Branch Manager' : 'denied',
@@ -13,7 +12,6 @@ export const permissions = {
     branch: {
         'Super Admin': 'full',
         'Company Admin': 'read',
-        'Company Accountant' : 'denied',
         'Branch Admin' : 'denied',
         'Branch Accountant' : 'denied',
         'Branch Manager' : 'denied',
@@ -24,7 +22,6 @@ export const permissions = {
     'table-master': {
         'Super Admin': 'full',
         'Company Admin': 'denied',
-        'Company Accountant' : 'denied',
         'Branch Admin' : 'denied',
         'Branch Accountant' : 'denied',
         'Branch Manager' : 'denied',
@@ -35,7 +32,6 @@ export const permissions = {
     'category-master': {
         'Super Admin': 'full',
         'Company Admin': 'full',
-        'Company Accountant' : 'denied',
         'Branch Admin' : 'read',
         'Branch Accountant' : 'denied',
         'Branch Manager' : 'denied',
@@ -46,8 +42,7 @@ export const permissions = {
     'setting-menu': {
         'Super Admin': 'full',
         'Company Admin': 'full',
-        'Company Accountant' : 'denied',
-        'Branch Admin' : 'full',
+        'Branch Admin' : 'denied',
         'Branch Accountant' : 'denied',
         'Branch Manager' : 'denied',
         'Branch Order Manager' : 'denied',
@@ -57,7 +52,6 @@ export const permissions = {
     users: {
         'Super Admin': 'full',
         'Company Admin': 'full',
-        'Company Accountant' : 'denied',
         'Branch Admin' : 'full',
         'Branch Accountant' : 'denied',
         'Branch Manager' : 'denied',
@@ -68,7 +62,6 @@ export const permissions = {
     'user-attendance' : {
         'Super Admin': 'full',
         'Company Admin': 'full',
-        'Company Accountant' : 'read',
         'Branch Admin' : 'full',
         'Branch Accountant' : 'read',
         'Branch Manager' : 'full',
@@ -79,7 +72,6 @@ export const permissions = {
     products: {
         'Super Admin': 'full',
         'Company Admin': 'full',
-        'Company Accountant' : 'denied',
         'Branch Admin' : 'full',
         'Branch Accountant' : 'denied',
         'Branch Manager' : 'full',
@@ -90,7 +82,6 @@ export const permissions = {
     tables: {
         'Super Admin': 'read',
         'Company Admin': 'read',
-        'Company Accountant' : 'denied',
         'Branch Admin' : 'full',
         'Branch Accountant' : 'denied',
         'Branch Manager' : 'full',
@@ -98,10 +89,19 @@ export const permissions = {
         'Kitchen Manager' : 'denied',
         Bearer : 'denied'
     },
+  'order-tables': {
+        'Super Admin': 'denied',
+        'Company Admin': 'denied',
+        'Branch Admin' : 'full',
+        'Branch Accountant' : 'denied',
+        'Branch Manager' : 'full',
+        'Branch Order Manager' : 'full',
+        'Kitchen Manager' : 'denied',
+        Bearer : 'full'
+  },
     orders: {
         'Super Admin': 'read',
         'Company Admin': 'read',
-        'Company Accountant' : 'denied',
         'Branch Admin' : 'full',
         'Branch Accountant' : 'read',
         'Branch Manager' : 'full',
@@ -112,7 +112,6 @@ export const permissions = {
     'order-report': {
         'Super Admin': 'full',
         'Company Admin': 'full',
-        'Company Accountant' : 'full',
         'Branch Admin' : 'full',
         'Branch Accountant' : 'full',
         'Branch Manager' : 'full',
@@ -123,7 +122,6 @@ export const permissions = {
     'accounting-menu': {
         'Super Admin': 'full',
         'Company Admin': 'full',
-        'Company Accountant' : 'full',
         'Branch Admin' : 'full',
         'Branch Accountant' : 'full',
         'Branch Manager' : 'full',
@@ -134,7 +132,6 @@ export const permissions = {
     'accounting-transaction': {
         'Super Admin': 'full',
         'Company Admin': 'full',
-        'Company Accountant' : 'full',
         'Branch Admin' : 'full',
         'Branch Accountant' : 'full',
         'Branch Manager' : 'full',
@@ -145,7 +142,6 @@ export const permissions = {
     'accounting-masters': {
         'Super Admin': 'full',
         'Company Admin': 'full',
-        'Company Accountant' : 'full',
         'Branch Admin' : 'full',
         'Branch Accountant' : 'full',
         'Branch Manager' : 'denied',

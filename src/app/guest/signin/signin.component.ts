@@ -11,10 +11,10 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class SigninComponent implements OnInit {
   form:FormGroup;
   hide = true;
-  adminRoles=['Super Admin', 'Company Admin', 'Branch Admin', 'Company Accountant', 'Branch Accountant', 'Branch Order Manager', 'Kitchen Manager'];
+  adminRoles=['Super Admin', 'Company Admin', 'Branch Admin', 'Company Accountant', 'Branch Accountant', 'Branch Order Manager'];
   kitchenRoles=['Branch Admin', 'Branch Order Manager', 'Kitchen Manager'];
   routeType='admin';
-  constructor(private _serv: DataService, private fb: FormBuilder, private router: Router, private route: ActivatedRoute) { 
+  constructor(private _serv: DataService, private fb: FormBuilder, private router: Router, private route: ActivatedRoute) {
     if(this.router.url.indexOf('/kitchen/guest/signin') >= 0) {
       this.routeType='kitchen';
     }

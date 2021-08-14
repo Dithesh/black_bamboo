@@ -26,7 +26,6 @@ export class UpdateUserComponent implements OnInit {
   userRoles = [
     'Super Admin',
     'Company Admin',
-    'Company Accountant',
     'Branch Admin',
     'Branch Accountant',
     'Branch Order Manager',
@@ -39,7 +38,7 @@ export class UpdateUserComponent implements OnInit {
     private dialog: MatDialog,
     private route: ActivatedRoute,
     private router: Router
-  ) { 
+  ) {
     this.userId = this.route.snapshot.params.id;
     this.form = this.fb.group({
       id: [''],
@@ -71,14 +70,14 @@ export class UpdateUserComponent implements OnInit {
   }
 
   ngAfterViewInit() {
-  
+
   }
 
   getUserDetails(){
     this._serv.endpoint = "order-manager/user/"+this.userId;
     this._serv.get().subscribe((data:any) => {
       this.form.patchValue({...data, password: ""});
-      
+
       if(this._serv.notNull(data.profilePic)){
         this.imageSrc = "url(\'"+ this.url + data.profilePic +"\')"
       }
@@ -111,7 +110,7 @@ export class UpdateUserComponent implements OnInit {
 
   saveUser(event=null) {
     if(this.processingAction) return
-    
+
     if(event!=null)event.preventDefault();
     this.form.markAllAsTouched();
     console.log(this.form);
@@ -130,7 +129,7 @@ export class UpdateUserComponent implements OnInit {
     })
   }
 
-  
+
   handleFileInput(event) {
     var file = event.dataTransfer ? event.dataTransfer.files[0] : event.target.files[0];
     var pattern = /image-*/;
