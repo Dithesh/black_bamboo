@@ -1,5 +1,5 @@
-<div class="row" [hidden]="userData?.value != 'Super Admin'">
-    <div class="col">
+<div class="row" *ngIf="userData?.roles == 'Super Admin' || userData?.roles == 'Company Admin'">
+    <div class="col-auto">
         <mat-form-field appearance="fill">
             <mat-label>Company</mat-label>
             <mat-select required [formControl]="selectedCompany">
@@ -7,8 +7,16 @@
             </mat-select>
         </mat-form-field>
     </div>
+    <div class="col-auto">
+          <mat-form-field appearance="fill">
+              <mat-label>Branch</mat-label>
+              <mat-select required [formControl]="selectedBranch">
+                  <mat-option *ngFor="let item of branchList" [value]="item.id">{{ item.branchTitle }}</mat-option>
+              </mat-select>
+          </mat-form-field>
+    </div>
 </div>
-<div class="item_table_outer mt-10">
+<div class="item_table_outer mt-10" [hidden]="!selectedBranch.value">
     <div class="table-responsive">
         <table class="table account_table">
             <thead>

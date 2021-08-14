@@ -1,4 +1,4 @@
-import { ConfirmPopupComponent } from './../../../../../../shared/components/confirm-popup/confirm-popup.component';
+import { ConfirmPopupComponent } from '../../../../../shared/components/confirm-popup/confirm-popup.component';
 import { MatDialogRef,MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { DataService } from 'src/app/shared/services/data.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
@@ -17,7 +17,7 @@ export class InventoryStockUpdateComponent implements OnInit {
     private dialog: MatDialog,
     private dialogRef: MatDialogRef<InventoryStockUpdateComponent>,
     @Inject(MAT_DIALOG_DATA) private data:any
-  ) { 
+  ) {
     this.form = this.fb.group({
       managerId: [''],
       inventoryId:[''],

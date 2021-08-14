@@ -79,6 +79,7 @@ export class DataService {
         return;
       }
       // user_id, roles
+
       return decoded;
 
     }else {

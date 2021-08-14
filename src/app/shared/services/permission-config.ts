@@ -129,6 +129,16 @@ export const permissions = {
         'Kitchen Manager' : 'denied',
         Bearer : 'denied'
     },
+    'inventory-manager': {
+        'Super Admin': 'full',
+        'Company Admin': 'full',
+        'Branch Admin' : 'full',
+        'Branch Accountant' : 'full',
+        'Branch Manager' : 'full',
+        'Branch Order Manager' : 'denied',
+        'Kitchen Manager' : 'denied',
+        Bearer : 'denied'
+    },
     'accounting-transaction': {
         'Super Admin': 'full',
         'Company Admin': 'full',

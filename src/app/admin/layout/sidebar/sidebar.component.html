@@ -77,6 +77,11 @@
                         Transaction History
                     </a>
                 </li>
+                <li routerLinkActive="active" *ngIf=" this._serv.getPermission('inventory-manager', 'full')">
+                    <a href="javascript:;" routerLink="/admin/account-management/inventory" matRipple>
+                        Inventory
+                    </a>
+                </li>
                 <li routerLinkActive="active" *ngIf=" this._serv.getPermission('accounting-transaction', 'full')">
                     <a href="javascript:;" routerLink="/admin/account-management/reports" matRipple>
                         Reports

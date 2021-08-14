@@ -5,7 +5,7 @@ import { RoleGaurd } from 'src/app/shared/gaurd/role-gaurd';
 
 const routes: Routes = [
   {
-    path: "",
+    path: '',
     data: {
       module: 'accounting-menu',
       mode: 'full'
@@ -13,11 +13,11 @@ const routes: Routes = [
     canActivate: [ RoleGaurd ],
     children: [
       {
-        path:"dashboard",
+        path: 'dashboard',
         loadChildren: () => import('./dashboard/dashboard.module').then(mod => mod.DashboardModule)
       },
       {
-        path:"new-transaction",
+        path: 'new-transaction',
         loadChildren: () => import('./new-transaction/new-transaction.module').then(mod => mod.NewTransactionModule),
         data: {
           module: 'accounting-transaction',
@@ -26,7 +26,7 @@ const routes: Routes = [
         canActivate: [ RoleGaurd ]
       },
       {
-        path:"transaction-history",
+        path: 'transaction-history',
         loadChildren: () => import('./transaction-history/transaction-history.module').then(mod => mod.TransactionHistoryModule),
         data: {
           module: 'accounting-transaction',
@@ -35,7 +35,12 @@ const routes: Routes = [
         canActivate: [ RoleGaurd ]
       },
       {
-        path:"masters",
+        path: 'inventory',
+        loadChildren: () => import('./inventory-manager/inventory-manager.module').then(mod => mod.InventoryManagerModule)
+        // component: InventoryManagerComponent
+      },
+      {
+        path: 'masters',
         loadChildren: () => import('./account-master/account-master.module').then(mod => mod.AccountMasterModule),
         data: {
           module: 'accounting-masters',
@@ -44,7 +49,7 @@ const routes: Routes = [
         canActivate: [ RoleGaurd ]
       },
       {
-        path:"reports",
+        path: 'reports',
         loadChildren: () => import('./account-reports/account-reports.module').then(mod => mod.AccountReportsModule),
         data: {
           module: 'accounting-transaction',
@@ -53,9 +58,9 @@ const routes: Routes = [
         canActivate: [ RoleGaurd ]
       },
       {
-        path:"",
-        redirectTo:'dashboard',
-        pathMatch:'full'
+        path: '',
+        redirectTo: 'dashboard',
+        pathMatch: 'full'
       }
     ]
   }
