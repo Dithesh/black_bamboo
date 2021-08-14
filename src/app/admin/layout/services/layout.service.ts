@@ -9,7 +9,7 @@ export class LayoutService {
     isFixedMenu=false;
 
     constructor() {
-        if(window.innerWidth < 768) {
+        if(window.innerWidth < 1200) {
             this.isOpened = false;
             this.menuMode = 'over';
             this.isFixedMenu=true;
