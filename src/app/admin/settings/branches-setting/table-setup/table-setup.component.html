@@ -1,4 +1,8 @@
 <div class="item_table_outer mt-10">
+  <div class="d-flex justify-content-between align-items-center">
+    <h2>{{ brandDetails?.branchTitle }}</h2>
+    <button mat-raised-button color="primary" type="button" class="mb-20" (click)="updateTable()">Add New</button>
+  </div>
     <div class="table-responsive">
         <table class="table account_table" matSort>
             <thead>
@@ -18,8 +22,8 @@
                                 <img src="assets/images/icons/MORE.svg" alt="" class="icon_img">
                             </button>
                             <mat-menu #moreOption="matMenu">
-                                <button mat-menu-item type="button" [routerLink]="['/admin/categories/update/'+item.id]"><img src="assets/images/icons/EDIT.svg" alt="" class="icon_img"> Edit</button>
-                                <button mat-menu-item type="button" (click)="deleteTable(item)"><img src="assets/images/icons/TRASHBIN.svg" alt="" class="icon_img">Delete</button>
+                                <button mat-menu-item type="button" (click)="updateTable(item)"><img src="assets/images/icons/EDIT.svg" alt="" class="icon_img mr-3"> Edit</button>
+                                <button mat-menu-item type="button" (click)="deleteTable(item)"><img src="assets/images/icons/TRASHBIN.svg" alt="" class="icon_img mr-3">Delete</button>
                             </mat-menu>
                         </td>
                         <td>

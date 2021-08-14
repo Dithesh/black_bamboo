@@ -10,12 +10,12 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./update-branch.component.scss']
 })
 export class UpdateBranchComponent implements OnInit {
-  imageSrc="url(\'/assets/images/food.jpg\')";
+  imageSrc = 'url(\'/assets/images/food.jpg\')';
   url = environment.imgUrl;
   branchId;
   userData;
   companyList: any[] = [];
-  form:FormGroup;
+  form: FormGroup;
   constructor(
     private _serv: DataService,
     private fb: FormBuilder,
@@ -23,7 +23,7 @@ export class UpdateBranchComponent implements OnInit {
     private router: Router)
      {
       this.branchId = this.route.snapshot.params.id;
-    this.form = this.fb.group({
+      this.form = this.fb.group({
       id: [''],
       image: [''],
       branchCode: [''],
@@ -33,21 +33,22 @@ export class UpdateBranchComponent implements OnInit {
       gstNumber: [''],
       isActive: [false],
       taxPercent: [''],
-      company_id:[''],
+      company_id: [''],
       kitchens: this.fb.array([]),
       orderTypes: this.fb.array([]),
       paymentMethods: this.fb.array([]),
-    })
-    this.route.data.subscribe(response => {
+    });
+      this.route.data.subscribe(response => {
       this.companyList = response.companyList;
-      if(this.companyList.length > 0)
-        this.form.get('company_id').setValue(this.companyList[0].id)
-    })
+      if (this.companyList.length > 0) {
+        this.form.get('company_id').setValue(this.companyList[0].id);
+      }
+    });
   }
 
   ngOnInit(): void {
     this.userData = this._serv.getUserData();
-    if(this.branchId) {
+    if (this.branchId) {
       this.getBranchDetails();
     }
   }
@@ -61,7 +62,7 @@ export class UpdateBranchComponent implements OnInit {
       id: [''],
       methodTitle: [''],
       deletedFlag: [false]
-    })
+    });
   }
 
   addAnotherPaymentMethod() {
@@ -69,7 +70,7 @@ export class UpdateBranchComponent implements OnInit {
   }
 
   deletePaymentMethod(item, index) {
-    if(this._serv.notNull(item.get('id').value)) {
+    if (this._serv.notNull(item.get('id').value)) {
       item.get('deletedFlag').setValue(true);
     }else {
       this.paymentMethods.removeAt(index);
@@ -85,7 +86,7 @@ export class UpdateBranchComponent implements OnInit {
       id: [''],
       kitchenTitle: [''],
       deletedFlag: [false]
-    })
+    });
   }
 
   addAnotherKitchen() {
@@ -93,7 +94,7 @@ export class UpdateBranchComponent implements OnInit {
   }
 
   deleteKitchen(item, index) {
-    if(this._serv.notNull(item.get('id').value)) {
+    if (this._serv.notNull(item.get('id').value)) {
       item.get('deletedFlag').setValue(true);
     }else {
       this.kitchens.removeAt(index);
@@ -111,7 +112,7 @@ export class UpdateBranchComponent implements OnInit {
       tableRequired: [false],
       isActive: [true],
       deletedFlag: [false]
-    })
+    });
   }
 
   addAnotherOrderType() {
@@ -119,7 +120,7 @@ export class UpdateBranchComponent implements OnInit {
   }
 
   deleteOrderType(item, index) {
-    if(this._serv.notNull(item.get('id').value)) {
+    if (this._serv.notNull(item.get('id').value)) {
       item.get('deletedFlag').setValue(true);
     }else {
       this.orderTypes.removeAt(index);
@@ -127,56 +128,56 @@ export class UpdateBranchComponent implements OnInit {
   }
 
   getBranchDetails() {
-    this._serv.endpoint = "order-manager/branch/"+this.branchId;
-    this._serv.get().subscribe((data:any) => {
+    this._serv.endpoint = 'order-manager/branch/' + this.branchId;
+    this._serv.get().subscribe((data: any) => {
       this.form.patchValue(data);
-      
-      if(this._serv.notNull(data.branchLogo)){
-        this.imageSrc = "url(\'"+ this.url + data.branchLogo +"\')"
+
+      if (this._serv.notNull(data.branchLogo)){
+        this.imageSrc = 'url(\''+ this.url + data.branchLogo +'\')';
       }
 
       data.kitchens.forEach(elem => {
-        let form = this.addNewKitchen();
+        const form = this.addNewKitchen();
         form.patchValue(elem);
         this.kitchens.push(form);
-      })
+      });
       data.order_types.forEach(elem => {
-        let form = this.addOrderType();
+        const form = this.addOrderType();
         form.patchValue(elem);
         this.orderTypes.push(form);
-      })
+      });
       data.payment_methods.forEach(elem => {
-        let form = this.addNewPaymentMethod();
+        const form = this.addNewPaymentMethod();
         form.patchValue(elem);
         this.paymentMethods.push(form);
-      })
+      });
       // data.tables.forEach(elem => {
       //   this.tables.push(this.addTable(elem));
       //   this.dataSource.next(this.tables.controls);
       // })
-    })
+    });
   }
 
 
-  saveBranch(event=null) {
-    if(event!=null)event.preventDefault();
+  saveBranch(event= null) {
+    if (event != null) {event.preventDefault(); }
     this.form.markAllAsTouched();
-    if(this.form.invalid)return;
-    let formValue = this.form.value;
-    this._serv.endpoint="order-manager/branch";
+    if (this.form.invalid) {return; }
+    const formValue = this.form.value;
+    this._serv.endpoint = 'order-manager/branch';
     this._serv.post(formValue).subscribe(response => {
-      this._serv.showMessage("Branch updated successfully", 'success')
-      this.router.navigateByUrl('/admin/settings/branches')
+      this._serv.showMessage('Branch updated successfully', 'success');
+      this.router.navigateByUrl('/admin/settings/branches');
     }, ({error}) => {
-      this._serv.showMessage(error['msg'], 'error');
-    })
+      this._serv.showMessage(error.msg, 'error');
+    });
   }
-  
+
 
   handleFileInput(event) {
-    var file = event.dataTransfer ? event.dataTransfer.files[0] : event.target.files[0];
-    var pattern = /image-*/;
-    var reader = new FileReader();
+    const file = event.dataTransfer ? event.dataTransfer.files[0] : event.target.files[0];
+    const pattern = /image-*/;
+    const reader = new FileReader();
     if (!file.type.match(pattern)) {
       alert('invalid format');
       return;
@@ -186,9 +187,9 @@ export class UpdateBranchComponent implements OnInit {
   }
 
   _handleReaderLoaded(file) {
-    let reader = file.target;
-    let imageSrc = reader.result;
-    this.form.get('image').setValue(imageSrc)
-    this.imageSrc = "url(\'"+imageSrc+"\')";
+    const reader = file.target;
+    const imageSrc = reader.result;
+    this.form.get('image').setValue(imageSrc);
+    this.imageSrc = 'url(\''+imageSrc+'\')';
   }
 }

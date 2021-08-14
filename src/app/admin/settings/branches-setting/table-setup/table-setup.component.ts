@@ -7,6 +7,8 @@ import {FormBuilder, FormGroup} from '@angular/forms';
 import {merge} from 'rxjs';
 import {MatSort} from '@angular/material/sort';
 import {MatPaginator} from '@angular/material/paginator';
+import {ConfirmPopupComponent} from '../../../../shared/components/confirm-popup/confirm-popup.component';
+import {TableUpdateComponent} from './table-update/table-update.component';
 
 @Component({
   selector: 'app-table-setup',
@@ -21,8 +23,10 @@ export class TableSetupComponent implements OnInit, AfterViewInit {
     });
   tableList: any;
   userData;
+  branchId;
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
+  brandDetails: any;
 
   constructor(
     private serv: DataService,
@@ -30,12 +34,23 @@ export class TableSetupComponent implements OnInit, AfterViewInit {
     private router: ActivatedRoute,
     private dialog: MatDialog,
     private fb: FormBuilder,
-  ) { }
+  ) {
+    this.branchId = this.route.snapshot.params.id;
+    this.getBranchDetails();
+  }
 
   ngOnInit(): void {
     this.userData = this.serv.getUserData();
     this.route.data.subscribe(({tableList}) => {
       this.tableList = tableList;
+    });
+  }
+
+
+  getBranchDetails() {
+    this.serv.endpoint = 'order-manager/branch/' + this.branchId;
+    this.serv.get().subscribe((data: any) => {
+      this.brandDetails = data;
     });
   }
 
@@ -62,8 +77,44 @@ export class TableSetupComponent implements OnInit, AfterViewInit {
     });
   }
 
-  deleteTable(table) {
+  updateTable(table = null) {
+    if (table == null) {
+      table = {
+        id: '',
+        tableId: '',
+        noOfChair: 4,
+        description: '',
+        isReserved: false,
+        isActive: true,
+        branch_id: this.branchId
+      };
+    }
+    const dialogRef = this.dialog.open(TableUpdateComponent, {
+      width: '500px',
+      data: {
+        table
+      }
+    });
+    dialogRef.afterClosed().subscribe(data => {
+      this.getAllTables();
+    });
+  }
 
+
+
+  deleteTable(table) {
+    const dialogRef = this.dialog.open(ConfirmPopupComponent);
+    dialogRef.afterClosed().subscribe(data => {
+      if (data) {
+        this.serv.endpoint = 'order-manager/table-manager/table/' + table.id;
+        this.serv.delete().subscribe(response => {
+          this.serv.showMessage('Table deleted successfully', 'success');
+          this.getAllTables();
+        }, ({error}) => {
+          this.serv.showMessage(error.msg, 'error');
+        });
+      }
+    });
   }
 
 }
