@@ -1,12 +1,20 @@
 <form [formGroup]="form" (submit)="saveInventory($event)">
     <div class="add_formWrapper">
-        
+
         <div class="row">
             <div class="col-lg-3 col-sm-6 col-12" *ngIf="userData?.roles == 'Super Admin'">
                 <mat-form-field appearance="fill" class="w-100 mb-5">
                     <mat-label>Company</mat-label>
                     <mat-select required formControlName="company_id">
                         <mat-option *ngFor="let item of companyList" [value]="item.id">{{ item.companyName }}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div class="col-lg-3 col-sm-6 col-12" *ngIf="userData?.roles == 'Super Admin'">
+                <mat-form-field appearance="fill" class="w-100 mb-5">
+                    <mat-label>Branch</mat-label>
+                    <mat-select required formControlName="branch_id">
+                        <mat-option *ngFor="let item of branchList" [value]="item.id">{{ item.branchTitle }}</mat-option>
                     </mat-select>
                 </mat-form-field>
             </div>
@@ -44,7 +52,7 @@
                     <textarea matInput rows="2" cdkTextareaAutosize formControlName="description"></textarea>
                 </mat-form-field>
             </div>
-           
+
         </div>
 
         <div class="button_wrapper">

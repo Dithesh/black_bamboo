@@ -33,8 +33,8 @@
             </thead>
             <tbody>
                 <ng-container *ngFor="let item of inventoryList;let i =index">
-                    <tr class="cursor-pointer no-outline" [routerLink]="['/admin/account-management/masters/inventory/view/'+item.id]">
-                        <td>{{ item.itemName }}</td>
+                    <tr class="cursor-pointer no-outline">
+                        <td [routerLink]="['/admin/account-management/inventory/view/'+item.id]">{{ item.itemName }}</td>
                         <td>{{ item.pricePerUnit }}</td>
                         <td>{{item.availableStock}}</td>
                         <td>
@@ -52,7 +52,7 @@
                                 color="primary">
                                 <img src="assets/images/icons/SAVE.svg" alt="" class="icon_img">
                             </button> -->
-                            <button mat-icon-button class="small_icon_btn mr-2" color="primary" type="button" [routerLink]="['/admin/account-management/masters/inventory/update/'+item.id]">
+                            <button mat-icon-button class="small_icon_btn mr-2" color="primary" type="button" [routerLink]="['/admin/account-management/inventory/update/'+item.id]">
                                 <!-- <mat-icon>edit</mat-icon> -->
                                 <img src="assets/images/icons/EDIT.svg" alt="" class="icon_img">
                             </button>
