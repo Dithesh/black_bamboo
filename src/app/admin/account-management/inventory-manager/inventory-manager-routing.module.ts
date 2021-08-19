@@ -25,7 +25,7 @@ const routes: Routes = [
         component: InventoryListComponent
       },
       {
-        path: 'view/:id',
+        path: 'list/view/:id',
         component: InventoryDetailsComponent
       },
       {
@@ -38,7 +38,7 @@ const routes: Routes = [
       },
       {
         path: '**',
-        redirectTo: 'dashboard'
+        redirectTo: 'list'
       }
     ]
   },

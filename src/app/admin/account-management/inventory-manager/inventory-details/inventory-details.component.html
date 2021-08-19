@@ -2,12 +2,12 @@
     <div class="col-xl-3 col-lg-4 col-md-5 col-12 border-right">
         <div class="detailsBox">
             <p><span class="titleText">Inventory  Name </span>: &nbsp; {{inventoryData?.itemName}}</p>
-            <p><span class="titleText">Company Name </span>: &nbsp; {{inventoryData?.company.companyName}}</p>
-            <p><span class="titleText">Available Stock </span>: &nbsp; {{inventoryData?.availableStock}}</p>
+            <p><span class="titleText">Company Name </span>: &nbsp; {{inventoryData?.branch.company.companyName}}</p>
+            <p><span class="titleText">Available Stock </span>: &nbsp; {{ inventoryData?.availableStock ? inventoryData?.availableStock : '---' }}</p>
             <p><span class="titleText">Price per  {{inventoryData?.unit.unitLabel}}</span>: &nbsp; {{inventoryData?.pricePerUnit}}</p>
-            <p><span class="titleText">Last Purchase</span>: &nbsp; {{inventoryData?.lastPurchasedPrice}}</p>
+            <p><span class="titleText">Last Purchase</span>: &nbsp; {{ inventoryData?.lastPurchasedPrice?inventoryData?.lastPurchasedPrice:'---' }}</p>
             <p><span class="titleText">Status </span><span [ngClass]="{'text-success': (inventoryData?.isActive), 'text-danger': !(inventoryData?.isActive)}">: &nbsp; {{(inventoryData?.isActive)?'Active':'Inactive'}}</span></p>
-            <p class="discriptionText"><span class="titleText">Description </span> <br> {{inventoryData?.description}}</p>
+            <p class="discriptionText"><span class="titleText">Description </span> <br> {{inventoryData?.description ? inventoryData?.description : '---'}}</p>
         </div>
         <div class="text-center">
             <button mat-flat-button color="primary" class="mt-20 text-uppercase" (click)="updateStockDetails()">Update Inventory</button>
@@ -39,6 +39,11 @@
                             <td>{{item.totalAmount}}</td>
                             <!-- <td>{{item.}}</td> -->
                         </tr>
+                    </ng-container>
+                    <ng-container *ngIf="inventoryHistoryList?.total <= 0">
+                      <tr>
+                        <td colspan="6">No Data To Display</td>
+                      </tr>
                     </ng-container>
                 </tbody>
             </table>

@@ -34,7 +34,7 @@
             <tbody>
                 <ng-container *ngFor="let item of inventoryList;let i =index">
                     <tr class="cursor-pointer no-outline">
-                        <td [routerLink]="['/admin/account-management/inventory/view/'+item.id]">{{ item.itemName }}</td>
+                        <td [routerLink]="['/admin/account-management/inventory/list/view/'+item.id]">{{ item.itemName }}</td>
                         <td>{{ item.pricePerUnit }}</td>
                         <td>{{item.availableStock}}</td>
                         <td>

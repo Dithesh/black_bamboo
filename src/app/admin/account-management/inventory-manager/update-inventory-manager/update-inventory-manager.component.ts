@@ -66,8 +66,12 @@ export class UpdateInventoryManagerComponent implements OnInit {
   }
   getInventoryDetails(id){
     this.serv.endpoint = 'account-manager/inventory/' + id;
-    this.serv.get().subscribe((response: any[]) => {
-         this.form.patchValue(response);
+    this.serv.get().subscribe((response: any) => {
+         this.form.patchValue({
+           ...response,
+           company_id: response.branch.company_id
+         }, {emitEvent: false});
+         this.getAllBranches();
     });
   }
   getAllUnits() {
