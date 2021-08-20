@@ -30,7 +30,7 @@ export class InventoryManagerComponent implements OnInit, OnDestroy {
     }
     if (this.router.url.indexOf('/admin/account-management/inventory/update/') >= 0 && this.editId) {
       this.currentUrl = 'edit';
-    }if (this.router.url.indexOf('/admin/account-management/inventory/list/view/') >= 0 && this.editId) {
+    }else if (this.router.url.indexOf('/admin/account-management/inventory/list/view/') >= 0 && this.editId) {
       this.currentUrl = 'view';
     }else {
       this.currentUrl = 'list';

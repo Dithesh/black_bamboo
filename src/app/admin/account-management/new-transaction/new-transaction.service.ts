@@ -17,6 +17,8 @@ export class NewTransactionService {
     accountList;
     filteredAccountList;
     filteredExpenseAccountList;
+    branchList;
+    filteredBranchList;
     inventoryList;
     editInventoryIndex: number;
     editAccountIndex: number;
@@ -27,7 +29,7 @@ export class NewTransactionService {
         itemGrandTotal: 0,
         taxAndExpenseTotal: 0,
         transactionGrandTotal: 0
-    }
+    };
     topAccountExclude = [];
     taxAndExpenseExclude = [];
     transactionId;
@@ -35,13 +37,13 @@ export class NewTransactionService {
     processingAction = false;
     constructor(
         private fb: FormBuilder,
-        private _serv: DataService,
+        private serv: DataService,
         private dialog: MatDialog,
         private router: Router
     ){
         this.form = this.fb.group({
             id: [''],
-            transactionType: ['', [Validators.required, RxwebValidators.oneOf({matchValues:["purchase", "sales","payment","receipt"]})]],
+            transactionType: ['', [Validators.required, RxwebValidators.oneOf({matchValues: ['purchase', 'sales', 'payment', 'receipt']})]],
             transactionDate: [new Date()],
             transactionRefNumber: [''],
             accountId: ['', [Validators.required]],
@@ -51,10 +53,10 @@ export class NewTransactionService {
             company_id: [''],
             items: this.fb.array([]),
             accounts: this.fb.array([])
-        })
+        });
     }
 
-    resetData(id=null) {
+    resetData(id= null) {
         this.transactionId = id;
         this.getAccountList();
         this.getInventoryList();
@@ -64,45 +66,45 @@ export class NewTransactionService {
             itemGrandTotal: 0,
             taxAndExpenseTotal: 0,
             transactionGrandTotal: 0
-        }
-        if(this._serv.notNull(this.transactionId)) {
-            this._serv.endpoint="account-manager/transaction/"+this.transactionId;
-            this._serv.get().subscribe((response:any) => {
-                this.transactionData=response;
-                this.form.patchValue({...this.transactionData, transactionType: this.transactionData.transactionType.toLowerCase()})
-                this.items.controls=[];
+        };
+        if (this.serv.notNull(this.transactionId)) {
+            this.serv.endpoint = 'account-manager/transaction/' + this.transactionId;
+            this.serv.get().subscribe((response: any) => {
+                this.transactionData = response;
+                this.form.patchValue({...this.transactionData, transactionType: this.transactionData.transactionType.toLowerCase()});
+                this.items.controls = [];
                 this.items.reset();
                 this.transactionData.items.forEach(elem => {
-                    
-                    let form = this.itemForm();
+
+                    const form = this.itemForm();
                     form.patchValue(elem);
                     this.items.push(form);
-                })
+                });
                 this.itemMapping();
-                
-                this.accounts.controls=[];
+
+                this.accounts.controls = [];
                 this.accounts.reset();
                 this.transactionData.accounts.forEach(elem => {
-                    let form = this.accountForm();
+                    const form = this.accountForm();
                     form.patchValue(elem);
                     this.accounts.push(form);
-                })
+                });
                 this.accountMapping();
                 this.getOrderTotal();
-            })
+            });
         }else {
             this.resetForm();
         }
     }
 
-    
+
     // *items handling
     get items() {
         return this.form.get('items') as FormArray;
     }
 
     itemForm() {
-        let form = this.fb.group({
+        const form = this.fb.group({
             id: [''],
             item: ['', [Validators.required]],
             itemId: [''],
@@ -110,36 +112,36 @@ export class NewTransactionService {
             amount: ['', [Validators.required, RxwebValidators.numeric, RxwebValidators.numeric, RxwebValidators.minNumber({value: 0})]],
             total: ['', [Validators.required, RxwebValidators.numeric]],
             deletedFlag: [false]
-        })
+        });
         form.get('item').valueChanges.subscribe(res => {
-            if(form.get('item').valid) {
-                form.get('amount').setValue(res.pricePerUnit)
+            if (form.get('item').valid) {
+                form.get('amount').setValue(res.pricePerUnit);
             }
-        })
+        });
         merge(form.get('quantity').valueChanges, form.get('amount').valueChanges).subscribe(response => {
-            let quantity = parseFloat(form.get('quantity').value);
-            let amount = parseFloat(form.get('amount').value);
-            
-            if(form.get('quantity').valid && form.get('amount').valid) {
-                form.get('total').setValue(math.mul(quantity, amount), {emitEvent: false})
+            const quantity = parseFloat(form.get('quantity').value);
+            const amount = parseFloat(form.get('amount').value);
+
+            if (form.get('quantity').valid && form.get('amount').valid) {
+                form.get('total').setValue(math.mul(quantity, amount), {emitEvent: false});
             }else {
-                form.get('total').setValue(0, {emitEvent: false})
+                form.get('total').setValue(0, {emitEvent: false});
             }
             this.getOrderTotal();
             this.accounts.controls.forEach(control => {
                 this.handleAccountCalculation(control);
-            })
-            if(this.accounts.controls.length > 0) {
+            });
+            if (this.accounts.controls.length > 0) {
                 this.getOrderTotal();
             }
-        })
+        });
         return form;
     }
 
     addAnotherItem() {
         this.validateItemsArray();
-        if(this.items.invalid) {
-            this._serv.showMessage('Please fill in valid data', 'error');
+        if (this.items.invalid) {
+            this.serv.showMessage('Please fill in valid data', 'error');
             return;
         }
         this.items.push(this.itemForm());
@@ -148,20 +150,20 @@ export class NewTransactionService {
 
     onEditClick(index) {
         this.validateItemsArray();
-        if(this.items.invalid) {
-            this._serv.showMessage('Please fill in valid data', 'error');
+        if (this.items.invalid) {
+            this.serv.showMessage('Please fill in valid data', 'error');
             return;
         }
         this.editInventoryIndex = index;
     }
 
     onDeleteItem(index) {
-        let dialogRef = this.dialog.open(ConfirmPopupComponent);
+        const dialogRef = this.dialog.open(ConfirmPopupComponent);
         dialogRef.afterClosed().subscribe(data => {
-            if(data) {
-                let control = this.items.controls[index];
-                if(this._serv.notNull(control.get('id').value)) {
-                    if(control.invalid) {
+            if (data) {
+                const control = this.items.controls[index];
+                if (this.serv.notNull(control.get('id').value)) {
+                    if (control.invalid) {
                         control.get('item').setValue('1', {emitEvent: false});
                         control.get('amount').setValue(1, {emitEvent: false});
                         control.get('quantity').setValue(1, {emitEvent: false});
@@ -171,69 +173,69 @@ export class NewTransactionService {
                 }else {
                     this.items.removeAt(index);
                 }
-                this.editInventoryIndex=undefined;
+                this.editInventoryIndex = undefined;
                 this.getOrderTotal();
             }
-        })
+        });
     }
 
     validateItemsArray() {
-        this.items.controls.forEach((group:FormGroup) => {
+        this.items.controls.forEach((group: FormGroup) => {
             // control.markAllAsTouched();
-            if(!group.get('deletedFlag').value) {
-                (<any>Object).values(group.controls).forEach((control: FormControl) => { 
+            if (!group.get('deletedFlag').value) {
+                (Object as any).values(group.controls).forEach((control: FormControl) => {
                     control.markAsTouched();
                     control.markAsDirty();
-                }) 
+                });
             }
-        })
+        });
     }
     // *items handling
 
-    
+
     // *accounts transaction handling
     get accounts(){
         return this.form.get('accounts') as FormArray;
     }
 
     accountForm() {
-        let form = this.fb.group({
+        const form = this.fb.group({
             id: [''],
             account: ['', [Validators.required]],
             accountId: [''],
-            amountProcessType: ['percent', [Validators.required, RxwebValidators.oneOf({matchValues:["percent", "amount"]})]],
-            amountValue: ['', [Validators.required, RxwebValidators.numeric({acceptValue:NumericValueType.Both  ,allowDecimal:true })]],
+            amountProcessType: ['percent', [Validators.required, RxwebValidators.oneOf({matchValues: ['percent', 'amount']})]],
+            amountValue: ['', [Validators.required, RxwebValidators.numeric({acceptValue: NumericValueType.Both  , allowDecimal: true })]],
             totalAmount: [''],
             deletedFlag: [false]
-        })
+        });
 
         merge(form.get('amountProcessType').valueChanges, form.get('amountValue').valueChanges).subscribe(response => {
             this.handleAccountCalculation(form);
             this.getOrderTotal();
-        })
+        });
         return form;
     }
 
     handleAccountCalculation(form) {
-        let amount = parseFloat(form.get('amountValue').value);
-            
-        if(form.get('amountProcessType').valid && form.get('amountValue').valid) {
-            if(form.get('amountProcessType').value == 'percent') {
+        const amount = parseFloat(form.get('amountValue').value);
+
+        if (form.get('amountProcessType').valid && form.get('amountValue').valid) {
+            if (form.get('amountProcessType').value == 'percent') {
                 // ! Todo take percentage from the items total
-                let amountVal = math.formula(this.totalHandler.itemGrandTotal +'*'+ amount +'/'+ 100); 
-                form.get('totalAmount').setValue(amountVal, {emitEvent: false})
+                const amountVal = math.formula(this.totalHandler.itemGrandTotal + '*' + amount + '/' + 100);
+                form.get('totalAmount').setValue(amountVal, {emitEvent: false});
             }else {
-                form.get('totalAmount').setValue(amount, {emitEvent: false})
+                form.get('totalAmount').setValue(amount, {emitEvent: false});
             }
         }else {
-            form.get('totalAmount').setValue(0, {emitEvent: false})
+            form.get('totalAmount').setValue(0, {emitEvent: false});
         }
     }
 
     addAnotherAccount() {
         this.validateAccountsArray();
-        if(this.accounts.invalid) {
-            this._serv.showMessage('Please fill in valid tax or expense data', 'error');
+        if (this.accounts.invalid) {
+            this.serv.showMessage('Please fill in valid tax or expense data', 'error');
             return;
         }
         this.accounts.push(this.accountForm());
@@ -242,20 +244,20 @@ export class NewTransactionService {
 
     onEditAccountClick(index) {
         this.validateAccountsArray();
-        if(this.accounts.invalid) {
-            this._serv.showMessage('Please fill in valid data', 'error');
+        if (this.accounts.invalid) {
+            this.serv.showMessage('Please fill in valid data', 'error');
             return;
         }
         this.editAccountIndex = index;
     }
 
     onDeleteAccount(index) {
-        let dialogRef = this.dialog.open(ConfirmPopupComponent);
+        const dialogRef = this.dialog.open(ConfirmPopupComponent);
         dialogRef.afterClosed().subscribe(data => {
-            if(data) {
-                let control = this.accounts.controls[index];
-                if(this._serv.notNull(control.get('id').value)) {
-                    if(control.invalid) {
+            if (data) {
+                const control = this.accounts.controls[index];
+                if (this.serv.notNull(control.get('id').value)) {
+                    if (control.invalid) {
                         control.get('account').setValue('1');
                         control.get('amountValue').setValue(1);
                         control.get('amountProcessType').setValue('percent');
@@ -266,106 +268,106 @@ export class NewTransactionService {
                 }else {
                     this.accounts.removeAt(index);
                 }
-                this.editAccountIndex=undefined;
+                this.editAccountIndex = undefined;
                 this.getOrderTotal();
             }
-        })
+        });
     }
 
     validateAccountsArray() {
-        this.accounts.controls.forEach((group:FormGroup) => {
+        this.accounts.controls.forEach((group: FormGroup) => {
             // control.markAllAsTouched();
-            if(!group.get('deletedFlag').value) {
-                (<any>Object).values(group.controls).forEach((control: FormControl) => { 
+            if (!group.get('deletedFlag').value) {
+                (Object as any).values(group.controls).forEach((control: FormControl) => {
                     control.markAsTouched();
                     control.markAsDirty();
-                }) 
+                });
             }
-        })
+        });
     }
     // *accounts transaction handling
 
-    
+
 
     getOrderTotal() {
-        let itemPriceTotal = 0, itemGrandTotal = 0, itemQuantityTotal = 0, taxAndExpenseTotal=0, transactionGrandTotal=0;
+        let itemPriceTotal = 0, itemGrandTotal = 0, itemQuantityTotal = 0, taxAndExpenseTotal = 0, transactionGrandTotal = 0;
         this.items.value.forEach(elem => {
-            if(!elem.deletedFlag) {
-                if(!isNaN(parseFloat(elem.amount)) && elem.amount > 0) {
+            if (!elem.deletedFlag) {
+                if (!isNaN(parseFloat(elem.amount)) && elem.amount > 0) {
                     itemPriceTotal = math.add(itemPriceTotal, elem.amount);
                 }
-                if(!isNaN(parseFloat(elem.quantity)) && elem.quantity > 0) {
+                if (!isNaN(parseFloat(elem.quantity)) && elem.quantity > 0) {
                     itemQuantityTotal = math.add(itemQuantityTotal, elem.quantity);
                 }
-                if(!isNaN(parseFloat(elem.total)) && elem.total > 0) {
+                if (!isNaN(parseFloat(elem.total)) && elem.total > 0) {
                     itemGrandTotal = math.add(itemGrandTotal, elem.total);
                 }
             }
-        })
+        });
         this.accounts.value.forEach(elem => {
-            if(!elem.deletedFlag) {
-                if(!isNaN(parseFloat(elem.totalAmount))) {
+            if (!elem.deletedFlag) {
+                if (!isNaN(parseFloat(elem.totalAmount))) {
                     taxAndExpenseTotal = math.add(taxAndExpenseTotal, elem.totalAmount);
                 }
             }
-        })
+        });
         transactionGrandTotal = itemGrandTotal + taxAndExpenseTotal;
         this.totalHandler = {
-            itemPriceTotal: itemPriceTotal,
-            itemQuantityTotal: itemQuantityTotal,
-            itemGrandTotal: itemGrandTotal,
-            taxAndExpenseTotal: taxAndExpenseTotal,
-            transactionGrandTotal: transactionGrandTotal
-        }
+            itemPriceTotal,
+            itemQuantityTotal,
+            itemGrandTotal,
+            taxAndExpenseTotal,
+            transactionGrandTotal
+        };
     }
 
     getAccountList() {
-        this._serv.endpoint = "account-manager/ledger?status=true&companyId="+this.form.get('company_id').value;
-        this._serv.get().subscribe(response => {
+        this.serv.endpoint = 'account-manager/ledger?status=true&branch_id=' + this.form.get('branch_id').value;
+        this.serv.get().subscribe(response => {
             this.accountList = response as any[];
             this.filteredAccountList = this.accountList;
             this.filteredExpenseAccountList = this.accountList;
             this.accountMapping();
-        })
+        });
     }
 
     getInventoryList() {
-        this._serv.endpoint = "account-manager/inventory?status=true&companyId="+this.form.get('company_id').value;
-        this._serv.get().subscribe(response => {
+        this.serv.endpoint = 'account-manager/inventory?status=true&branch_id=' + this.form.get('branch_id').value;
+        this.serv.get().subscribe(response => {
             this.inventoryList = response as any[];
             this.itemMapping();
-            
-        })
+
+        });
     }
 
     itemMapping() {
-        if(this.transactionId) {
+        if (this.transactionId) {
             this.items.controls.forEach(control => {
                 this.inventoryList.forEach(elem => {
-                    if(control.get('item').value.id == elem.id) {
+                    if (control.get('item').value.id == elem.id) {
                         control.get('item').setValue(elem);
                     }
-                })
-            })   
+                });
+            });
         }
     }
 
     accountMapping() {
-        if(this.transactionId) {
+        if (this.transactionId) {
             this.accounts.controls.forEach(control => {
                 this.accountList.forEach(elem => {
-                    if(control.get('account').value.id == elem.id) {
+                    if (control.get('account').value.id == elem.id) {
                         control.get('account').setValue(elem);
                     }
-                })
-            })   
+                });
+            });
         }
     }
 
     setTransactionType(type) {
         this.transactionType = type;
         this.form.get('transactionType').setValue(this.transactionType);
-        if(this.transactionType == 'purchase' || this.transactionType == 'sales') {
+        if (this.transactionType == 'purchase' || this.transactionType == 'sales') {
             this.topAccountExclude = [
                 'Duties and Taxes',
                 'Direct Expense',
@@ -394,56 +396,71 @@ export class NewTransactionService {
     }
 
     resetForm() {
-        this.items.controls=[];
+        this.items.controls = [];
         this.items.reset();
-        this.accounts.controls=[];
+        this.accounts.controls = [];
         this.accounts.reset();
-        let formValue = this.form.value;
+        const formValue = {...this.form.value};
         this.form.reset();
         this.form.patchValue({
             company_id: formValue.company_id,
             branch_id: formValue.branch_id,
             transactionType: this.transactionType,
             transactionDate: new Date()
-        })
+        }, {emitEvent: false});
+        if (this.serv.notNull(formValue.company_id)) {
+          this.getBranchList();
+        }
         // this.items.push(this.itemForm());
         // this.accounts.push(this.accountForm());
-        this.editInventoryIndex=undefined;
-        this.editAccountIndex=undefined;
+        this.editInventoryIndex = undefined;
+        this.editAccountIndex = undefined;
+    }
+
+
+    getBranchList() {
+      const companyId = this.form.get('company_id').value;
+      if(this.serv.notNull(companyId)) {
+        this.serv.endpoint = 'order-manager/branch?status=active&companyId=' + companyId;
+        this.serv.get().subscribe(response => {
+          this.branchList = response as any[];
+          this.filteredBranchList = this.branchList;
+        });
+      }
     }
 
     saveFinaldata() {
-        if(this.processingAction) return;
+        if (this.processingAction) { return; }
         this.validateItemsArray();
         this.validateAccountsArray();
         this.form.markAllAsTouched();
-        if(this.form.invalid){
-            this._serv.showMessage('Please check data before submit. Delete any unwanted empty rows.', 'error');
+        if (this.form.invalid){
+            this.serv.showMessage('Please check data before submit. Delete any unwanted empty rows.', 'error');
             return;
         }
-        let formData = {
+        const formData = {
             ...this.form.value,
             transactionDate: moment(this.form.value.transactionDate).format('YYYY-MM-DD')
         };
-        
+
         formData.items.forEach(elem => {
             elem.itemId = elem.item.id;
-        })
+        });
         formData.accounts.forEach(elem => {
             elem.accountId = elem.account.id;
-        })
-        
+        });
+
         formData.grandTotal = this.totalHandler.transactionGrandTotal;
         this.processingAction = true;
-        this._serv.endpoint="account-manager/transaction";
-        this._serv.post(formData).subscribe(response => {
-            this._serv.showMessage('Entry updated successfully', 'success');
+        this.serv.endpoint = 'account-manager/transaction';
+        this.serv.post(formData).subscribe(response => {
+            this.serv.showMessage('Entry updated successfully', 'success');
             this.router.navigateByUrl('/admin/account-management/transaction-history');
-            this.processingAction= false;
+            this.processingAction = false;
         }, error => {
             this.processingAction = false;
-            let msg = 'Can not able to create '+ this.transactionType + ' entry';
-            this._serv.handleError(error, msg);
-        })
+            const msg = 'Can not able to create ' + this.transactionType + ' entry';
+            this.serv.handleError(error, msg);
+        });
     }
 }

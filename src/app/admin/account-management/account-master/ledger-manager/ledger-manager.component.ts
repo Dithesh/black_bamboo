@@ -13,18 +13,16 @@ import { MasterGlobalService } from '../../services/master-global.service';
 })
 export class LedgerManagerComponent implements OnInit, OnDestroy {
   accountTypeList = [
+    'Creditor',
+    'Debitor',
     'Purchase Account',
     'Sales Account',
-    'Sundry Creditor',
-    'Sundry Debitor',
-    'Duties and Taxes',
     'Bank Account',
+    'Expenses',
+    'Incomes',
     'Cash Account',
-    'Direct Expense',
-    'Indirect Expense',
-    'Direct Income',
-    'Indirect Income'
-];
+    'Duties and Taxes',
+  ];
   companyList;
   branchList: any[] = [];
   userData;
