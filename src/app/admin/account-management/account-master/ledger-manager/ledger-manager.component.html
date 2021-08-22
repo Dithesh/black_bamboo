@@ -24,6 +24,7 @@
                     <th class="ew-200">Account Name</th>
                     <th class="ew-200">Account Type</th>
                     <th class="">Description</th>
+                    <th class="ew-200 text-right">Ending Balance</th>
                     <th class="ew-150">Active?</th>
                     <!-- <th class="ew-150">Branch</th> -->
                     <th class="ew-120">Action</th>
@@ -62,6 +63,10 @@
                             <ng-container *ngIf="item.id && editLedgerIndex != i">
                                 <ng-container *ngIf="item.description else noData">{{ item.description }}</ng-container>
                             </ng-container>
+                        </td>
+                        <td class="text-right">
+                          <span *ngIf="!item.id || (item.id && editLedgerIndex == i)">---</span>
+                          <span *ngIf="item.id && editLedgerIndex != i">{{ item.ending_balance }}</span>
                         </td>
                         <td>
                             <mat-slide-toggle  *ngIf="!item.id || (item.id && editLedgerIndex == i)" color="primary" [(ngModel)]="item.isActive"></mat-slide-toggle>

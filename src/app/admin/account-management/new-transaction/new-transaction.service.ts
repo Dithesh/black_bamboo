@@ -238,7 +238,11 @@ export class NewTransactionService {
             this.serv.showMessage('Please fill in valid tax or expense data', 'error');
             return;
         }
-        this.accounts.push(this.accountForm());
+        const form = this.accountForm();
+        if (this.transactionType === 'payment' || this.transactionType === 'receipt') {
+          form.get('amountProcessType').setValue('amount');
+        }
+        this.accounts.push(form);
         this.editAccountIndex = this.accounts.controls.length - 1;
     }
 
@@ -322,8 +326,11 @@ export class NewTransactionService {
     }
 
     getAccountList() {
-        this.serv.endpoint = 'account-manager/ledger?status=true&branch_id=' + this.form.get('branch_id').value;
-        this.serv.get().subscribe(response => {
+        this.serv.endpoint = 'account-manager/ledger';
+        this.serv.getByParam({
+          status: true,
+          branch_id: this.form.get('branch_id').value,
+        }).subscribe(response => {
             this.accountList = response as any[];
             this.filteredAccountList = this.accountList;
             this.filteredExpenseAccountList = this.accountList;
@@ -367,30 +374,20 @@ export class NewTransactionService {
     setTransactionType(type) {
         this.transactionType = type;
         this.form.get('transactionType').setValue(this.transactionType);
-        if (this.transactionType == 'purchase' || this.transactionType == 'sales') {
-            this.topAccountExclude = [
-                'Duties and Taxes',
-                'Direct Expense',
-                'Indirect Expense',
-                'Direct Income',
-                'Indirect Income'
-            ];
+        this.topAccountExclude = [
+            'Duties and Taxes',
+            'Expenses',
+            'Incomes'
+        ];
+        if (this.transactionType === 'purchase' || this.transactionType === 'sales') {
             this.taxAndExpenseExclude = [
                 'Purchase Account',
                 'Sales Account',
-                'Sundry Creditor',
-                'Sundry Debitor',
+                'Others Account',
                 'Bank Account',
                 'Cash Account'
             ];
         }else {
-            this.topAccountExclude = [
-                'Duties and Taxes',
-                'Direct Expense',
-                'Indirect Expense',
-                'Direct Income',
-                'Indirect Income'
-            ];
             this.taxAndExpenseExclude = [];
         }
     }

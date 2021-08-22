@@ -13,14 +13,13 @@ import { MasterGlobalService } from '../../services/master-global.service';
 })
 export class LedgerManagerComponent implements OnInit, OnDestroy {
   accountTypeList = [
-    'Creditor',
-    'Debitor',
+    'Bank Account',
+    'Cash Account',
+    'Others Account',
     'Purchase Account',
     'Sales Account',
-    'Bank Account',
     'Expenses',
     'Incomes',
-    'Cash Account',
     'Duties and Taxes',
   ];
   companyList;
@@ -29,7 +28,7 @@ export class LedgerManagerComponent implements OnInit, OnDestroy {
   selectedCompany = new FormControl('');
   selectedBranch = new FormControl('');
   addButtonSubscriber;
-  ledgerList:any[] = [];
+  ledgerList: any[] = [];
   // branchList:any[] = [];
   addLedgerActive = false;
   editLedgerIndex;
@@ -46,18 +45,19 @@ export class LedgerManagerComponent implements OnInit, OnDestroy {
     this.userData = this.serv.getUserData();
     this.route.parent.data.subscribe(response => {
       this.companyList = response.companyList;
-      if (this.companyList.length > 0)
+      if (this.companyList.length > 0) {
         this.selectedCompany.setValue(this.companyList[0].id);
-        this.getAllBranches();
-    })
+      }
+      this.getAllBranches();
+    });
   }
 
   ngOnInit(): void {
     this.addButtonSubscriber = this.global.ledgerAdd.subscribe(response => {
-      if(response) {
+      if (response) {
         this.addAnotherLedger();
       }
-    })
+    });
     this.selectedCompanySubscriber = this.selectedCompany.valueChanges.subscribe(response => {
       this.selectedBranch.setValue('', {emitEvent: false});
       this.branchList = [];
@@ -74,7 +74,7 @@ export class LedgerManagerComponent implements OnInit, OnDestroy {
     this.addLedgerActive = false;
     this.serv.endpoint = 'account-manager/ledger?branch_id=' + this.selectedBranch.value;
     this.serv.get().subscribe((response: any[]) => {
-      if(Array.isArray(response)) {
+      if (Array.isArray(response)) {
         this.ledgerList = response;
         if (this.ledgerList.length === 0) {
           this.addLedgerActive = true;
@@ -109,7 +109,7 @@ export class LedgerManagerComponent implements OnInit, OnDestroy {
   }
 
   onCancelEdit() {
-    if(this.serv.notNull(this.editLedgerIndex)) {
+    if (this.serv.notNull(this.editLedgerIndex)) {
       this.ledgerList[this.editLedgerIndex] = this.previousLedgerData;
       this.previousLedgerData = undefined;
       this.editLedgerIndex = undefined;
@@ -127,7 +127,7 @@ export class LedgerManagerComponent implements OnInit, OnDestroy {
       isActive: true,
       // branchId: '',
       branch_id: ''
-    })
+    });
   }
 
   saveLedger(item) {
@@ -138,7 +138,7 @@ export class LedgerManagerComponent implements OnInit, OnDestroy {
       this.editLedgerIndex = undefined;
       this.previousLedgerData = undefined;
       let message = item.ledgerName + ' updated successfully';
-      if(item.id === ''){
+      if (item.id === ''){
         this.addNewLedger();
         message = item.ledgerName + ' added successfully';
       }
@@ -152,7 +152,7 @@ export class LedgerManagerComponent implements OnInit, OnDestroy {
       }else {
         this.serv.showMessage('Something went wrong. Please contact administator', 'error');
       }
-    })
+    });
   }
 
   deleteLedger(index) {
@@ -165,11 +165,11 @@ export class LedgerManagerComponent implements OnInit, OnDestroy {
         this.serv.delete().subscribe(response => {
           this.serv.showMessage(item.ledgerName + ' deleted successfully', 'success');
           this.ledgerList.splice(index, 1);
-          if(this.ledgerList.length <= 1) {
+          if (this.ledgerList.length <= 1) {
             this.addLedgerActive = true;
           }
         }, ({error}) => {
-          this.serv.showMessage(error['msg'], 'error');
+          this.serv.showMessage(error.msg, 'error');
         });
       }
     });

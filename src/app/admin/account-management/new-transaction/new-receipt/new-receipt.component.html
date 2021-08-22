@@ -26,8 +26,8 @@
             </div>
             <div class="col-md-auto ml-auto col-sm-6 col-12 order-0 order-sm-3" *ngIf="_transact.form.get('transactionRefNumber').value">
                 <div class="d-inline-flex align-items-center text-primary font-1_6">
-                    <span>Ref. No :</span> 
-                    {{ _transact.form.get('transactionRefNumber').value }} 
+                    <span>Ref. No :</span>
+                    {{ _transact.form.get('transactionRefNumber').value }}
                     <!-- <div class="custom_input ew-60 d-md-inline-block">
                         <input type="text" class="w-100">
                         <span class="underline"></span>
@@ -39,7 +39,7 @@
             </div>
         </div>
         <!-- <p class="balance_text text-accent font-1_6 font-weight-400">Current Balance: 0.00</p> -->
-    </div> 
+    </div>
 
     <ng-container>
         <div class="d-flex align-items-center justify-content-between mt-20">
@@ -62,11 +62,9 @@
                                         </td>
                                         <td class="ew-150"></td>
                                         <td class="ew-150">
-                                            {{ account.get('amountValue').value }} 
+                                            {{ account.get('amountValue').value }}
                                             <span class="d-inline-block ml-5">
-                                                <ng-container *ngIf="account.get('amountProcessType').value == 'percent' else rupeesTemplate">
-                                                    %
-                                                </ng-container>
+                                              &#8377;
                                             </span>
                                         </td>
                                         <td class="ew-150">
@@ -93,24 +91,13 @@
                                             </td>
                                             <td class="ew-150"></td>
                                             <td class="ew-150">
-                                                
+
                                                 <mat-form-field class="field-pb-0 table_select ew-150">
                                                     <input matInput formControlName="amountValue">
-                                                    <span matSuffix class="suffix_text cursor-pointer" [matMenuTriggerFor]="dropMenu">
-                                                        <ng-container *ngIf="account.get('amountProcessType').value == 'percent' else rupeesTemplate">
-                                                            %
-                                                        </ng-container>
+                                                    <span matSuffix class="suffix_text cursor-pointer">
+                                                      &#8377;
                                                     </span>
                                                 </mat-form-field>
-                                                <!-- <div class="custom_input suffix ew-100">
-                                                    <span class="suffix_text cursor-pointer" [matMenuTriggerFor]="dropMenu">%</span>
-                                                    <input type="text" class="w-100" value="230">
-                                                    <span class="underline"></span>
-                                                </div> -->
-                                                <mat-menu #dropMenu="matMenu" class="dropdown_small">
-                                                    <button mat-menu-item type="button" (click)="account.get('amountProcessType').setValue('percent')">Percent</button>
-                                                    <button mat-menu-item type="button" (click)="account.get('amountProcessType').setValue('amount')">Rupee</button>
-                                                </mat-menu>
                                             </td>
                                             <td class="ew-150">
                                                 <mat-form-field class="field-pb-0 table_select ew-150">
@@ -118,9 +105,6 @@
                                                 </mat-form-field>
                                             </td>
                                         </tr>
-                                    </ng-template>
-                                    <ng-template #rupeesTemplate>
-                                        &#8377;
                                     </ng-template>
                                 </ng-container>
                             </ng-container>
