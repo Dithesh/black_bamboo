@@ -6,6 +6,7 @@
                     <th class="ew-100">Action</th>
                     <th mat-sort-header="categoryName">Title</th>
                     <th mat-sort-header="description">Description</th>
+                    <th mat-sort-header="company" class="ew-200">Company</th>
                     <th mat-sort-header="branch" class="ew-200">Branch</th>
                     <th class="ew-150">Is Active?</th>
                 </tr>
@@ -18,14 +19,17 @@
                                 <img src="assets/images/icons/MORE.svg" alt="" class="icon_img">
                             </button>
                             <mat-menu #moreOption="matMenu">
-                                <button mat-menu-item type="button" [routerLink]="['/admin/categories/update/'+item.id]"><img src="assets/images/icons/EDIT.svg" alt="" class="icon_img"> Edit</button>
-                                <button mat-menu-item type="button" (click)="deleteCategory(item)"><img src="assets/images/icons/TRASHBIN.svg" alt="" class="icon_img">Delete</button>
+                                <button mat-menu-item type="button" [routerLink]="['/admin/categories/update/'+item.id]"><img src="assets/images/icons/EDIT.svg" alt="" class="icon_img mr-10"> Edit</button>
+                                <button mat-menu-item type="button" (click)="deleteCategory(item)"><img src="assets/images/icons/TRASHBIN.svg" alt="" class="icon_img mr-10">Delete</button>
                             </mat-menu>
                         </td>
                         <td>
                             {{item.categoryName }}
                         </td>
                         <td>{{item.description}}</td>
+                        <td>
+                            {{item.company?.companyName}}
+                        </td>
                         <td>
                             {{item.branch?.branchTitle}}
                         </td>

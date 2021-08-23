@@ -20,18 +20,27 @@ export class NewTransactionComponent implements OnInit {
   ) {
     this.userData = this.serv.getUserData();
 
+    if (this.userData.roles === 'Super Admin') {
+      // this.getAllCompanies();
+    } else if (this.userData.roles === 'Company Admin') {
+      this.transact.form.patchValue({
+        company_id: this.userData.company_id
+      }, {emitEvent: false});
+      this.transact.getBranchList();
+    }else {
+      this.transact.form.patchValue({
+          company_id: this.userData.company_id,
+          branch_id: this.userData.branch_id
+      }, {emitEvent: false});
+    }
+
     this.route.data.subscribe(response => {
       this.companyList = response.companyList;
-      if (this.companyList.length > 0) {
-        this.transact.form.get('company_id').setValue(this.companyList[0].id);
-        this.transact.getBranchList();
-        this.transact.resetData();
-      }
     });
-    //.pipe(debounceTime(0))
     this.transact.form.get('company_id').valueChanges.subscribe(response => {
       this.transact.getBranchList();
     });
+    this.transact.resetData();
   }
 
   ngOnInit(): void {

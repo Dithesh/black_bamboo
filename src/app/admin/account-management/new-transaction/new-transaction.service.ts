@@ -35,6 +35,7 @@ export class NewTransactionService {
     transactionId;
     transactionData;
     processingAction = false;
+    userData: any;
     constructor(
         private fb: FormBuilder,
         private serv: DataService,
@@ -58,8 +59,27 @@ export class NewTransactionService {
 
     resetData(id= null) {
         this.transactionId = id;
-        this.getAccountList();
-        this.getInventoryList();
+        // this.getAccountList();
+        // this.getInventoryList();
+        this.userData = this.serv.getUserData();
+
+        if (this.userData.roles === 'Super Admin') {
+          // this.getAllCompanies();
+        } else if (this.userData.roles === 'Company Admin') {
+          this.form.patchValue({
+            company_id: this.userData.company_id
+          }, {emitEvent: false});
+          this.getBranchList();
+        }else {
+          this.form.patchValue({
+              company_id: this.userData.company_id,
+              branch_id: this.userData.branch_id
+          }, {emitEvent: false});
+        }
+        if (this.serv.notNull(this.form.get('branch_id').value)) {
+          this.getAccountList();
+          this.getInventoryList();
+        }
         this.totalHandler = {
             itemPriceTotal: 0,
             itemQuantityTotal: 0,
@@ -294,7 +314,11 @@ export class NewTransactionService {
 
 
     getOrderTotal() {
-        let itemPriceTotal = 0, itemGrandTotal = 0, itemQuantityTotal = 0, taxAndExpenseTotal = 0, transactionGrandTotal = 0;
+        let itemPriceTotal = 0;
+        let itemGrandTotal = 0;
+        let itemQuantityTotal = 0;
+        let taxAndExpenseTotal = 0;
+        let transactionGrandTotal = 0;
         this.items.value.forEach(elem => {
             if (!elem.deletedFlag) {
                 if (!isNaN(parseFloat(elem.amount)) && elem.amount > 0) {
@@ -351,7 +375,7 @@ export class NewTransactionService {
         if (this.transactionId) {
             this.items.controls.forEach(control => {
                 this.inventoryList.forEach(elem => {
-                    if (control.get('item').value.id == elem.id) {
+                    if (control.get('item').value.id === elem.id) {
                         control.get('item').setValue(elem);
                     }
                 });
@@ -363,7 +387,7 @@ export class NewTransactionService {
         if (this.transactionId) {
             this.accounts.controls.forEach(control => {
                 this.accountList.forEach(elem => {
-                    if (control.get('account').value.id == elem.id) {
+                    if (control.get('account').value.id === elem.id) {
                         control.get('account').setValue(elem);
                     }
                 });
@@ -405,9 +429,6 @@ export class NewTransactionService {
             transactionType: this.transactionType,
             transactionDate: new Date()
         }, {emitEvent: false});
-        if (this.serv.notNull(formValue.company_id)) {
-          this.getBranchList();
-        }
         // this.items.push(this.itemForm());
         // this.accounts.push(this.accountForm());
         this.editInventoryIndex = undefined;

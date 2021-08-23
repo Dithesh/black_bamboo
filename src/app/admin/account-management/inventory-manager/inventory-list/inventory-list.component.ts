@@ -33,7 +33,8 @@ export class InventoryListComponent implements OnInit, OnDestroy {
     private dialog: MatDialog
   ) {
     this.userData = this.serv.getUserData();
-    if (this.userData.roles === 'Super Admin' || this.userData.roles === 'Company Admin' ) {
+
+    if (this.userData.roles === 'Super Admin') {
       this.route.parent.data.subscribe(response => {
         this.companyList = response.companyList;
         if (this.companyList.length > 0) {
@@ -41,7 +42,12 @@ export class InventoryListComponent implements OnInit, OnDestroy {
           this.getAllBranches();
         }
       });
-    } else {
+    } else if (this.userData.roles === 'Company Admin') {
+      this.selectedCompany.setValue(this.userData.company_id);
+      this.getAllBranches();
+    }else {
+      this.selectedCompany.setValue(this.userData.company_id);
+      this.selectedBranch.setValue(this.userData.branch_id);
       this.getAllInventorys();
     }
   }

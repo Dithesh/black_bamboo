@@ -39,18 +39,27 @@ export class UpdateInventoryManagerComponent implements OnInit {
     }
     this.userData = this.serv.getUserData();
 
-    this.route.parent.data.subscribe(response => {
-      this.companyList = response.companyList;
-      if (this.companyList.length > 0) {
-        this.form.get('company_id').setValue(this.companyList[0].id);
-        this.getAllBranches();
-      }
-    });
+
+    if (this.userData.roles === 'Super Admin') {
+      this.route.parent.data.subscribe(response => {
+        this.companyList = response.companyList;
+        if (this.companyList.length > 0) {
+          this.form.get('company_id').setValue(this.companyList[0].id);
+          this.getAllBranches();
+        }
+      });
+    } else if (this.userData.roles === 'Company Admin') {
+      this.form.get('company_id').setValue(this.userData.company_id);
+      this.getAllBranches();
+    }else {
+      this.form.get('company_id').setValue(this.userData.company_id);
+      this.form.get('branch_id').setValue(this.userData.branch_id);
+      this.getAllUnits();
+    }
 
    }
 
   ngOnInit() {
-    this.getAllUnits();
     this.selectedCompanySubscriber = this.form.get('company_id').valueChanges.subscribe(response => {
       this.form.get('branch_id').setValue('', {emitEvent: false});
       this.branchList = [];
@@ -71,12 +80,13 @@ export class UpdateInventoryManagerComponent implements OnInit {
            ...response,
            company_id: response.branch.company_id
          }, {emitEvent: false});
+         this.getAllUnits();
          this.getAllBranches();
     });
   }
   getAllUnits() {
     this.unitList = [];
-    this.serv.endpoint = 'account-manager/unit?companyId=' + this.form.get('company_id').value;
+    this.serv.endpoint = 'account-manager/unit?branch_id=' + this.form.get('branch_id').value;
     this.serv.get().subscribe((response: any[]) => {
       this.unitList = response;
     });
@@ -94,12 +104,9 @@ export class UpdateInventoryManagerComponent implements OnInit {
       let message = this.form.get('itemName').value + ' updated successfully';
       if (this.form.get('id').value === ''){
         message = this.form.get('itemName').value + ' added successfully';
-        this.router.navigateByUrl('/admin/account-management/inventory/update/' + response.id);
       }
       this.serv.showMessage(message, 'success');
-      this.form.get('itemName').setValue('');
-      this.form.get('pricePerUnit').setValue('');
-      this.form.get('description').setValue('');
+      this.router.navigateByUrl('/admin/account-management/inventory/list');
     }, ({error}) => {
       this.savingUpdate = false;
       if (error.hasOwnProperty('msg')) {

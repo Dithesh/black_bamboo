@@ -4,7 +4,7 @@
             <img src="assets/images/logo-full.svg" class="logoImg expand" alt="">
             <img src="assets/images/logo-small.svg" class="logoImg collapsed" alt="">
 
-        </span> 
+        </span>
         <button type="button" class="ml-3" mat-icon-button (click)="_layout.isOpened = !_layout.isOpened">
             <img src="assets/images/icons/SIDEMENU.svg" alt="" class="icon_img">
         </button>
@@ -32,7 +32,10 @@
                 <li>
                     <div class="profile_box" [matMenuTriggerFor]="profileMenu" [ngStyle]="{'background-image': imgSrc}"></div>
                     <mat-menu #profileMenu="matMenu" class="notification_menu profile_menu">
-                        <h4>{{ currentUser?.user.firstName }} {{ currentUser?.user.lastName }}</h4>
+                        <h4>
+                          {{ currentUser?.user.firstName }} {{ currentUser?.user.lastName }}<br>
+                          <small class="text-muted">{{ currentUser?.user.roles }}</small>
+                        </h4>
                         <ul class="list-unstyled mb-0">
                             <button mat-menu-item (click)="changeProfile()">Change Image</button>
                             <button mat-menu-item (click)="changePassword()">Change Password</button>

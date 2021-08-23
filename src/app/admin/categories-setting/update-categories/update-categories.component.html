@@ -17,7 +17,15 @@
                             </mat-form-field>
                         </div>
                         <div class="col-md-6 col-12">
-                            <mat-form-field  appearance="fill" class="w-100 mb-5" *ngIf="userData?.roles == 'Super Admin'">
+                            <mat-form-field  appearance="fill" class="w-100 mb-5" *ngIf="userData?.roles === 'Super Admin'">
+                                <mat-label>Company</mat-label>
+                                <mat-select matNativeControl formControlName="company_id" (selectionChange)="getAllBranches()">
+                                    <mat-option *ngFor="let item of companyList;" [value]="item.id">{{ item.companyName }}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-6 col-12">
+                            <mat-form-field  appearance="fill" class="w-100 mb-5" *ngIf="userData?.roles === 'Super Admin' || userData?.roles === 'Company Admin'">
                                 <mat-label>Branch</mat-label>
                                 <mat-select matNativeControl formControlName="branch_id" [required]="userData?.roles == 'Super Admin'">
                                     <mat-option *ngFor="let item of branchList;" [value]="item.id">{{ item.branchTitle }}</mat-option>

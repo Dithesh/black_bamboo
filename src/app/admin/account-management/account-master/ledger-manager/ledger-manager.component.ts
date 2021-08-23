@@ -43,13 +43,23 @@ export class LedgerManagerComponent implements OnInit, OnDestroy {
     private dialog: MatDialog
   ) {
     this.userData = this.serv.getUserData();
+
+    if (this.userData.roles === 'Super Admin') {
     this.route.parent.data.subscribe(response => {
       this.companyList = response.companyList;
       if (this.companyList.length > 0) {
         this.selectedCompany.setValue(this.companyList[0].id);
+        this.getAllBranches();
       }
-      this.getAllBranches();
     });
+    } else if (this.userData.roles === 'Company Admin') {
+      this.selectedCompany.setValue(this.userData.company_id);
+      this.getAllBranches();
+    }else {
+      this.selectedCompany.setValue(this.userData.company_id);
+      this.selectedBranch.setValue(this.userData.branch_id);
+      this.getAllLedgers();
+    }
   }
 
   ngOnInit(): void {

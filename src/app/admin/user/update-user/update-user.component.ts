@@ -54,18 +54,31 @@ export class UpdateUserComponent implements OnInit {
       isActive: [true],
       attendaceRequired: [false]
     })
-    this.route.data.subscribe(response => {
-      this.companyList = response.companyList;
-    })
+
+    this.loginUserDetail = this._serv.getUserData();
+    if (this.loginUserDetail.roles === 'Super Admin') {
+      this.route.data.subscribe(response => {
+        this.companyList = response.companyList;
+      })
+    } else if (this.loginUserDetail.roles === 'Company Admin') {
+      this.form.patchValue({
+        company_id: this.loginUserDetail.company_id
+      });
+      this.getAllBranches();
+    }else {
+      this.form.patchValue({
+        company_id: this.loginUserDetail.company_id,
+        branch_id: this.loginUserDetail.branch_id
+      });
+    }
+    if (this.loginUserDetail.roles !== 'Super Admin'){
+      this.userRoles = this.userRoles.splice(this.userRoles.indexOf(this.loginUserDetail.roles)+1, this.userRoles.length);
+    }
   }
 
   ngOnInit(): void {
     if(this.userId) {
       this.getUserDetails();
-    }
-    this.loginUserDetail = this._serv.getUserData()
-    if(this.loginUserDetail.roles != 'Super Admin'){
-      this.userRoles = this.userRoles.splice(this.userRoles.indexOf(this.loginUserDetail.roles)+1, this.userRoles.length);
     }
   }
 

@@ -16,6 +16,7 @@
                     <th mat-sort-header="productNumber" class="ew-200">Product No</th>
                     <th mat-sort-header="productName">Product Name</th>
                     <th mat-sort-header="description">Description</th>
+                    <th class="ew-250">Categories</th>
                     <th mat-sort-header="branch" class="ew-250">Branch</th>
                     <th class="ew-150">Is Active?</th>
                 </tr>
@@ -38,6 +39,9 @@
                         <td>{{item.productName}}</td>
                         <td>
                             {{item.description}}
+                        </td>
+                        <td>
+                            <span class="cat_chip" *ngFor="let cat of item.categories;">{{ cat.categoryName }}</span>
                         </td>
                         <td>
                             {{item.branch?.branchTitle }}

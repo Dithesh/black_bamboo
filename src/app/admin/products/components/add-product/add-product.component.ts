@@ -17,7 +17,7 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./add-product.component.scss']
 })
 export class AddProductComponent implements OnInit {
-  imageSrc="url(\'/assets/images/food.jpg\')";
+  imageSrc = 'url(\'/assets/images/food.jpg\')';
   url = environment.imgUrl;
   form: FormGroup;
   branchList: any[];
@@ -26,16 +26,16 @@ export class AddProductComponent implements OnInit {
   kitchenList: any[];
   userData: any;
   companyList;
-;
+
   @ViewChild(MatSort, {static: true}) sort: MatSort;
   constructor(
-    private _serv: DataService,
+    private serv: DataService,
     private fb: FormBuilder,
     private route: ActivatedRoute,
     private router: Router
-    ) { 
+    ) {
       this.productId = this.route.snapshot.params.id;
-      
+
       this.form = this.fb.group({
         id: [''],
         productNumber: [''],
@@ -45,32 +45,39 @@ export class AddProductComponent implements OnInit {
         featuredImage: [''],
         image: [''],
         price: [''],
-        isAdvancedPricing:[false],
+        isAdvancedPricing: [false],
         pricingGroups: this.fb.array([this.addAdvancePrice()]),
         taxPercent: [''],
         packagingCharges: [''],
         isActive: [true],
         branch_id: [''],
-        company_id:[''],
+        company_id: [''],
         isVeg: [false],
         isOutOfStock: [false],
         kitchen_id: [''],
-      })
-      this.route.data.subscribe(response => {
-        this.companyList = response.companyList;
-      })
+      });
+      this.userData = this.serv.getUserData();
+      if (this.userData.roles === 'Super Admin') {
+        this.route.data.subscribe(response => {
+          this.companyList = response.companyList;
+        });
+      } else if (this.userData.roles === 'Company Admin') {
+        this.form.patchValue({
+          company_id: this.userData.company_id
+        });
+        this.getAllBranches();
+      }else {
+        this.form.patchValue({
+          company_id: this.userData.company_id,
+          branch_id: this.userData.branch_id
+        });
+        this.getBranchDetails(this.userData.branch_id);
+      }
     }
 
   ngOnInit(): void {
-    this.userData = this._serv.getUserData();
-    if(this.productId) {
+    if (this.productId) {
       this.getProductDetails();
-    }
-    if(this.userData.roles != 'Super Admin') {
-        this.form.get('branch_id').setValue(this.userData.branch_id);
-        this.getBranchDetails(this.userData.branch_id);
-    }else{
-      this.getAllBranches();
     }
     this.getAllCategories();
   }
@@ -81,11 +88,11 @@ export class AddProductComponent implements OnInit {
 
   addAdvancePrice(){
     return this.fb.group({
-      id:[''],
-      title:[''],
-      price:[''],
-      deletedFlag:[false]
-    })
+      id: [''],
+      title: [''],
+      price: [''],
+      deletedFlag: [false]
+    });
   }
 
   addAnotherAdvancePrice() {
@@ -93,7 +100,7 @@ export class AddProductComponent implements OnInit {
   }
 
   removeAdvancePrice(item, index){
-    if(this._serv.notNull(item.get('id').value)) {
+    if (this.serv.notNull(item.get('id').value)) {
       item.get('deletedFlag').setValue(true);
     }else {
       this.pricingGroups.removeAt(index);
@@ -101,80 +108,80 @@ export class AddProductComponent implements OnInit {
   }
 
   getProductDetails() {
-    this._serv.endpoint = "order-manager/product/"+this.productId;
-    this._serv.get().subscribe((data:any) => {
+    this.serv.endpoint = 'order-manager/product/' + this.productId;
+    this.serv.get().subscribe((data: any) => {
       data.categories = data.categories.map(x => x.id);
       this.form.patchValue(data);
-      this.getBranchDetails(data.branch_id)
-      
-      if(this._serv.notNull(data.featuredImage)){
-        
-        this.imageSrc = "url(\'"+ this.url + data.featuredImage +"\')"
+      this.getBranchDetails(data.branch_id);
+
+      if (this.serv.notNull(data.featuredImage)){
+
+        this.imageSrc = 'url(\'' + this.url + data.featuredImage + '\')';
       }
       this.pricingGroups.controls = [];
       data.advanced_pricing.forEach(elem => {
-        let form = this.addAdvancePrice();
+        const form = this.addAdvancePrice();
         form.patchValue(elem);
         this.pricingGroups.push(form);
-      })
+      });
       // data.tables.forEach(elem => {
       //   this.tables.push(this.addTable(elem));
       //   this.dataSource.next(this.tables.controls);
       // })
-    })
+    });
   }
 
   saveProduct($event) {
-    if(event!=null)event.preventDefault();
+    if (event != null) {event.preventDefault(); }
     this.form.markAllAsTouched();
-    if(this.form.invalid)return;
-    let formValue = this.form.value;
-    this._serv.endpoint="order-manager/product";
-    this._serv.post(formValue).subscribe(response => {
-      this._serv.showMessage("Product updated successfully", 'success');
+    if (this.form.invalid) {return; }
+    const formValue = this.form.value;
+    this.serv.endpoint = 'order-manager/product';
+    this.serv.post(formValue).subscribe(response => {
+      this.serv.showMessage('Product updated successfully', 'success');
       this.router.navigateByUrl('/admin/products');
     }, ({error}) => {
-      this._serv.showMessage(error['msg'], 'error');
-    })
+      this.serv.showMessage(error.msg, 'error');
+    });
   }
 
   getAllCategories() {
-    this._serv.endpoint = "order-manager/category?fields=id,categoryName";
-    this._serv.get().subscribe(response => {
+    this.serv.endpoint = 'order-manager/category?fields=id,categoryName';
+    this.serv.get().subscribe(response => {
       this.categoryList = response as any[];
-    })
+    });
   }
-  
+
   selectChange(type){
     this.form.get('categories').setValue('');
     this.form.get('kitchen_id').setValue('');
-    if(type == 'company'){
+    if (type === 'company'){
       this.form.get('branch_id').setValue('');
       this.getAllBranches();
     }
   }
 
   getAllBranches() {
-    this._serv.endpoint = "order-manager/branch?fields=id,branchTitle&companyId="+this.form.get('company_id').value;
-    this._serv.get().subscribe(response => {
+    this.serv.endpoint = 'order-manager/branch?fields=id,branchTitle&companyId=' + this.form.get('company_id').value;
+    this.serv.get().subscribe(response => {
       this.branchList = response as any[];
-      if(this.productId == undefined && this.branchList.length > 0) {
+      if (this.productId === undefined && this.branchList.length > 0) {
         this.form.get('branch_id').setValue(this.branchList[0].id);
-        this.getBranchDetails(this.branchList[0].id)
+        this.getBranchDetails(this.branchList[0].id);
       }
-      
+
       this.form.get('branch_id').valueChanges.subscribe(value => {
         this.form.get('kitchen_id').setValue('');
-        this.getBranchDetails(value)
+        this.getBranchDetails(value);
       });
-    })
+    });
   }
-  
+
 
   handleFileInput(event) {
-    var file = event.dataTransfer ? event.dataTransfer.files[0] : event.target.files[0];
-    var pattern = /image-*/;
-    var reader = new FileReader();
+    const file = event.dataTransfer ? event.dataTransfer.files[0] : event.target.files[0];
+    const pattern = /image-*/;
+    const reader = new FileReader();
     if (!file.type.match(pattern)) {
       alert('invalid format');
       return;
@@ -184,21 +191,21 @@ export class AddProductComponent implements OnInit {
   }
 
   _handleReaderLoaded(file) {
-    let reader = file.target;
-    let imageSrc = reader.result;
-    this.form.get('image').setValue(imageSrc)
-    this.imageSrc = "url(\'"+imageSrc+"\')";
+    const reader = file.target;
+    const imageSrc = reader.result;
+    this.form.get('image').setValue(imageSrc);
+    this.imageSrc = 'url(\' ' + imageSrc + '\')';
   }
 
-  getBranchDetails(branch_id) {
-    if(!this._serv.notNull(branch_id)){
-      this.kitchenList=[];
+  getBranchDetails(branchId) {
+    if (!this.serv.notNull(branchId)){
+      this.kitchenList = [];
       return;
     }
-    this._serv.endpoint="order-manager/branch/"+branch_id;
-    this._serv.get().subscribe((response:any) => {
+    this.serv.endpoint = 'order-manager/branch/' + branchId;
+    this.serv.get().subscribe((response: any) => {
       this.kitchenList = response.kitchens as any[];
-    })
+    });
   }
 
 }

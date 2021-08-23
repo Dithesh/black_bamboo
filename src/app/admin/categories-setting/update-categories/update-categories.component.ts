@@ -11,15 +11,16 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./update-categories.component.scss']
 })
 export class UpdateCategoriesComponent implements OnInit {
-  imageSrc="url(\'/assets/images/food.jpg\')";
+  imageSrc = 'url(\'/assets/images/food.jpg\')';
   url = environment.imgUrl;
-  form:FormGroup;
-  filterForm:FormGroup;
+  form: FormGroup;
+  filterForm: FormGroup;
   branchList: any[];
+  companyList: any[];
   userData;
   categoryId;
   constructor(
-    private _serv: DataService,
+    private serv: DataService,
     private fb: FormBuilder,
     private route: ActivatedRoute,
     private router: Router
@@ -30,34 +31,55 @@ export class UpdateCategoriesComponent implements OnInit {
       image: [''],
       categoryName: [''],
       description: [''],
+      company_id: [''],
       branch_id: [''],
       isActive: [false]
-    })
+    });
    }
 
   ngOnInit(): void {
-    this.userData = this._serv.getUserData();
-    this.getAllBranches();
- 
-      if(this.categoryId) {
+      this.userData = this.serv.getUserData();
+      if (this.userData.roles === 'Super Admin') {
+        this.getAllCompanies();
+      } else if (this.userData.roles === 'Company Admin') {
+        this.form.patchValue({
+          company_id: this.userData.company_id
+        });
+        this.getAllBranches();
+      }else {
+        this.form.patchValue({
+          company_id: this.userData.company_id,
+          branch_id: this.userData.branch_id
+        });
+      }
+
+      if (this.categoryId) {
         this.getCategoriesDetails();
       }
+  }
+    getAllCompanies() {
+        this.serv.endpoint = 'order-manager/company';
+        this.serv.get().subscribe((data: any[]) => {
+          this.companyList = data;
+        });
     }
+
     getCategoriesDetails(){
-        this._serv.endpoint = "order-manager/category/"+this.categoryId;
-        this._serv.get().subscribe((data:any) => {
+        this.serv.endpoint = 'order-manager/category/' + this.categoryId;
+        this.serv.get().subscribe((data: any) => {
           this.form.patchValue(data);
-          
-          if(this._serv.notNull(data.featuredImage)){
-            this.imageSrc = "url(\'"+ this.url + data.featuredImage +"\')"
+
+          this.getAllBranches();
+          if (this.serv.notNull(data.featuredImage)){
+            this.imageSrc = 'url(\'' + this.url + data.featuredImage + '\')';
           }
-        })
+        });
   }
 
   handleFileInput(event) {
-    var file = event.dataTransfer ? event.dataTransfer.files[0] : event.target.files[0];
-    var pattern = /image-*/;
-    var reader = new FileReader();
+    const file = event.dataTransfer ? event.dataTransfer.files[0] : event.target.files[0];
+    const pattern = /image-*/;
+    const reader = new FileReader();
     if (!file.type.match(pattern)) {
       alert('invalid format');
       return;
@@ -66,31 +88,33 @@ export class UpdateCategoriesComponent implements OnInit {
     reader.readAsDataURL(file);
   }
   _handleReaderLoaded(file) {
-    let reader = file.target;
-    let imageSrc = reader.result;
-    this.form.get('image').setValue(imageSrc)
-    this.imageSrc = "url(\'"+imageSrc+"\')";
+    const reader = file.target;
+    const imageSrc = reader.result;
+    this.form.get('image').setValue(imageSrc);
+    this.imageSrc = 'url(\'' + imageSrc + '\')';
   }
 
-  saveCategory(event=null) {
-    if(event!=null)event.preventDefault();
+  saveCategory(event= null) {
+    if (event != null) {event.preventDefault(); }
     this.form.markAllAsTouched();
-    if(this.form.invalid)return;
-    let formValue = this.form.value;
-    this._serv.endpoint="order-manager/category";
-    this._serv.post(formValue).subscribe(response => {
-      this._serv.showMessage("Category updated successfully", 'success');
-      this.router.navigateByUrl('/admin/settings/categories/list')
+    if (this.form.invalid) {return; }
+    const formValue = this.form.value;
+    this.serv.endpoint = 'order-manager/category';
+    this.serv.post(formValue).subscribe(response => {
+      this.serv.showMessage('Category updated successfully', 'success');
+      this.router.navigateByUrl('/admin/categories/list');
     }, ({error}) => {
-      this._serv.showMessage(error['msg'], 'error');
-    })
+      this.serv.showMessage(error.msg, 'error');
+    });
   }
 
   getAllBranches() {
-    this._serv.endpoint = "order-manager/branch?fields=id,branchTitle";
-    this._serv.get().subscribe(response => {
-      this.branchList = response as any[];
-    })
+    if (this.userData.roles === 'Super Admin' || this.userData.roles === 'Company Admin') {
+      this.serv.endpoint = 'order-manager/branch?fields=id,branchTitle';
+      this.serv.get().subscribe(response => {
+        this.branchList = response as any[];
+      });
+    }
   }
 
 }

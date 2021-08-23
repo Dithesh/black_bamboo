@@ -18,6 +18,7 @@
                     <th class="ew-100">Action</th>
                     <th mat-sort-header="branchCode" class="ew-200">Code</th>
                     <th mat-sort-header="branchTitle">Title</th>
+                    <th mat-sort-header="company">Company</th>
                     <th mat-sort-header="description">Description</th>
                     <th mat-sort-header="branchAddress" class="ew-250">Address</th>
                     <th class="ew-150">Is Active?</th>
@@ -49,6 +50,7 @@
                             {{item.branchCode }}
                         </td>
                         <td>{{item.branchTitle}}</td>
+                        <td>{{item.company.companyName}}</td>
                         <td>
                             {{item.description}}
                         </td>

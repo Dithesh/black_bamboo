@@ -26,7 +26,7 @@ export class BranchListComponent implements OnInit {
     private fb: FormBuilder,
     private dialog: MatDialog,
     private route:ActivatedRoute
-  ) { 
+  ) {
     this.filterForm = this.fb.group({
       searchString: [''],
       orderCol: [''],
@@ -46,9 +46,9 @@ export class BranchListComponent implements OnInit {
     // this.dataSource.paginator = this.paginator;
     this.getAllBranches();
   }
-  
+
   ngAfterViewInit() {
-    
+
     this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
     merge(this.sort.sortChange, this.paginator.page, this.filterForm.get('searchString').valueChanges)
       .subscribe(data => {
@@ -62,7 +62,7 @@ export class BranchListComponent implements OnInit {
 
   getAllBranches(page=1) {
     let filterValue=this.filterForm.value;
-    this._serv.endpoint = "order-manager/branch?pageNumber="+page+"&orderType="+filterValue.orderType+"&orderCol="+filterValue.orderCol+"&searchString="+filterValue.searchString+'&compnayId='+filterValue.companyFilter;
+    this._serv.endpoint = "order-manager/branch?pageNumber="+page+"&orderType="+filterValue.orderType+"&orderCol="+filterValue.orderCol+"&searchString="+filterValue.searchString+'&companyId='+filterValue.companyFilter;
     this._serv.get().subscribe(response => {
       this.dataSource = response as any;
     })

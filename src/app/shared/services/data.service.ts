@@ -62,7 +62,7 @@ export class DataService {
   }
 
   notNull(value) {
-    return value != '' && value != null && value != undefined;
+    return value !== '' && value !== null && value !== undefined;
   }
 
   getUserData(key  = 'lock_token') {

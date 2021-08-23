@@ -41,7 +41,7 @@ export const permissions = {
     },
     'setting-menu': {
         'Super Admin': 'full',
-        'Company Admin': 'full',
+        'Company Admin': 'denied',
         'Branch Admin' : 'denied',
         'Branch Accountant' : 'denied',
         'Branch Manager' : 'denied',

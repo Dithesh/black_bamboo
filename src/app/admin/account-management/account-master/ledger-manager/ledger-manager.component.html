@@ -1,5 +1,5 @@
-<div class="row" [hidden]="userData?.roles != 'Super Admin' && userData?.roles != 'Company Admin'">
-    <div class="col-auto">
+<div class="row">
+    <div class="col-auto" [hidden]="userData?.roles != 'Super Admin'">
         <mat-form-field appearance="fill">
             <mat-label>Company</mat-label>
             <mat-select required [formControl]="selectedCompany">
@@ -7,7 +7,7 @@
             </mat-select>
         </mat-form-field>
     </div>
-    <div class="col-auto">
+    <div class="col-auto" [hidden]="userData?.roles != 'Super Admin' && userData?.roles != 'Company Admin'">
           <mat-form-field appearance="fill">
               <mat-label>Branch</mat-label>
               <mat-select required [formControl]="selectedBranch">
