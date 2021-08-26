@@ -26,8 +26,8 @@
             </div>
             <div class="col-md-auto ml-auto col-sm-6 col-12 order-0 order-sm-3" *ngIf="_transact.form.get('transactionRefNumber').value">
                 <div class="d-inline-flex align-items-center text-primary font-1_6">
-                    <span>Ref. No :</span> 
-                    {{ _transact.form.get('transactionRefNumber').value }} 
+                    <span>Ref. No :</span>
+                    {{ _transact.form.get('transactionRefNumber').value }}
                     <!-- <div class="custom_input ew-60 d-md-inline-block">
                         <input type="text" class="w-100">
                         <span class="underline"></span>
@@ -39,8 +39,8 @@
             </div>
         </div>
         <!-- <p class="balance_text text-accent font-1_6 font-weight-400">Current Balance: 0.00</p> -->
-    </div> 
-    
+    </div>
+
     <div class="d-flex align-items-center justify-content-between">
         <h3 class="title_h3 font-weight-500 mb-5 text-primary">Inventory Items</h3>
         <button type="button" (click)="_transact.addAnotherItem()" mat-button>
@@ -88,9 +88,12 @@
                                 </ng-template>
                             </td>
                             <td class="ew-150">
-                                
+
                                 <ng-container *ngIf="_transact.editInventoryIndex != i else inventoryPriceInput">
-                                    {{ item.get('amount').value | currency }}
+                                    <span class="d-inline-block mr-5">
+                                      &#8377;
+                                    </span>
+                                    {{ item.get('amount').value | currency:"":"" }}
                                 </ng-container>
                                 <ng-template #inventoryPriceInput>
                                     <mat-form-field class="field-pb-0 table_select ew-120">
@@ -217,10 +220,25 @@
                         <td>
                         </td>
                         <td>Total</td>
-                        <td>{{ _transact.totalHandler.itemPriceTotal }}</td>
-                        <td>{{ _transact.totalHandler.itemQuantityTotal }}</td>
-                        <td>{{ _transact.totalHandler.itemGrandTotal }}</td>
-                    </tr> 
+                        <td>
+                          <span class="d-inline-block mr-5">
+                            &#8377;
+                          </span>
+                          {{ _transact.totalHandler.itemPriceTotal|currency:"":"" }}
+                        </td>
+                        <td>
+                          <span class="d-inline-block mr-5">
+                            &#8377;
+                          </span>
+                          {{ _transact.totalHandler.itemQuantityTotal|currency:"":"" }}
+                        </td>
+                        <td>
+                          <span class="d-inline-block mr-5">
+                            &#8377;
+                          </span>
+                          {{ _transact.totalHandler.itemGrandTotal|currency:"":"" }}
+                        </td>
+                    </tr>
                 </tbody>
             </table>
         </div>
@@ -247,15 +265,23 @@
                                         </td>
                                         <td class="ew-150"></td>
                                         <td class="ew-150">
-                                            {{ account.get('amountValue').value }} 
+                                            <span class="d-inline-block mr-5">
+                                                <ng-container *ngIf="account.get('amountProcessType').value == 'amount'">
+                                                    &#8377;
+                                                </ng-container>
+                                            </span>
+                                            {{ account.get('amountProcessType').value == 'percent' ? account.get('amountValue').value :  (account.get('amountValue').value | currency : "":"") }}
                                             <span class="d-inline-block ml-5">
-                                                <ng-container *ngIf="account.get('amountProcessType').value == 'percent' else rupeesTemplate">
+                                                <ng-container *ngIf="account.get('amountProcessType').value == 'percent'">
                                                     %
                                                 </ng-container>
                                             </span>
                                         </td>
                                         <td class="ew-150">
-                                            {{ account.get('totalAmount').value }}
+                                            <span class="d-inline-block mr-5">
+                                              &#8377;
+                                            </span>
+                                            {{ account.get('totalAmount').value | currency:"":"" }}
                                         </td>
                                     </tr>
                                     <ng-template #editAccountMode>
@@ -277,7 +303,7 @@
                                             </td>
                                             <td class="ew-150"></td>
                                             <td class="ew-150">
-                                                
+
                                                 <mat-form-field class="field-pb-0 table_select ew-150">
                                                     <input matInput formControlName="amountValue">
                                                     <span matSuffix class="suffix_text cursor-pointer" [matMenuTriggerFor]="dropMenu">
@@ -339,7 +365,12 @@
                             </tr> -->
                             <tr class="total_row">
                                 <td colspan="4" class="text-right">Grand Total</td>
-                                <td class="ew-180">{{ _transact.totalHandler.transactionGrandTotal }}</td>
+                                <td class="ew-180">
+                                  <span class="d-inline-block mr-5">
+                                    &#8377;
+                                  </span>
+                                  {{ _transact.totalHandler.transactionGrandTotal | currency : "":"" }}
+                                </td>
                             </tr>
                         </tbody>
                     </table>

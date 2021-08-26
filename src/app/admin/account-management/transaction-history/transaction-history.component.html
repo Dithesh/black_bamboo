@@ -44,7 +44,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            
+
                             <ng-container *ngFor="let item of transactionList?.data; let i =index">
                                 <tr (dblclick)="openTransaction(item)">
                                     <td>
@@ -63,7 +63,7 @@
                                         <span *ngIf="item.transactionType == 'receipt'" class="tag recipt">Receipt</span>
                                     </td>
                                     <td>
-                                        {{ item.grandTotal }}
+                                        {{ item.grandTotal| currency:'':'' }}
                                     </td>
                                     <td>
                                         <ng-container *ngIf="item.description else noData">
@@ -88,10 +88,10 @@
                     <mat-paginator [pageSizeOptions]="[10]" [length]="transactionList?.total" [pageSize]="10"></mat-paginator>
                 </div>
             </div>
-            
+
             <ng-template #noData>---</ng-template>
         </div>
-        
+
     </div>
 
 </div>

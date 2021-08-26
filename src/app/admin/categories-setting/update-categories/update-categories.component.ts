@@ -110,8 +110,11 @@ export class UpdateCategoriesComponent implements OnInit {
 
   getAllBranches() {
     if (this.userData.roles === 'Super Admin' || this.userData.roles === 'Company Admin') {
-      this.serv.endpoint = 'order-manager/branch?fields=id,branchTitle';
-      this.serv.get().subscribe(response => {
+      this.serv.endpoint = 'order-manager/branch?fields=';
+      this.serv.getByParam({
+        fields: 'id,branchTitle',
+        companyId: this.form.get('company_id').value
+      }).subscribe(response => {
         this.branchList = response as any[];
       });
     }

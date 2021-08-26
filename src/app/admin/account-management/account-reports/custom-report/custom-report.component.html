@@ -39,7 +39,7 @@
             </mat-form-field>
         </div>
     </div>
-  
+
     <!-- <mat-form-field appearance="outline" class="ew-250">
         <mat-label>Company</mat-label>
         <mat-select formControlName="companyFilter">
@@ -79,7 +79,7 @@
                         <td *ngIf="Orders.value">
                             {{ orderSummary.ordersTotal | currency }}
                         </td>
-                        
+
                     </tr>
                     <!-- <tr>
                         <td colspan="5" *ngIf="dataSource?.data.length <= 0"> No data to display.</td>
@@ -129,16 +129,16 @@
                             {{ item.description }}
                         </td>
                         <td>
-                            {{ item.grandTotal | currency }}
+                            {{ item.grandTotal | currency:'':'' }}
                         </td>
-                        
+
                     </tr>
                     <tr *ngIf="transactionList?.length == 0">
                         <td colspan="5"> No data to display.</td>
                     </tr>
                     <tr class="total_row">
                         <td colspan="4" >Grand Total</td>
-                        <td class="ew-180">{{orderSummary.transactionTotal|currency}}</td>
+                        <td class="ew-180">{{orderSummary.transactionTotal| currency:'':''}}</td>
                     </tr>
                 </ng-container>
             </tbody>
@@ -173,18 +173,18 @@
                             {{ item.order_type.orderType }}
                         </td>
                         <td>
-                            {{ item.order_type.orderAmount }}
+                            {{ item.orderAmount| currency:'':'' }}
                         </td>
-                        
-                    </tr>
-                    <tr *ngIf="orderList?.length == 0">
-                        <td colspan="4"> No data to display.</td>
-                    </tr>
-                    <tr class="total_row">
-                        <td colspan="3" >Grand Total</td>
-                        <td class="ew-180">{{ orderSummary.ordersTotal|currency }}</td>
+
                     </tr>
                 </ng-container>
+                <tr *ngIf="orderList?.length == 0">
+                    <td colspan="4"> No data to display.</td>
+                </tr>
+                <tr class="total_row">
+                    <td colspan="3" >Grand Total</td>
+                    <td class="ew-180">{{ orderSummary.ordersTotal| currency:'':'' }}</td>
+                </tr>
             </tbody>
         </table>
         <!-- <mat-paginator [pageSizeOptions]="[10]" [length]="dataSource?.total" [pageSize]="10"></mat-paginator> -->

@@ -72,6 +72,7 @@ export class AddProductComponent implements OnInit {
           branch_id: this.userData.branch_id
         });
         this.getBranchDetails(this.userData.branch_id);
+        this.getAllCategories();
       }
     }
 
@@ -79,7 +80,6 @@ export class AddProductComponent implements OnInit {
     if (this.productId) {
       this.getProductDetails();
     }
-    this.getAllCategories();
   }
 
   get pricingGroups(){
@@ -113,6 +113,7 @@ export class AddProductComponent implements OnInit {
       data.categories = data.categories.map(x => x.id);
       this.form.patchValue(data);
       this.getBranchDetails(data.branch_id);
+      this.getAllCategories();
 
       if (this.serv.notNull(data.featuredImage)){
 
@@ -146,8 +147,11 @@ export class AddProductComponent implements OnInit {
   }
 
   getAllCategories() {
-    this.serv.endpoint = 'order-manager/category?fields=id,categoryName';
-    this.serv.get().subscribe(response => {
+    this.serv.endpoint = 'order-manager/category';
+    this.serv.getByParam({
+      fields: 'categories.id,categoryName',
+      branch_id: this.form.get('branch_id').value
+    }).subscribe(response => {
       this.categoryList = response as any[];
     });
   }
@@ -158,6 +162,8 @@ export class AddProductComponent implements OnInit {
     if (type === 'company'){
       this.form.get('branch_id').setValue('');
       this.getAllBranches();
+    }else {
+      this.getAllCategories();
     }
   }
 
@@ -168,6 +174,7 @@ export class AddProductComponent implements OnInit {
       if (this.productId === undefined && this.branchList.length > 0) {
         this.form.get('branch_id').setValue(this.branchList[0].id);
         this.getBranchDetails(this.branchList[0].id);
+        this.getAllCategories();
       }
 
       this.form.get('branch_id').valueChanges.subscribe(value => {

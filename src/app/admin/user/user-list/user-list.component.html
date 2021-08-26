@@ -7,7 +7,8 @@
                     <th class="ew-100"  *ngIf=" this._serv.getPermission('users', 'full')">Action</th>
                     <th mat-sort-header="firstName" class="">User Name</th>
                     <th mat-sort-header="roles" class="ew-200">Role</th>
-                    <th mat-sort-header="description">Branch</th>
+                    <th mat-sort-header="company" [hidden]="userData?.roles != 'Super Admin'">Company</th>
+                    <th mat-sort-header="branch" [hidden]="userData?.roles != 'Super Admin' && userData?.roles != 'Company Admin'">Branch</th>
                     <th mat-sort-header="mobileNumber" class="ew-200">Mobile Number</th>
                     <th mat-sort-header="email" class="ew-250">Email</th>
                     <th class="ew-150">Is Active?</th>
@@ -15,7 +16,7 @@
             </thead>
             <tbody>
                 <ng-container *ngFor="let item of dataSource?.data; let i =index">
-                    <tr *ngIf="loginUserDetail?.user_id != item.id">
+                    <tr *ngIf="userData?.user_id != item.id">
                         <td  *ngIf=" this._serv.getPermission('users', 'full')">
                             <button mat-icon-button [matMenuTriggerFor]="moreOption">
                                 <img src="assets/images/icons/MORE.svg" alt="" class="icon_img">
@@ -30,7 +31,10 @@
                             {{item.firstName}} {{ item.lastName }}
                         </td>
                         <td>{{item.roles}}</td>
-                        <td>
+                        <td [hidden]="userData?.roles != 'Super Admin'">
+                            {{item.company?.companyName}}
+                        </td>
+                        <td [hidden]="userData?.roles != 'Super Admin' && userData?.roles != 'Company Admin'">
                             {{item.branch?.branchTitle}}
                         </td>
                         <td>

@@ -218,6 +218,31 @@ export class NewTransactionService {
         return this.form.get('accounts') as FormArray;
     }
 
+    checkForDuplicateAccounts() {
+      const deleteArray = [];
+      this.accounts.controls.forEach((control, index) => {
+        const val = control.get('account').value;
+        if (this.serv.notNull(val) && val.id === this.form.get('accountId').value) {
+          deleteArray.unshift(index);
+        }
+      });
+      if (deleteArray.length <= 0) {return; }
+      const dialogRef = this.dialog.open(ConfirmPopupComponent, {
+        data: {
+          message: 'Account has selected below. Do you want to remove from there?'
+        }
+      });
+      dialogRef.afterClosed().subscribe(data => {
+        if (data) {
+          deleteArray.forEach(index => {
+            this.onDeleteAccount(index, true);
+          });
+        }else {
+          this.form.get('accountId').setValue('', {emitEvent: false});
+        }
+      });
+    }
+
     accountForm() {
         const form = this.fb.group({
             id: [''],
@@ -275,27 +300,35 @@ export class NewTransactionService {
         this.editAccountIndex = index;
     }
 
-    onDeleteAccount(index) {
+    onDeleteAccount(index, directForce= false) {
+      if (directForce) {
+        this.deleteAccount(index);
+      }else {
         const dialogRef = this.dialog.open(ConfirmPopupComponent);
         dialogRef.afterClosed().subscribe(data => {
             if (data) {
-                const control = this.accounts.controls[index];
-                if (this.serv.notNull(control.get('id').value)) {
-                    if (control.invalid) {
-                        control.get('account').setValue('1');
-                        control.get('amountValue').setValue(1);
-                        control.get('amountProcessType').setValue('percent');
-                        control.get('totalAmount').setValue(1);
-                        control.get('total').setValue(1);
-                    }
-                    control.get('deletedFlag').setValue(true);
-                }else {
-                    this.accounts.removeAt(index);
-                }
-                this.editAccountIndex = undefined;
-                this.getOrderTotal();
+              this.deleteAccount(index);
             }
         });
+      }
+    }
+
+    deleteAccount(index) {
+        const control = this.accounts.controls[index];
+        if (this.serv.notNull(control.get('id').value)) {
+            if (control.invalid) {
+                control.get('account').setValue('1');
+                control.get('amountValue').setValue(1);
+                control.get('amountProcessType').setValue('percent');
+                control.get('totalAmount').setValue(1);
+                control.get('total').setValue(1);
+            }
+            control.get('deletedFlag').setValue(true);
+        }else {
+            this.accounts.removeAt(index);
+        }
+        this.editAccountIndex = undefined;
+        this.getOrderTotal();
     }
 
     validateAccountsArray() {
@@ -438,7 +471,7 @@ export class NewTransactionService {
 
     getBranchList() {
       const companyId = this.form.get('company_id').value;
-      if(this.serv.notNull(companyId)) {
+      if (this.serv.notNull(companyId)) {
         this.serv.endpoint = 'order-manager/branch?status=active&companyId=' + companyId;
         this.serv.get().subscribe(response => {
           this.branchList = response as any[];

@@ -4,7 +4,7 @@
             <div class="col-md-auto col-sm-6 col-12 order-1">
                 <mat-form-field appearance="fill" class="ew-300">
                     <mat-label>From Account</mat-label>
-                    <mat-select required formControlName="accountId">
+                    <mat-select required formControlName="accountId" (selectionChange)="transact.checkForDuplicateAccounts()">
                       <mat-select-filter [placeholder]="'Filter'" [displayMember]="'ledgerName'" [array]="transact.accountList" (filteredReturn)="transact.filteredAccountList =$event"></mat-select-filter>
                       <ng-container *ngFor="let item of transact.filteredAccountList;">
                         <mat-option *ngIf="transact.topAccountExclude.indexOf(item.accountType) < 0" [value]="item.id">{{ item.ledgerName }}</mat-option>
@@ -64,13 +64,16 @@
                                         </td>
                                         <td class="ew-150"></td>
                                         <td class="ew-150">
-                                            {{ account.get('amountValue').value }}
-                                            <span class="d-inline-block ml-5">
+                                            <span class="d-inline-block mr-5">
                                                 &#8377;
                                             </span>
+                                            {{ account.get('amountValue').value | currency : "":"" }}
                                         </td>
                                         <td class="ew-150">
-                                            {{ account.get('totalAmount').value }}
+                                            <span class="d-inline-block mr-5">
+                                              &#8377;
+                                            </span>
+                                            {{ account.get('totalAmount').value | currency : "":"" }}
                                         </td>
                                     </tr>
                                     <ng-template #editAccountMode>
@@ -83,10 +86,10 @@
                                             </td>
                                             <td>
                                                 <mat-form-field class="field-pb-0 table_select ew-mn-300">
-                                                    <mat-select formControlName="account">
+                                                    <mat-select formControlName="account" placeholder="To Account">
                                                         <mat-option></mat-option>
                                                         <ng-container *ngFor="let item of transact.filteredExpenseAccountList;">
-                                                            <mat-option *ngIf="transact.taxAndExpenseExclude.indexOf(item.accountType) < 0" [value]="item">{{ item.ledgerName }}</mat-option>
+                                                            <mat-option *ngIf="transact.taxAndExpenseExclude.indexOf(item.accountType) < 0 && transact.form.get('accountId').value != item.id" [value]="item">{{ item.ledgerName }}</mat-option>
                                                         </ng-container>
                                                     </mat-select>
                                                   </mat-form-field>
@@ -96,9 +99,9 @@
 
                                                 <mat-form-field class="field-pb-0 table_select ew-150">
                                                     <input matInput formControlName="amountValue">
-                                                    <span matSuffix class="suffix_text cursor-pointer">
-                                                        &#8377;
-                                                    </span>
+<!--                                                    <span matSuffix class="suffix_text cursor-pointer">-->
+<!--                                                        &#8377;-->
+<!--                                                    </span>-->
                                                 </mat-form-field>
                                             </td>
                                             <td class="ew-150">
@@ -141,7 +144,12 @@
                             </tr> -->
                             <tr class="total_row">
                                 <td colspan="4" class="text-right">Grand Total</td>
-                                <td class="ew-180">{{ transact.totalHandler.transactionGrandTotal }}</td>
+                                <td class="ew-180">
+                                  <span class="d-inline-block mr-5">
+                                    &#8377;
+                                  </span>
+                                  {{ transact.totalHandler.transactionGrandTotal | currency : "":""  }}
+                                </td>
                             </tr>
                         </tbody>
                     </table>

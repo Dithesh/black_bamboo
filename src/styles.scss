@@ -507,6 +507,13 @@ mat-form-field{
                 height: 1px;
             }
         }
+      .mat-form-field-label {
+        display: none !important;
+        font-size: 12px;
+        &.mat-empty.mat-form-field-empty {
+          display: block !important;;
+        }
+      }
     }
     &.mat-form-field-invalid{
         &.mat-form-field-appearance-fill{

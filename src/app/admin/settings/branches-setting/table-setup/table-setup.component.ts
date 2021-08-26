@@ -69,7 +69,8 @@ export class TableSetupComponent implements OnInit, AfterViewInit {
   getAllTables(page= 1){
     const filterValue = {
       ...this.filterForm.value,
-      pageNumber: page
+      pageNumber: page,
+      branchId: this.branchId
     };
     this.serv.endpoint = 'order-manager/table-manager';
     this.serv.getByParam(filterValue).subscribe(response => {

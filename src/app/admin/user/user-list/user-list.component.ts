@@ -27,7 +27,7 @@ export class UserListComponent implements OnInit, AfterViewInit {
   sidemenu=false;
   form:FormGroup;
   filterForm:FormGroup;
-  loginUserDetail;
+  userData;
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   branchList: any[];
@@ -35,23 +35,23 @@ export class UserListComponent implements OnInit, AfterViewInit {
     public _serv: DataService,
     private fb: FormBuilder,
     private dialog: MatDialog
-  ) { 
+  ) {
     this.filterForm = this.fb.group({
       searchString: [''],
       orderCol: [''],
       orderType: ['']
     });
-    
+
   }
 
   ngOnInit(): void {
     this.getAllUsers();
-    this.loginUserDetail = this._serv.getUserData();
-    
+    this.userData = this._serv.getUserData();
+
   }
 
   ngAfterViewInit() {
-    
+
     this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
     merge(this.sort.sortChange, this.paginator.page, this.filterForm.get('searchString').valueChanges)
       .subscribe(data => {

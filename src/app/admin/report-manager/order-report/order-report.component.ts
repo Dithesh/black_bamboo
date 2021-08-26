@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { DataService } from 'src/app/shared/services/data.service';
-import * as XLSX from 'xlsx'; 
+import * as XLSX from 'xlsx';
 import * as math from 'exact-math';
 import * as moment from 'moment';
 
@@ -27,10 +27,10 @@ export class OrderReportComponent implements OnInit {
   constructor(
     private _serv: DataService,
     private fb: FormBuilder
-  ) { 
+  ) {
     this.filterForm = this.fb.group({
       searchString: [''],
-      orderStatus: [''],
+      orderStatus: [['completed']],
       paymentMethod: [''],
       typeOfOrder: [''],
       branch_id: [''],
@@ -51,7 +51,7 @@ export class OrderReportComponent implements OnInit {
     }
   }
   // ngAfterViewInit() {
-    
+
   //   this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
   //   merge(this.sort.sortChange, this.paginator.page, this.filterForm.get('searchString').valueChanges, this.filterForm.get('orderStatus').valueChanges, this.filterForm.get('endDate').valueChanges)
   //     .subscribe(data => {
@@ -70,14 +70,14 @@ export class OrderReportComponent implements OnInit {
       this.branchList = response as any[];
     })
   }
-  
+
   getBranchDetail(branch_id) {
     if(!this._serv.notNull(branch_id)){
       this.orderTypeList=[];
       this.paymentMethodList=[];
       return;
     }
-    
+
     this._serv.endpoint="order-manager/branch/"+branch_id;
     this._serv.get().subscribe((response:any) => {
       this.branchDetail = response;
@@ -86,7 +86,7 @@ export class OrderReportComponent implements OnInit {
     })
   }
 
-  
+
   getOrderList(event) {
     event.preventDefault()
     let filterValue = this.filterForm.value;
@@ -109,7 +109,7 @@ export class OrderReportComponent implements OnInit {
       this.dataSource = response as any;
       this.getTotal();
     })
-    
+
   }
   getTotal(){
     this.totalOrderAmount=0;
@@ -121,11 +121,11 @@ export class OrderReportComponent implements OnInit {
     // this.displayedColumns = ['id', 'orderAmount', 'orderStatus', 'created_at'];
     // setTimeout(() => {
       const ws: XLSX.WorkSheet =XLSX.utils.table_to_sheet(this.reportTable.nativeElement)
- 
+
       /* generate workbook and add the worksheet */
       const wb: XLSX.WorkBook = XLSX.utils.book_new();
       XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
- 
+
       /* save to file */
       XLSX.writeFile(wb, this.fileName);
       // this.displayedColumns = ['action', 'id', 'orderAmount', 'orderStatus', 'created_at'];
