@@ -8,7 +8,7 @@ import {merge} from 'rxjs';
 import {MatSort} from '@angular/material/sort';
 import {MatPaginator} from '@angular/material/paginator';
 import {ConfirmPopupComponent} from '../../../../shared/components/confirm-popup/confirm-popup.component';
-import {TableUpdateComponent} from './table-update/table-update.component';
+import {TableUpdateComponent} from '../../../../shared/components/table-update/table-update.component';
 
 @Component({
   selector: 'app-table-setup',

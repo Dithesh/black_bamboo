@@ -1,4 +1,4 @@
-<div class="container-fluid pt-20">
+<div *ngIf="userData.roles != 'Super Admin' && userData.roles != 'Company Admin'" class="container-fluid pt-20">
   <div class="row buttons_row">
     <div class="col-lg-3 col-md-6">
         <div class="clickBox no_outline" routerLink="/admin/order/update">

@@ -27,21 +27,38 @@ import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import { NumberFormatterDirective } from './services/number-formater.directive';
 import { FixedHeaderDirective } from './services/fixed-header.directive';
 import { DigitOnlyDirective } from './services/digit-only.directive';
-import {  RxReactiveFormsModule } from '@rxweb/reactive-form-validators'
+import {  RxReactiveFormsModule } from '@rxweb/reactive-form-validators';
 import {MatChipsModule} from '@angular/material/chips';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import { MatSelectFilterModule } from 'mat-select-filter';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import {MatTabsModule} from '@angular/material/tabs';
-import {MatDialogModule} from "@angular/material/dialog";
+import {MatDialogModule} from '@angular/material/dialog';
+import {TableUpdateComponent} from './components/table-update/table-update.component';
 
 @NgModule({
-  declarations: [DatexPipe, SnackbarComponent, ConfirmPopupComponent, NumberFormatterDirective, DigitOnlyDirective, FixedHeaderDirective],
+  declarations: [
+    DatexPipe,
+    SnackbarComponent,
+    ConfirmPopupComponent,
+    NumberFormatterDirective,
+    DigitOnlyDirective,
+    FixedHeaderDirective,
+    TableUpdateComponent
+  ],
+  entryComponents: [
+    TableUpdateComponent
+  ],
   imports: [
     CommonModule,
     MatButtonModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MatInputModule,
+    MatSelectModule,
+    MatSlideToggleModule
   ],
   exports: [
     MatGridListModule,
@@ -79,6 +96,7 @@ import {MatDialogModule} from "@angular/material/dialog";
     MatTabsModule,
     FixedHeaderDirective,
     MatDialogModule,
+    TableUpdateComponent
   ],
   providers: [
     {provide: ErrorStateMatcher, useClass: ShowOnDirtyErrorStateMatcher},

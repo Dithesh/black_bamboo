@@ -12,13 +12,13 @@
         <table class="table account_table" matSort>
             <thead>
                 <tr>
-                    <th class="ew-100" *ngIf=" this._serv.getPermission('products', 'full')">Action</th>
-                    <th mat-sort-header="productNumber" class="ew-200">Product No</th>
-                    <th mat-sort-header="productName">Product Name</th>
+                    <th class="ew-50" *ngIf=" this._serv.getPermission('products', 'full')"></th>
+                    <th mat-sort-header="productNumber" class="ew-50">No.</th>
+                    <th mat-sort-header="productName" class="ew-250">Product Name</th>
                     <th mat-sort-header="description">Description</th>
                     <th class="ew-250">Categories</th>
                     <th mat-sort-header="branch" class="ew-250">Branch</th>
-                    <th class="ew-150">Is Active?</th>
+                    <th class="ew-100">Active?</th>
                 </tr>
             </thead>
             <tbody>

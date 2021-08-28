@@ -333,17 +333,30 @@ mat-form-field{
 
 .number_input{
     width: 100px;
+
+    @media (max-width: 1400px) {
+      width: 75px;
+    }
     & .btn{
         background-color: $color-primary;
         color: #fff;
         border-color: $color-primary;
         font-size: 1.4rem;
         width: 30px;
+
+
+        @media (max-width: 1400px) {
+          width: 20px;
+          font-size: 11px;
+        }
     }
     & .form-control{
         border-color: $color-primary;
         font-size: 1.4rem;
         text-align: center;
+        @media (max-width: 1400px) {
+          font-size: 11px;
+        }
         &:focus{
             box-shadow: none;
         }
@@ -353,11 +366,15 @@ mat-form-field{
             font-size: 1.6rem;
             line-height: 1;
             width: 28px;
-            height: 25px;
             background-color: #f2f2f2;
             color: #2e358e;
             border-color: #aeb4fb;
             padding: 0;
+
+            @media (max-width: 1400px) {
+              width: 20px;
+              font-size: 13px;
+            }
         }
         & .form-control{
            height: 25px;
@@ -701,6 +718,12 @@ table {
 .mat-success {
     background-color: $color-success;
     color: #fff;
+
+    &.mat-stroked-button {
+      background-color: transparent;
+      color: $color-success;
+      border-color: rgba(0,0,0,.12);
+    }
 }
 
 .mat-icon-success {
@@ -910,6 +933,11 @@ label.mat-checkbox-layout {
                 &:last-child{
                     border-radius: 0px 10px 10px 0px;
                 }
+
+              @media (max-width: 1400px) {
+                font-size: 1.4rem;
+                padding: 1.2rem;
+              }
             }
         }
     }
@@ -927,6 +955,20 @@ label.mat-checkbox-layout {
                 }
                 &:last-child{
                     border-radius: 0px 10px 10px 0px;
+                }
+
+                @media (max-width: 1400px) {
+                  font-size: 1.2rem;
+                }
+
+                .mat-icon-button {
+                  width: 25px;
+                  height: 25px;
+                  line-height: 25px;
+
+                  & img {
+                    width: 18px;
+                  }
                 }
             }
             &.completedRow{
@@ -1111,13 +1153,23 @@ label.mat-checkbox-layout {
 
 .small_btn{
     height: 25px;
-    line-height: 23px !important;
-    font-size: 1.4rem;
-    mat-icon{
-        height: 20px;
-        width: 20px;
-        line-height: 18px;
-        font-size: 1.6rem;
+    line-height: 1 !important;
+    font-size: 1.2rem;
+    width: 100px;
+    display: flex;
+    align-items: center;
+
+    @media (max-width: 1400px) {
+      width: 75px;
+      font-size: 11px;
+    }
+
+    .icon_img {
+      width: 14px;
+      margin-top: -2px;
+      @media (max-width: 1400px) {
+        width: 12px;
+      }
     }
 }
 
@@ -1135,12 +1187,24 @@ label.mat-checkbox-layout {
     margin-right: 10px;
     background: #2e358e0d;
     padding: 5px 15px;
-    border-radius: 15px;
+    border-radius: 5px;
     color: #2e358e;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+
+    @media (max-width: 1400px) {
+      padding: 5px 10px;
+    }
     p{
         margin-bottom: 0px;
         font-weight: 500;
         font-size: 1.2rem;
+
+        @media (max-width: 1400px) {
+          font-size: 11px;
+        }
+
         span{
             font-weight: 400;
             display: inline-block;
@@ -1428,8 +1492,12 @@ label.mat-checkbox-layout {
     // padding: 20px 20px 45px;
     position: relative;
     width: 400px;
-    margin:5px auto 20px;
+    margin: 20px auto 20px;
     max-width: 100%;
+
+    @media (max-width: 1400px) {
+      margin: 5px auto 5px;
+    }
     & .billing_strip {
         display: flex;
         justify-content: space-between;
@@ -1437,17 +1505,30 @@ label.mat-checkbox-layout {
         flex-wrap: nowrap;
         margin-bottom: 10px;
 
+        @media (max-width: 1400px) {
+          margin-bottom: 5px;
+        }
+
         & .title {
             font-size: 16px;
             font-weight: 500;
             margin-bottom: 0;
+
+            @media (max-width: 1400px) {
+              font-size: 12px;
+            }
         }
         & .main_title {
-            font-size: 22px;
+            font-size: 18px;
             font-weight: 600;
-            margin-bottom: 15;
+            margin-bottom: 15px;
             text-transform: uppercase;
             color: #6c757d;
+
+            @media (max-width: 1400px) {
+              margin-bottom: 10px;
+              font-size: 14px;
+            }
         }
 
         & .value_section {
@@ -1456,6 +1537,9 @@ label.mat-checkbox-layout {
             font-weight: 500;
             margin-bottom: 0;
             text-align: right;
+            @media (max-width: 1400px) {
+              font-size: 12px;
+            }
         }
         &.totalAmountText{
             .title,
@@ -1463,6 +1547,11 @@ label.mat-checkbox-layout {
                 // font-size: ;
                 font-size: 17px;
                 font-weight: 600;
+
+                @media (max-width: 1400px) {
+                  font-size: 14px;
+                  font-weight: 600;
+                }
             }
         }
     }
@@ -1488,6 +1577,11 @@ label.mat-checkbox-layout {
         margin-right: 15px;
         overflow: hidden;
 
+        @media (max-width: 1400px) {
+          width: 45px;
+          height: 45px;
+        }
+
         & img {
             width: 100%;
             height: 100%;
@@ -1511,6 +1605,11 @@ label.mat-checkbox-layout {
         & .order-details {
             padding: 15px;
 
+
+            @media (max-width: 1400px) {
+              padding: 10px;
+            }
+
             & p.product_name {
                 margin: 0;
                 font-size: 20px;
@@ -1519,6 +1618,13 @@ label.mat-checkbox-layout {
                 margin-bottom: 10px;
                 display: flex;
                 align-items: center;
+
+                @media (max-width: 1400px) {
+                  font-size: 12px;
+                  line-height: 14px;
+                  margin-bottom: 5px;
+                }
+
                 & .order_item_card_strip {
                     padding: 3px 7px;
                     background-color: rgba(255, 115, 0, 1);
@@ -1537,12 +1643,74 @@ label.mat-checkbox-layout {
                 line-height: 1.3;
                 color: #8e8e8e;
 
+                @media (max-width: 1400px) {
+                  font-size: 12px;
+                  &:first-child {
+
+                    margin-bottom: 10px;
+                  }
+                }
+
+                small {
+                  margin-right: 5px;
+                }
+
             }
         }
 
         & .action_menu {
             padding: 15px 15px 15px 0px;
             align-self: flex-end;
+
+            @media (max-width: 1400px) {
+              padding: 10px 10px 10px 0px;
+            }
+
+            .item_track_wrapper {
+              margin: 15px -3px 0;
+
+              @media (max-width: 1400px) {
+                margin-top: 10px;
+              }
+              & .item_track {
+                font-size: 12px;
+                line-height: 1;
+                padding: 3px 5px;
+                border-radius: 10px;
+                text-align: center;
+                min-width: 30px;
+                margin: 0 3px;
+                cursor: pointer;
+
+
+                @media (max-width: 1400px) {
+                  font-size: 10px;
+                }
+
+                &.served {
+                  background-color: rgba($color-success, 0.1);
+                  border: 1px solid rgba($color-success, 0.4);
+                  color: $color-success;
+                }
+                &.kitchen {
+                  background-color: rgba($color-accent, 0.1);
+                  border: 1px solid rgba($color-accent, 0.4);
+                  color: $color-accent;
+                }
+                &.ready {
+                  background-color: rgba($color-primary, 0.1);
+                  border: 1px solid rgba($color-primary, 0.4);
+                  color: $color-primary;
+                }
+                &.rejected {
+                  background-color: rgba($color-warning, 0.1);
+                  border: 1px solid rgba($color-warning, 0.4);
+                  color: $color-warning;
+                }
+
+              }
+            }
+
         }
 
 
@@ -1563,6 +1731,13 @@ label.mat-checkbox-layout {
     letter-spacing: 0.4px;
     box-shadow: 0 2 10px 2px rgba(139, 175, 110, 0.3);
 
+
+    @media (max-width: 1400px) {
+      padding: 7px 10px;
+      font-size: 12px;
+      line-height: 1;
+    }
+
     &.red {
         background-color: rgb(236, 197, 191);
     }
@@ -1579,7 +1754,7 @@ label.mat-checkbox-layout {
 }
 .left_bar{
     width: 350px;
-    @media(max-width:1380px){
+    @media(max-width:1400px){
         width: 250px;
     }
     // border-right: 1px solid #ddd;
@@ -1589,6 +1764,10 @@ label.mat-checkbox-layout {
             margin-bottom: 5px;
             font-size: 18px;
             color: $color-primary;
+
+            @media(max-width:1400px){
+              font-size: 16px;
+            }
         }
     }
     .left_title{
@@ -1596,14 +1775,16 @@ label.mat-checkbox-layout {
         font-size: 20px;
         font-weight: 500;
         background: #f2f2f2;
+        line-height: 1;
         margin-bottom: 0px;
-        @media (max-width:1380px) {
-            font-size: 16px;
+        @media (max-width:1400px) {
+            font-size: 14px;
             line-height: 1;
         }
     }
     .category_list{
         max-height: calc(100vh - 340px);
+        min-height: 200px;
         overflow-y: auto;
         li{
             position: relative;
@@ -1633,7 +1814,7 @@ label.mat-checkbox-layout {
                 -moz-transition: .3s ease-in-out;
                 -ms-transition: .3s ease-in-out;
                 transition: .3s ease-in-out;
-                @media(max-width:1380px){
+                @media(max-width:1400px){
                     border-width: 5px 0px 5px 10px;
                 }
             }
@@ -1647,11 +1828,21 @@ label.mat-checkbox-layout {
                 background-position: center;
                 background-repeat: no-repeat;
                 background-size: cover;
+
+                @media (max-width:1400px) {
+                  max-width: 25px;
+                  height: 25px;
+                }
+
             }
             span{
                 font-size: 14px;
                 font-weight: 500;
                 color: rgba(44, 54, 145, 0.76);
+
+                @media (max-width:1400px) {
+                    font-size: 12px;
+                }
             }
             &:hover{
                 padding-left: 20px;
@@ -1686,11 +1877,23 @@ label.mat-checkbox-layout {
     padding: 15px;
     // border-bottom: 1px solid #ddd;
 
+
+
     &.completedStatus {
         background-color: rgba(179, 216, 105, 0.42);
     }
     &.cancelledStatus {
         background-color: rgba(#fad7d0, 0.42);
+    }
+
+    @media (max-width: 1400px) {
+      padding: 10px;
+      .mat-chip.mat-standard-chip {
+        min-height: 25px;
+        padding: 7px 10px;
+        font-size: 12px;
+        line-height: 1;
+      }
     }
 }
 
@@ -1701,14 +1904,15 @@ label.mat-checkbox-layout {
         .productHeading{
             margin-bottom: 0px;
             font-size: 20px;
-            @media(max-width:1380px){
-                font-size: 16px;
+            @media(max-width:1400px){
+                font-size: 14px;
                 margin-right: 15px;
             }
         }
         .mat-form-field{
-            @media(max-width:1380px){
-                margin-left: 0px !important;
+            width: 250px;
+            @media(max-width:1400px){
+                width: 150px;
             }
         }
     }
@@ -1722,18 +1926,22 @@ label.mat-checkbox-layout {
         // margin: 0px -15px;
         li{
             &.itemTitle{
-                padding: 5px 15px;
-                font-size: 14px;
+                padding: 10px 15px;
+                font-size: 20px;
                 margin: 0px -15px;
                 font-weight: 500;
                 color: #000;
                 background-color: #f2f2f2;
+
+                @media(max-width:1400px){
+                  padding: 5px 15px;
+                  font-size: 14px;
+                }
             }
             &.product_items{
                 position: relative;
                 margin: 10px 0px;
                 & > label{
-                    display: block;
                     margin-bottom: 0px;
                     display: flex;
                     width: 100%;
@@ -1748,6 +1956,10 @@ label.mat-checkbox-layout {
                     -moz-transition: .3s ease-in-out;
                     -ms-transition: .3s ease-in-out;
                     transition: .3s ease-in-out;
+
+                    @media(max-width:1400px){
+                      min-height: 40px;
+                    }
                     &:hover{
                         background-color: #f1f2f8;
                     }
@@ -1760,6 +1972,11 @@ label.mat-checkbox-layout {
                         background-position: center;
                         background-repeat: no-repeat;
                         background-size: cover;
+
+                        @media(max-width:1400px){
+                            max-width: 35px;
+                            height: 35px;
+                        }
                     }
                     .textbox{
                         -ms-flex-preferred-size: 0;
@@ -1772,9 +1989,18 @@ label.mat-checkbox-layout {
                             margin-bottom: 5px;
                             font-weight: 500;
                             font-size: 20px;
-                            @media(max-width:1380px){
-                                font-size: 18px;
+                            line-height: 14px;
+                            @media(max-width:1400px){
+                                font-size: 12px;
                             }
+                        }
+
+                        span {
+                          font-size: 16px;
+                          @media(max-width:1400px){
+                            font-size: 12px;
+                            line-height: 14px;
+                          }
                         }
                     }
                     .buttonBox{
@@ -1782,6 +2008,19 @@ label.mat-checkbox-layout {
                         flex: 0 0 auto;
                         width: auto;
                         max-width: 100%;
+
+                        .addShowBtn {
+
+                          @media (max-width: 1400px) {
+                            width: 30px;
+                            height: 30px;
+                            line-height: 30px;
+
+                            & img {
+                              width: 18px;
+                            }
+                          }
+                        }
                     }
                     .input_add_box{
                         display: none;
@@ -1807,6 +2046,11 @@ label.mat-checkbox-layout {
 
 }
 .right_details_box{
+    width: 600px;
+
+    @media (max-width: 1400px) {
+      width: 430px;
+    }
     .tab_inner_body{
         padding: 15px;
         height: calc(100vh - 435px);
@@ -1823,9 +2067,8 @@ label.mat-checkbox-layout {
         color: #505050;
         white-space: nowrap;
     }
-    .tab_footer{
-        .ammount_box{
-            padding: 5px 15px;
+    .ammount_box{
+            padding: 5px 0px;
             .orderAmuntChip{
                 font-size: 1.4rem;
                 padding: 5px 10px 5px 30px;
@@ -1862,8 +2105,7 @@ label.mat-checkbox-layout {
             //         color: #adadad;
             //     }
             // }
-        }
-    }
+      }
 }
 .remaning_box{
     background-color: #e9eaf3;
@@ -1888,9 +2130,9 @@ label.mat-checkbox-layout {
     .mat-tab-labels{
         .mat-tab-label{
             min-width: 80px;
-            @media(max-width:1380px){
+            @media(max-width:1400px){
                 font-size: 12px;
-                padding: 0px 15px;
+                padding: 0px 10px;
             }
             &.mat-tab-label-active{
                 background-color: rgb(234, 234, 243);
@@ -2030,4 +2272,9 @@ label.mat-checkbox-layout {
             }
         }
     }
+}
+
+//material overrided
+.mat-button.mat-primary, .mat-icon-button.mat-primary, .mat-stroked-button.mat-primary {
+  color: $color-primary;
 }

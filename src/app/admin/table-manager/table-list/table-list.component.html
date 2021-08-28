@@ -1,0 +1,81 @@
+
+<div class="search_outerWrapper text-right">
+    <form *ngIf="userData.roles === 'Super Admin'">
+        <mat-form-field appearance="outline" class="ew-250">
+            <mat-label>Company</mat-label>
+            <mat-select [formControl]="filterForm.get('companyFilter')" (selectionChange)="getTableInfo()">
+                <mat-option *ngFor="let item of companyList" [value]="item.id">{{ item.companyName }}</mat-option>
+            </mat-select>
+        </mat-form-field>
+    </form>
+</div>
+
+<div [formGroup]="form">
+  <div formArrayName="branches">
+    <ng-container *ngFor="let branch of branches.controls; let bi = index" [formGroupName]="bi">
+      <h2 class="header_title mb-0 d-flex justify-content-between">
+        <span>{{ branch.get('branch_name').value }}</span>
+
+        <button mat-stroked-button type="button" (click)="updateTable(branch.get('id').value)">Add Table</button>
+      </h2>
+      <div class="table_selectWrapper mt-0 mb-15" formArrayName="tables">
+        <ng-container *ngFor="let item of branch.get('tables')['controls'];let ti=index;">
+
+            <div class="table_col" [class.reserved]="item.get('isReserved').value" [formGroupName]="ti">
+                <div class="row ew-130 mx-auto position-relative h-100 no-gutters">
+                    <span class="table_circle">
+                        {{ item.get('tableId').value }}
+                        <ng-container *ngIf="item.get('runningOrderIds').value.length > 1">
+                            <button class="ordersMenuBtn" mat-button [matMenuTriggerFor]="menu">{{item.get('runningOrderIds').value.length}}</button>
+                                <mat-menu #menu="matMenu">
+                                    <ng-container *ngFor="let order of item.get('runningOrderIds').value">
+                                        <button mat-menu-item (click)="gotoOrder(order)">{{order}}</button>
+                                    </ng-container>
+                                </mat-menu>
+                        </ng-container>
+                        <ng-container *ngIf="item.get('runningOrderIds').value.length == 1">
+                            <button class="ordersMenuBtn" mat-button (click)="gotoOrder(item.get('runningOrderIds').value[0])">1</button>
+                        </ng-container>
+                    </span>
+                    <ng-container formArrayName="chairs">
+                        <!-- <div class="table_innerBox col-auto order-1" *ngIf="item.get('chairs')['controls'].length > 0">
+                            <div class="table_seat_checkBox vertical" formGroupName="0">
+                                <input type="checkbox" formControlName="isSelected" [id]="0+'chair'+ti">
+                                <label [for]="0+'chair'+ti" [class.pointer-none]="item.get('chairs')['controls'][0].get('permission').value == 'blocked'"></label>
+                            </div>
+                        </div>
+                        <div class="table_innerBox col-auto order-3" *ngIf="item.get('chairs')['controls'].length > 1">
+                            <div class="table_seat_checkBox vertical" formGroupName="1">
+                                <input type="checkbox" formControlName="isSelected" [id]="1+'chair'+ti">
+                                <label [for]="1+'chair'+ti" [class.pointer-none]="item.get('chairs')['controls'][1].get('permission').value == 'blocked'"></label>
+                            </div>
+                        </div> -->
+                        <div class="table_innerBox col order-2">
+                            <div class="d-flex mx-1 w-100">
+                                <ng-container *ngFor="let chair of item.get('chairs')['controls'];let ci = index;">
+                                    <ng-container *ngIf="ci%2 == 0">
+                                        <div class="radio_outer px-1">
+                                            <div class="table_seat_checkBox horizontal" [formGroupName]="ci">
+                                                <input type="checkbox" [id]="ci+'chair'+ti" formControlName="isSelected">
+                                                <label [for]="ci+'chair'+ti" [class.pointer-none]="item.get('chairs')['controls'][ci].get('permission').value == 'blocked'"></label>
+                                            </div>
+                                            <ng-container *ngIf="item.get('chairs')['controls'].length > (ci+1)">
+                                                <div class="table_seat_checkBox horizontal" [formGroupName]="ci + 1">
+                                                    <input type="checkbox" [id]="ci+1+'chair'+ti" formControlName="isSelected">
+                                                    <label [for]="ci+1+'chair'+ti" [class.pointer-none]="item.get('chairs')['controls'][ci+1].get('permission').value == 'blocked'"></label>
+                                                </div>
+                                            </ng-container>
+                                        </div>
+                                    </ng-container>
+                                </ng-container>
+                            </div>
+                        </div>
+                    </ng-container>
+                </div>
+            </div>
+        </ng-container>
+    </div>
+    </ng-container>
+  </div>
+
+</div>

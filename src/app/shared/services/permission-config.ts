@@ -90,8 +90,8 @@ export const permissions = {
         Bearer : 'denied'
     },
   'order-tables': {
-        'Super Admin': 'denied',
-        'Company Admin': 'denied',
+        'Super Admin': 'full',
+        'Company Admin': 'full',
         'Branch Admin' : 'full',
         'Branch Accountant' : 'denied',
         'Branch Manager' : 'full',

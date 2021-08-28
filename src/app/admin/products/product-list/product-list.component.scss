@@ -5,8 +5,15 @@
   color: #fff;
   font-size: 14px;
   margin: 2px;
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   max-width: 100%;
   overflow: hidden;
   text-overflow: ellipsis;
+    line-height: 1;
+
+  @media (max-width: 1400px) {
+    font-size: 10px;
+  }
 }

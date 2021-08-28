@@ -83,7 +83,7 @@ export class NewOrderComponent implements OnInit, OnDestroy {
       paymentMethod: [''],
       tables: this.fb.array([]),
       items: this.fb.array([]),
-    })
+    });
   }
 
 
@@ -117,29 +117,29 @@ export class NewOrderComponent implements OnInit, OnDestroy {
   }
 
   getCompanyDetails(id) {
-    this._serv.endpoint = "order-manager/company/" + id;
+    this._serv.endpoint = 'order-manager/company/' + id;
     this._serv.get().subscribe((data: any) => {
       this.companyDetails = data;
-    })
+    });
   }
 
 
   _filterProductList(value) {
-    value = value ? value : "";
+    value = value ? value : '';
     value = value.toLowerCase();
     // alert(1)
     console.log(this.productList, value);
-    let productList = [...this.productList]
+    const productList = [...this.productList];
     // return [];
-    let list = []
+    const list = [];
     productList.forEach(x => {
-      let item = { ...x };
+      const item = { ...x };
       item.products = item.products.filter(y =>
       (
         y.productName.toLowerCase().includes(value)
       ));
       list.push(item);
-    })
+    });
     console.log(list);
     return list;
   }
@@ -154,15 +154,15 @@ export class NewOrderComponent implements OnInit, OnDestroy {
     }
     this.items.controls.forEach((control: FormGroup) => {
       item.advancedPriceId = this._serv.notNull(item.advancedPriceId) ? item.advancedPriceId : null;
-      let controlAdvancedPrice = this._serv.notNull(control.get('advancedPriceId').value) ? control.get('advancedPriceId').value : "";
-      let existingItemPrice = this._serv.notNull(item.advancedPriceId) ? item.advancedPriceId : "";
+      const controlAdvancedPrice = this._serv.notNull(control.get('advancedPriceId').value) ? control.get('advancedPriceId').value : '';
+      const existingItemPrice = this._serv.notNull(item.advancedPriceId) ? item.advancedPriceId : '';
 
       if (!control.get('deletedFlag').value && control.get('productId').value == item.id && control.get('isParcel').value == item.isParcel && controlAdvancedPrice == existingItemPrice) {
-        quantity += parseInt(control.get('quantity').value)
+        quantity += parseInt(control.get('quantity').value);
         form = control;
         isNew = false;
       }
-    })
+    });
     form.patchValue({
       productId: item.id,
       productName: item.productName,
@@ -171,9 +171,9 @@ export class NewOrderComponent implements OnInit, OnDestroy {
       price: item.price,
       advancedPriceId: item.advancedPriceId,
       advancedPriceTitle: item.advancedPriceTitle,
-      quantity: quantity,
+      quantity,
       packagingCharges: (item.isParcel) ? item.packagingCharges : '0'
-    })
+    });
     if (isNew) {
       this.items.push(form);
     }
@@ -206,7 +206,7 @@ export class NewOrderComponent implements OnInit, OnDestroy {
       featuredImage: [''],
       orderGroup: [''],
       deletedFlag: [false]
-    })
+    });
   }
 
   get items() {
@@ -214,11 +214,11 @@ export class NewOrderComponent implements OnInit, OnDestroy {
   }
 
   getAllProducts() {
-    this._serv.endpoint = "order-manager/product/category-based-product";
+    this._serv.endpoint = 'order-manager/product/category-based-product';
     this._serv.get().subscribe(response => {
       this.productList = (response as any[]).map(item => {
         item.products = item.products.map(product => {
-          let advancedPriceId = "", advancedPriceTitle = "", price = product.price;
+          let advancedPriceId = '', advancedPriceTitle = '', price = product.price;
 
           if (product.isAdvancedPricing && product.advanced_pricing.length > 0) {
             advancedPriceId = product.advanced_pricing[0].id;
@@ -229,11 +229,11 @@ export class NewOrderComponent implements OnInit, OnDestroy {
             ...product,
             isParcel: false,
             quantity: 1,
-            price: price,
-            advancedPriceId: advancedPriceId,
-            advancedPriceTitle: advancedPriceTitle,
-          }
-        })
+            price,
+            advancedPriceId,
+            advancedPriceTitle,
+          };
+        });
         return item;
       });
       // this.filteredProductList = of(this.productList);
@@ -244,7 +244,7 @@ export class NewOrderComponent implements OnInit, OnDestroy {
       );
       console.log(this.productList);
 
-    })
+    });
   }
 
   handleProductPriceChange(item) {
@@ -253,30 +253,30 @@ export class NewOrderComponent implements OnInit, OnDestroy {
         item.price = elem.price;
         item.advancedPriceTitle = elem.title;
       }
-    })
+    });
   }
 
   getOrderItemTotal(orderItem) {
-    let itemValue = orderItem.value;
-    let price = (itemValue.price) ? parseFloat(itemValue.price) : 0;
-    let quantity = (itemValue.quantity) ? parseFloat(itemValue.quantity) : 0;
-    let packagingCharges = (itemValue.packagingCharges && itemValue.isParcel) ? parseFloat(itemValue.packagingCharges) : 0;
+    const itemValue = orderItem.value;
+    const price = (itemValue.price) ? parseFloat(itemValue.price) : 0;
+    const quantity = (itemValue.quantity) ? parseFloat(itemValue.quantity) : 0;
+    const packagingCharges = (itemValue.packagingCharges && itemValue.isParcel) ? parseFloat(itemValue.packagingCharges) : 0;
     orderItem.get('totalPrice').setValue((price * quantity) + (packagingCharges * quantity));
     this.handleFinalPricing();
   }
 
-  handleFinalPricing(shouldBeDirty=false) {
-    if(shouldBeDirty)this.isDirty=true;
-    let orderItems = this.items.value;
+  handleFinalPricing(shouldBeDirty= false) {
+    if (shouldBeDirty) {this.isDirty = true; }
+    const orderItems = this.items.value;
     let totalPrice = 0;
     let grandTotal = 0;
     orderItems.forEach(item => {
       if (!item.deletedFlag) {
         totalPrice = totalPrice + parseFloat(item.totalPrice);
       }
-    })
+    });
     grandTotal += totalPrice;
-    let charge = this.form.get('deliverCharge').value;
+    const charge = this.form.get('deliverCharge').value;
     if (charge != null && charge != '' && charge != undefined && charge > 0) {
       grandTotal += parseFloat(charge);
     }
@@ -292,39 +292,39 @@ export class NewOrderComponent implements OnInit, OnDestroy {
     }
     grandTotal += tax;
 
-    let discountValue = parseFloat(this.form.get('discountValue').value);
+    const discountValue = parseFloat(this.form.get('discountValue').value);
     if (!isNaN(discountValue) && discountValue > 0) {
       grandTotal = grandTotal - discountValue;
     }
 
-    let [integer, decimal] = grandTotal.toString().split('.');
+    const [integer, decimal] = grandTotal.toString().split('.');
     grandTotal = parseInt(integer);
-    let roundOfAmount = (decimal)?parseFloat('0.'+decimal):0;
+    const roundOfAmount = (decimal) ? parseFloat('0.' + decimal) : 0;
     // console.log(math.div(grandTotal, ));
 
 
-    math
+    math;
 
     this.form.patchValue({
       orderItemTotal: totalPrice,
       orderAmount: grandTotal,
       packingCharge: '',
-      roundOfAmount: roundOfAmount,
-      cgst: cgst,
-      sgst: sgst,
+      roundOfAmount,
+      cgst,
+      sgst,
       igst: '',
-    })
+    });
   }
 
 
   serveOrderItem() {
-    let dialogRef = this.dialog.open(ServeOrderItemComponent, {
+    const dialogRef = this.dialog.open(ServeOrderItemComponent, {
       width: '500px',
       autoFocus: false,
       data: {
         form: this.items
       }
-    })
+    });
   }
 
 
@@ -335,30 +335,30 @@ export class NewOrderComponent implements OnInit, OnDestroy {
   }
 
   getTableInfo() {
-    this._serv.endpoint = "order-manager/tables?orderId=" + this.orderId;
+    this._serv.endpoint = 'order-manager/tables?orderId=' + this.orderId;
     this._serv.get().subscribe(response => {
       this.tableList = response as any[];
       this.tables.controls = [];
       if (Array.isArray(this.tableList)) {
         this.tableList.forEach(t => {
-          let chairs = [];
-          let selectedChairs = t.selectedChairs.split(",").filter(x => x != "");
+          const chairs = [];
+          const selectedChairs = t.selectedChairs.split(',').filter(x => x != '');
 
-          let orderSelectedChairs = t.orderSelectedChairs.split(",").filter(x => x != "");
+          const orderSelectedChairs = t.orderSelectedChairs.split(',').filter(x => x != '');
           t.chairs.forEach(elem => {
-            if (elem != "") {
-              let permission = "full";
-              if (selectedChairs.indexOf(elem.toString()) >= 0) permission = "blocked";
-              if (orderSelectedChairs.indexOf(elem.toString()) >= 0) permission = "full";
-              let group = this.fb.group({
+            if (elem != '') {
+              let permission = 'full';
+              if (selectedChairs.indexOf(elem.toString()) >= 0) { permission = 'blocked'; }
+              if (orderSelectedChairs.indexOf(elem.toString()) >= 0) { permission = 'full'; }
+              const group = this.fb.group({
                 chairId: [elem],
                 permission: [permission],
                 isSelected: [(permission == 'full' && orderSelectedChairs.indexOf(elem.toString()) < 0) ? false : true]
               });
-              if (this.blockForms) group.disable();
-              chairs.push(group)
+              if (this.blockForms) { group.disable(); }
+              chairs.push(group);
             }
-          })
+          });
 
           this.tables.push(this.fb.group({
             id: [t.id],
@@ -366,19 +366,19 @@ export class NewOrderComponent implements OnInit, OnDestroy {
             noOfChair: [t.noOfChair],
             isReserved: [t.isReserved],
             chairs: this.fb.array(chairs)
-          }))
+          }));
 
-        })
+        });
       }
-    })
+    });
   }
 
 
 
   getOrderDetail() {
 
-    this.isDirty=false;
-    this._serv.endpoint = "order-manager/order/" + this.orderId;
+    this.isDirty = false;
+    this._serv.endpoint = 'order-manager/order/' + this.orderId;
     this._serv.get().subscribe((response: any) => {
       this.orderData = response;
 
@@ -389,8 +389,8 @@ export class NewOrderComponent implements OnInit, OnDestroy {
         branch_id: response.branch_id,
         relatedInfo: response.relatedInfo,
         customerAddress: response.customerAddress,
-        customerName: (response.customer) ? response.customer.customerName : "",
-        mobileNumber: (response.customer) ? response.customer.mobileNumber : "",
+        customerName: (response.customer) ? response.customer.customerName : '',
+        mobileNumber: (response.customer) ? response.customer.mobileNumber : '',
         cgst: response.cgst,
         sgst: response.sgst,
         orderItemTotal: response.orderItemTotal,
@@ -419,8 +419,8 @@ export class NewOrderComponent implements OnInit, OnDestroy {
       this.items.reset();
       response.order_items.forEach(item => {
 
-        let orderItem = this.addOrderItem();
-        if (this.blockForms == true) orderItem.disable();
+        const orderItem = this.addOrderItem();
+        if (this.blockForms == true) { orderItem.disable(); }
         orderItem.patchValue({
           id: item.id,
           productId: item.product.id,
@@ -445,10 +445,10 @@ export class NewOrderComponent implements OnInit, OnDestroy {
 
         this.items.push(orderItem);
         this.getOrderItemTotal(orderItem);
-      })
+      });
       this.getBranchDetail(response.branch_id);
       this.handleFinalPricing();
-    })
+    });
   }
 
   handleOrderQuantityInput(item, type) {
@@ -466,51 +466,51 @@ export class NewOrderComponent implements OnInit, OnDestroy {
   }
 
   handleNumberControl(formControl, type, index) {
-    if (this.blockForms) return;
+    if (this.blockForms) { return; }
     let value = formControl.get('quantity').value;
-    let served = parseInt(formControl.get('servedItems').value);
-    if (isNaN(value) || value == null || value == undefined || value == "") {
+    const served = parseInt(formControl.get('servedItems').value);
+    if (isNaN(value) || value == null || value == undefined || value == '') {
       value = (served > 1) ? served : 1;
-    };
+    }
     if (type == 'next') {
       value++;
     } else if (type == 'prev' && value > 0 && served < value) {
       value--;
     }
     if (value == 0) {
-      let dialogRef = this.dialog.open(ConfirmPopupComponent);
+      const dialogRef = this.dialog.open(ConfirmPopupComponent);
       dialogRef.afterClosed().subscribe(data => {
         if (data) {
-          this.isDirty=true;
+          this.isDirty = true;
           if (this._serv.notNull(formControl.get('id').value)) {
             formControl.get('deletedFlag').setValue(true);
           } else {
             this.items.removeAt(index);
           }
-          this.getOrderItemTotal(formControl)
+          this.getOrderItemTotal(formControl);
         } else {
-          this.isDirty=true;
-          formControl.get('quantity').setValue((served > 1) ? served : 1, { emitEvent: false })
-          this.getOrderItemTotal(formControl)
+          this.isDirty = true;
+          formControl.get('quantity').setValue((served > 1) ? served : 1, { emitEvent: false });
+          this.getOrderItemTotal(formControl);
         }
-      })
+      });
     } else {
       formControl.get('quantity').setValue(value, { emitEvent: true });
-      this.isDirty=true;
-      this.getOrderItemTotal(formControl)
+      this.isDirty = true;
+      this.getOrderItemTotal(formControl);
     }
   }
 
-  saveOrder(type = "confirm") {
-    let orderData = { ...this.form.value };
+  saveOrder(type = 'confirm') {
+    const orderData = { ...this.form.value };
 
     if (this.selectedOrderType.tableRequired) {
       orderData.tables = orderData.tables.map((table: any) => {
         return {
           ...table,
           chairs: table.chairs.filter(chair => (chair.isSelected && chair.permission == 'full')).map(chair => chair.chairId).join(',')
-        }
-      }).filter(table => table.chairs != "");
+        };
+      }).filter(table => table.chairs != '');
     } else {
       orderData.tables = [];
     }
@@ -520,17 +520,17 @@ export class NewOrderComponent implements OnInit, OnDestroy {
       this._serv.showMessage('Please add items.', 'error');
       return;
     }
-    let message = "";
+    let message = '';
     if (type == 'confirm') {
-      orderData.orderStatus = "new";
+      orderData.orderStatus = 'new';
       this.updateOrder(orderData);
       return;
-    } else if (type == "complete") {
-      orderData.orderStatus = "completed";
-      message = "Data will be freezed after completion. Are you sure want to proceed?";
+    } else if (type == 'complete') {
+      orderData.orderStatus = 'completed';
+      message = 'Data will be freezed after completion. Are you sure want to proceed?';
     } else if (type == 'cancel') {
-      orderData.orderStatus = "cancelled";
-      message = "Data will be freezed after cancelling. Are you sure want to proceed?";
+      orderData.orderStatus = 'cancelled';
+      message = 'Data will be freezed after cancelling. Are you sure want to proceed?';
     }
 
     this.takeConfirmation(orderData, message);
@@ -538,32 +538,32 @@ export class NewOrderComponent implements OnInit, OnDestroy {
   }
 
   takeConfirmation(orderData, message) {
-    let dialogRef = this.dialog.open(ConfirmPopupComponent, {
+    const dialogRef = this.dialog.open(ConfirmPopupComponent, {
       data: {
-        message: message
+        message
       }
     });
     dialogRef.afterClosed().subscribe(data => {
       if (data) {
         this.updateOrder(orderData);
       }
-    })
+    });
   }
 
   updateOrder(orderData) {
-    if (this.orderProcessing) return;
+    if (this.orderProcessing) { return; }
     this.orderProcessing = true;
-    this._serv.endpoint = "order-manager/order";
+    this._serv.endpoint = 'order-manager/order';
     this._serv.post(orderData).subscribe((response: any) => {
-      this.isDirty=false;
-      this._serv.showMessage("Order saved successfully", 'success');
+      this.isDirty = false;
+      this._serv.showMessage('Order saved successfully', 'success');
       this.orderProcessing = false;
       // if(orderData.orderStatus == "completed") {
       //   this.printOrder(orderData);
       // }
       if (this._serv.notNull(this.orderId)) {
         this.getOrderDetail();
-        if (orderData.orderStatus == "completed") {
+        if (orderData.orderStatus == 'completed') {
           this.printOrder(orderData);
         }
       } else {
@@ -574,9 +574,9 @@ export class NewOrderComponent implements OnInit, OnDestroy {
       // this.router.navigateByUrl('/admin/order/update/'+response.id);
       // }
     }, ({ error }) => {
-      this._serv.showMessage(error['msg'], 'error');
+      this._serv.showMessage(error.msg, 'error');
       this.orderProcessing = false;
-    })
+    });
   }
 
   printOrder(orderData = null) {
@@ -588,8 +588,8 @@ export class NewOrderComponent implements OnInit, OnDestroy {
           return {
             ...table,
             chairs: table.chairs.filter(chair => (chair.isSelected && chair.permission == 'full')).map(chair => chair.chairId).join(',')
-          }
-        }).filter(table => table.chairs != "");
+          };
+        }).filter(table => table.chairs != '');
       } else {
         orderData.tables = [];
       }
@@ -601,12 +601,12 @@ export class NewOrderComponent implements OnInit, OnDestroy {
     this.dialog.open(PrintOrderInvoiceComponent, {
       data: {
         savedOrderData: this.orderData,
-        orderData: orderData,
+        orderData,
         branchData: this.branchDetail,
         companyData: this.companyDetails,
         userData: this.userData,
       }
-    })
+    });
   }
 
   printAddress(orderData = null) {
@@ -618,8 +618,8 @@ export class NewOrderComponent implements OnInit, OnDestroy {
         return {
           ...table,
           chairs: table.chairs.filter(chair => (chair.isSelected && chair.permission == 'full')).map(chair => chair.chairId).join(',')
-        }
-      }).filter(table => table.chairs != "");
+        };
+      }).filter(table => table.chairs != '');
     } else {
       orderData.tables = [];
     }
@@ -628,25 +628,25 @@ export class NewOrderComponent implements OnInit, OnDestroy {
       return;
     }
     orderData.items = orderData.items.filter(item => item.kot_pending > 0);
-    if(orderData.items.length <= 0)return;
+    if (orderData.items.length <= 0) {return; }
 
 
 
-    let ref = this.dialog.open(PrintKotComponent, {
+    const ref = this.dialog.open(PrintKotComponent, {
       data: {
         savedOrderData: this.orderData,
-        orderData: orderData,
+        orderData,
         branchData: this.branchDetail,
         companyData: this.companyDetails,
         userData: this.userData,
       }
-    })
+    });
     ref.afterClosed().subscribe(response => {
-      this._serv.endpoint = "order-manager/order/kot-print"
+      this._serv.endpoint = 'order-manager/order/kot-print';
       this._serv.post({items: orderData.items}).subscribe(response => {
         this.getOrderDetail();
-      })
-    })
+      });
+    });
 
   }
 
@@ -657,7 +657,7 @@ export class NewOrderComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this._serv.endpoint = "order-manager/branch/" + branch_id;
+    this._serv.endpoint = 'order-manager/branch/' + branch_id;
     this._serv.get().subscribe((response: any) => {
       this.branchDetail = response;
 
@@ -676,24 +676,24 @@ export class NewOrderComponent implements OnInit, OnDestroy {
       if (!this._serv.notNull(this.orderId) && this.orderTypeList.filter.length > 0) {
         this.changeOrderType(this.orderTypeList[0].id);
       } else {
-        this.changeOrderType(this.form.get('orderType').value)
+        this.changeOrderType(this.form.get('orderType').value);
       }
-    })
+    });
   }
 
   changeOrderType(orderTypeId, from = 'funtion') {
-    if (this.blockForms && from == 'button') return;
+    if (this.blockForms && from == 'button') { return; }
     if (from == 'button' && this.items.controls.length > 0) {
-      let dialogRef = this.dialog.open(ConfirmPopupComponent, {
+      const dialogRef = this.dialog.open(ConfirmPopupComponent, {
         data: {
-          message: "Changing order type will clear the items. Will you confirm?"
+          message: 'Changing order type will clear the items. Will you confirm?'
         }
       });
       dialogRef.afterClosed().subscribe(data => {
         if (data) {
           this.processOrderTypeChange(orderTypeId, true);
         }
-      })
+      });
     } else {
       this.processOrderTypeChange(orderTypeId);
     }
@@ -704,7 +704,7 @@ export class NewOrderComponent implements OnInit, OnDestroy {
     this.orderTypeList.forEach(elem => {
       if (elem.id == orderTypeId) {
         this.selectedOrderType = elem;
-        this.form.get('orderType').setValue(orderTypeId)
+        this.form.get('orderType').setValue(orderTypeId);
         if (isClearRequired) {
           this.items.controls.forEach((elem, index) => {
             if (this._serv.notNull(elem.get('id').value)) {
@@ -712,25 +712,25 @@ export class NewOrderComponent implements OnInit, OnDestroy {
             } else {
               this.items.removeAt(index);
             }
-          })
+          });
           this.handleFinalPricing();
         }
       }
-    })
+    });
   }
 
   handleRejectedItems(item) {
 
-    this._serv.endpoint = "order-manager/order/rejected-item-remove";
+    this._serv.endpoint = 'order-manager/order/rejected-item-remove';
     this._serv.post({ id: item.value.id }).subscribe(response => {
 
-      this._serv.showMessage("Rejected items removed successfully", 'success');
+      this._serv.showMessage('Rejected items removed successfully', 'success');
 
       this.getOrderDetail();
       this.getTableInfo();
     }, ({ error }) => {
-      this._serv.showMessage(error['msg'], 'error');
-    })
+      this._serv.showMessage(error.msg, 'error');
+    });
   }
 
   ngOnDestroy() {
@@ -751,12 +751,22 @@ export class NewOrderComponent implements OnInit, OnDestroy {
   }
 
   changeOrderStatusBack(status) {
-    this._serv.endpoint = "order-manager/order/change-order-status";
-    this._serv.post({ id: this.orderId, status: status }).subscribe(response => {
-      this.getOrderDetail();
-    }, ({ error }) => {
-      this._serv.showMessage(error['msg'], 'error');
-    })
+
+    const dialogRef = this.dialog.open(ConfirmPopupComponent, {
+      data: {
+        message: 'Are sure want to reopen?'
+      }
+    });
+    dialogRef.afterClosed().subscribe(data => {
+      if (data) {
+        this._serv.endpoint = 'order-manager/order/change-order-status';
+        this._serv.post({ id: this.orderId, status }).subscribe(response => {
+          this.getOrderDetail();
+        }, ({ error }) => {
+          this._serv.showMessage(error.msg, 'error');
+        });
+      }
+    });
   }
 
 

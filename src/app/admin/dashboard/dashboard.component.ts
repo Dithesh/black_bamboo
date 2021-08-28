@@ -11,16 +11,20 @@ export class DashboardComponent implements OnInit, OnDestroy {
   ongoingorders: any;
   completedOrders: any;
   timeoutController;
-  orderTimerController=[];
+  orderTimerController = [];
+  userData;
   constructor(
-    private _serv: DataService
+    private serv: DataService
   ) { }
 
   ngOnInit(): void {
-    this.getData();
-    this.timeoutController = setInterval(() => {
+    this.userData = this.serv.getUserData();
+    if (this.userData.roles !== 'Super Admin' && this.userData.roles !== 'Company Admin') {
       this.getData();
-    },80000)
+      this.timeoutController = setInterval(() => {
+        this.getData();
+      }, 80000);
+    }
   }
 
   getData() {
@@ -29,25 +33,25 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   getDashboardOnGoingOrders() {
-    let startDate = moment(new Date()).format('YYYY-MM-DD');
-    let endDate = moment(new Date()).format('YYYY-MM-DD');
-    this._serv.endpoint = "order-manager/order?"
-                            + "&orderStatus=new,accepted,prepairing,packing"
-                            + "&startDate="+startDate
-                            + "&endDate="+endDate
-                            + "&orderType=asc"
-                            + "&orderCol=updated_at"
-    this._serv.get().subscribe((response:any) => {
-      this.ongoingorders=[];
+    const startDate = moment(new Date()).format('YYYY-MM-DD');
+    const endDate = moment(new Date()).format('YYYY-MM-DD');
+    this.serv.endpoint = 'order-manager/order?'
+                            + '&orderStatus=new,accepted,prepairing,packing'
+                            + '&startDate=' + startDate
+                            + '&endDate=' + endDate
+                            + '&orderType=asc'
+                            + '&orderCol=updated_at';
+    this.serv.get().subscribe((response: any) => {
+      this.ongoingorders = [];
       this.orderTimerController.forEach(elem => {
         clearInterval(elem);
-      })
-      this.orderTimerController=[];
+      });
+      this.orderTimerController = [];
       response.forEach(elem => {
-        this.orderTimerController.push(this._serv.timerUpdate(elem));
+        this.orderTimerController.push(this.serv.timerUpdate(elem));
         this.ongoingorders.push(elem);
       });
-    })
+    });
   }
 
   // getCurrentTimeDiff(stater) {
@@ -63,27 +67,27 @@ export class DashboardComponent implements OnInit, OnDestroy {
   // }
 
   getDashboardCompletedOrders() {
-    let startDate = moment(new Date()).format('YYYY-MM-DD');
-    let endDate = moment(new Date()).format('YYYY-MM-DD');
-    this._serv.endpoint = "order-manager/order?"
-                            + "&orderStatus=dispatched,delivered,completed,cancelled"
-                            + "&startDate="+startDate
-                            + "&endDate="+endDate
-                            + "&orderType=asc"
-                            + "&orderCol=updated_at"
-    this._serv.get().subscribe(response => {
+    const startDate = moment(new Date()).format('YYYY-MM-DD');
+    const endDate = moment(new Date()).format('YYYY-MM-DD');
+    this.serv.endpoint = 'order-manager/order?'
+                            + '&orderStatus=dispatched,delivered,completed,cancelled'
+                            + '&startDate=' + startDate
+                            + '&endDate=' + endDate
+                            + '&orderType=asc'
+                            + '&orderCol=updated_at';
+    this.serv.get().subscribe(response => {
       this.completedOrders = response as any;
-    })
+    });
   }
 
   ngOnDestroy() {
-    if(this.timeoutController) {
+    if (this.timeoutController) {
       clearInterval(this.timeoutController);
     }
     this.orderTimerController.forEach(elem => {
       clearInterval(elem);
-    })
-    this.orderTimerController=[];
+    });
+    this.orderTimerController = [];
   }
 
 }

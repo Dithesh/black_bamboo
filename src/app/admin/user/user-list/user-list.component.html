@@ -5,11 +5,11 @@
             <thead>
                 <tr>
                     <th class="ew-100"  *ngIf=" this._serv.getPermission('users', 'full')">Action</th>
-                    <th mat-sort-header="firstName" class="">User Name</th>
+                    <th mat-sort-header="firstName" class="ew-200">User Name</th>
                     <th mat-sort-header="roles" class="ew-200">Role</th>
                     <th mat-sort-header="company" [hidden]="userData?.roles != 'Super Admin'">Company</th>
                     <th mat-sort-header="branch" [hidden]="userData?.roles != 'Super Admin' && userData?.roles != 'Company Admin'">Branch</th>
-                    <th mat-sort-header="mobileNumber" class="ew-200">Mobile Number</th>
+                    <th mat-sort-header="mobileNumber" class="ew-200">Mobile No.</th>
                     <th mat-sort-header="email" class="ew-250">Email</th>
                     <th class="ew-150">Is Active?</th>
                 </tr>

@@ -6,7 +6,8 @@
             <div class="left_header">
                 <h2>#{{orderId ? orderId : '--'}}</h2>
                 <div class="order_timeBox ml-auto">
-                    <p><span>From:</span> {{orderData?.bearer.firstName}} {{orderData?.bearer.lastName}} <span class="ml-15">At: </span> {{orderData?.created_at | datex:'DD-MM-YYYY hh:mm a'}}</p>
+                    <p><span>From:</span> {{orderData?.bearer.firstName}} {{orderData?.bearer.lastName}}</p>
+                    <p class="ml-5"><span class="ml-15">At: </span> {{orderData?.created_at | datex:'DD-MM-YYYY hh:mm a'}}</p>
                 </div>
             </div>
             <h3 class="left_title">Categories</h3>
@@ -41,24 +42,19 @@
                 On Going
             </div>
 
-            <div *ngIf="orderData?.orderStatus == 'cancelled'" class="status_box ml-auto red cursor-pointer" [matMenuTriggerFor]="changeStatusMenu">
+            <div *ngIf="orderData?.orderStatus == 'cancelled'" class="status_box ml-auto red cursor-pointer">
                 Cancelled
             </div>
-            <div *ngIf="orderData?.orderStatus == 'completed'" class="status_box ml-auto cursor-pointer" [matMenuTriggerFor]="changeStatusMenu">
+            <div *ngIf="orderData?.orderStatus == 'completed'" class="status_box ml-auto cursor-pointer">
                 Completed
             </div>
-            <mat-menu #changeStatusMenu="matMenu" xPosition="before">
-                <button mat-menu-item *ngIf="orderData?.orderStatus != 'completed'" (click)="changeOrderStatusBack('completed')">Change To Completed</button>
-                <button mat-menu-item *ngIf="orderData?.orderStatus != 'cancelled'" (click)="changeOrderStatusBack('cancelled')">Change To Cancelled</button>
-                <button mat-menu-item (click)="changeOrderStatusBack('new')">Change To On Going</button>
-            </mat-menu>
         </div>
         <div class="row">
-            <div class="col-md-5 col-12  border-right" [class.pointer-none]="blockForms">
+            <div class="col-md-6 col-lg col-12  border-right" [class.pointer-none]="blockForms">
                 <div class="product_lists">
                     <div class="prod_list_header align-items-center d-flex">
                         <h2 class="productHeading">Products</h2>
-                        <mat-form-field  appearance="outline" class="ml-auto ew-250 pb-0">
+                        <mat-form-field  appearance="outline" class="ml-auto pb-0">
                             <mat-label>Search</mat-label>
                             <input type="text" matInput [(formControl)]="searchProductControl">
                             <mat-icon matSuffix>search</mat-icon>
@@ -75,7 +71,7 @@
                                             <div *ngIf="item.featuredImage else noPrImg" class="produt_img" [ngStyle]="{'background-image': 'url(\''+(url + item.featuredImage)+'\')'}"></div>
                                             <!-- <div class="produt_img" style="background-image: url('/assets/images/food.jpg');"></div> -->
                                             <div class="textbox">
-                                                <p>{{ item.productName }}</p>
+                                                <p>{{ item.productName | titlecase }}</p>
                                                 <span>{{ item.price | currency }}</span>
                                             </div>
                                             <div class="buttonBox text-right">
@@ -89,7 +85,7 @@
                                                                     <ng-container *ngFor="let tt of item.advanced_pricing;">
                                                                         <mat-option [value]="tt.id"> {{tt.title}} </mat-option>
                                                                     </ng-container>
-                                                                    
+
                                                                 </mat-select>
                                                             </mat-form-field>
 
@@ -105,8 +101,8 @@
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                    
-                                                    <button type="button" (click)="onAddItem(element, item)" mat-flat-button color="primary" class="product_addBtn ew-100 small_btn"><img src="assets/images/icons/ADD.svg" alt="" class="icon_img"> Add</button>
+
+                                                    <button type="button" (click)="onAddItem(element, item)" mat-flat-button color="primary" class="product_addBtn small_btn"><img src="assets/images/icons/ADD.svg" alt="" class="icon_img"> Add</button>
                                                 </div>
                                             </div>
                                         </label>
@@ -114,17 +110,17 @@
                                 </ng-container>
                             </ng-container>
                         </ng-container>
-                        
+
                     </ul>
                 </div>
             </div>
-            <div class="col-md-7 col-12 px-0">
+            <div class="col-md-6 col-lg-auto col-12 px-0">
                 <div class="right_details_box">
                     <mat-tab-group>
                         <mat-tab>
                             <ng-template mat-tab-label>
                                 <mat-icon class="example-tab-icon">restaurant</mat-icon>
-                                <p class="mb-0 col-12 px-0"> Items</p>
+                                <p class="mb-0 ml-5 px-0"> Items</p>
                             </ng-template>
 
                             <div class="tab_inner_body scroll_style items" [class.innerFooter]="items['controls'].length > 0 && !blockForms">
@@ -139,14 +135,14 @@
                                         <div class="col">
                                             <div class="order_item_card">
                                                 <div class="order-details col">
-                                                    <p class="product_name">{{ item.get('productName').value }} <ng-container *ngIf="item.get('advancedPriceTitle').value">({{item.get('advancedPriceTitle').value}})</ng-container>
+                                                    <p class="product_name">{{ item.get('productName').value  | titlecase }} <ng-container *ngIf="item.get('advancedPriceTitle').value">({{item.get('advancedPriceTitle').value}})</ng-container>
                                                      <span class="order_item_card_strip" *ngIf="item.get('isParcel').value">Parcel</span></p>
                                                     <p class="product_price">
                                                         <small>Price: &nbsp;&nbsp;&nbsp;</small>
                                                         <span>{{ item.get('price').value | currency  }}</span>
                                                     </p>
                                                     <p class="product_price" *ngIf="item.get('isParcel').value">
-                                                        <small>Packaging charges: &nbsp;&nbsp;&nbsp;</small>
+                                                        <small>Pkg charge: &nbsp;&nbsp;&nbsp;</small>
                                                         <span>{{ item.get('packagingCharges').value | currency  }}</span>
                                                     </p>
                                                     <p class="product_price">
@@ -165,11 +161,11 @@
                                                             <button class="btn btn-outline-secondary" type="button" (click)="handleNumberControl(item, 'next', i)">+</button>
                                                         </div>
                                                     </div>
-                                                    <div class="d-flex mt-15" *ngIf="item.get('id').value">
-                                                        <p class="text-success px-2 mb-0">Served: <b>{{ item.get('servedItems').value }}</b></p>
-                                                        <p class="text-accent px-2 mb-0">Kitchen: <b>{{ item.get('productionAcceptedQuantity').value - item.get('servedItems').value - item.get('productionRejectedQuantity').value}}</b></p>
-                                                        <p class="text-primary px-2 mb-0">Ready: <b>{{ item.get('productionReadyQuantity').value - item.get('servedItems').value}}</b></p>
-                                                        <p class="text-danger pl-2 mb-0">Rejected: <b>{{ item.get('productionRejectedQuantity').value }}</b></p>
+                                                    <div class="d-flex item_track_wrapper" *ngIf="item.get('id').value">
+                                                        <p class="item_track served" [matTooltip]="item.get('servedItems').value + ' items served for customers'">{{ item.get('servedItems').value }}</p>
+                                                        <p class="item_track kitchen" [matTooltip]="(item.get('productionAcceptedQuantity').value - item.get('servedItems').value - item.get('productionRejectedQuantity').value)  + ' items are preparing in kitchen'">{{ item.get('productionAcceptedQuantity').value - item.get('servedItems').value - item.get('productionRejectedQuantity').value}}</p>
+                                                        <p class="item_track ready" [matTooltip]="(item.get('productionReadyQuantity').value - item.get('servedItems').value) + ' items ready in kitchen'">{{ item.get('productionReadyQuantity').value - item.get('servedItems').value}}</p>
+                                                        <p class="item_track rejected" [matTooltip]="item.get('productionRejectedQuantity').value + ' items rejected from kitchen'">{{ item.get('productionRejectedQuantity').value }}</p>
                                                     </div>
                                                 </div>
                                             </div>
@@ -178,11 +174,18 @@
                                 </ng-container>
                             </div>
                             <div class="row no-gutters align-items-center border-top py-5" *ngIf="items['controls'].length > 0 && !blockForms">
-                                
-                                <div class="col-6 px-15">
-                                    <div class="d-flex align-items-center">
-                                        <h3 class="completeText mr-15 ew-150">Serve Order</h3>
-                                        <button mat-stroked-button color="accent" type="button" class="w-100 rounded-0" (click)="serveOrderItem()">
+
+                                <div class="col-12 px-15">
+                                    <div class="d-flex align-items-center justify-content-between">
+
+                                        <div class="ammount_box d-flex align-items-center">
+                                            <div class="d-inline-block orderAmuntChip mr-10" [class.paid]="form.get('isPaid').value">{{ form.get('orderAmount').value | currency }}</div>
+                                            <div class="d-inline-flex align-items-center">
+                                                <p class="my-0 mr-20 font-weight-500 paid_label">Paid ?</p>
+                                                <mat-slide-toggle [formControl]="form.get('isPaid')"></mat-slide-toggle>
+                                            </div>
+                                        </div>
+                                        <button mat-stroked-button color="primary" type="button" class="rounded-0" (click)="serveOrderItem()">
                                             <img src="assets/images/icons/DONEDOUBLETICK.svg" alt="" class="icon_img">
                                             Serve Items
                                         </button>
@@ -194,7 +197,7 @@
                         <mat-tab *ngIf="selectedOrderType?.tableRequired">
                             <ng-template mat-tab-label>
                                 <mat-icon class="example-tab-icon">view_module</mat-icon>
-                                <p class="mb-0 col-12 px-0"> Table</p>
+                                <p class="mb-0 ml-5 px-0"> Table</p>
                             </ng-template>
                             <div class="tab_inner_body scroll_style tableBox">
                                 <app-table-selection [form]="form" [blockForms]="blockForms"></app-table-selection>
@@ -204,7 +207,7 @@
                         <mat-tab>
                             <ng-template mat-tab-label>
                                 <mat-icon class="example-tab-icon">supervisor_account</mat-icon>
-                                <p class="mb-0 col-12 px-0"> Customer</p>
+                                <p class="mb-0 ml-5 px-0"> Customer</p>
                             </ng-template>
 
                             <div class="tab_inner_body scroll_style">
@@ -239,7 +242,7 @@
                         <mat-tab *ngIf="items['controls'].length > 0">
                             <ng-template mat-tab-label>
                                 <mat-icon class="example-tab-icon">local_offer</mat-icon>
-                                <p class="mb-0 col-12 px-0"> Extras</p>
+                                <p class="mb-0 ml-5 px-0"> Extras</p>
                             </ng-template>
                             <div class="tab_inner_body scroll_style bill innerFooter">
                                 <div class="delivery_box mt-20">
@@ -251,7 +254,7 @@
                                 <div class="delivery_box mt-20">
                                     <mat-form-field appearance="outline" class="w-100 inline-input">
                                         <mat-label>Discount Reason</mat-label>
-                                        <input matInput  [formControl]="form.get('discountReason')" (change)="handleFinalPricing(true)" digitOnly [decimal]="true">
+                                        <input matInput  [formControl]="form.get('discountReason')" (change)="handleFinalPricing(true)">
                                     </mat-form-field>
                                 </div>
                                 <div class="delivery_box mt-20">
@@ -265,7 +268,7 @@
                         <mat-tab *ngIf="items['controls'].length > 0">
                             <ng-template mat-tab-label>
                                 <mat-icon class="example-tab-icon">receipt</mat-icon>
-                                <p class="mb-0 col-12 px-0"> Bill</p>
+                                <p class="mb-0 ml-5 px-0"> Bill</p>
                             </ng-template>
                             <div class="tab_inner_body scroll_style bill innerFooter">
                                 <!-- <div class="delivery_box">
@@ -274,7 +277,7 @@
                                         <input matInput  [formControl]="form.get('deliverCharge')" (change)="handleFinalPricing()" digitOnly [decimal]="true">
                                     </mat-form-field>
                                 </div> -->
-                                <div class="billing_wrapper mt-20 mb-20">
+                                <div class="billing_wrapper">
                                     <div class="billing_strip">
                                         <p class="main_title">Order Summary</p>
                                     </div>
@@ -290,7 +293,7 @@
                                         <p class="title">Total Pkg Charge</p>
                                         <span class="value_section">{{ form.get('packingCharge').value | currency }}</span>
                                     </div>
-                                    
+
                                     <div class="billing_strip" *ngIf="!form.get('taxDisabled').value">
                                         <p class="title">CGST <small class="text-muted">({{ ((form.get('taxPercent').value > 0)?(form.get('taxPercent').value/2):0) | number : '2.2' }}%)</small></p>
                                         <span class="value_section">{{ form.get('cgst').value | currency }}</span>
@@ -322,12 +325,12 @@
                                         </div>
                                         <div class="col-auto">
                                             <div class="bal_change_box ew-150">
-                                                
+
                                                 <p><span>Return</span> : {{(calAmount.value > 0) ? (calAmount.value - form.get('orderAmount').value) : 0  }}</p>
                                             </div>
                                         </div>
                                     </div>
-                                    
+
                                 </div>
                             </div>
                             <div class="row no-gutters align-items-center border-top py-5">
@@ -339,57 +342,28 @@
                                       </mat-chip-list>
                                 </div>
                             </div>
-                            <div class="row no-gutters align-items-center border-top py-5"  *ngIf="form.get('orderStatus').value != 'completed' && form.get('orderStatus').value != 'cancelled' && !blockForms">
-                                <div class="col-6 px-15">
-                                    <h3 class="completeText">Complete Order</h3>
-                                </div>
-                                <div class="col-6 px-15">
-                                    <div class="printBtn_box col-auto d-flex">
-                                        <button mat-flat-button color="success" class="w-100  rounded-0" (click)="saveOrder('complete')"> Complete Order</button>
-                                        <button mat-flat-button aria-label="" color="warn" class="ew-40 rounded-0"  (click)="saveOrder('cancel')">
-                                            <img src="assets/images/icons/CLOSE.svg" alt="" class="icon_img">
-                                        </button>
-                                    </div>
-                                    <!-- <button mat-flat-button color="success" class="w-100 rounded-0" type="button"
-                                    *ngIf="form.get('orderStatus').value != 'completed' && form.get('orderStatus').value != 'cancelled' && !blockForms"  
-                                    (click)="saveOrder('complete')">Mark as Paid</button>
-                                    <div class="col-6 px-15">
-                                        <button mat-flat-button color="warn" type="button" class="ew-200 mw-100 rounded-0">
-                                            Cancel
-                                            <img src="assets/images/icons/CLOSE.svg" alt="" class="icon_img">
-                                        </button>
-                                    </div> -->
-                                </div>
-                            </div>
-                            <div class="row no-gutters align-items-center border-top py-5"  *ngIf="form.get('orderStatus').value == 'completed' || form.get('orderStatus').value == 'cancelled' || blockForms">
-                               
-                                <div class="col-auto ml-auto px-15">
-                                    <div class="printBtn_box ew-150">
-                                        <button mat-stroked-button color="primary" class="w-100  rounded-0"> Reopen</button>
-                                    </div>
-                                </div>
+
+                            <div class="printBtn_box d-flex mb-10" *ngIf="form.get('orderStatus').value != 'completed' && form.get('orderStatus').value != 'cancelled' && !blockForms">
+                                <button mat-stroked-button color="success" class="w-100  rounded-0" (click)="saveOrder('complete')"> Complete Order</button>
+                                <button mat-stroked-button aria-label="" color="warn" class="w-100 rounded-0"  (click)="saveOrder('cancel')">
+                                    Cancel Order
+                                </button>
                             </div>
                         </mat-tab>
                       </mat-tab-group>
 
                     <div class="tab_footer border-top">
-                        <div class="row no-gutters align-items-center">
-                            <div class="col">
-                                <div class="ammount_box d-flex">
-                                    <div class="d-inline-block orderAmuntChip mr-10" [class.paid]="form.get('isPaid').value">{{ form.get('orderAmount').value | currency }}</div>
-                                    <div class="d-inline-flex align-items-center">
-                                        <p class="my-0 mr-20 font-weight-500 font-1_6">Paid ?</p>
-                                        <mat-slide-toggle [formControl]="form.get('isPaid')"></mat-slide-toggle>
-                                    </div>
-                                </div>
+                        <div class="d-flex flex-nowrap">
+
+                            <div class="w-100"  *ngIf="form.get('orderStatus').value == 'completed' || form.get('orderStatus').value == 'cancelled' || blockForms">
+                                <button mat-stroked-button color="primary" class="rounded-0 w-100" type="button" (click)="changeOrderStatusBack('new')"> Reopen</button>
                             </div>
-                            <div class="saveBtn_box col-auto">
-                                <button mat-flat-button color="primary" class="ew-150 rounded-0" 
-                                *ngIf="form.get('orderStatus').value != 'completed' && form.get('orderStatus').value != 'cancelled' && !blockForms"  
-                                (click)="saveOrder('confirm')" [disabled]="orderProcessing"><img src="assets/images/icons/SAVE.svg" alt="" class="icon_img">  Save</button>
+                            <div class="w-100" *ngIf="form.get('orderStatus').value != 'completed' && form.get('orderStatus').value != 'cancelled' && !blockForms">
+                              <button mat-flat-button color="primary" class="w-100 rounded-0"
+                                  (click)="saveOrder('confirm')" [disabled]="orderProcessing"><img src="assets/images/icons/SAVE-WHITE.svg" alt="" class="icon_img mr-3">  Save</button>
                             </div>
-                            <div class="printBtn_box col-auto" *ngIf="orderId">
-                                <button mat-flat-button color="accent" class="ew-140 rounded-0" (click)="printOrder()"><img src="assets/images/icons/PRINT.svg" alt="" class="icon_img">  Print</button>
+                            <div class="d-flex flex-nowrap w-100" *ngIf="orderId">
+                                <button mat-flat-button color="accent" class="w-100 rounded-0" (click)="printOrder()"><img src="assets/images/icons/PRINT.svg" alt="" class="icon_img">  Print</button>
                                 <button mat-flat-button aria-label="" color="accent" class="ew-40 rounded-0" [matMenuTriggerFor]="moreOption">
                                     <img src="assets/images/icons/ARROWDOWN.svg" alt="" class="icon_img">
                                 </button>
@@ -398,7 +372,7 @@
                                     <button mat-menu-item type="button" (click)="printAddress()">KOT</button>
                                   </mat-menu>
                             </div>
-                        </div>        
+                        </div>
                     </div>
                 </div>
             </div>

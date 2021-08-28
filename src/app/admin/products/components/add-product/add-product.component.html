@@ -1,5 +1,5 @@
 <form [formGroup]="form" (submit)="saveProduct($event)">
-    
+
     <div class="add_formWrapper">
         <div class="row">
             <div class="col-sm-auto">
@@ -38,14 +38,14 @@
                                   </mat-form-field>
                             </div>
                             <div class="col-12 col-md-6" [hidden]="userData?.roles != 'Super Admin' && userData?.roles != 'Company Admin' && userData?.roles != 'Company Accountant'">
-                                <mat-form-field appearance="fill" class="w-100" (selectionChange)="selectChange('branch')" >
+                                <mat-form-field appearance="fill" class="w-100" >
                                     <mat-label>Branch</mat-label>
-                                    <mat-select matNativeControl formControlName="branch_id"  [required]="userData?.roles == 'Super Admin' || userData?.roles == 'Company Admin' || userData?.roles == 'Company Accountant'">
+                                    <mat-select matNativeControl formControlName="branch_id"  [required]="userData?.roles == 'Super Admin' || userData?.roles == 'Company Admin' || userData?.roles == 'Company Accountant'" (selectionChange)="selectChange('branch')">
                                         <mat-option *ngFor="let item of branchList;" [value]="item.id">{{ item.branchTitle }}</mat-option>
                                     </mat-select>
                                 </mat-form-field>
                             </div>
-                            
+
                             <div class="col-12 col-md-6">
                                 <mat-form-field appearance="fill" class="w-100">
                                     <mat-label>Packaging Charges</mat-label>
@@ -113,16 +113,16 @@
                         </div>
                     </div>
                 </div>
-                
+
             </div>
         </div>
-        
+
         <div class="d-flex align-items-center mb-15">
             <mat-slide-toggle formControlName="isActive" class="mr-15" color="primary">Active</mat-slide-toggle>
             <mat-slide-toggle formControlName="isOutOfStock" class="mr-15" color="primary">Out Of Stock</mat-slide-toggle>
             <mat-slide-toggle formControlName="isVeg" color="primary" class="mr-15">Veg Only</mat-slide-toggle>
         </div>
-        
+
         <!-- <div class="d-flex align-items-center my-10">
         </div>
         <div class="d-flex align-items-center my-10">

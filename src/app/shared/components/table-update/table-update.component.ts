@@ -1,7 +1,7 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {FormBuilder} from '@angular/forms';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
-import {DataService} from "../../../../../shared/services/data.service";
+import {DataService} from "../../services/data.service";
 
 @Component({
   selector: 'app-table-update',

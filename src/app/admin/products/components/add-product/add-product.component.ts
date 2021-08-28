@@ -150,7 +150,7 @@ export class AddProductComponent implements OnInit {
     this.serv.endpoint = 'order-manager/category';
     this.serv.getByParam({
       fields: 'categories.id,categoryName',
-      branch_id: this.form.get('branch_id').value
+      branchId: this.form.get('branch_id').value
     }).subscribe(response => {
       this.categoryList = response as any[];
     });

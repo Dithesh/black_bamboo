@@ -1,5 +1,5 @@
 
-<form [formGroup]="filterForm">
+<form [formGroup]="filterForm" class="pt-20">
     <div class="search_outerWrapper text-right mb-20">
         <div class="row gutters-10 justify-content-lg-end">
             <div class="col-lg-3 col-md-4 col-sm-6 col-12">
@@ -38,10 +38,10 @@
                 <tr>
                     <th *ngIf="loginUserDetail?.roles == 'Super Admin' || loginUserDetail?.roles == 'Company Admin' || loginUserDetail?.roles == 'Branch Admin' || loginUserDetail?.roles == 'Company Accountant'"></th>
                     <th class="ew-100">Action</th>
-                    <th mat-sort-header="id" class="ew-200">No.</th>
+                    <th mat-sort-header="id" class="ew-150">No.</th>
                     <th mat-sort-header="bearer">Bearer</th>
                     <th>Tables</th>
-                    <th mat-sort-header="orderAmount" class="ew-200">Order Amount</th>
+                    <th mat-sort-header="orderAmount" class="ew-120">Amount</th>
                     <th mat-sort-header="orderStatus">Status </th>
                     <th mat-sort-header="created_at">Time</th>
                 </tr>
@@ -62,13 +62,13 @@
                         </td>
                         <td>{{item.bearer.firstName}} {{ item.bearer.lastName }}</td>
                         <td>
-                            <ng-container *ngFor="let t of item.order_tables; let ti=index;let last=last">{{ t.table.tableId }} <ng-container *ngIf="!last">, </ng-container></ng-container> 
+                            <ng-container *ngFor="let t of item.order_tables; let ti=index;let last=last">{{ t.table.tableId }} <ng-container *ngIf="!last">, </ng-container></ng-container>
                         </td>
                         <td>
                             {{item.orderAmount| currency:'':''}}
                         </td>
                         <td>
-                            {{item.orderStatus|titlecase}} 
+                            {{item.orderStatus|titlecase}}
                         </td>
                         <td>
                             {{item.created_at | datex:'DD-MM-YYYY hh:mm a'}}
