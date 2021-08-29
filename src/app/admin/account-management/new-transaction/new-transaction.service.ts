@@ -91,7 +91,13 @@ export class NewTransactionService {
             this.serv.endpoint = 'account-manager/transaction/' + this.transactionId;
             this.serv.get().subscribe((response: any) => {
                 this.transactionData = response;
-                this.form.patchValue({...this.transactionData, transactionType: this.transactionData.transactionType.toLowerCase()});
+                this.form.patchValue({
+                  ...this.transactionData,
+                  company_id: this.transactionData.branch.company_id,
+                  transactionType: this.transactionData.transactionType.toLowerCase()
+                });
+                this.getAccountList();
+                this.getInventoryList();
                 this.items.controls = [];
                 this.items.reset();
                 this.transactionData.items.forEach(elem => {
