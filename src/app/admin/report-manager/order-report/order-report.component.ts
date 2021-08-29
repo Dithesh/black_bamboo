@@ -89,7 +89,7 @@ export class OrderReportComponent implements OnInit {
     this.serv.endpoint = 'order-manager/branch';
     this.serv.getByParam({
       fields: 'id,branchTitle',
-      company_id: this.filterForm.get('branch_id').value
+      company_id: this.filterForm.get('company_id').value
     }).subscribe(response => {
       this.branchList = response as any[];
     });
