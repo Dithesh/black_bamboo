@@ -4,6 +4,7 @@ import { DataService } from 'src/app/shared/services/data.service';
 import * as XLSX from 'xlsx';
 import * as math from 'exact-math';
 import * as moment from 'moment';
+import {ActivatedRoute} from "@angular/router";
 
 @Component({
   selector: 'app-order-report',
@@ -12,43 +13,56 @@ import * as moment from 'moment';
 })
 export class OrderReportComponent implements OnInit {
 
-  orderStatus=['new','completed', 'cancelled'];
+  orderStatus = ['new', 'completed', 'cancelled'];
   displayedColumns: string[] = ['action', 'id', 'orderAmount', 'orderStatus', 'created_at'];
-  filterForm:FormGroup;
-  orderTypeList: any[];
-  paymentMethodList: any[];
-  fileName= 'ExcelSheet.xlsx';
-  dataSource: any;
-  totalOrderAmount = 0;
-  @ViewChild('reportTable') reportTable:any;
-  branchDetail: any;
-  userData: any;
-  branchList: any[];
-  constructor(
-    private _serv: DataService,
-    private fb: FormBuilder
-  ) {
-    this.filterForm = this.fb.group({
+  filterForm: FormGroup = this.fb.group({
       searchString: [''],
       orderStatus: [['completed']],
       paymentMethod: [''],
       typeOfOrder: [''],
+      company_id: [''],
       branch_id: [''],
       startDate: [''],
       endDate: [''],
       orderCol: [''],
       orderType: ['']
-    })
+  });
+  companyList: any[] =[];
+  orderTypeList: any[];
+  paymentMethodList: any[];
+  fileName = 'ExcelSheet.xlsx';
+  dataSource: any;
+  totalOrderAmount = 0;
+  @ViewChild('reportTable') reportTable: any;
+  branchDetail: any;
+  userData: any;
+  branchList: any[] = [];
+  private selectedCompanySubscriber;
+  constructor(
+    private serv: DataService,
+    private fb: FormBuilder,
+    private route: ActivatedRoute
+  ) {
+    this.userData = this.serv.getUserData();
+    if (this.userData.roles === 'Super Admin') {
+      this.route.data.subscribe(response => {
+        this.companyList = response.companyList;
+      });
+    } else if (this.userData.roles === 'Company Admin') {
+      this.filterForm.get('company_id').setValue(this.userData.company_id);
+      this.getAllBranches();
+    }else {
+      this.filterForm.get('company_id').setValue(this.userData.company_id);
+      this.filterForm.get('branch_id').setValue(this.userData.branch_id);
+      this.getBranchDetail();
+    }
   }
 
   ngOnInit(): void {
-    this.userData = this._serv.getUserData();
-    if(this.userData.roles != 'Super Admin') {
-      this.filterForm.get('branch_id').setValue(this.userData.branch_id);
-      this.getBranchDetail(this.userData.branch_id);
-    }else {
+    this.selectedCompanySubscriber = this.filterForm.get('company_id').valueChanges.subscribe(response => {
+      this.filterForm.get('branch_id').setValue('', {emitEvent: false});
       this.getAllBranches();
-    }
+    });
   }
   // ngAfterViewInit() {
 
@@ -65,21 +79,32 @@ export class OrderReportComponent implements OnInit {
 
 
   getAllBranches() {
-    this._serv.endpoint = "order-manager/branch?fields=id,branchTitle";
-    this._serv.get().subscribe(response => {
+    this.orderTypeList = [];
+    this.paymentMethodList = [];
+    this.filterForm.patchValue({
+      paymentMethod: '',
+      typeOfOrder: '',
+      branch_id: ''
+    }, { emitEvent: false });
+    this.serv.endpoint = 'order-manager/branch';
+    this.serv.getByParam({
+      fields: 'id,branchTitle',
+      company_id: this.filterForm.get('branch_id').value
+    }).subscribe(response => {
       this.branchList = response as any[];
-    })
+    });
   }
 
-  getBranchDetail(branch_id) {
-    if(!this._serv.notNull(branch_id)){
-      this.orderTypeList=[];
-      this.paymentMethodList=[];
+  getBranchDetail() {
+    const branchId = this.filterForm.get('branch_id').value;
+    if(!this.serv.notNull(branchId)){
+      this.orderTypeList = [];
+      this.paymentMethodList = [];
       return;
     }
 
-    this._serv.endpoint="order-manager/branch/"+branch_id;
-    this._serv.get().subscribe((response:any) => {
+    this.serv.endpoint="order-manager/branch/"+branchId;
+    this.serv.get().subscribe((response:any) => {
       this.branchDetail = response;
       this.orderTypeList = response.order_types as any[];
       this.paymentMethodList = response.payment_methods as any[];
@@ -88,27 +113,30 @@ export class OrderReportComponent implements OnInit {
 
 
   getOrderList(event) {
-    event.preventDefault()
-    let filterValue = this.filterForm.value;
-    let startDate="", endDate="";
-    if(this._serv.notNull(filterValue.startDate) && this._serv.notNull(filterValue.endDate)) {
+    event.preventDefault();
+    const filterValue = this.filterForm.value;
+    let startDate = '';
+    let endDate = '';
+    if (this.serv.notNull(filterValue.startDate) && this.serv.notNull(filterValue.endDate)) {
       startDate = moment(filterValue.startDate).format('YYYY-MM-DD');
       endDate = moment(filterValue.endDate).format('YYYY-MM-DD');
     }
-    this._serv.endpoint = "order-manager/order?"
-                            + "&searchString="+filterValue.searchString
-                            + "&orderStatus="+filterValue.orderStatus
-                            + "&branch_id="+filterValue.branch_id
-                            + "&typeOfOrder="+filterValue.typeOfOrder
-                            + "&paymentMethod="+filterValue.paymentMethod
-                            + "&startDate="+startDate
-                            + "&endDate="+endDate
-                            + "&orderType="+filterValue.orderType
-                            + "&orderCol="+filterValue.orderCol
-    this._serv.get().subscribe(response => {
+    this.serv.endpoint = 'order-manager/order';
+    this.serv.getByParam({
+      searchString: filterValue.searchString,
+      orderStatus: filterValue.orderStatus,
+      company_id: filterValue.company_id,
+      branch_id: filterValue.branch_id,
+      typeOfOrder: filterValue.typeOfOrder,
+      paymentMethod: filterValue.paymentMethod,
+      startDate,
+      endDate,
+      orderType: filterValue.orderType,
+      orderCol: filterValue.orderCol
+    }).subscribe(response => {
       this.dataSource = response as any;
       this.getTotal();
-    })
+    });
 
   }
   getTotal(){
