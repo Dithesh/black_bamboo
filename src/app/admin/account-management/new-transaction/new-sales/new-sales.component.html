@@ -103,7 +103,7 @@
                             </td>
                             <td class="ew-150">
                                 <ng-container *ngIf="_transact.editInventoryIndex != i else inventoryQuantityInput">
-                                    {{ item.get('quantity').value }} <span class="d-inline-block ml-5">KG</span>
+                                    {{ item.get('quantity').value }} <span class="d-inline-block ml-5">{{ item.get('item').value.unit.unitLabel }}</span>
                                 </ng-container>
                                 <ng-template #inventoryQuantityInput>
                                     <mat-form-field class="field-pb-0 table_select ew-120">
