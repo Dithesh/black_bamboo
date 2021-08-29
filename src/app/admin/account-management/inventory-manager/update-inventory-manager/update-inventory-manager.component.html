@@ -34,7 +34,7 @@
                 <mat-form-field appearance="fill" class="w-100 mb-5">
                     <mat-label>Unit</mat-label>
                     <mat-select formControlName="unitId">
-                        <mat-option *ngFor="let item of unitList;" [value]="item.id">
+                        <mat-option *ngFor="let item of unitList;" [value]="item.id" [disabled]="!item.isActive">
                             {{ item.unitLabel }}
                         </mat-option>
                     </mat-select>
