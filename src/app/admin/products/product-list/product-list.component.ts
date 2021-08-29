@@ -69,7 +69,7 @@ export class ProductListComponent implements OnInit, AfterViewInit, OnDestroy {
   ngAfterViewInit() {
 
     this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
-    merge(this.sort.sortChange, this.paginator.page, this.filterForm.get('searchString').valueChanges).pipe(
+    merge(this.sort.sortChange, this.paginator.page).pipe(
       debounceTime(500)
     ).subscribe(data => {
         this.filterForm.patchValue({
@@ -77,6 +77,11 @@ export class ProductListComponent implements OnInit, AfterViewInit, OnDestroy {
           orderType: this.sort.direction
         });
         this.getAllProducts(this.paginator.pageIndex + 1);
+      });
+    this.filterForm.get('searchString').valueChanges.pipe(
+      debounceTime(500)
+    ).subscribe(data => {
+        this.getAllProducts();
       });
   }
 
