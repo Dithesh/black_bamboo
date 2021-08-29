@@ -1,10 +1,30 @@
 <div class="search_outerWrapper text-right mb-20">
-    <form>
+    <form (submit)="getAllProducts()">
+      <div class="row gutters-10 justify-content-lg-end">
+          <div class="col-auto" [hidden]="userData?.roles != 'Super Admin'">
+              <mat-form-field appearance="fill">
+                  <mat-label>Company</mat-label>
+                  <mat-select required formControlName="selectedCompany">
+                      <mat-option *ngFor="let item of companyList" [value]="item.id">{{ item.companyName }}</mat-option>
+                  </mat-select>
+              </mat-form-field>
+          </div>
+          <div class="col-auto" [hidden]="userData?.roles != 'Super Admin' && userData?.roles != 'Company Admin'">
+                <mat-form-field appearance="fill">
+                    <mat-label>Branch</mat-label>
+                    <mat-select required formControlName="selectedBranch" (selectionChange)="getAllProducts()">
+                        <mat-option *ngFor="let item of branchList" [value]="item.id">{{ item.branchTitle }}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
         <mat-form-field  appearance="outline" class="ew-250 pb-0">
             <mat-label>Search</mat-label>
             <input [formControl]="filterForm.get('searchString')" type="text" matInput>
-            <mat-icon matSuffix>search</mat-icon>
+            <button matSuffix type="submit" mat-icon-button>
+              <mat-icon >search</mat-icon>
+            </button>
         </mat-form-field>
+      </div>
     </form>
 </div>
 <div class="item_table_outer mt-10">
@@ -12,7 +32,7 @@
         <table class="table account_table" matSort>
             <thead>
                 <tr>
-                    <th class="ew-50" *ngIf=" this._serv.getPermission('products', 'full')"></th>
+                    <th class="ew-50" *ngIf=" this.serv.getPermission('products', 'full')"></th>
                     <th mat-sort-header="productNumber" class="ew-50">No.</th>
                     <th mat-sort-header="productName" class="ew-250">Product Name</th>
                     <th mat-sort-header="description">Description</th>
@@ -23,7 +43,7 @@
             </thead>
             <tbody>
                 <ng-container *ngFor="let item of dataSource?.data; let i =index">
-                    <tr *ngIf=" this._serv.getPermission('products', 'full')">
+                    <tr *ngIf=" this.serv.getPermission('products', 'full')">
                         <td>
                             <button mat-icon-button [matMenuTriggerFor]="moreOption">
                                 <img src="assets/images/icons/MORE.svg" alt="" class="icon_img">

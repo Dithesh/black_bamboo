@@ -4,19 +4,23 @@ import { Routes, RouterModule } from '@angular/router';
 import { OrdersComponent } from './orders.component';
 import { NewOrderComponent } from './components/new-order/new-order.component';
 import { RoleGaurd } from 'src/app/shared/gaurd/role-gaurd';
+import {CompanyListResolver} from '../resolvers/company-list.resolver';
 
 
 const routes: Routes = [
   {
-    path: "",
+    path: '',
     children: [
       {
-        path: "",
+        path: '',
         component: OrdersComponent,
-        children:[
+        children: [
           {
-            path:"list",
-            component:OrderListsComponent,
+            path: 'list',
+            component: OrderListsComponent,
+            resolve: {
+              companyList: CompanyListResolver
+            },
             data: {
               module: 'orders',
               mode: 'read'
@@ -24,8 +28,8 @@ const routes: Routes = [
             canActivate: [ RoleGaurd ]
           },
           {
-            path: "update",
-            component:NewOrderComponent,
+            path: 'update',
+            component: NewOrderComponent,
             data: {
               module: 'orders',
               mode: 'read'
@@ -33,8 +37,8 @@ const routes: Routes = [
             canActivate: [ RoleGaurd ]
           },
           {
-            path: "update/:id",
-            component:NewOrderComponent,
+            path: 'update/:id',
+            component: NewOrderComponent,
             data: {
               module: 'orders',
               mode: 'read'
@@ -42,8 +46,8 @@ const routes: Routes = [
             canActivate: [ RoleGaurd ]
           },
           {
-            path:"**",
-            redirectTo:"list"
+            path: '**',
+            redirectTo: 'list'
           }
         ]
       }

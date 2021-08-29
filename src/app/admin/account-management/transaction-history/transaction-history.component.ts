@@ -112,8 +112,8 @@ export class TransactionHistoryComponent implements OnInit, AfterViewInit {
       orderCol: formValue.orderCol,
       orderType: formValue.orderType,
       searchString: formValue.searchString,
-      company_id: formValue.selectedCompany,
-      branch_id: formValue.selectedBranch,
+      companyId: formValue.selectedCompany,
+      branchId: formValue.selectedBranch,
       accountType: formValue.accountType,
     }).subscribe(response => {
       this.transactionList = response as any;

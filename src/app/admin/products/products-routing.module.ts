@@ -9,15 +9,18 @@ import { RoleGaurd } from 'src/app/shared/gaurd/role-gaurd';
 
 const routes: Routes = [
   {
-    path:"",
-    children:[
+    path: '',
+    children: [
       {
-        path:"",
-        component:ProductsComponent,
-        children:[
+        path: '',
+        component: ProductsComponent,
+        children: [
           {
-            path:"list",
-            component:ProductListComponent,
+            path: 'list',
+            component: ProductListComponent,
+            resolve: {
+              companyList: CompanyListResolver
+            },
             data: {
               module: 'products',
               mode: 'read'
@@ -25,8 +28,8 @@ const routes: Routes = [
             canActivate: [ RoleGaurd ]
           },
           {
-            path:"update",
-            component:AddProductComponent,
+            path: 'update',
+            component: AddProductComponent,
             resolve: {
               companyList: CompanyListResolver
             },
@@ -37,8 +40,8 @@ const routes: Routes = [
             canActivate: [ RoleGaurd ]
           },
           {
-            path:"update/:id",
-            component:AddProductComponent,
+            path: 'update/:id',
+            component: AddProductComponent,
             resolve: {
               companyList: CompanyListResolver
             },
@@ -49,8 +52,8 @@ const routes: Routes = [
             canActivate: [ RoleGaurd ]
           },
           {
-            path:"**",
-            redirectTo:"list"
+            path: '**',
+            redirectTo: 'list'
           }
         ]
       }
