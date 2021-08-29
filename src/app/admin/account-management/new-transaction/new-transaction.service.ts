@@ -96,17 +96,14 @@ export class NewTransactionService {
                   company_id: this.transactionData.branch.company_id,
                   transactionType: this.transactionData.transactionType.toLowerCase()
                 });
-                this.getAccountList();
-                this.getInventoryList();
                 this.items.controls = [];
                 this.items.reset();
                 this.transactionData.items.forEach(elem => {
 
                     const form = this.itemForm();
-                    form.patchValue(elem);
+                    form.patchValue(elem, {emitEvent: false});
                     this.items.push(form);
                 });
-                this.itemMapping();
 
                 this.accounts.controls = [];
                 this.accounts.reset();
@@ -115,7 +112,9 @@ export class NewTransactionService {
                     form.patchValue(elem);
                     this.accounts.push(form);
                 });
-                this.accountMapping();
+                this.getAccountList();
+                this.getInventoryList();
+                // this.accountMapping();
                 this.getOrderTotal();
             });
         }else {
@@ -415,7 +414,7 @@ export class NewTransactionService {
             this.items.controls.forEach(control => {
                 this.inventoryList.forEach(elem => {
                     if (control.get('item').value.id === elem.id) {
-                        control.get('item').setValue(elem);
+                        control.get('item').setValue(elem, {emitEvent: false});
                     }
                 });
             });
