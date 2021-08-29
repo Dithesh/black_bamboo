@@ -22,6 +22,12 @@
         <ng-container *ngFor="let item of branch.get('tables')['controls'];let ti=index;">
 
             <div class="table_col" [class.reserved]="item.get('isReserved').value" [formGroupName]="ti">
+                <button mat-icon-button class="edit_btn" (click)="updateTable(branch.get('id').value, item.value)">
+                  <img src="/assets/images/icons/EDIT.svg" alt="">
+                </button>
+
+                <div *ngIf="!item.get('isActive').value" class="in_active_strip">In-active</div>
+
                 <div class="row ew-130 mx-auto position-relative h-100 no-gutters">
                     <span class="table_circle">
                         {{ item.get('tableId').value }}

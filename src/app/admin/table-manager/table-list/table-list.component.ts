@@ -93,9 +93,12 @@ export class TableListComponent implements OnInit {
           (form.get('tables') as FormArray).push(this.fb.group({
             id: [t.id],
             tableId: [t.tableId],
+            description: [t.description],
             noOfChair: [t.noOfChair],
             runningOrderIds: [t.runningOrderIds],
             isReserved: [t.isReserved],
+            isActive: [t.isActive],
+            branch_id: [t.branch_id],
             chairs: this.fb.array(chairs)
           }));
         });

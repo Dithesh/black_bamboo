@@ -335,7 +335,7 @@ export class NewOrderComponent implements OnInit, OnDestroy {
   }
 
   getTableInfo() {
-    this._serv.endpoint = 'order-manager/tables?orderId=' + this.orderId;
+    this._serv.endpoint = 'order-manager/tables?showActive=true&orderId=' + this.orderId;
     this._serv.get().subscribe(response => {
       this.tableList = response as any[];
       this.tables.controls = [];

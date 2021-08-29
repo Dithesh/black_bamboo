@@ -15,8 +15,45 @@
         margin: 20px 10px;
         min-width: 150px;
         padding: 30px 0;
-
+        position: relative;
         box-shadow: 0 0 3px 0px rgba(0, 0, 0, 0.4);
+
+      & .in_active_strip {
+        position: absolute;
+        top: 50%;
+        left: 0;
+        transform: translateY(-50%);
+        background-color: rgba(#ffffff, 0.8);
+        color: $color-warning;
+        border-top: 1px solid rgba($color-warning, 0.8);
+        border-bottom: 1px solid rgba($color-warning, 0.8);
+        padding: 4px 20px;
+        width: 100%;
+        font-size: 14px;
+        text-align: center;
+        z-index: 3;
+      }
+
+
+        & .edit_btn {
+          position: absolute;
+          top: 0px;
+          right: 0px;
+          transform: translateX(100%) scale(0);
+          transition: .2s;
+
+          & img {
+            width: 16px;
+          }
+        }
+
+        &:hover {
+          & .edit_btn {
+            transform: translateX(0) scale(1);
+          }
+
+        }
+
         & .table_circle {
             display: block;
             position: absolute;
