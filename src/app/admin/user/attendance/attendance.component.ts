@@ -20,7 +20,7 @@ export class AttendanceComponent implements OnInit {
   constructor(
     private _serv: DataService,
     private dialog: MatDialog
-  ) { 
+  ) {
     this.dateSet = this.currentMonthDates.map(x => x.format('DD'));
   }
 
@@ -35,7 +35,7 @@ export class AttendanceComponent implements OnInit {
       this.currentMonth = this.currentMonth.add(-1, 'month');
     }
     this.currentMonthDates = new Array(moment(this.currentMonth).daysInMonth()).fill(null).map((x, i) => moment(this.currentMonth).startOf('month').add(i, 'days'));
-    
+
     this.startDate = this.currentMonthDates[0].format('YYYY-MM-DD');
     this.endDate = this.currentMonthDates[this.currentMonthDates.length - 1].format('YYYY-MM-DD');
     this.dateSet = this.currentMonthDates.map(x => x.format('DD'));
@@ -58,11 +58,12 @@ export class AttendanceComponent implements OnInit {
         return user;
       })
       console.log(this.attendanceList);
-      
+
     })
   }
 
   updateAttendance(user, day) {
+    if ( !user.isActive )return;
     let previousData = user.attendanceList.hasOwnProperty(day) ? user.attendanceList[day]:null;
     let date = moment(this.startDate).format('YYYY-MM') + "-" + day;
     let dialogRef = this.dialog.open(UpdateAttandanceComponent, {
