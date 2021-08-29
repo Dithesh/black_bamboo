@@ -62,7 +62,6 @@ export class ProductListComponent implements OnInit, AfterViewInit, OnDestroy {
   ngOnInit(): void {
     this.selectedCompanySubscriber = this.filterForm.get('selectedCompany').valueChanges.subscribe(response => {
       this.filterForm.get('selectedBranch').setValue('', {emitEvent: false});
-      this.branchList = [];
       this.getAllBranches();
     });
   }
@@ -82,6 +81,7 @@ export class ProductListComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   getAllBranches() {
+    this.branchList = [];
     this.serv.endpoint = 'order-manager/branch?status=active&companyId=' + this.filterForm.get('selectedCompany').value;
     this.serv.get().subscribe((response: any[]) => {
       this.branchList = response;

@@ -1,5 +1,5 @@
 <div class="search_outerWrapper text-right mb-20">
-    <form (submit)="getAllProducts()">
+    <form [formGroup]="filterForm" (submit)="getAllProducts()">
       <div class="row gutters-10 justify-content-lg-end">
           <div class="col-auto" [hidden]="userData?.roles != 'Super Admin'">
               <mat-form-field appearance="fill">
@@ -17,13 +17,16 @@
                     </mat-select>
                 </mat-form-field>
             </div>
-        <mat-form-field  appearance="outline" class="ew-250 pb-0">
-            <mat-label>Search</mat-label>
-            <input [formControl]="filterForm.get('searchString')" type="text" matInput>
-            <button matSuffix type="submit" mat-icon-button>
-              <mat-icon >search</mat-icon>
-            </button>
-        </mat-form-field>
+        <div class="col-auto">
+
+          <mat-form-field  appearance="outline" class="ew-250 pb-0">
+              <mat-label>Search</mat-label>
+              <input formControlName="searchString" type="text" matInput>
+              <button matSuffix type="submit" mat-icon-button>
+                <mat-icon >search</mat-icon>
+              </button>
+          </mat-form-field>
+        </div>
       </div>
     </form>
 </div>
