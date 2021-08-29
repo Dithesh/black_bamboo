@@ -19,6 +19,9 @@ const routes: Routes = [
           module: 'users',
           mode: 'read'
         },
+        resolve: {
+          companyList: CompanyListResolver
+        },
         canActivate: [ RoleGaurd ]
       },
       {
