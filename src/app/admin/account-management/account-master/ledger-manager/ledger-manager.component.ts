@@ -185,7 +185,7 @@ export class LedgerManagerComponent implements OnInit, OnDestroy {
     });
   }
   ngOnDestroy() {
-    this.global.unitAdd.next(false);
+    this.global.ledgerAdd.next(false);
     if (this.addButtonSubscriber) {
       this.addButtonSubscriber.unsubscribe();
     }
