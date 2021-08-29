@@ -99,6 +99,8 @@ export class UserListComponent implements OnInit, AfterViewInit {
     this.serv.getByParam({
       pageNumber: page,
       orderType: filterValue.orderType,
+      company_id: filterValue.selectedCompany,
+      branch_id: filterValue.selectedBranch,
       orderCol: filterValue.orderCol,
       searchString: filterValue.searchString
     }).subscribe(response => {
