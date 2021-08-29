@@ -3,6 +3,7 @@ import { CategoriesListComponent } from './categories-list/categories-list.compo
 import { CategoriesSettingComponent } from './categories-setting.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import {CompanyListResolver} from "../resolvers/company-list.resolver";
 
 
 const routes: Routes = [
@@ -13,6 +14,9 @@ const routes: Routes = [
       {
         path: "list",
         component: CategoriesListComponent,
+        resolve: {
+          companyList: CompanyListResolver
+        },
         data: {
           module: 'company',
           mode: 'read'

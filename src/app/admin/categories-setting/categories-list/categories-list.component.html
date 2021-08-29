@@ -1,3 +1,34 @@
+<div class="search_outerWrapper text-right mb-20">
+    <form [formGroup]="filterForm" (submit)="getAllCategories()">
+      <div class="row gutters-10 justify-content-lg-end">
+          <div class="col-auto" [hidden]="userData?.roles != 'Super Admin'">
+              <mat-form-field appearance="fill">
+                  <mat-label>Company</mat-label>
+                  <mat-select required formControlName="selectedCompany">
+                      <mat-option *ngFor="let item of companyList" [value]="item.id">{{ item.companyName }}</mat-option>
+                  </mat-select>
+              </mat-form-field>
+          </div>
+          <div class="col-auto" [hidden]="userData?.roles != 'Super Admin' && userData?.roles != 'Company Admin'">
+                <mat-form-field appearance="fill">
+                    <mat-label>Branch</mat-label>
+                    <mat-select required formControlName="selectedBranch" (selectionChange)="getAllCategories()">
+                        <mat-option *ngFor="let item of branchList" [value]="item.id">{{ item.branchTitle }}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        <div class="col-auto">
+          <mat-form-field  appearance="outline" class="ew-250 pb-0">
+              <mat-label>Search</mat-label>
+              <input formControlName="searchString" type="text" matInput>
+              <button matSuffix type="submit" mat-icon-button>
+                <mat-icon >search</mat-icon>
+              </button>
+          </mat-form-field>
+        </div>
+      </div>
+    </form>
+</div>
 <div class="item_table_outer mt-10">
     <div class="table-responsive">
         <table class="table account_table" matSort>

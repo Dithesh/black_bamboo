@@ -4,7 +4,7 @@
           <div class="col-auto" [hidden]="userData?.roles != 'Super Admin'">
               <mat-form-field appearance="fill">
                   <mat-label>Company</mat-label>
-                  <mat-select required formControlName="selectedCompany">
+                  <mat-select formControlName="selectedCompany">
                       <mat-option *ngFor="let item of companyList" [value]="item.id">{{ item.companyName }}</mat-option>
                   </mat-select>
               </mat-form-field>
@@ -12,7 +12,7 @@
           <div class="col-auto" [hidden]="userData?.roles != 'Super Admin' && userData?.roles != 'Company Admin'">
                 <mat-form-field appearance="fill">
                     <mat-label>Branch</mat-label>
-                    <mat-select required formControlName="selectedBranch" (selectionChange)="getAllUsers()">
+                    <mat-select formControlName="selectedBranch" (selectionChange)="getAllUsers()">
                         <mat-option *ngFor="let item of branchList" [value]="item.id">{{ item.branchTitle }}</mat-option>
                     </mat-select>
                 </mat-form-field>

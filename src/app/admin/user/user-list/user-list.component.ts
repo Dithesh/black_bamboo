@@ -62,8 +62,8 @@ export class UserListComponent implements OnInit, AfterViewInit {
     }else {
       this.filterForm.get('selectedCompany').setValue(this.userData.company_id);
       this.filterForm.get('selectedBranch').setValue(this.userData.branch_id);
-      this.getAllUsers();
     }
+    this.getAllUsers();
   }
 
   ngOnInit(): void {
