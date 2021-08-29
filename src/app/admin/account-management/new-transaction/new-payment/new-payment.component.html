@@ -58,7 +58,12 @@
                             <ng-container *ngFor="let account of transact.accounts['controls'];let i=index;">
                                 <ng-container *ngIf="!account.get('deletedFlag').value">
                                     <tr *ngIf="transact.editAccountIndex != i else editAccountMode">
-                                        <td class="ew-50"></td>
+                                        <td class="ew-50">
+                                            <button mat-icon-button class="small_icon_btn" color="warn" type="button" (click)="transact.onDeleteAccount(i)">
+                                                <!-- <img src="assets/images/icons/TRASHBIN.svg" alt="" class="icon_img"> -->
+                                                <img src="assets/images/icons/TRASHBIN.svg" alt="" class="icon_img">
+                                            </button>
+                                        </td>
                                         <td>
                                             <a href="javascript:;" class="text-reset" (click)="transact.onEditAccountClick(i)">{{account.get('account').value.ledgerName}}</a>
                                         </td>

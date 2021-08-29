@@ -11,12 +11,12 @@ import { NewTransactionService } from '../new-transaction.service';
 })
 export class NewSalesComponent implements OnInit {
   constructor(
-    public _transact: NewTransactionService,
+    public transact: NewTransactionService,
     private route: ActivatedRoute
-  ) { 
-    
-    this._transact.resetData(this.route.snapshot.params.id);
-    this._transact.setTransactionType('sales');
+  ) {
+
+    this.transact.resetData(this.route.snapshot.params.id);
+    this.transact.setTransactionType('sales');
   }
 
   ngOnInit(): void {

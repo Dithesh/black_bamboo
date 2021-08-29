@@ -1,13 +1,13 @@
-<div [formGroup]="_transact.form">
+<div [formGroup]="transact.form">
     <div class="deatail_wraper mb-15">
         <div class="row">
             <div class="col-md-auto col-sm-6 col-12 order-1">
                 <mat-form-field appearance="fill" class="ew-300">
                     <mat-label>To Account</mat-label>
                     <mat-select required formControlName="accountId">
-                      <mat-select-filter [placeholder]="'Filter'" [displayMember]="'ledgerName'" [array]="_transact.accountList" (filteredReturn)="_transact.filteredAccountList =$event"></mat-select-filter>
-                      <ng-container *ngFor="let item of _transact.filteredAccountList;">
-                        <mat-option *ngIf="_transact.topAccountExclude.indexOf(item.accountType) < 0" [value]="item.id">{{ item.ledgerName }}</mat-option>
+                      <mat-select-filter [placeholder]="'Filter'" [displayMember]="'ledgerName'" [array]="transact.accountList" (filteredReturn)="transact.filteredAccountList =$event"></mat-select-filter>
+                      <ng-container *ngFor="let item of transact.filteredAccountList;">
+                        <mat-option *ngIf="transact.topAccountExclude.indexOf(item.accountType) < 0" [value]="item.id">{{ item.ledgerName }}</mat-option>
                       </ng-container>
                     </mat-select>
                   </mat-form-field>
@@ -24,10 +24,10 @@
                     <mat-datepicker #picker></mat-datepicker>
                 </mat-form-field>
             </div>
-            <div class="col-md-auto ml-auto col-sm-6 col-12 order-0 order-sm-3" *ngIf="_transact.form.get('transactionRefNumber').value">
+            <div class="col-md-auto ml-auto col-sm-6 col-12 order-0 order-sm-3" *ngIf="transact.form.get('transactionRefNumber').value">
                 <div class="d-inline-flex align-items-center text-primary font-1_6">
                     <span>Ref. No :</span>
-                    {{ _transact.form.get('transactionRefNumber').value }}
+                    {{ transact.form.get('transactionRefNumber').value }}
                     <!-- <div class="custom_input ew-60 d-md-inline-block">
                         <input type="text" class="w-100">
                         <span class="underline"></span>
@@ -43,7 +43,7 @@
 
     <div class="d-flex align-items-center justify-content-between">
         <h3 class="title_h3 font-weight-500 mb-5 text-primary">Inventory Items</h3>
-        <button type="button" (click)="_transact.addAnotherItem()" mat-button>
+        <button type="button" (click)="transact.addAnotherItem()" mat-button>
             <img src="assets/images/icons/ADD.svg" alt="" class="icon_img"> Add
         </button>
     </div>
@@ -60,23 +60,23 @@
                     </tr>
                 </thead>
                 <tbody formArrayName="items">
-                    <ng-container *ngFor="let item of _transact.items['controls'];let i=index;">
+                    <ng-container *ngFor="let item of transact.items['controls'];let i=index;">
                         <tr *ngIf="!item.get('deletedFlag').value" [formGroupName]="i">
                             <td class="ew-50">
-                                <button type="button" (click)="_transact.onDeleteItem(i)" mat-icon-button class="small_icon_btn" color="warn">
+                                <button type="button" (click)="transact.onDeleteItem(i)" mat-icon-button class="small_icon_btn" color="warn">
                                     <!-- <img src="assets/images/icons/TRASHBIN.svg" alt="" class="icon_img"> -->
-                                    <img src="assets/images/icons/EDIT.svg" alt="" class="icon_img">
+                                    <img src="assets/images/icons/TRASHBIN.svg" alt="" class="icon_img">
                                 </button>
                             </td>
                             <td>
-                                <ng-container *ngIf="_transact.editInventoryIndex != i else inventoryNameInput">
-                                    <a href="javascript:;" (click)="_transact.onEditClick(i)" class="text-reset">{{ item.get('item').value.itemName }}</a>
+                                <ng-container *ngIf="transact.editInventoryIndex != i else inventoryNameInput">
+                                    <a href="javascript:;" (click)="transact.onEditClick(i)" class="text-reset">{{ item.get('item').value.itemName }}</a>
                                 </ng-container>
                                 <ng-template #inventoryNameInput>
                                     <mat-form-field class="field-pb-0 table_select ew-mn-300">
                                         <mat-select formControlName="item">
                                             <mat-option></mat-option>
-                                          <mat-option *ngFor="let inventory of _transact.inventoryList" [value]="inventory">
+                                          <mat-option *ngFor="let inventory of transact.inventoryList" [value]="inventory">
                                               {{ inventory.itemName }}
                                           </mat-option>
                                         </mat-select>
@@ -89,7 +89,7 @@
                             </td>
                             <td class="ew-150">
 
-                                <ng-container *ngIf="_transact.editInventoryIndex != i else inventoryPriceInput">
+                                <ng-container *ngIf="transact.editInventoryIndex != i else inventoryPriceInput">
                                     <span class="d-inline-block mr-5">
                                       &#8377;
                                     </span>
@@ -102,7 +102,7 @@
                                 </ng-template>
                             </td>
                             <td class="ew-150">
-                                <ng-container *ngIf="_transact.editInventoryIndex != i else inventoryQuantityInput">
+                                <ng-container *ngIf="transact.editInventoryIndex != i else inventoryQuantityInput">
                                     {{ item.get('quantity').value }} <span class="d-inline-block ml-5">{{ item.get('item').value.unit.unitLabel }}</span>
                                 </ng-container>
                                 <ng-template #inventoryQuantityInput>
@@ -118,7 +118,7 @@
                                 </ng-template>
                             </td>
                             <td class="ew-180">
-                                <ng-container *ngIf="_transact.editInventoryIndex != i else inventoryTotalPriceInput">
+                                <ng-container *ngIf="transact.editInventoryIndex != i else inventoryTotalPriceInput">
                                     {{item.get('total').value|currency}}
                                 </ng-container>
                                 <ng-template #inventoryTotalPriceInput>
@@ -133,7 +133,7 @@
                             </td>
                         </tr>
                     </ng-container>
-                    <tr *ngIf="_transact.items['controls'].length == 0">
+                    <tr *ngIf="transact.items['controls'].length == 0">
                         <td colspan="5">
                             No entry added
                         </td>
@@ -224,16 +224,16 @@
                           <span class="d-inline-block mr-5">
                             &#8377;
                           </span>
-                          {{ _transact.totalHandler.itemPriceTotal|currency:"":"" }}
+                          {{ transact.totalHandler.itemPriceTotal|currency:"":"" }}
                         </td>
                         <td>
-                          {{ _transact.totalHandler.itemQuantityTotal }}
+                          {{ transact.totalHandler.itemQuantityTotal }}
                         </td>
                         <td>
                           <span class="d-inline-block mr-5">
                             &#8377;
                           </span>
-                          {{ _transact.totalHandler.itemGrandTotal|currency:"":"" }}
+                          {{ transact.totalHandler.itemGrandTotal|currency:"":"" }}
                         </td>
                     </tr>
                 </tbody>
@@ -241,10 +241,10 @@
         </div>
 
     </div>
-    <ng-container *ngIf="_transact.totalHandler.itemGrandTotal > 0">
+    <ng-container *ngIf="transact.totalHandler.itemGrandTotal > 0">
         <div class="d-flex align-items-center justify-content-between mt-20">
             <h3 class="title_h3 font-weight-500 mb-5 text-primary">Taxes and Expenses</h3>
-            <button type="button" (click)="_transact.addAnotherAccount()" mat-button>
+            <button type="button" (click)="transact.addAnotherAccount()" mat-button>
                 <img src="assets/images/icons/ADD.svg" alt="" class="icon_img"> Add
             </button>
         </div>
@@ -253,12 +253,17 @@
                 <div class="table-responsive mt-10">
                     <table class="table account_table">
                         <tbody formArrayName="accounts">
-                            <ng-container *ngFor="let account of _transact.accounts['controls'];let i=index;">
+                            <ng-container *ngFor="let account of transact.accounts['controls'];let i=index;">
                                 <ng-container *ngIf="!account.get('deletedFlag').value">
-                                    <tr *ngIf="_transact.editAccountIndex != i else editAccountMode">
-                                        <td class="ew-50"></td>
+                                    <tr *ngIf="transact.editAccountIndex != i else editAccountMode">
+                                        <td class="ew-50">
+                                            <button mat-icon-button class="small_icon_btn" color="warn" type="button" (click)="transact.onDeleteAccount(i)">
+                                                <!-- <img src="assets/images/icons/TRASHBIN.svg" alt="" class="icon_img"> -->
+                                                <img src="assets/images/icons/TRASHBIN.svg" alt="" class="icon_img">
+                                            </button>
+                                        </td>
                                         <td>
-                                            <a href="javascript:;" class="text-reset" (click)="_transact.onEditAccountClick(i)">{{account.get('account').value.ledgerName}}</a>
+                                            <a href="javascript:;" class="text-reset" (click)="transact.onEditAccountClick(i)">{{account.get('account').value.ledgerName}}</a>
                                         </td>
                                         <td class="ew-150"></td>
                                         <td class="ew-150">
@@ -284,7 +289,7 @@
                                     <ng-template #editAccountMode>
                                         <tr [formGroupName]="i">
                                             <td class="ew-50">
-                                                <button mat-icon-button class="small_icon_btn" color="warn" type="button" (click)="_transact.onDeleteAccount(i)">
+                                                <button mat-icon-button class="small_icon_btn" color="warn" type="button" (click)="transact.onDeleteAccount(i)">
                                                     <img src="assets/images/icons/TRASHBIN.svg" alt="" class="icon_img">
                                                 </button>
                                             </td>
@@ -292,8 +297,8 @@
                                                 <mat-form-field class="field-pb-0 table_select ew-mn-300">
                                                     <mat-select formControlName="account">
                                                         <mat-option></mat-option>
-                                                        <ng-container *ngFor="let item of _transact.filteredExpenseAccountList;">
-                                                            <mat-option *ngIf="_transact.taxAndExpenseExclude.indexOf(item.accountType) < 0" [value]="item">{{ item.ledgerName }}</mat-option>
+                                                        <ng-container *ngFor="let item of transact.filteredExpenseAccountList;">
+                                                            <mat-option *ngIf="transact.taxAndExpenseExclude.indexOf(item.accountType) < 0" [value]="item">{{ item.ledgerName }}</mat-option>
                                                         </ng-container>
                                                     </mat-select>
                                                   </mat-form-field>
@@ -331,7 +336,7 @@
                                     </ng-template>
                                 </ng-container>
                             </ng-container>
-                            <tr *ngIf="_transact.accounts['controls'].length == 0">
+                            <tr *ngIf="transact.accounts['controls'].length == 0">
                                 <td colspan="5">
                                     No entry added
                                 </td>
@@ -366,7 +371,7 @@
                                   <span class="d-inline-block mr-5">
                                     &#8377;
                                   </span>
-                                  {{ _transact.totalHandler.transactionGrandTotal | currency : "":"" }}
+                                  {{ transact.totalHandler.transactionGrandTotal | currency : "":"" }}
                                 </td>
                             </tr>
                         </tbody>
@@ -383,7 +388,7 @@
         </mat-form-field>
     </div>
     <div class="footer_acc_section d-flex justify-content-end">
-        <button type="button" mat-raised-button color="primary" [disabled]="_transact.form.invalid" (click)="_transact.saveFinaldata()">Save</button>
+        <button type="button" mat-raised-button color="primary" [disabled]="transact.form.invalid" (click)="transact.saveFinaldata()">Save</button>
     </div>
 
 </div>
