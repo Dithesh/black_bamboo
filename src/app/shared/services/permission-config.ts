@@ -103,7 +103,7 @@ export const permissions = {
         'Super Admin': 'read',
         'Company Admin': 'read',
         'Branch Admin' : 'full',
-        'Branch Accountant' : 'read',
+        'Branch Accountant' : 'denied',
         'Branch Manager' : 'full',
         'Branch Order Manager' : 'full',
         'Kitchen Manager' : 'denied',

@@ -27,6 +27,7 @@ export class UpdateUserComponent implements OnInit {
     'Super Admin',
     'Company Admin',
     'Branch Admin',
+    'Branch Manager',
     'Branch Accountant',
     'Branch Order Manager',
     'Kitchen Manager',
