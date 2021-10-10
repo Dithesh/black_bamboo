@@ -1,6 +1,6 @@
 import { ActivatedRoute } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
-import { DataService } from './../../../../shared/services/data.service';
+import { DataService } from '../../../../shared/services/data.service';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { FormGroup, FormBuilder } from '@angular/forms';

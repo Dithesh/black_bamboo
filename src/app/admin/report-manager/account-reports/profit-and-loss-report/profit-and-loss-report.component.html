@@ -1,0 +1,186 @@
+<div class="search_outerWrapper"  [formGroup]="filterForm">
+    <div class="row gutters-10 justify-content-end">
+          <div class="col-auto" [hidden]="userData?.roles != 'Super Admin'">
+              <mat-form-field appearance="fill">
+                  <mat-label>Company</mat-label>
+                  <mat-select required formControlName="selectedCompany">
+                      <mat-option *ngFor="let item of companyList" [value]="item.id">{{ item.companyName }}</mat-option>
+                  </mat-select>
+              </mat-form-field>
+          </div>
+          <div class="col-auto" [hidden]="userData?.roles != 'Super Admin' && userData?.roles != 'Company Admin'">
+                <mat-form-field appearance="fill">
+                    <mat-label>Branch</mat-label>
+                    <mat-select required formControlName="selectedBranch">
+                        <mat-option *ngFor="let item of branchList" [value]="item.id">{{ item.branchTitle }}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+          </div>
+        <div class="col-auto">
+            <mat-form-field appearance="outline" class="pb-0">
+                <mat-label>Search</mat-label>
+                <input matInput placeholder="Placeholder" formControlName="searchString">
+                <mat-icon matSuffix>search</mat-icon>
+            </mat-form-field>
+        </div>
+        <div class="col-auto">
+            <mat-form-field appearance="outline" class="pb-0">
+                <mat-label>Date range</mat-label>
+                <mat-date-range-input [rangePicker]="picker">
+                    <input matStartDate placeholder="Start date" formControlName="startDate">
+                    <input matEndDate placeholder="End date" formControlName="endDate">
+                </mat-date-range-input>
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-date-range-picker #picker></mat-date-range-picker>
+            </mat-form-field>
+        </div>
+        <div class="col-auto">
+            <button mat-raised-button class="mr-10" type="button" color="primary" (click)="getProfiltAndLossReport($event)">Generate</button>
+            <button mat-mini-fab color="primary" type="button" class="ml-auto">
+                <img src="assets/images/icons/DOWNLOAD.svg" alt="" class="icon_img">
+            </button>
+        </div>
+
+    </div>
+</div>
+
+
+<div class="item_table_outer mt-20">
+    <h2 class="table_title mb-10">Account Summary</h2>
+
+<!--        <div class="table-responsive">-->
+<!--        <table class="table account_table">-->
+<!--            <thead>-->
+<!--              <tr>-->
+<!--                <th colspan="3" class="text-center right_border">-->
+<!--                  Assets and Income-->
+<!--                </th>-->
+<!--                <th colspan="3" class="text-center">-->
+<!--                  Expenses and Liabilities-->
+<!--                </th>-->
+<!--              </tr>-->
+<!--                <tr>-->
+<!--                    <th>Sl o.</th>-->
+<!--                    <th>Description</th>-->
+<!--                    <th class="text-right right_border">Amount</th>-->
+<!--                    <th>Sl o.</th>-->
+<!--                    <th>Description</th>-->
+<!--                    <th class="text-right">Amount</th>-->
+<!--&lt;!&ndash;                    <th mat-sort-header="branchAddress" class="ew-250">Amount</th>&ndash;&gt;-->
+<!--                </tr>-->
+<!--            </thead>-->
+<!--            <tbody>-->
+<!--              <tr>-->
+<!--                <td>1</td>-->
+<!--                <td>-->
+<!--                  Cash Account Balance-->
+<!--                </td>-->
+<!--                <td class="text-right right_border">25000</td>-->
+<!--                <td>1</td>-->
+<!--                <td>Amount payables</td>-->
+<!--                <td class="text-right">25000</td>-->
+<!--              </tr>-->
+<!--              <tr>-->
+<!--                <td>2</td>-->
+<!--                <td>-->
+<!--                  Bank Account Balance-->
+<!--                </td>-->
+<!--                <td class="text-right right_border">25000</td>-->
+<!--                <td>2</td>-->
+<!--                <td>Tax Payable</td>-->
+<!--                <td class="text-right"></td>-->
+<!--              </tr>-->
+<!--              <tr>-->
+<!--                <td>3</td>-->
+<!--                <td>-->
+<!--                  Ammounts yet to Receive-->
+<!--                </td>-->
+<!--                <td class="text-right right_border">25000</td>-->
+<!--                <td>3</td>-->
+<!--                <td>Damage of inventory</td>-->
+<!--                <td class="text-right"></td>-->
+<!--              </tr>-->
+<!--              <tr>-->
+<!--                <td>4</td>-->
+<!--                <td>-->
+<!--                  Inventory Remaining Stock value-->
+<!--                </td>-->
+<!--                <td class="text-right right_border">25000</td>-->
+<!--                <td>4</td>-->
+<!--                <td></td>-->
+<!--                <td class="text-right"></td>-->
+<!--              </tr>-->
+<!--              <tr>-->
+<!--                <td>5</td>-->
+<!--                <td>-->
+<!--                  Surplus TAX paid-->
+<!--                </td>-->
+<!--                <td class="text-right right_border">25000</td>-->
+<!--                <td></td>-->
+<!--                <td></td>-->
+<!--                <td class="text-right"></td>-->
+<!--              </tr>-->
+<!--              <tr>-->
+<!--                <td>6</td>-->
+<!--                <td>-->
+<!--                  Loss Incurred - Balance Adjustment-->
+<!--                </td>-->
+<!--                <td class="text-right right_border">25000</td>-->
+<!--                <td></td>-->
+<!--                <td></td>-->
+<!--                <td class="text-right"></td>-->
+<!--              </tr>-->
+<!--            </tbody>-->
+<!--        </table>-->
+<!--        &lt;!&ndash; <mat-paginator [pageSizeOptions]="[10]" [length]="dataSource?.total" [pageSize]="10"></mat-paginator> &ndash;&gt;-->
+<!--    </div>-->
+
+
+    <div class="table-responsive">
+        <table class="table account_table" matSort>
+            <thead>
+                <tr>
+                    <th mat-sort-header="ledgerName">Account Name</th>
+                    <th class="text-center">Status</th>
+                    <th class="text-right">Initial Balanace</th>
+                    <th class="text-right">Curret MonthTransaction</th>
+                    <th class="text-right">Ending Balance</th>
+<!--                    <th mat-sort-header="branchAddress" class="ew-250">Amount</th>-->
+                </tr>
+            </thead>
+            <tbody>
+                <ng-container>
+                    <tr *ngFor="let item of pandlReports;">
+                        <td>
+                            {{ item.ledgerName }}
+                        </td>
+                        <td class="text-center">
+                            <mat-icon *ngIf="item.trend == 'up'" class="text-success">trending_up</mat-icon>
+                            <mat-icon *ngIf="item.trend == 'down'" class="text-danger">trending_down</mat-icon>
+                            <mat-icon *ngIf="item.trend == 'flat'" class="text-info">trending_flat</mat-icon>
+                        </td>
+                        <td class="text-right">
+                            {{ (item.previousEntry?.endingBalance?item.previousEntry?.endingBalance:0) | currency: "":"" }}
+                        </td>
+                        <td class="text-right">
+                            {{ item.termTransactionAmount | currency: "":"" }}
+                        </td>
+                        <td class="text-right">
+                            {{ (item.termLastEntry?.endingBalance?item.termLastEntry?.endingBalance:0) | currency: "":"" }}
+                        </td>
+                    </tr>
+                    <tr *ngIf="pandlReports?.length == 0">
+                        <td colspan="5"> No data to display.</td>
+                    </tr>
+<!--                    <tr class="total_row">-->
+<!--                        <td colspan="4" >Grand Total</td>-->
+<!--                        <td class="ew-180">{{orderSummary.transactionTotal| currency:'':''}}</td>-->
+<!--                    </tr>-->
+                </ng-container>
+            </tbody>
+        </table>
+        <!-- <mat-paginator [pageSizeOptions]="[10]" [length]="dataSource?.total" [pageSize]="10"></mat-paginator> -->
+    </div>
+</div>
+
+

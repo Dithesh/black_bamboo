@@ -16,16 +16,21 @@
                 <img src="assets/images/icons/add_squar_fill.svg" alt="" class="icon_img"> <span class="d-inline-block ml-3">Products</span>
             </a>
         </li>
+        <li routerLinkActive="active" *ngIf=" this._serv.getPermission('product-combo', 'read')">
+            <a href="javascript:;" routerLink="/admin/product-combo" matRipple [matRippleUnbounded]="false">
+                <img src="assets/images/icons/add_squar_fill.svg" alt="" class="icon_img"> <span class="d-inline-block ml-3">Product Combo</span>
+            </a>
+        </li>
         <li routerLinkActive="active" *ngIf=" this._serv.getPermission('order-tables', 'full')">
             <a href="javascript:;" routerLink="/admin/tables" matRipple [matRippleUnbounded]="false">
                 <img src="assets/images/icons/TABLE.svg" alt="" class="icon_img"> <span class="d-inline-block ml-3">Tables</span>
             </a>
         </li>
-        <li routerLinkActive="active" *ngIf=" this._serv.getPermission('order-report', 'full')">
-            <a href="javascript:;" routerLink="/admin/reports" matRipple [matRippleUnbounded]="false">
-                <img src="assets/images/icons/PIECHART.svg" alt="" class="icon_img"> <span class="d-inline-block ml-3"> Reports</span>
-            </a>
-        </li>
+<!--        <li routerLinkActive="active" *ngIf=" this._serv.getPermission('order-report', 'full')">-->
+<!--            <a href="javascript:;" routerLink="/admin/reports" matRipple [matRippleUnbounded]="false">-->
+<!--                <img src="assets/images/icons/PIECHART.svg" alt="" class="icon_img"> <span class="d-inline-block ml-3"> Reports</span>-->
+<!--            </a>-->
+<!--        </li>-->
         <li routerLinkActive="active" *ngIf=" this._serv.getPermission('users', 'read')">
             <a href="javascript:;" routerLink="/admin/user" matRipple [matRippleUnbounded]="false">
                 <img src="assets/images/icons/USER.svg" alt="" class="icon_img"> <span class="d-inline-block ml-3">Users</span>
@@ -82,11 +87,6 @@
                         Inventory
                     </a>
                 </li>
-                <li routerLinkActive="active" *ngIf=" this._serv.getPermission('accounting-transaction', 'full')">
-                    <a href="javascript:;" routerLink="/admin/account-management/reports" matRipple>
-                        Reports
-                    </a>
-                </li>
                 <li routerLinkActive="active" *ngIf=" this._serv.getPermission('accounting-masters', 'full')">
                     <a href="javascript:;" routerLink="/admin/account-management/masters" matRipple>
                         Masters
@@ -94,39 +94,36 @@
                 </li>
             </ul>
         </li>
-        <!-- <li routerLinkActive="active">
-            <a href="javascript:;" routerLink="/admin/account-management" matRipple [matRippleUnbounded]="false">
-                <mat-icon>addchart</mat-icon> <span class="d-inline-block ml-3">Account Management </span>
-            </a>
-        </li> -->
-        <!-- <li routerLinkActive="subOpen" class="have_submenu">
-            <a href="javascript:;"  routerLink="/admin/account" (click)="openAccountMenu()" matRipple [matRippleUnbounded]="false">
-                <mat-icon>addchart</mat-icon> <span class="d-inline-block ml-3">Account </span>
-                <mat-icon class="ml-auto right_arrow">keyboard_arrow_down</mat-icon>
+
+        <li routerLinkActive="subOpen" class="have_submenu" *ngIf=" this._serv.getPermission('order-report', 'full')">
+            <a href="javascript:;" routerLink="/admin/reports" (click)="openSubmenu()" matRipple [matRippleUnbounded]="false">
+                <img src="assets/images/icons/PIECHART.svg" alt="" class="icon_img"> <span class="d-inline-block ml-3">Reports </span>
+                <img src="assets/images/icons/ARROWDOWN.svg" alt="" class="icon_img ml-auto right_arrow sub_menu_arrow">
+                <!-- <mat-icon class="ml-auto right_arrow">keyboard_arrow_down</mat-icon> -->
             </a>
             <ul routerLinkActive="active" class="list-unlisted submenu-Wrapper">
-                <li routerLinkActive="active">
-                    <a href="javascript:;" routerLink="/admin/account/dashboard" matRipple>
-                        Dashbord
+                <li routerLinkActive="active" *ngIf=" this._serv.getPermission('order-report', 'full')">
+                    <a href="javascript:;" routerLink="/admin/reports/order-report" matRipple [matRippleUnbounded]="false">
+                         Order Reports
                     </a>
                 </li>
-                <li routerLinkActive="active">
-                    <a href="javascript:;" routerLink="/admin/account/transaction" matRipple>
-                        Transactions
+                <li routerLinkActive="active" *ngIf=" this._serv.getPermission('order-report', 'full')">
+                    <a href="javascript:;" routerLink="/admin/reports/item-sale-report" matRipple [matRippleUnbounded]="false">
+                         Food Sales Reports
                     </a>
                 </li>
-                <li routerLinkActive="active">
-                    <a href="javascript:;" routerLink="/admin/account/reports" matRipple>
-                        Reports
+                <li routerLinkActive="active" *ngIf=" this._serv.getPermission('order-report', 'full')">
+                    <a href="javascript:;" routerLink="/admin/reports/account-reports/account-basic-summary" matRipple [matRippleUnbounded]="false">
+                         Accounts Basic Summary
                     </a>
                 </li>
-                <li routerLinkActive="active">
-                    <a href="javascript:;" routerLink="/admin/account/master" matRipple>
-                        Masters
+                <li routerLinkActive="active" *ngIf=" this._serv.getPermission('order-report', 'full')">
+                    <a href="javascript:;" routerLink="/admin/reports/account-reports/profit-and-loss" matRipple [matRippleUnbounded]="false">
+                         Profit & Loss
                     </a>
                 </li>
             </ul>
-        </li> -->
+        </li>
         <li>
             <a href="javascript:;" matRipple [matRippleUnbounded]="false" (click)="signOut()">
                 <img src="assets/images/icons/LOGOUT.svg" alt="" class="icon_img"> <span class="d-inline-block ml-3">Sign Out</span>

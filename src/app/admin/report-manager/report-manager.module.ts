@@ -7,7 +7,7 @@ import { SharedModule } from 'src/app/shared/shared.module';
 
 
 @NgModule({
-  declarations: [ReportManagerComponent],
+  declarations: [ReportManagerComponent, ],
   imports: [
     CommonModule,
     ReportManagerRoutingModule,

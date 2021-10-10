@@ -6,11 +6,11 @@ import { ReportManagerComponent } from './report-manager.component';
 
 const routes: Routes = [
   {
-    path: "",
+    path: '',
     component: ReportManagerComponent,
     children: [
-      { 
-        path: 'order-report', 
+      {
+        path: 'order-report',
         loadChildren: () => import('./order-report/order-report.module').then(m => m.OrderReportModule),
         data: {
           module: 'order-report',
@@ -18,14 +18,19 @@ const routes: Routes = [
         },
         canActivate: [ RoleGaurd ]
       },
-      { 
-        path: 'item-sale-report', 
-        loadChildren: () => import('./item-sale-report/item-sale-report.module').then(m => m.ItemSaleReportModule) 
+      {
+        path: 'item-sale-report',
+        loadChildren: () => import('./item-sale-report/item-sale-report.module').then(m => m.ItemSaleReportModule)
       },
       {
-        path: "**",
+        path: 'account-reports',
+        loadChildren: () => import('./account-reports/account-reports.module').then(m => m.AccountReportsModule)
+      },
+
+      {
+        path: '**',
         pathMatch: 'full',
-        redirectTo: "order-report"
+        redirectTo: 'order-report'
       }
     ]
   }

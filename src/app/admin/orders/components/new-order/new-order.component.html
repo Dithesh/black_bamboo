@@ -19,6 +19,7 @@
                         <span>{{ item.categoryName }}</span>
                     </li>
                 </ng-container>
+                <li [class.active]="selectedCategory == 'combo'" (click)="selectedCategory = 'combo'"><div class="product_img" style="background-image: url('/assets/images/food.jpg');"></div><span>Combo</span></li>
             </ul>
         </div>
     </div>
@@ -111,6 +112,44 @@
                             </ng-container>
                         </ng-container>
 
+                        <ng-container *ngIf="comboItemList?.length > 0 && (selectedCategory == 'combo' ||  selectedCategory == 'all')">
+                          <li class="itemTitle">Combo Items</li>
+                          <ng-container *ngFor="let item of filteredComboItemList|async;">
+                              <li class="product_items d-flex">
+                                  <input type="radio" name="items" #element [id]="'combo_' + item.id" value="combo_1">
+                                  <label [for]="'combo_' + item.id">
+                                      <div *ngIf="item.featuredImage else noPrImg" class="produt_img" [ngStyle]="{'background-image': 'url(\''+(url + item.featuredImage)+'\')'}"></div>
+                                      <!-- <div class="produt_img" style="background-image: url('/assets/images/food.jpg');"></div> -->
+                                      <div class="textbox">
+                                          <p>{{ item.comboTitle | titlecase }}</p>
+                                          <span>{{ item.comboTotal | currency }}</span>
+                                      </div>
+                                      <div class="buttonBox text-right">
+                                          <button mat-icon-button aria-label="add" class="addShowBtn pointer-none" color="primary">
+                                              <img src="assets/images/icons/ADDROUND.svg" alt="" class="icon_img">
+                                          </button>
+                                          <div class="input_add_box">
+
+                                                    <div class="d-flex mb-5">
+                                                      <mat-slide-toggle *ngIf="selectedOrderType?.tableRequired" [(ngModel)]="item.isParcel" [ngModelOptions]="{standalone: true}"  color="accent" class="mr-10">Parcel?</mat-slide-toggle>
+                                                      <div class="input-group mb-0 ml-auto number_input item_btn">
+                                                          <div class="input-group-prepend">
+                                                              <button class="btn btn-outline-secondary" type="button" (click)="handleOrderQuantityInput(item, 'prev')">-</button>
+                                                          </div>
+                                                          <input type="text" class="form-control" digitOnly  [(ngModel)]="item.quantity" [ngModelOptions]="{standalone: true}"  (change)="handleOrderQuantityInput(item, 'change')">
+                                                          <div class="input-group-append">
+                                                              <button class="btn btn-outline-secondary" type="button" (click)="handleOrderQuantityInput(item, 'next')">+</button>
+                                                          </div>
+                                                      </div>
+                                                  </div>
+
+                                              <button type="button" (click)="onAddComboItem(element, item)" mat-flat-button color="primary" class="product_addBtn small_btn"><img src="assets/images/icons/ADD.svg" alt="" class="icon_img"> Add</button>
+                                          </div>
+                                      </div>
+                                  </label>
+                              </li>
+                          </ng-container>
+                        </ng-container>
                     </ul>
                 </div>
             </div>
@@ -123,7 +162,7 @@
                                 <p class="mb-0 ml-5 px-0"> Items</p>
                             </ng-template>
 
-                            <div class="tab_inner_body scroll_style items" [class.innerFooter]="items['controls'].length > 0 && !blockForms">
+                            <div class="tab_inner_body scroll_style items" [class.innerFooter]="(items['controls'].length > 0 || comboItems['controls'].length > 0) && !blockForms">
                                 <ng-container *ngFor="let item of items['controls'];let i=index;">
                                     <div class="row no-gutters order_item_wrapper" *ngIf="!item.get('deletedFlag').value">
                                         <div class="col-auto">
@@ -172,8 +211,57 @@
                                         </div>
                                     </div>
                                 </ng-container>
+
+                                <ng-container *ngFor="let item of comboItems['controls'];let i=index;">
+                                    <div class="row no-gutters order_item_wrapper" *ngIf="!item.get('deletedFlag').value">
+                                        <div class="col-auto">
+                                            <div class="img_item">
+                                                <img *ngIf="item.get('featuredImage').value" [src]=" url + item.get('featuredImage').value" alt="">
+                                                <img *ngIf="!item.get('featuredImage').value" src="/assets/images/food.jpg" alt="">
+                                            </div>
+                                        </div>
+                                        <div class="col">
+                                            <div class="order_item_card">
+                                                <div class="order-details col">
+                                                    <p class="product_name">{{ item.get('comboTitle').value  | titlecase }}
+                                                     <span class="order_item_card_strip" *ngIf="item.get('isParcel').value">Parcel</span></p>
+                                                    <p class="product_price">
+                                                        <small>Price: &nbsp;&nbsp;&nbsp;</small>
+                                                        <span>{{ item.get('price').value | currency  }}</span>
+                                                    </p>
+                                                    <p class="product_price" *ngIf="item.get('isParcel').value">
+                                                        <small>Pkg charge: &nbsp;&nbsp;&nbsp;</small>
+                                                        <span>{{ item.get('packagingCharges').value | currency  }}</span>
+                                                    </p>
+                                                    <p class="product_price">
+                                                        <small>Total: &nbsp;&nbsp;&nbsp;</small>
+                                                        <span>{{ item.get('totalPrice').value | currency }}</span>
+                                                    </p>
+                                                    <button type="button" mat-stroked-button color="warn" class="mt-15" *ngIf="item.get('productionRejectedQuantity').value > 0" (click)="handleRejectedItems(item)">Remove Rejected</button>
+                                                </div>
+                                                <div class="action_menu col-auto">
+                                                    <div class="input-group mb-0 ml-auto number_input item_btn">
+                                                        <div class="input-group-prepend">
+                                                            <button class="btn btn-outline-secondary" type="button" (click)="handleNumberControl(item, 'prev', i, 'combo')">-</button>
+                                                        </div>
+                                                        <input type="text" class="form-control" [formControl]="item.get('quantity')" (keyup)="handleNumberControl(item, 'text', i, 'combo')" digitOnly>
+                                                        <div class="input-group-append">
+                                                            <button class="btn btn-outline-secondary" type="button" (click)="handleNumberControl(item, 'next', i, 'combo')">+</button>
+                                                        </div>
+                                                    </div>
+                                                    <div class="d-flex item_track_wrapper" *ngIf="item.get('id').value">
+                                                        <p class="item_track served" [matTooltip]="item.get('servedItems').value + ' items served for customers'">{{ item.get('servedItems').value }}</p>
+                                                        <p class="item_track kitchen" [matTooltip]="(item.get('productionAcceptedQuantity').value - item.get('servedItems').value - item.get('productionRejectedQuantity').value)  + ' items are preparing in kitchen'">{{ item.get('productionAcceptedQuantity').value - item.get('servedItems').value - item.get('productionRejectedQuantity').value}}</p>
+                                                        <p class="item_track ready" [matTooltip]="(item.get('productionReadyQuantity').value - item.get('servedItems').value) + ' items ready in kitchen'">{{ item.get('productionReadyQuantity').value - item.get('servedItems').value}}</p>
+                                                        <p class="item_track rejected" [matTooltip]="item.get('productionRejectedQuantity').value + ' items rejected from kitchen'">{{ item.get('productionRejectedQuantity').value }}</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </ng-container>
                             </div>
-                            <div class="row no-gutters align-items-center border-top py-5" *ngIf="items['controls'].length > 0 && !blockForms">
+                            <div class="row no-gutters align-items-center border-top py-5" *ngIf="(items['controls'].length > 0 || comboItems['controls'].length > 0) && !blockForms">
 
                                 <div class="col-12 px-15">
                                     <div class="d-flex align-items-center justify-content-between">

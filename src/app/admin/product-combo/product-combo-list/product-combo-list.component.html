@@ -1,0 +1,80 @@
+<div class="search_outerWrapper text-right mb-20">
+    <form [formGroup]="filterForm" (submit)="getAllProductCombos()">
+      <div class="row gutters-10 justify-content-lg-end">
+          <div class="col-auto" [hidden]="userData?.roles != 'Super Admin'">
+              <mat-form-field appearance="fill">
+                  <mat-label>Company</mat-label>
+                  <mat-select required formControlName="selectedCompany">
+                      <mat-option *ngFor="let item of companyList" [value]="item.id">{{ item.companyName }}</mat-option>
+                  </mat-select>
+              </mat-form-field>
+          </div>
+          <div class="col-auto" [hidden]="userData?.roles != 'Super Admin' && userData?.roles != 'Company Admin'">
+                <mat-form-field appearance="fill">
+                    <mat-label>Branch</mat-label>
+                    <mat-select required formControlName="selectedBranch" (selectionChange)="getAllProductCombos()">
+                        <mat-option *ngFor="let item of branchList" [value]="item.id">{{ item.branchTitle }}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        <div class="col-auto">
+
+          <mat-form-field  appearance="outline" class="ew-250 pb-0">
+              <mat-label>Search</mat-label>
+              <input formControlName="searchString" type="text" matInput>
+              <button matSuffix type="submit" mat-icon-button>
+                <mat-icon >search</mat-icon>
+              </button>
+          </mat-form-field>
+        </div>
+      </div>
+    </form>
+</div>
+<div class="item_table_outer mt-10">
+    <div class="table-responsive">
+        <table class="table account_table" matSort>
+            <thead>
+                <tr>
+                    <th class="ew-50" *ngIf=" this.serv.getPermission('product-combo', 'full')"></th>
+                    <th mat-sort-header="productName" class="ew-250">Product Combo Title</th>
+                    <th mat-sort-header="description">Description</th>
+                    <th mat-sort-header="description">Price</th>
+                    <th mat-sort-header="branch" class="ew-250">Branch</th>
+                    <th class="ew-100">Active?</th>
+                </tr>
+            </thead>
+            <tbody>
+                <ng-container *ngFor="let item of dataSource?.data; let i =index">
+                    <tr *ngIf=" this.serv.getPermission('products', 'full')">
+                        <td>
+                            <button mat-icon-button [matMenuTriggerFor]="moreOption">
+                                <img src="assets/images/icons/MORE.svg" alt="" class="icon_img">
+                            </button>
+                            <mat-menu #moreOption="matMenu">
+                                <button mat-menu-item type="button" [routerLink]="['/admin/product-combo/update/'+item.id]"><img src="assets/images/icons/EDIT.svg" alt="" class="icon_img"> Edit</button>
+                                <button mat-menu-item type="button" (click)="deleteProductCombo(item)"><img src="assets/images/icons/TRASHBIN.svg" alt="" class="icon_img"> Delete</button>
+                            </mat-menu>
+                        </td>
+                        <td>{{item.comboTitle}}</td>
+                        <td>
+                            {{item.description}}
+                        </td>
+                        <td>
+                            {{item.comboTotal}}
+                        </td>
+                        <td>
+                            {{item.branch?.branchTitle }}
+                        </td>
+                        <td>
+                            <mat-slide-toggle readonly [(ngModel)]="item.isActive" (change)="changeStatus(item)"></mat-slide-toggle>
+                        </td>
+                    </tr>
+                </ng-container>
+                <tr>
+                    <td colspan="6" *ngIf="dataSource?.total == 0">No data to display</td>
+                </tr>
+            </tbody>
+        </table>
+        <mat-paginator  [pageSizeOptions]="[10]" [length]="dataSource?.total" [pageSize]="10"></mat-paginator>
+    </div>
+</div>

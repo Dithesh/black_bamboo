@@ -49,15 +49,6 @@ const routes: Routes = [
         canActivate: [ RoleGaurd ]
       },
       {
-        path: 'reports',
-        loadChildren: () => import('./account-reports/account-reports.module').then(mod => mod.AccountReportsModule),
-        data: {
-          module: 'accounting-transaction',
-          mode: 'full'
-        },
-        canActivate: [ RoleGaurd ]
-      },
-      {
         path: '',
         redirectTo: 'dashboard',
         pathMatch: 'full'

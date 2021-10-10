@@ -40,6 +40,8 @@ export class NewOrderComponent implements OnInit, OnDestroy {
   orderId;
   productList: any[] = [];
   filteredProductList: Observable<any[]>;
+  comboItemList: any[] = [];
+  filteredComboItemList: Observable<any[]>;
   searchProductControl = new FormControl('');
   branchList: any[];
   blockForms: boolean;
@@ -69,6 +71,7 @@ export class NewOrderComponent implements OnInit, OnDestroy {
       sgst: [''],
       igst: [''],
       orderItemTotal: [''],
+      orderComboTotal: [''],
       discountReason: [''],
       discountValue: [''],
       orderAmount: [''],
@@ -83,6 +86,7 @@ export class NewOrderComponent implements OnInit, OnDestroy {
       paymentMethod: [''],
       tables: this.fb.array([]),
       items: this.fb.array([]),
+      comboItems: this.fb.array([]),
     });
   }
 
@@ -112,6 +116,7 @@ export class NewOrderComponent implements OnInit, OnDestroy {
     // }
     this.getTableInfo();
     this.getAllProducts();
+    this.getAllProductItemCombo();
 
     window.addEventListener('keydown', this.keyListener, true);
   }
@@ -141,6 +146,19 @@ export class NewOrderComponent implements OnInit, OnDestroy {
       list.push(item);
     });
     console.log(list);
+    return list;
+  }
+
+
+  _filterComboItemList(value) {
+    value = value ? value : '';
+    value = value.toLowerCase();
+    const comboItemList = [...this.comboItemList];
+    // return [];
+    const list = comboItemList.filter(y =>
+      (
+        y.comboTitle.toLowerCase().includes(value)
+      ));
     return list;
   }
 
@@ -213,6 +231,67 @@ export class NewOrderComponent implements OnInit, OnDestroy {
     return this.form.get('items') as FormArray;
   }
 
+  addOrderItemCombo() {
+    return this.fb.group({
+      id: [''],
+      comboProductId: [''],
+      comboTitle: [''],
+      isParcel: [''],
+      price: ['0.00'],
+      quantity: ['1'],
+      servedItems: ['0'],
+      productionAcceptedQuantity: ['0'],
+      productionReadyQuantity: ['0'],
+      kot_pending: ['0'],
+      productionRejectedQuantity: ['0'],
+      packagingCharges: ['0.00'],
+      totalPrice: ['0.00'],
+      featuredImage: [''],
+      orderGroup: [''],
+      deletedFlag: [false]
+    });
+  }
+
+  get comboItems() {
+    return this.form.get('comboItems') as FormArray;
+  }
+
+  onAddComboItem(element, item) {
+    this.isDirty = true;
+    let quantity = parseInt((item.quantity) ? item.quantity : 1);
+    let form: FormGroup = this.addOrderItemCombo();
+    let isNew = true;
+    if (!this.selectedOrderType.tableRequired) {
+      item.isParcel = true;
+    }
+    this.comboItems.controls.forEach((control: FormGroup) => {
+
+      if (!control.get('deletedFlag').value && control.get('comboProductId').value == item.id && control.get('isParcel').value == item.isParcel) {
+        quantity += parseInt(control.get('quantity').value);
+        form = control;
+        isNew = false;
+      }
+    });
+    form.patchValue({
+      comboProductId: item.id,
+      comboTitle: item.comboTitle,
+      featuredImage: item.featuredImage,
+      isParcel: item.isParcel,
+      price: item.comboTotal,
+      quantity,
+      packagingCharges: (item.isParcel) ? item.packagingCharges : '0'
+    });
+    if (isNew) {
+      this.comboItems.push(form);
+    }
+    this.getOrderItemComboTotal(form);
+    element.checked = false;
+    item.quantity = 1;
+    item.isParcel = false;
+  }
+
+
+
   getAllProducts() {
     this._serv.endpoint = 'order-manager/product/category-based-product';
     this._serv.get().subscribe(response => {
@@ -247,6 +326,25 @@ export class NewOrderComponent implements OnInit, OnDestroy {
     });
   }
 
+
+  getAllProductItemCombo() {
+    this._serv.endpoint = 'order-manager/product-combo';
+    this._serv.get().subscribe(response => {
+      this.comboItemList = (response as any[]).map(item => {
+          return {
+            ...item,
+            isParcel: false,
+            quantity: 1
+          };
+      });
+      this.filteredComboItemList = this.searchProductControl.valueChanges.pipe(
+        startWith(''),
+        map(value => this._filterComboItemList(value))
+      );
+
+    });
+  }
+
   handleProductPriceChange(item) {
     item.advanced_pricing.forEach(elem => {
       if (elem.id == item.advancedPriceId) {
@@ -265,10 +363,19 @@ export class NewOrderComponent implements OnInit, OnDestroy {
     this.handleFinalPricing();
   }
 
+  getOrderItemComboTotal(comboItem) {
+    const itemValue = comboItem.value;
+    const price = (itemValue.price) ? parseFloat(itemValue.price) : 0;
+    const quantity = (itemValue.quantity) ? parseFloat(itemValue.quantity) : 0;
+    const packagingCharges = (itemValue.packagingCharges && itemValue.isParcel) ? parseFloat(itemValue.packagingCharges) : 0;
+    comboItem.get('totalPrice').setValue((price * quantity) + (packagingCharges * quantity));
+    this.handleFinalPricing();
+  }
   handleFinalPricing(shouldBeDirty= false) {
     if (shouldBeDirty) {this.isDirty = true; }
     const orderItems = this.items.value;
     let totalPrice = 0;
+    let totalComboPrice = 0;
     let grandTotal = 0;
     orderItems.forEach(item => {
       if (!item.deletedFlag) {
@@ -276,6 +383,13 @@ export class NewOrderComponent implements OnInit, OnDestroy {
       }
     });
     grandTotal += totalPrice;
+    const comboItems = this.comboItems.value;
+    comboItems.forEach(item => {
+      if (!item.deletedFlag) {
+        totalComboPrice = totalComboPrice + parseFloat(item.totalPrice);
+      }
+    });
+    grandTotal += totalComboPrice;
     const charge = this.form.get('deliverCharge').value;
     if (charge != null && charge != '' && charge != undefined && charge > 0) {
       grandTotal += parseFloat(charge);
@@ -303,10 +417,11 @@ export class NewOrderComponent implements OnInit, OnDestroy {
     // console.log(math.div(grandTotal, ));
 
 
-    math;
+    // math;
 
     this.form.patchValue({
       orderItemTotal: totalPrice,
+      orderComboTotal: totalComboPrice,
       orderAmount: grandTotal,
       packingCharge: '',
       roundOfAmount,
@@ -335,16 +450,19 @@ export class NewOrderComponent implements OnInit, OnDestroy {
   }
 
   getTableInfo() {
-    this._serv.endpoint = 'order-manager/tables?showActive=true&orderId=' + this.orderId;
+    this._serv.endpoint = 'order-manager/tables?showActive=true&orderId=' + ((this.orderId) ? this.orderId : '');
     this._serv.get().subscribe(response => {
-      this.tableList = response as any[];
+      const responseData = response as any[];
+      this.tableList = [];
+      if (responseData.length > 0) {
+        this.tableList = responseData[0].tables;
+      }
       this.tables.controls = [];
       if (Array.isArray(this.tableList)) {
         this.tableList.forEach(t => {
           const chairs = [];
-          const selectedChairs = t.selectedChairs.split(',').filter(x => x != '');
-
-          const orderSelectedChairs = t.orderSelectedChairs.split(',').filter(x => x != '');
+          const selectedChairs = (t.selectedChairs) ? t.selectedChairs.split(',').filter(x => x != '') : [];
+          const orderSelectedChairs = t.orderSelectedChairs ? t.orderSelectedChairs.split(',').filter(x => x != '') : [];
           t.chairs.forEach(elem => {
             if (elem != '') {
               let permission = 'full';
@@ -446,6 +564,37 @@ export class NewOrderComponent implements OnInit, OnDestroy {
         this.items.push(orderItem);
         this.getOrderItemTotal(orderItem);
       });
+
+
+      this.comboItems.controls = [];
+      this.comboItems.reset();
+      response.order_item_combos.forEach(item => {
+
+        const comboItem = this.addOrderItemCombo();
+        if (this.blockForms == true) { comboItem.disable(); }
+        comboItem.patchValue({
+          id: item.id,
+          comboProductId: item.product_combo.id,
+          comboTitle: item.product_combo.comboTitle,
+          isParcel: item.isParcel,
+          price: item.price,
+          quantity: item.quantity,
+          servedItems: item.servedQuantity,
+          productionAcceptedQuantity: item.productionAcceptedQuantity,
+          productionReadyQuantity: item.productionReadyQuantity,
+          productionRejectedQuantity: item.productionRejectedQuantity,
+          kot_pending: item.kot_pending,
+          packagingCharges: item.packagingCharges,
+          totalPrice: item.totalPrice,
+          featuredImage: item.product_combo.featuredImage,
+          deletedFlag: false
+        });
+        // console.log('pussing');
+
+        this.comboItems.push(comboItem);
+        this.getOrderItemComboTotal(comboItem);
+      });
+
       this.getBranchDetail(response.branch_id);
       this.handleFinalPricing();
     });
@@ -465,7 +614,7 @@ export class NewOrderComponent implements OnInit, OnDestroy {
     item.quantity = current;
   }
 
-  handleNumberControl(formControl, type, index) {
+  handleNumberControl(formControl, type, index, module= 'items') {
     if (this.blockForms) { return; }
     let value = formControl.get('quantity').value;
     const served = parseInt(formControl.get('servedItems').value);
@@ -485,19 +634,31 @@ export class NewOrderComponent implements OnInit, OnDestroy {
           if (this._serv.notNull(formControl.get('id').value)) {
             formControl.get('deletedFlag').setValue(true);
           } else {
-            this.items.removeAt(index);
+
+            if (module === 'items') {
+              this.items.removeAt(index);
+            }else {
+              this.comboItems.removeAt(index);
+            }
           }
-          this.getOrderItemTotal(formControl);
         } else {
           this.isDirty = true;
           formControl.get('quantity').setValue((served > 1) ? served : 1, { emitEvent: false });
+        }
+        if (module === 'items') {
           this.getOrderItemTotal(formControl);
+        }else {
+          this.getOrderItemComboTotal(formControl);
         }
       });
     } else {
       formControl.get('quantity').setValue(value, { emitEvent: true });
       this.isDirty = true;
-      this.getOrderItemTotal(formControl);
+      if (module === 'items') {
+        this.getOrderItemTotal(formControl);
+      }else {
+        this.getOrderItemComboTotal(formControl);
+      }
     }
   }
 

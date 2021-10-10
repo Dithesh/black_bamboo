@@ -1,49 +1,48 @@
-import { CompanyListResolver } from './../resolvers/company-list.resolver';
-import { ProductListComponent } from './product-list/product-list.component';
-import { NgModule, Component } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
-import { ProductsComponent } from './products.component';
-import { AddProductComponent } from './components/add-product/add-product.component';
-import { RoleGaurd } from 'src/app/shared/gaurd/role-gaurd';
-
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+import {ProductComboComponent} from './product-combo.component';
+import {ProductComboListComponent} from './product-combo-list/product-combo-list.component';
+import {ProductComboUpdateComponent} from './product-combo-update/product-combo-update.component';
+import {RoleGaurd} from '../../shared/gaurd/role-gaurd';
+import {CompanyListResolver} from '../resolvers/company-list.resolver';
 
 const routes: Routes = [
   {
       path: '',
-      component: ProductsComponent,
+      component: ProductComboComponent,
       children: [
         {
           path: 'list',
-          component: ProductListComponent,
+          component: ProductComboListComponent,
           resolve: {
             companyList: CompanyListResolver
           },
           data: {
-            module: 'products',
+            module: 'product-combo',
             mode: 'read'
           },
           canActivate: [ RoleGaurd ]
         },
         {
           path: 'update',
-          component: AddProductComponent,
+          component: ProductComboUpdateComponent,
           resolve: {
             companyList: CompanyListResolver
           },
           data: {
-            module: 'products',
-            mode: 'c'
+            module: 'product-combo',
+            mode: 'full'
           },
           canActivate: [ RoleGaurd ]
         },
         {
           path: 'update/:id',
-          component: AddProductComponent,
+          component: ProductComboUpdateComponent,
           resolve: {
             companyList: CompanyListResolver
           },
           data: {
-            module: 'products',
+            module: 'product-combo',
             mode: 'full'
           },
           canActivate: [ RoleGaurd ]
@@ -55,9 +54,8 @@ const routes: Routes = [
       ]
   }
 ];
-
 @NgModule({
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class ProductsRoutingModule { }
+export class ProductComboRoutingModule { }

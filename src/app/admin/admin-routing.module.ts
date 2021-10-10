@@ -25,6 +25,10 @@ const routes: Routes = [
         loadChildren: () => import('./products/products.module').then(mod => mod.ProductsModule)
       },
       {
+        path: 'product-combo',
+        loadChildren: () => import('./product-combo/product-combo.module').then(mod => mod.ProductComboModule)
+      },
+      {
         path: 'tables',
         loadChildren: () => import('./table-manager/table-manager.module').then(mod => mod.TableManagerModule)
       },

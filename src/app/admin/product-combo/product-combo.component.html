@@ -1,6 +1,6 @@
 <div class="accont_header_wrapping pa-25">
     <h2 class="text-uppercase font-weight-500 mb-0 d-flex align-items-center justify-content-between">
-        Product
+        Product Combo
         <!-- <div>
             <button mat-raised-button color="primary" routerLink="/admin/settings/company/update">Add New</button>
         </div> -->
@@ -9,11 +9,11 @@
 <div class="account_body_wrapper">
     <div class="body_inner_card">
         <div class="tab_header">
-            <div class="tab_btn" routerLink="/admin/products/list" routerLinkActive="active">
-                <a href="javascript:;">Product List</a>
+            <div class="tab_btn" routerLink="/admin/product-combo/list" routerLinkActive="active">
+                <a href="javascript:;">Product Combo List</a>
             </div>
-            <div class="tab_btn" routerLink="/admin/products/update" routerLinkActive="active pointer-none" *ngIf=" this._serv.getPermission('products', 'full')">
-                <a href="javascript:;">{{editId?'Update Product': 'Add Product'}} </a>
+            <div class="tab_btn" routerLink="/admin/product-combo/update" routerLinkActive="active pointer-none" *ngIf=" this.serv.getPermission('products', 'full')">
+                <a href="javascript:;">{{editId?'Update Product Combo': 'Add Product Combo'}} </a>
             </div>
         </div>
         <div class="tab_body pa-20">
