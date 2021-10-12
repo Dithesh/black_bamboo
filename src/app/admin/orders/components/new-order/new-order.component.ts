@@ -328,7 +328,7 @@ export class NewOrderComponent implements OnInit, OnDestroy {
 
 
   getAllProductItemCombo() {
-    this._serv.endpoint = 'order-manager/product-combo';
+    this._serv.endpoint = 'order-manager/product-combo?status=active';
     this._serv.get().subscribe(response => {
       this.comboItemList = (response as any[]).map(item => {
           return {
@@ -677,7 +677,7 @@ export class NewOrderComponent implements OnInit, OnDestroy {
     }
 
 
-    if (orderData.items.length <= 0) {
+    if (orderData.items.length <= 0 && orderData.comboItems.length <= 0) {
       this._serv.showMessage('Please add items.', 'error');
       return;
     }
