@@ -373,6 +373,10 @@
                                         <p class="title">Order Item Total</p>
                                         <span class="value_section">{{ form.get('orderItemTotal').value | currency }}</span>
                                     </div>
+                                    <div class="billing_strip">
+                                        <p class="title">Order Combo Total</p>
+                                        <span class="value_section">{{ form.get('orderComboTotal').value | currency }}</span>
+                                    </div>
                                     <div class="billing_strip" *ngIf="form.get('deliverCharge').value && form.get('deliverCharge').value > 0">
                                         <p class="title">Delivery Charge</p>
                                         <span class="value_section">{{ form.get('deliverCharge').value | currency }}</span>

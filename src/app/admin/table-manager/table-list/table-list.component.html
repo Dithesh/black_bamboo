@@ -23,7 +23,7 @@
 
             <div class="table_col" [class.reserved]="item.get('isReserved').value" [formGroupName]="ti">
                 <button mat-icon-button class="edit_btn" (click)="updateTable(branch.get('id').value, item.value)">
-                  <img src="/assets/images/icons/EDIT.svg" alt="">
+                  <img src="assets/images/icons/EDIT.svg" alt="">
                 </button>
 
                 <div *ngIf="!item.get('isActive').value" class="in_active_strip">In-active</div>
