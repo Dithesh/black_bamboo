@@ -1,5 +1,5 @@
 {
-  "name": "front-expo-smart",
+  "name": "runrestro",
   "version": "0.0.0",
   "main": "main.js",
   "scripts": {
@@ -10,7 +10,8 @@
     "lint": "ng lint",
     "e2e": "ng e2e",
     "electron": "electron .",
-    "electron-build":"ng build --base-href ./ && electron ."
+    "electron-build": "ng build --base-href ./ && electron .",
+    "app:build": "electron-packager . --platform=win32 --arch=ia32 --icon='/assets/images/app.png'"
   },
   "private": true,
   "dependencies": {
