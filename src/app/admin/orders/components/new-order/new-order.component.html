@@ -12,14 +12,14 @@
             </div>
             <h3 class="left_title">Categories</h3>
             <ul class="list-unstyled mb-0 category_list scroll_bar">
-                <li [class.active]="selectedCategory == 'all'" (click)="selectedCategory = 'all'"><div class="product_img" style="background-image: url('/assets/images/food.jpg');"></div><span>All</span></li>
+                <li [class.active]="selectedCategory == 'all'" (click)="selectedCategory = 'all'"><div class="product_img" style="background-image: url('assets/images/food.jpg');"></div><span>All</span></li>
                 <ng-container *ngFor="let item of productList;let i = index;">
                     <li [class.active]="selectedCategory == item.id" (click)="selectedCategory = item.id">
                         <div *ngIf="item.featuredImage else noImg" class="product_img" [ngStyle]="{'background-image': 'url(\''+(url + item.featuredImage)+'\')'}"></div>
                         <span>{{ item.categoryName }}</span>
                     </li>
                 </ng-container>
-                <li [class.active]="selectedCategory == 'combo'" (click)="selectedCategory = 'combo'"><div class="product_img" style="background-image: url('/assets/images/food.jpg');"></div><span>Combo</span></li>
+                <li [class.active]="selectedCategory == 'combo'" (click)="selectedCategory = 'combo'"><div class="product_img" style="background-image: url('assets/images/food.jpg');"></div><span>Combo</span></li>
             </ul>
         </div>
     </div>
@@ -168,7 +168,7 @@
                                         <div class="col-auto">
                                             <div class="img_item">
                                                 <img *ngIf="item.get('featuredImage').value" [src]=" url + item.get('featuredImage').value" alt="">
-                                                <img *ngIf="!item.get('featuredImage').value" src="/assets/images/food.jpg" alt="">
+                                                <img *ngIf="!item.get('featuredImage').value" src="assets/images/food.jpg" alt="">
                                             </div>
                                         </div>
                                         <div class="col">
@@ -217,7 +217,7 @@
                                         <div class="col-auto">
                                             <div class="img_item">
                                                 <img *ngIf="item.get('featuredImage').value" [src]=" url + item.get('featuredImage').value" alt="">
-                                                <img *ngIf="!item.get('featuredImage').value" src="/assets/images/food.jpg" alt="">
+                                                <img *ngIf="!item.get('featuredImage').value" src="assets/images/food.jpg" alt="">
                                             </div>
                                         </div>
                                         <div class="col">
@@ -475,8 +475,8 @@
 </form>
 
 <ng-template #noImg>
-    <div class="product_img" style="background-image: url('/assets/images/food.jpg');"></div>
+    <div class="product_img" style="background-image: url('assets/images/food.jpg');"></div>
 </ng-template>
 <ng-template #noPrImg>
-    <div class="produt_img" style="background-image: url('/assets/images/food.jpg');"></div>
+    <div class="produt_img" style="background-image: url('assets/images/food.jpg');"></div>
 </ng-template>

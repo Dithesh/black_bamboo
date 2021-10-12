@@ -11,6 +11,7 @@
 /node_modules
 /front-expo-smart-win32-ia32
 /runrestro-win32-ia32
+/release-builds/runrestro-win32-ia32
 
 # profiling files
 chrome-profiler-events*.json
