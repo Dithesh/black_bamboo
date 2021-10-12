@@ -9,6 +9,7 @@
 
 # dependencies
 /node_modules
+/front-expo-smart-win32-ia32
 
 # profiling files
 chrome-profiler-events*.json
