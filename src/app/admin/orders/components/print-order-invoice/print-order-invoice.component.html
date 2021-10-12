@@ -37,6 +37,13 @@
                     <td class="price">{{ item.totalPrice | currency: '':'' }}</td>
                 </tr>
             </ng-container>
+            <ng-container *ngFor="let item of orderData?.comboItems;let i=index;">
+                <tr>
+                    <td class="quantity">x{{ item.quantity }}</td>
+                    <td class="description">{{ item.productName }} {{item.advancedPriceTitle ? '('+ item.advancedPriceTitle +')' : ''}}</td>
+                    <td class="price">{{ item.totalPrice | currency: '':'' }}</td>
+                </tr>
+            </ng-container>
             <tr *ngIf="!orderData?.taxDisabled">
                 <td class="quantity"></td>
                 <th class="description">CGST <small class="text-muted">({{ ((orderData?.taxPercent > 0)?(orderData?.taxPercent/2):0) | number : '2.2' }}%)</small></th>
