@@ -41,25 +41,6 @@
                 <img src="assets/images/icons/CATEGORY_fill.svg" alt="" class="icon_img"> <span class="d-inline-block ml-3">Category</span>
             </a>
         </li>
-        <li routerLinkActive="subOpen" class="have_submenu" *ngIf=" this._serv.getPermission('setting-menu', 'read')">
-            <a href="javascript:;" routerLink="/admin/settings" (click)="openSubmenu()" matRipple [matRippleUnbounded]="false">
-                <img src="assets/images/icons/SETTINGS.svg" alt="" class="icon_img"> <span class="d-inline-block ml-3">Setting </span>
-                <img src="assets/images/icons/ARROWDOWN.svg" alt="" class="icon_img ml-auto right_arrow sub_menu_arrow">
-                <!-- <mat-icon class="ml-auto right_arrow">keyboard_arrow_down</mat-icon> -->
-            </a>
-            <ul routerLinkActive="active" class="list-unlisted submenu-Wrapper">
-                <li routerLinkActive="active" *ngIf=" this._serv.getPermission('company', 'read')">
-                    <a href="javascript:;" routerLink="/admin/settings/company" matRipple>
-                        Company
-                    </a>
-                </li>
-                <li routerLinkActive="active" *ngIf=" this._serv.getPermission('branch', 'read')">
-                    <a href="javascript:;" routerLink="/admin/settings/branches" matRipple>
-                        Branches
-                    </a>
-                </li>
-            </ul>
-        </li>
         <li routerLinkActive="subOpen" class="have_submenu" *ngIf=" this._serv.getPermission('accounting-menu', 'full')">
             <a href="javascript:;" routerLink="/admin/account-management" (click)="openSubmenu()" matRipple [matRippleUnbounded]="false">
                 <img src="assets/images/icons/BARGRAPH.svg" alt="" class="icon_img"> <span class="d-inline-block ml-3">Accounts </span>
@@ -120,6 +101,25 @@
                 <li routerLinkActive="active" *ngIf=" this._serv.getPermission('order-report', 'full')">
                     <a href="javascript:;" routerLink="/admin/reports/account-reports/profit-and-loss" matRipple [matRippleUnbounded]="false">
                          Profit & Loss
+                    </a>
+                </li>
+            </ul>
+        </li>
+        <li routerLinkActive="subOpen" class="have_submenu" *ngIf=" this._serv.getPermission('setting-menu', 'read')">
+            <a href="javascript:;" routerLink="/admin/settings" (click)="openSubmenu()" matRipple [matRippleUnbounded]="false">
+                <img src="assets/images/icons/SETTINGS.svg" alt="" class="icon_img"> <span class="d-inline-block ml-3">Setting </span>
+                <img src="assets/images/icons/ARROWDOWN.svg" alt="" class="icon_img ml-auto right_arrow sub_menu_arrow">
+                <!-- <mat-icon class="ml-auto right_arrow">keyboard_arrow_down</mat-icon> -->
+            </a>
+            <ul routerLinkActive="active" class="list-unlisted submenu-Wrapper">
+                <li routerLinkActive="active" *ngIf=" this._serv.getPermission('company', 'read')">
+                    <a href="javascript:;" routerLink="/admin/settings/company" matRipple>
+                        Company
+                    </a>
+                </li>
+                <li routerLinkActive="active" *ngIf=" this._serv.getPermission('branch', 'read')">
+                    <a href="javascript:;" routerLink="/admin/settings/branches" matRipple>
+                        Branches
                     </a>
                 </li>
             </ul>
