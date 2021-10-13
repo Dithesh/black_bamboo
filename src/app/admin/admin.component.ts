@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { LayoutService } from './layout/services/layout.service';
 import { Router } from '@angular/router';
 
@@ -13,13 +13,23 @@ export class AdminComponent implements OnInit {
   constructor(
     public _layout: LayoutService,
     private router: Router
-    ) { }
+    ) { 
+      window.addEventListener('resize', (event) => {
+        this._layout.handleIsOpened();
+      })
+    }
 
   ngOnInit(): void {
     this.handleRouting();
     this.router.events.subscribe(response => {
       this.handleRouting();
     })
+  }
+
+  
+  @HostListener('window:resize', ['$event'])
+  onResize(event) {
+    this._layout.handleIsOpened();
   }
 
   handleRouting(){

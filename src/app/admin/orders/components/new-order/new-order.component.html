@@ -58,7 +58,10 @@
                         <mat-form-field  appearance="outline" class="ml-auto pb-0">
                             <mat-label>Search</mat-label>
                             <input type="text" matInput [(formControl)]="searchProductControl">
-                            <mat-icon matSuffix>search</mat-icon>
+                            <!-- <mat-icon matSuffix>search</mat-icon> -->
+                            <button type="button" matSuffix mat-icon-button>
+                                <img matSuffix src="assets/images/icons/SEARCH.svg" alt="" class="icon_img">
+                            </button>
                         </mat-form-field>
                     </div>
                     <ul class="list-unstyled items_list_ul mb-0 scroll_bar">
@@ -158,7 +161,8 @@
                     <mat-tab-group>
                         <mat-tab>
                             <ng-template mat-tab-label>
-                                <mat-icon class="example-tab-icon">restaurant</mat-icon>
+                                <!-- <mat-icon class="example-tab-icon">restaurant</mat-icon> -->
+                                <img class="example-tab-icon" src="assets/images/icons/FOOD.svg" class="icon_img" alt="">
                                 <p class="mb-0 ml-5 px-0"> Items</p>
                             </ng-template>
 
@@ -284,7 +288,8 @@
                         </mat-tab>
                         <mat-tab *ngIf="selectedOrderType?.tableRequired">
                             <ng-template mat-tab-label>
-                                <mat-icon class="example-tab-icon">view_module</mat-icon>
+                                <!-- <mat-icon class="example-tab-icon">view_module</mat-icon> -->
+                                <img class="example-tab-icon" src="assets/images/icons/TABLE.svg" class="icon_img" alt="">
                                 <p class="mb-0 ml-5 px-0"> Table</p>
                             </ng-template>
                             <div class="tab_inner_body scroll_style tableBox">
@@ -294,7 +299,8 @@
                         </mat-tab>
                         <mat-tab>
                             <ng-template mat-tab-label>
-                                <mat-icon class="example-tab-icon">supervisor_account</mat-icon>
+                                <!-- <mat-icon class="example-tab-icon">supervisor_account</mat-icon> -->
+                                <img class="example-tab-icon" src="assets/images/icons/USER.svg" class="icon_img" alt="">
                                 <p class="mb-0 ml-5 px-0"> Customer</p>
                             </ng-template>
 
@@ -329,7 +335,8 @@
                         </mat-tab>
                         <mat-tab *ngIf="items['controls'].length > 0">
                             <ng-template mat-tab-label>
-                                <mat-icon class="example-tab-icon">local_offer</mat-icon>
+                                <!-- <mat-icon class="example-tab-icon">local_offer</mat-icon> -->
+                                <img class="example-tab-icon" src="assets/images/icons/TAG.svg" class="icon_img" alt="">
                                 <p class="mb-0 ml-5 px-0"> Extras</p>
                             </ng-template>
                             <div class="tab_inner_body scroll_style bill innerFooter">
@@ -355,7 +362,8 @@
                         </mat-tab>
                         <mat-tab *ngIf="items['controls'].length > 0 || comboItems['controls'].length > 0">
                             <ng-template mat-tab-label>
-                                <mat-icon class="example-tab-icon">receipt</mat-icon>
+                                <!-- <mat-icon class="example-tab-icon">receipt</mat-icon> -->
+                                <img class="example-tab-icon" src="assets/images/icons/BILL.svg" class="icon_img" alt="">
                                 <p class="mb-0 ml-5 px-0"> Bill</p>
                             </ng-template>
                             <div class="tab_inner_body scroll_style bill innerFooter">

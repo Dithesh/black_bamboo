@@ -9,13 +9,18 @@ export class LayoutService {
     isFixedMenu=false;
 
     constructor() {
+        this.handleIsOpened();
+    }
+
+    handleIsOpened() {
         if(window.innerWidth < 1360) {
-            this.isOpened = false;
-        }
-        if(window.innerWidth < 1200) {
             this.isOpened = false;
             this.menuMode = 'over';
             this.isFixedMenu=true;
+        }else {
+            this.isOpened = true;
+            this.menuMode = 'side';
+            this.isFixedMenu=false;
         }
     }
 }

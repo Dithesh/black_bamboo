@@ -25,7 +25,16 @@ const {app, BrowserWindow, Menu} = require('electron')
       );
       // Open the DevTools.
       // mainWindow.webContents.openDevTools()
-
+      // mainWindow.on('resize', function() {
+      //   mainWindow.reload()
+      //   mainWindow.loadURL(
+      //     url.format({
+      //       pathname: path.join(__dirname, `/dist/index.html`),
+      //       protocol: "file:",
+      //       slashes: true
+      //     })
+      //   );
+      // })
       mainWindow.on('closed', function () {
         mainWindow = null
       })

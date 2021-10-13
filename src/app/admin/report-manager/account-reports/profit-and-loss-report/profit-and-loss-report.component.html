@@ -20,7 +20,8 @@
             <mat-form-field appearance="outline" class="pb-0">
                 <mat-label>Search</mat-label>
                 <input matInput placeholder="Placeholder" formControlName="searchString">
-                <mat-icon matSuffix>search</mat-icon>
+                <!-- <mat-icon matSuffix>search</mat-icon> -->
+                <img matSuffix src="assets/images/icons/SEARCH.svg" alt="" class="icon_img">
             </mat-form-field>
         </div>
         <div class="col-auto">
@@ -155,9 +156,12 @@
                             {{ item.ledgerName }}
                         </td>
                         <td class="text-center">
-                            <mat-icon *ngIf="item.trend == 'up'" class="text-success">trending_up</mat-icon>
-                            <mat-icon *ngIf="item.trend == 'down'" class="text-danger">trending_down</mat-icon>
-                            <mat-icon *ngIf="item.trend == 'flat'" class="text-info">trending_flat</mat-icon>
+                            <img *ngIf="item.trend == 'up'" src="assets/images/icons/UP.svg" alt="" class="icon_img">
+                            <img *ngIf="item.trend == 'down'" src="assets/images/icons/DOWN.svg" alt="" class="icon_img">
+                            <img *ngIf="item.trend == 'flat'" src="assets/images/icons/FLAT.svg" alt="" class="icon_img">
+                            <!-- <mat-icon  class="text-success">trending_up</mat-icon> -->
+                            <!-- <mat-icon class="text-danger">trending_down</mat-icon> -->
+                            <!-- <mat-icon  class="text-info">trending_flat</mat-icon> -->
                         </td>
                         <td class="text-right">
                             {{ (item.previousEntry?.endingBalance?item.previousEntry?.endingBalance:0) | currency: "":"" }}
