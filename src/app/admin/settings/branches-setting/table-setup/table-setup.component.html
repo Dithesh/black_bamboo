@@ -1,7 +1,21 @@
 <div class="item_table_outer mt-10">
   <div class="d-flex justify-content-between align-items-center">
     <h2>{{ brandDetails?.branchTitle }}</h2>
-    <button mat-raised-button color="primary" type="button" class="mb-20" (click)="updateTable()">Add New</button>
+    <div class="d-flex align-items-center">
+      <form [formGroup]="filterForm" class="d-flex align-items-center">
+        <mat-form-field  appearance="fill" class="ew-150 mr-10">
+            <mat-label>Search</mat-label>
+            <input type="text" formControlName="searchString" matInput>
+        </mat-form-field>
+        <mat-form-field appearance="fill" class="w-100 mr-10">
+            <mat-label>Room</mat-label>
+            <mat-select formControlName="room_id">
+                <mat-option *ngFor="let item of brandDetails.rooms" [value]="item.id">{{ item.roomName }}</mat-option>
+            </mat-select>
+        </mat-form-field>
+      </form>
+      <button mat-raised-button color="primary" type="button" class="ml-10 mb-20 flex-none" (click)="updateTable()">Add New</button>
+    </div>
   </div>
     <div class="table-responsive">
         <table class="table account_table" matSort>
@@ -9,6 +23,7 @@
                 <tr>
                     <th class="ew-100">Action</th>
                     <th mat-sort-header="tableId">Table NO</th>
+                    <th mat-sort-header="tableId">Room</th>
                     <th mat-sort-header="description">Description</th>
                     <th mat-sort-header="noOfChair" class="ew-200">Number Of Chairs</th>
                     <th class="ew-150">Is Active?</th>
@@ -28,6 +43,9 @@
                         </td>
                         <td>
                             {{item.tableId }}
+                        </td>
+                        <td>
+                            {{item.room.roomName }}
                         </td>
                         <td>{{item.description}}</td>
                         <td>

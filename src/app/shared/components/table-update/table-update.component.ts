@@ -9,9 +9,11 @@ import {DataService} from "../../services/data.service";
   styleUrls: ['./table-update.component.scss']
 })
 export class TableUpdateComponent implements OnInit {
+  roomList: any[] = [];
   form = this.fb.group({
         id: [''],
         tableId: [''],
+        room_id: [''],
         noOfChair: [''],
         description: [''],
         isReserved: [false],
@@ -25,9 +27,17 @@ export class TableUpdateComponent implements OnInit {
     private serv: DataService
   ) {
     this.form.patchValue(data.table);
+    this.getBranchDetails(data.table.branch_id);
   }
 
   ngOnInit(): void {
+  }
+
+  getBranchDetails(branchId) {
+    this.serv.endpoint = 'order-manager/branch/' + branchId;
+    this.serv.get().subscribe((data: any) => {
+      this.roomList = data.rooms;
+    });
   }
 
   updateTable(event) {
