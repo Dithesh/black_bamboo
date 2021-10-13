@@ -46,6 +46,13 @@ th.price {
 //     max-width: 155px;
 // }
 
+.totalRow{
+    td, th{
+        padding-top: 5px;
+        font-size: 1.2rem;
+    }
+}
+
 img {
     max-width: inherit;
     width: inherit;
