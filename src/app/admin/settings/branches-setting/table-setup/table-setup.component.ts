@@ -18,6 +18,7 @@ import {TableUpdateComponent} from '../../../../shared/components/table-update/t
 export class TableSetupComponent implements OnInit, AfterViewInit {
   filterForm: FormGroup = this.fb.group({
       searchString: [''],
+      room_id: [''],
       orderCol: [''],
       orderType: ['']
     });
@@ -56,7 +57,7 @@ export class TableSetupComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {
     this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
-    merge(this.sort.sortChange, this.paginator.page, this.filterForm.get('searchString').valueChanges)
+    merge(this.sort.sortChange, this.paginator.page, this.filterForm.get('searchString').valueChanges, this.filterForm.get('room_id').valueChanges)
       .subscribe(data => {
         this.filterForm.patchValue({
           orderCol: this.sort.active,
@@ -70,7 +71,7 @@ export class TableSetupComponent implements OnInit, AfterViewInit {
     const filterValue = {
       ...this.filterForm.value,
       pageNumber: page,
-      branchId: this.branchId
+      branchId: this.branchId,
     };
     this.serv.endpoint = 'order-manager/table-manager';
     this.serv.getByParam(filterValue).subscribe(response => {

@@ -3,8 +3,15 @@
         <h3>{{ form.get('id').value == '' ? 'Add table' : 'Update table' }}</h3>
         <mat-form-field appearance="outline" class="w-100 mb-10">
             <mat-label>Table ID</mat-label>
-            <input matInput formControlName="tableId">
+            <input matInput formControlName="tableId" required>
             <mat-error *ngIf="form.get('tableId').hasError('required')">ID is required</mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="w-100 mb-10">
+            <mat-label>Room</mat-label>
+            <mat-select formControlName="room_id" required>
+                <mat-option *ngFor="let item of roomList" [value]="item.id">{{ item.roomName }}</mat-option>
+            </mat-select>
+            <mat-error *ngIf="form.get('room_id').hasError('required')">Room is required</mat-error>
         </mat-form-field>
         <mat-form-field appearance="outline" class="w-100 mb-10">
             <mat-label>Description</mat-label>

@@ -35,6 +35,7 @@ export class UpdateBranchComponent implements OnInit {
       taxPercent: [''],
       company_id: [''],
       kitchens: this.fb.array([]),
+      rooms: this.fb.array([]),
       orderTypes: this.fb.array([]),
       paymentMethods: this.fb.array([]),
     });
@@ -74,6 +75,33 @@ export class UpdateBranchComponent implements OnInit {
       item.get('deletedFlag').setValue(true);
     }else {
       this.paymentMethods.removeAt(index);
+    }
+  }
+
+  get rooms() {
+    return this.form.get('rooms') as FormArray;
+  }
+
+  addNewRoom() {
+    return this.fb.group({
+      id: [''],
+      roomName: [''],
+      withAc: [false],
+      serveLiquor: [false],
+      isActive: [true],
+      deletedFlag: [false]
+    });
+  }
+
+  addAnotherRoom() {
+    this.rooms.push(this.addNewRoom());
+  }
+
+  deleteRoom(item, index) {
+    if (this._serv.notNull(item.get('id').value)) {
+      item.get('deletedFlag').setValue(true);
+    }else {
+      this.rooms.removeAt(index);
     }
   }
 
@@ -133,9 +161,14 @@ export class UpdateBranchComponent implements OnInit {
       this.form.patchValue(data);
 
       if (this._serv.notNull(data.branchLogo)){
-        this.imageSrc = 'url(\''+ this.url + data.branchLogo +'\')';
+        this.imageSrc = 'url(\'' + this.url + data.branchLogo + '\')';
       }
 
+      data.rooms.forEach(elem => {
+        const form = this.addNewRoom();
+        form.patchValue(elem);
+        this.rooms.push(form);
+      });
       data.kitchens.forEach(elem => {
         const form = this.addNewKitchen();
         form.patchValue(elem);

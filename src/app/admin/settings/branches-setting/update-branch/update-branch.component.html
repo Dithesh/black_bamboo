@@ -63,6 +63,40 @@
             </div>
         </div>
 
+
+        <mat-card class="mt-15 only_boder">
+            <h3 class="mb-10 d-flex justify-content-between align-items-center">
+                Room Setup
+                <button mat-stroked-button color="primary" type="button" (click)="addAnotherRoom()">+ Add</button>
+            </h3>
+
+            <div formArrayName="rooms">
+                <ng-container *ngFor="let item of rooms['controls'];let i=index;">
+                    <div class="row align-items-center" *ngIf="!item.get('deletedFlag').value" [formGroupName]="i">
+                        <div class="col">
+                            <mat-form-field  appearance="fill" class="w-100 mb-5">
+                                <mat-label>Room Name</mat-label>
+                                <input type="text" formControlName="roomName" matInput>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-auto">
+                            <mat-slide-toggle color="accent" class="mb-15" formControlName="withAc">AC?</mat-slide-toggle>
+                        </div>
+                        <div class="col-auto">
+                            <mat-slide-toggle color="accent" class="mb-15" formControlName="serveLiquor">Liquor?</mat-slide-toggle>
+                        </div>
+                        <div class="col-auto">
+                            <mat-slide-toggle color="accent" class="mb-15" formControlName="isActive">Active?</mat-slide-toggle>
+                        </div>
+                        <div class="col-auto">
+                            <button mat-button color="primary" type="button" class="mb-15" (click)="deleteRoom(item, i)">- Delete</button>
+                        </div>
+                    </div>
+                </ng-container>
+            </div>
+        </mat-card>
+
+
         <mat-card class="mt-15 only_boder">
             <h3 class="mb-10 d-flex justify-content-between align-items-center">
                 Kitchen Setup
