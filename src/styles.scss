@@ -2276,6 +2276,15 @@ label.mat-checkbox-layout {
         }
     }
 }
+.line-clamp-2{
+    display: inline-block;
+    white-space: pre-wrap;
+    word-break: break-word;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;  
+    overflow: hidden;
+}
 
 //material overrided
 .mat-button.mat-primary, .mat-icon-button.mat-primary, .mat-stroked-button.mat-primary {

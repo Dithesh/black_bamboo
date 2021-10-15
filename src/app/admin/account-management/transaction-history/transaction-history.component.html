@@ -38,7 +38,7 @@
                     <input matInput placeholder="Placeholder" formControlName="searchString">
                     <button matSuffix mat-icon-button type="submit">
                       <!-- <mat-icon>search</mat-icon> -->
-                      <img src="assets/images/icons/SEARCH.svg" alt="" class="icon_img">
+                      <img matSuffix src="assets/images/icons/SEARCH.svg" alt="" class="icon_img">
                     </button>
                 </mat-form-field>
             </div>
@@ -79,7 +79,8 @@
                                 <th class="ew-200" mat-sort-header="transactionRefNumber">Ref No.</th>
                                 <th class="ew-200" mat-sort-header="transactionDate">Date</th>
                                 <th class="ew-200">Account</th>
-                                <th class="" mat-sort-header="transactionType">Type</th>
+                                <th class="ew-200" mat-sort-header="transactionType">Type</th>
+                                <th>Inventory</th>
                                 <th class="ew-200">Amount</th>
                                 <th class="">Description</th>
                             </tr>
@@ -102,6 +103,11 @@
                                         <span *ngIf="item.transactionType == 'purchase'" class="tag purchase">Purchase</span>
                                         <span *ngIf="item.transactionType == 'payment'" class="tag payment">Payment</span>
                                         <span *ngIf="item.transactionType == 'receipt'" class="tag recipt">Receipt</span>
+                                    </td>
+                                    <td>
+                                        <span class="line-clamp-2">
+                                            {{ item.inventory_string }}
+                                        </span>
                                     </td>
                                     <td>
                                         {{ item.grandTotal| currency:'':'' }}

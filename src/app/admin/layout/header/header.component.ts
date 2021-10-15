@@ -6,6 +6,7 @@ import { ChangeProfileComponent } from '../component/change-profile/change-profi
 import { Router } from '@angular/router';
 import { DataService } from 'src/app/shared/services/data.service';
 import { environment } from 'src/environments/environment';
+import {Location} from '@angular/common';
 
 @Component({
   selector: 'app-header',
@@ -22,6 +23,7 @@ export class HeaderComponent implements OnInit {
     public _layout: LayoutService, 
     private dialog:MatDialog, 
     private router: Router,
+    private location: Location,
     private _serv: DataService) { }
 
   ngOnInit(): void {
@@ -38,6 +40,10 @@ export class HeaderComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(this.getCurrentUser.bind(this))
+  }
+
+  goBack(){
+    this.location.back();
   }
 
   getCurrentUser() {
