@@ -22,8 +22,8 @@ export class OrderReportComponent implements OnInit {
       typeOfOrder: [''],
       company_id: [''],
       branch_id: [''],
-      startDate: [''],
-      endDate: [''],
+      startDate: [new Date()],
+      endDate: [new Date()],
       orderCol: [''],
       orderType: ['']
   });
@@ -54,7 +54,9 @@ export class OrderReportComponent implements OnInit {
     }else {
       this.filterForm.get('company_id').setValue(this.userData.company_id);
       this.filterForm.get('branch_id').setValue(this.userData.branch_id);
-      this.getBranchDetail();
+      // let calOlist = function calOlist(){this.getOrderList()}; 
+      this.getBranchDetail(this.getOrderList.bind(this));
+      // this.getOrderList();
     }
   }
 
@@ -95,7 +97,7 @@ export class OrderReportComponent implements OnInit {
     });
   }
 
-  getBranchDetail() {
+  getBranchDetail(functionCall=null) {
     const branchId = this.filterForm.get('branch_id').value;
     if(!this.serv.notNull(branchId)){
       this.orderTypeList = [];
@@ -108,12 +110,25 @@ export class OrderReportComponent implements OnInit {
       this.branchDetail = response;
       this.orderTypeList = response.order_types as any[];
       this.paymentMethodList = response.payment_methods as any[];
+      
+      if(this.orderTypeList.length > 0){
+        let ordval = this.orderTypeList.map(x => x.id);
+        this.filterForm.get('typeOfOrder').setValue(ordval);
+      }
+      if(this.paymentMethodList.length > 0){
+        let payval = this.paymentMethodList.map(x => x.id);
+        this.filterForm.get('paymentMethod').setValue(payval);
+      }
+      if(functionCall){
+        functionCall();
+      }
     })
+    
   }
 
 
-  getOrderList(event) {
-    event.preventDefault();
+  getOrderList(event=null) {
+    if(event) event.preventDefault();
     const filterValue = this.filterForm.value;
     let startDate = '';
     let endDate = '';

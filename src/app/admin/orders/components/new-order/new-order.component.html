@@ -463,14 +463,15 @@
                                   (click)="saveOrder('confirm')" [disabled]="orderProcessing"><img src="assets/images/icons/SAVE-WHITE.svg" alt="" class="icon_img mr-3">  Save</button>
                             </div>
                             <div class="d-flex flex-nowrap w-100" *ngIf="orderId">
-                                <button mat-flat-button color="accent" class="w-100 rounded-0" (click)="printOrder()"><img src="assets/images/icons/PRINT.svg" alt="" class="icon_img">  Print</button>
-                                <button mat-flat-button aria-label="" color="accent" class="ew-40 rounded-0" [matMenuTriggerFor]="moreOption">
+                                <button mat-flat-button color="accent" *ngIf="form.get('orderStatus').value == 'completed'" class="w-100 rounded-0" (click)="printOrder()"><img src="assets/images/icons/PRINT.svg" alt="" class="icon_img">  Print Bill</button>
+                                <button mat-flat-button color="accent" *ngIf="form.get('orderStatus').value != 'completed'" class="w-100 rounded-0" (click)="printAddress()"><img src="assets/images/icons/PRINT.svg" alt="" class="icon_img">  Print KOT</button>
+                                <!-- <button mat-flat-button aria-label="" color="accent" class="ew-40 rounded-0" [matMenuTriggerFor]="moreOption">
                                     <img src="assets/images/icons/ARROWDOWN.svg" alt="" class="icon_img">
                                 </button>
                                 <mat-menu #moreOption="matMenu">
                                     <button mat-menu-item type="button" (click)="printAddress()">Address Print</button>
                                     <button mat-menu-item type="button" (click)="printAddress()">KOT</button>
-                                  </mat-menu>
+                                  </mat-menu> -->
                             </div>
                         </div>
                     </div>
