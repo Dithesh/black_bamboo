@@ -1,65 +1,78 @@
-const {app, BrowserWindow, Menu} = require('electron')
-    const url = require("url");
-    const path = require("path");
-    
-    let mainWindow
+const {app, BrowserWindow, Menu, ipcMain, ipcRenderer} = require('electron')
+const url = require("url");
+const path = require("path");
 
-    function createWindow () {
-      mainWindow = new BrowserWindow({
-        width: 1100,
-        height: 800,
-        minHeight: 800,
-        minWidth: 1100,
-        icon: path.join(__dirname, `/dist/assets/images/app.png`),
-        webPreferences: {
-          nodeIntegration: true
-        }
-      })
-    //   mainWindow.loadURL(`file://${__dirname}/dist/index.html`)
-      mainWindow.loadURL(
-        url.format({
-          pathname: path.join(__dirname, `/dist/index.html`),
-          protocol: "file:",
-          slashes: true
-        })
-      );
-      // Open the DevTools.
-      // mainWindow.webContents.openDevTools()
-      // mainWindow.on('resize', function() {
-      //   mainWindow.reload()
-      //   mainWindow.loadURL(
-      //     url.format({
-      //       pathname: path.join(__dirname, `/dist/index.html`),
-      //       protocol: "file:",
-      //       slashes: true
-      //     })
-      //   );
-      // })
-      mainWindow.on('closed', function () {
-        mainWindow = null
-      })
+let mainWindow
+var fullScreen = true;
+function createWindow() {
+  mainWindow = new BrowserWindow({
+    width: 1100,
+    height: 800,
+    minHeight: 800,
+    minWidth: 1100,
+    fullscreen: fullScreen,
+    icon: path.join(__dirname, `/dist/assets/images/app.png`),
+    webPreferences: {
+      nodeIntegration: true,
+      enableRemoteModule: true,
+      contextIsolation: false,
+      preload: path.join(__dirname, 'preload.js')
     }
+  })
+  //   mainWindow.loadURL(`file://${__dirname}/dist/index.html`)
+  mainWindow.loadURL(
+    url.format({
+      pathname: path.join(__dirname, `/dist/index.html`),
+      protocol: "file:",
+      slashes: true
+    })
+  );
 
-    var menu = Menu.buildFromTemplate([
-        {
-            label: 'Menu',
-            submenu: [
-                {
-                    label:'Exit',
-                    click() { 
-                        app.quit() 
-                    }
-                }
-            ]
+  ipcMain.on('print_invoice', (event, arg) => {
+    mainWindow.webContents.print({
+      deviceName: arg,
+      silent: true
+    });
+  })
+  ipcMain.on('get_print_devices', (event, arg) => {
+        mainWindow.webContents.send('list_of_printers', mainWindow.webContents.getPrinters());
+  })
+  // mainWindow.webContents.openDevTools()
+  mainWindow.on('closed', function () {
+    mainWindow = null
+  })
+
+
+}
+
+var menu = Menu.buildFromTemplate([
+  {
+    label: 'Application',
+    submenu: [
+      {
+        id: 'fullscreen',
+        // label: 'Toggle Full Screen',
+        role: 'togglefullscreen'
+      },
+      // {
+      //   role: 'toggleDevTools'
+      // },
+      {
+        label: 'Exit Application',
+        click() {
+          app.quit()
         }
-    ])
-    Menu.setApplicationMenu(menu); //menu is commented for now 
-    app.on('ready', createWindow)
+      }
+    ]
+  }
+])
+Menu.setApplicationMenu(menu); //menu is commented for now
+app.on('ready', createWindow)
 
-    app.on('window-all-closed', function () {
-      if (process.platform !== 'darwin') app.quit()
-    })
+app.on('window-all-closed', function () {
+  if (process.platform !== 'darwin') app.quit()
+})
 
-    app.on('activate', function () {
-      if (mainWindow === null) createWindow()
-    })
+app.on('activate', function () {
+  if (mainWindow === null) createWindow()
+})

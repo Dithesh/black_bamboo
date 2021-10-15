@@ -1,4 +1,5 @@
 <div class="ticket only-print" id="print-section">
+    <p class="centered">***</p>
     <p class="centered">
         <b class="title">{{savedOrderData?.branch.branchTitle}}</b>
         <br>{{savedOrderData?.branch.branchAddress}}
@@ -15,9 +16,9 @@
     </div>
     <div>
         <ng-container *ngFor="let item of orderData?.tables; let i=index;">
-            {{ item.tableId }} 
+            {{ item.tableId }}
             <ng-container *ngIf="i != (orderData?.tables.length - 1)">
-                , 
+                ,
             </ng-container>
         </ng-container>
     </div>
@@ -90,7 +91,7 @@
 
 <div class="hidden-print text-center ew-300">
     <h3>Do you want to print again?</h3>
-    
+
     <button mat-flat-button (click)="cancelPrint()" color="warn" class="mr-20">Cancel</button>
     <button mat-flat-button (click)="printPage()" color="primary">Print</button>
 </div>

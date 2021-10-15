@@ -59,6 +59,22 @@
                             <textarea matInput formControlName="description" rows="3" cdkTextareaAutosize></textarea>
                         </mat-form-field>
                     </div>
+                    <div class="col-6">
+                        <mat-form-field  appearance="fill" class="w-100 mb-5">
+                            <mat-label>Bill Printer</mat-label>
+                            <mat-select formControlName="billPrinter">
+                                <mat-option *ngFor="let item of printerList" [value]="item.name">{{ item.displayName }}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-6">
+                        <mat-form-field  appearance="fill" class="w-100 mb-5">
+                            <mat-label>KOT Printer</mat-label>
+                            <mat-select formControlName="kotPrinter">
+                                <mat-option *ngFor="let item of printerList" [value]="item.name">{{ item.displayName }}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
                 </div>
             </div>
         </div>

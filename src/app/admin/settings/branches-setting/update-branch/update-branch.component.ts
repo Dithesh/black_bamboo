@@ -3,6 +3,7 @@ import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DataService } from 'src/app/shared/services/data.service';
 import { environment } from 'src/environments/environment';
+import {ipcMain, IpcRenderer} from 'electron';
 
 @Component({
   selector: 'app-update-branch',
@@ -16,12 +17,24 @@ export class UpdateBranchComponent implements OnInit {
   userData;
   companyList: any[] = [];
   form: FormGroup;
+  ipc;
+  printerList: any[] = [];
   constructor(
-    private _serv: DataService,
+    private serv: DataService,
     private fb: FormBuilder,
     private route: ActivatedRoute,
     private router: Router)
      {
+
+      if ((<any>window).ipcRenderer) {
+        try {
+          this.ipc = (window as any).ipcRenderer;
+        } catch (error) {
+          // throw error;
+        }
+      } else {
+        console.warn('Could not load electron ipc');
+      }
       this.branchId = this.route.snapshot.params.id;
       this.form = this.fb.group({
       id: [''],
@@ -33,6 +46,8 @@ export class UpdateBranchComponent implements OnInit {
       gstNumber: [''],
       isActive: [false],
       taxPercent: [''],
+      billPrinter: [''],
+      kotPrinter: [''],
       company_id: [''],
       kitchens: this.fb.array([]),
       rooms: this.fb.array([]),
@@ -48,9 +63,15 @@ export class UpdateBranchComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.userData = this._serv.getUserData();
+    this.userData = this.serv.getUserData();
     if (this.branchId) {
       this.getBranchDetails();
+    }
+    if (this.ipc) {
+      this.ipc.send('get_print_devices', null);
+      this.ipc.on('list_of_printers', (event, arg) => {
+        this.printerList = arg;
+      });
     }
   }
 
@@ -71,7 +92,7 @@ export class UpdateBranchComponent implements OnInit {
   }
 
   deletePaymentMethod(item, index) {
-    if (this._serv.notNull(item.get('id').value)) {
+    if (this.serv.notNull(item.get('id').value)) {
       item.get('deletedFlag').setValue(true);
     }else {
       this.paymentMethods.removeAt(index);
@@ -98,7 +119,7 @@ export class UpdateBranchComponent implements OnInit {
   }
 
   deleteRoom(item, index) {
-    if (this._serv.notNull(item.get('id').value)) {
+    if (this.serv.notNull(item.get('id').value)) {
       item.get('deletedFlag').setValue(true);
     }else {
       this.rooms.removeAt(index);
@@ -122,7 +143,7 @@ export class UpdateBranchComponent implements OnInit {
   }
 
   deleteKitchen(item, index) {
-    if (this._serv.notNull(item.get('id').value)) {
+    if (this.serv.notNull(item.get('id').value)) {
       item.get('deletedFlag').setValue(true);
     }else {
       this.kitchens.removeAt(index);
@@ -148,7 +169,7 @@ export class UpdateBranchComponent implements OnInit {
   }
 
   deleteOrderType(item, index) {
-    if (this._serv.notNull(item.get('id').value)) {
+    if (this.serv.notNull(item.get('id').value)) {
       item.get('deletedFlag').setValue(true);
     }else {
       this.orderTypes.removeAt(index);
@@ -156,11 +177,11 @@ export class UpdateBranchComponent implements OnInit {
   }
 
   getBranchDetails() {
-    this._serv.endpoint = 'order-manager/branch/' + this.branchId;
-    this._serv.get().subscribe((data: any) => {
+    this.serv.endpoint = 'order-manager/branch/' + this.branchId;
+    this.serv.get().subscribe((data: any) => {
       this.form.patchValue(data);
 
-      if (this._serv.notNull(data.branchLogo)){
+      if (this.serv.notNull(data.branchLogo)){
         this.imageSrc = 'url(\'' + this.url + data.branchLogo + '\')';
       }
 
@@ -197,12 +218,12 @@ export class UpdateBranchComponent implements OnInit {
     this.form.markAllAsTouched();
     if (this.form.invalid) {return; }
     const formValue = this.form.value;
-    this._serv.endpoint = 'order-manager/branch';
-    this._serv.post(formValue).subscribe(response => {
-      this._serv.showMessage('Branch updated successfully', 'success');
+    this.serv.endpoint = 'order-manager/branch';
+    this.serv.post(formValue).subscribe(response => {
+      this.serv.showMessage('Branch updated successfully', 'success');
       this.router.navigateByUrl('/admin/settings/branches');
     }, ({error}) => {
-      this._serv.showMessage(error.msg, 'error');
+      this.serv.showMessage(error.msg, 'error');
     });
   }
 
