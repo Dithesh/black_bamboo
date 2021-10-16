@@ -166,13 +166,13 @@
                             <!-- <mat-icon  class="text-info">trending_flat</mat-icon> -->
                         </td>
                         <td class="text-right">
-                            {{ (item.previousEntry?.endingBalance?item.previousEntry?.endingBalance:0) | currency: "":"" }}
+                            <span class="d-inline-block mr-5"> &#8377;</span>{{ (item.previousEntry?.endingBalance?item.previousEntry?.endingBalance:0) | currency: "":"" }}
                         </td>
                         <td class="text-right">
-                            {{ item.termTransactionAmount | currency: "":"" }}
+                            <span class="d-inline-block mr-5"> &#8377;</span>{{ item.termTransactionAmount | currency: "":"" }}
                         </td>
                         <td class="text-right">
-                            {{ (item.termLastEntry?.endingBalance?item.termLastEntry?.endingBalance:0) | currency: "":"" }}
+                            <span class="d-inline-block mr-5"> &#8377;</span>{{ (item.termLastEntry?.endingBalance?item.termLastEntry?.endingBalance:0) | currency: "":"" }}
                         </td>
                     </tr>
                     <tr *ngIf="pandlReports?.length == 0">

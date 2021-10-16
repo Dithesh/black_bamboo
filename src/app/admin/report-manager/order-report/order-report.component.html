@@ -106,7 +106,7 @@
                     <td>
                         {{item.id }}
                     </td>
-                    <td>{{item.orderAmount | currency:'':''}}</td>
+                    <td><span class="d-inline-block mr-5"> &#8377;</span>{{item.orderAmount | currency:'':''}}</td>
                     <td>
                         {{item.orderStatus | titlecase}}
                     </td>
@@ -120,7 +120,7 @@
 
                 <tr class="total_row">
                     <td>Total</td>
-                    <td>{{totalOrderAmount | currency:'':''}}</td>
+                    <td><span class="d-inline-block mr-5"> &#8377;</span>{{totalOrderAmount | currency:'':''}}</td>
                     <td></td>
                     <td></td>
                     <td></td>
