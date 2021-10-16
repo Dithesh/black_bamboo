@@ -82,7 +82,6 @@ export class QuickOrderUpdateComponent extends NewOrderComponent implements OnIn
       this.getBranchDetail(data.branch_id);
       this.handleFinalPricing();
       this.getTableInfo(() => {
-        console.log(data);
         this.tables.controls.forEach(control => {
           data.tables.forEach(elem => {
             if (control.get('id').value === elem.id) {
@@ -100,7 +99,6 @@ export class QuickOrderUpdateComponent extends NewOrderComponent implements OnIn
 
   shortCutKeyHandler(e) {
     if (!this.blockForms) {
-      console.log(e.code)
       if (e.code === 'F1') {
         e.preventDefault();
         this.searchInput.nativeElement.focus();
