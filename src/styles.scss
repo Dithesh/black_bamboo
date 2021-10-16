@@ -55,8 +55,8 @@
 
 @font-face {
     font-family: 'Poppins';
-    src: url('./assets/fonts/Poppins/Poppins-Regular.ttf') format('truetype');
-    font-weight: normal;
+    src: url('./assets/fonts/Poppins/Poppins-Light.ttf') format('truetype');
+    font-weight: 300;
     font-style: normal;
 }
 @font-face {
@@ -67,23 +67,34 @@
 }
 @font-face {
     font-family: 'Poppins';
-    src: url('./assets/fonts/Poppins/Poppins-Regular.ttf') format('truetype');
-    font-weight: normal;
+    src: url('./assets/fonts/Poppins/Poppins-Medium.ttf') format('truetype');
+    font-weight: 500;
     font-style: normal;
 }
 @font-face {
     font-family: 'Poppins';
-    src: url('./assets/fonts/Poppins/Poppins-Regular.ttf') format('truetype');
+    src: url('./assets/fonts/Poppins/Poppins-SemiBold.ttf') format('truetype');
+    font-weight: 600;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'Roboto';
+    src: url('./assets/fonts/Roboto/Roboto-Light.ttf') format('truetype');
+    font-weight: 300;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'Roboto';
+    src: url('./assets/fonts/Roboto/Roboto-Regular.ttf') format('truetype');
     font-weight: normal;
     font-style: normal;
 }
 @font-face {
-    font-family: 'Poppins';
-    src: url('./assets/fonts/Poppins/Poppins-Regular.ttf') format('truetype');
-    font-weight: normal;
+    font-family: 'Roboto';
+    src: url('./assets/fonts/Roboto/Roboto-Medium.ttf') format('truetype');
+    font-weight: 500;
     font-style: normal;
 }
-
 //$frontExpoSmart-primary: mat.define-palette($md-frontexpo-blue);
 //$frontExpoSmart-accent: mat.define-palette($md-frontexpo-orange, A200, A100, A400);
 //$frontExpoSmart-warn: mat.define-palette($md-frontexpo-red);
