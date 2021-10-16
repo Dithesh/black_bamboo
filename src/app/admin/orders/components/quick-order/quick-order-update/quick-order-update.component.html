@@ -1,1 +1,491 @@
-<p>quick-order-update works!</p>
+<!-- new design -->
+<form [formGroup]="form">
+<div class="row no-gutterd order_out_wrapper">
+    <div class="col-md-auto col-12 px-0" [class.pointer-none]="blockForms">
+        <div class="left_bar">
+            <div class="left_header">
+                <h2>#{{orderId ? orderId : '--'}}</h2>
+                <div class="order_timeBox ml-auto">
+                    <p><span>From:</span> {{orderData?.bearer.firstName}} {{orderData?.bearer.lastName}}</p>
+                    <p class="ml-5"><span class="ml-15">At: </span> {{orderData?.created_at | datex:'DD-MM-YYYY hh:mm a'}}</p>
+                </div>
+            </div>
+            <h3 class="left_title">Categories</h3>
+            <ul class="list-unstyled mb-0 category_list scroll_bar">
+                <li [class.active]="selectedCategory == 'all'" (click)="selectedCategory = 'all'"><div class="product_img" style="background-image: url('assets/images/food.jpg');"></div><span>All</span></li>
+                <ng-container *ngFor="let item of productList;let i = index;">
+                    <li [class.active]="selectedCategory == item.id" (click)="selectedCategory = item.id">
+                        <div *ngIf="item.featuredImage else noImg" class="product_img" [ngStyle]="{'background-image': 'url(\''+(url + item.featuredImage)+'\')'}"></div>
+                        <span>{{ item.categoryName }}</span>
+                    </li>
+                </ng-container>
+                <li [class.active]="selectedCategory == 'combo'" (click)="selectedCategory = 'combo'"><div class="product_img" style="background-image: url('assets/images/food.jpg');"></div><span>Combo</span></li>
+            </ul>
+        </div>
+    </div>
+    <div class="col-md col-12 border-left">
+        <div class="top_flterBar border-bottom d-flex align-items-center flex-wrap" [class.completedStatus]="orderData?.orderStatus == 'completed'" [class.cancelledStatus]="orderData?.orderStatus == 'cancelled'">
+            <div>
+                <mat-chip-list aria-label="Fish selection">
+                    <ng-container *ngFor="let item of orderTypeList;">
+                        <mat-chip *ngIf="item.isActive" color="primary" [selected]="item.id == form.get('orderType').value" (click)="changeOrderType(item.id, 'button')">{{ item.orderType }}</mat-chip>
+                    </ng-container>
+                </mat-chip-list>
+            </div>
+
+            <div *ngIf="orderData?.rejectedCount > 0 && orderData?.orderStatus == 'new'" class="status_box ml-auto red">
+                Items Rejected
+            </div>
+            <div *ngIf="orderData?.rejectedCount <= 0 && (orderData?.timeDif.h * 60 + orderData?.timeDif.i) > 20 && orderData?.orderStatus == 'new'" class="status_box ml-auto red">
+                Got Delayed
+            </div>
+            <div *ngIf="orderData?.rejectedCount <= 0 && (orderData?.timeDif.h * 60 + orderData?.timeDif.i) <= 20 && orderData?.orderStatus == 'new'" class="status_box ml-auto warn">
+                On Going
+            </div>
+
+            <div *ngIf="orderData?.orderStatus == 'cancelled'" class="status_box ml-auto red cursor-pointer">
+                Cancelled
+            </div>
+            <div *ngIf="orderData?.orderStatus == 'completed'" class="status_box ml-auto cursor-pointer">
+                Completed
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 col-lg col-12  border-right" [class.pointer-none]="blockForms">
+                <div class="product_lists">
+                    <div class="prod_list_header align-items-center d-flex">
+                        <h2 class="productHeading">Products</h2>
+                        <mat-form-field  appearance="outline" class="ml-auto pb-0">
+                            <mat-label>Search</mat-label>
+                            <input type="text" matInput #searchInput [(formControl)]="searchProductControl">
+                            <!-- <mat-icon matSuffix>search</mat-icon> -->
+                            <button type="button" matSuffix mat-icon-button>
+                                <img matSuffix src="assets/images/icons/SEARCH.svg" alt="" class="icon_img">
+                            </button>
+                        </mat-form-field>
+                    </div>
+                    <ul class="list-unstyled items_list_ul mb-0 scroll_bar">
+                        <ng-container *ngFor="let cat of filteredProductList | async; let ci = index;">
+                            <ng-container *ngIf="cat.products?.length > 0 && (selectedCategory == cat.id || selectedCategory == 'all')" >
+                                <li class="itemTitle">{{ cat.categoryName }}</li>
+                                <ng-container *ngFor="let item of cat.products;">
+                                    <li class="product_items d-flex">
+                                        <input type="radio" name="items" #element [id]="cat.id + '_' + item.id" value="selected1">
+                                        <label [for]="cat.id + '_' + item.id">
+                                            <div *ngIf="item.featuredImage else noPrImg" class="produt_img" [ngStyle]="{'background-image': 'url(\''+(url + item.featuredImage)+'\')'}"></div>
+                                            <!-- <div class="produt_img" style="background-image: url('/assets/images/food.jpg');"></div> -->
+                                            <div class="textbox">
+                                                <p>{{ item.productName | titlecase }}</p>
+                                                <span>{{ item.price | currency }}</span>
+                                            </div>
+                                            <div class="buttonBox text-right">
+                                                <button mat-icon-button aria-label="add" class="addShowBtn pointer-none" color="primary">
+                                                    <img src="assets/images/icons/ADDROUND.svg" alt="" class="icon_img">
+                                                </button>
+                                                <div class="input_add_box">
+
+                                                            <mat-form-field appearance="outline" class="ew-100 variation_select" *ngIf="item.advanced_pricing && item.advanced_pricing?.length > 0">
+                                                                <mat-select [(ngModel)]="item.advancedPriceId" [ngModelOptions]="{standalone: true}" (selectionChange)="handleProductPriceChange(item)">
+                                                                    <ng-container *ngFor="let tt of item.advanced_pricing;">
+                                                                        <mat-option [value]="tt.id"> {{tt.title}} </mat-option>
+                                                                    </ng-container>
+
+                                                                </mat-select>
+                                                            </mat-form-field>
+
+                                                          <div class="d-flex mb-5">
+                                                            <mat-slide-toggle *ngIf="selectedOrderType?.tableRequired" [(ngModel)]="item.isParcel" [ngModelOptions]="{standalone: true}"  color="accent" class="mr-10">Parcel?</mat-slide-toggle>
+                                                            <div class="input-group mb-0 ml-auto number_input item_btn">
+                                                                <div class="input-group-prepend">
+                                                                    <button class="btn btn-outline-secondary" type="button" (click)="handleOrderQuantityInput(item, 'prev')">-</button>
+                                                                </div>
+                                                                <input type="text" class="form-control" digitOnly  [(ngModel)]="item.quantity" [ngModelOptions]="{standalone: true}"  (change)="handleOrderQuantityInput(item, 'change')">
+                                                                <div class="input-group-append">
+                                                                    <button class="btn btn-outline-secondary" type="button" (click)="handleOrderQuantityInput(item, 'next')">+</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                    <button type="button" (click)="onAddItem(element, item)" mat-flat-button color="primary" class="product_addBtn small_btn"><img src="assets/images/icons/ADD.svg" alt="" class="icon_img"> Add</button>
+                                                </div>
+                                            </div>
+                                        </label>
+                                    </li>
+                                </ng-container>
+                            </ng-container>
+                        </ng-container>
+
+                        <ng-container *ngIf="comboItemList?.length > 0 && (selectedCategory == 'combo' ||  selectedCategory == 'all')">
+                          <li class="itemTitle">Combo Items</li>
+                          <ng-container *ngFor="let item of filteredComboItemList|async;">
+                              <li class="product_items d-flex">
+                                  <input type="radio" name="items" #element [id]="'combo_' + item.id" value="combo_1">
+                                  <label [for]="'combo_' + item.id">
+                                      <div *ngIf="item.featuredImage else noPrImg" class="produt_img" [ngStyle]="{'background-image': 'url(\''+(url + item.featuredImage)+'\')'}"></div>
+                                      <!-- <div class="produt_img" style="background-image: url('/assets/images/food.jpg');"></div> -->
+                                      <div class="textbox">
+                                          <p>{{ item.comboTitle | titlecase }}</p>
+                                          <span>{{ item.comboTotal | currency }}</span>
+                                      </div>
+                                      <div class="buttonBox text-right">
+                                          <button mat-icon-button aria-label="add" class="addShowBtn pointer-none" color="primary">
+                                              <img src="assets/images/icons/ADDROUND.svg" alt="" class="icon_img">
+                                          </button>
+                                          <div class="input_add_box">
+
+                                                    <div class="d-flex mb-5">
+                                                      <mat-slide-toggle *ngIf="selectedOrderType?.tableRequired" [(ngModel)]="item.isParcel" [ngModelOptions]="{standalone: true}"  color="accent" class="mr-10">Parcel?</mat-slide-toggle>
+                                                      <div class="input-group mb-0 ml-auto number_input item_btn">
+                                                          <div class="input-group-prepend">
+                                                              <button class="btn btn-outline-secondary" type="button" (click)="handleOrderQuantityInput(item, 'prev')">-</button>
+                                                          </div>
+                                                          <input type="text" class="form-control" digitOnly  [(ngModel)]="item.quantity" [ngModelOptions]="{standalone: true}"  (change)="handleOrderQuantityInput(item, 'change')">
+                                                          <div class="input-group-append">
+                                                              <button class="btn btn-outline-secondary" type="button" (click)="handleOrderQuantityInput(item, 'next')">+</button>
+                                                          </div>
+                                                      </div>
+                                                  </div>
+
+                                              <button type="button" (click)="onAddComboItem(element, item)" mat-flat-button color="primary" class="product_addBtn small_btn"><img src="assets/images/icons/ADD.svg" alt="" class="icon_img"> Add</button>
+                                          </div>
+                                      </div>
+                                  </label>
+                              </li>
+                          </ng-container>
+                        </ng-container>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-auto col-12 px-0">
+                <div class="right_details_box">
+                    <mat-tab-group>
+                        <mat-tab>
+                            <ng-template mat-tab-label>
+                                <!-- <mat-icon class="example-tab-icon">restaurant</mat-icon> -->
+                                <img class="example-tab-icon" src="assets/images/icons/FOOD.svg" class="icon_img" alt="">
+                                <p class="mb-0 ml-5 px-0"> Items</p>
+                            </ng-template>
+
+                            <div class="tab_inner_body scroll_style items" [class.innerFooter]="(items['controls'].length > 0 || comboItems['controls'].length > 0) && !blockForms">
+                                <ng-container *ngFor="let item of items['controls'];let i=index;">
+                                    <div class="row no-gutters order_item_wrapper" *ngIf="!item.get('deletedFlag').value">
+                                        <div class="col-auto">
+                                            <div class="img_item">
+                                                <img *ngIf="item.get('featuredImage').value" [src]=" url + item.get('featuredImage').value" alt="">
+                                                <img *ngIf="!item.get('featuredImage').value" src="assets/images/food.jpg" alt="">
+                                            </div>
+                                        </div>
+                                        <div class="col">
+                                            <div class="order_item_card">
+                                                <div class="order-details col">
+                                                    <p class="product_name">{{ item.get('productName').value  | titlecase }} <ng-container *ngIf="item.get('advancedPriceTitle').value">({{item.get('advancedPriceTitle').value}})</ng-container>
+                                                     <span class="order_item_card_strip" *ngIf="item.get('isParcel').value">Parcel</span></p>
+                                                    <p class="product_price">
+                                                        <small>Price: &nbsp;&nbsp;&nbsp;</small>
+                                                        <span>{{ item.get('price').value | currency  }}</span>
+                                                    </p>
+                                                    <p class="product_price" *ngIf="item.get('isParcel').value">
+                                                        <small>Pkg charge: &nbsp;&nbsp;&nbsp;</small>
+                                                        <span>{{ item.get('packagingCharges').value | currency  }}</span>
+                                                    </p>
+                                                    <p class="product_price">
+                                                        <small>Total: &nbsp;&nbsp;&nbsp;</small>
+                                                        <span>{{ item.get('totalPrice').value | currency }}</span>
+                                                    </p>
+                                                    <button type="button" mat-stroked-button color="warn" class="mt-15" *ngIf="item.get('productionRejectedQuantity').value > 0" (click)="handleRejectedItems(item)">Remove Rejected</button>
+                                                </div>
+                                                <div class="action_menu col-auto">
+                                                    <div class="input-group mb-0 ml-auto number_input item_btn">
+                                                        <div class="input-group-prepend">
+                                                            <button class="btn btn-outline-secondary" type="button" (click)="handleNumberControl(item, 'prev', i)">-</button>
+                                                        </div>
+                                                        <input type="text" class="form-control" [formControl]="item.get('quantity')" (keyup)="handleNumberControl(item, 'text', i)" digitOnly>
+                                                        <div class="input-group-append">
+                                                            <button class="btn btn-outline-secondary" type="button" (click)="handleNumberControl(item, 'next', i)">+</button>
+                                                        </div>
+                                                    </div>
+                                                    <div class="d-flex item_track_wrapper" *ngIf="item.get('id').value">
+                                                        <p class="item_track served" [matTooltip]="item.get('servedItems').value + ' items served for customers'">{{ item.get('servedItems').value }}</p>
+                                                        <p class="item_track kitchen" [matTooltip]="(item.get('productionAcceptedQuantity').value - item.get('servedItems').value - item.get('productionRejectedQuantity').value)  + ' items are preparing in kitchen'">{{ item.get('productionAcceptedQuantity').value - item.get('servedItems').value - item.get('productionRejectedQuantity').value}}</p>
+                                                        <p class="item_track ready" [matTooltip]="(item.get('productionReadyQuantity').value - item.get('servedItems').value) + ' items ready in kitchen'">{{ item.get('productionReadyQuantity').value - item.get('servedItems').value}}</p>
+                                                        <p class="item_track rejected" [matTooltip]="item.get('productionRejectedQuantity').value + ' items rejected from kitchen'">{{ item.get('productionRejectedQuantity').value }}</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </ng-container>
+
+                                <ng-container *ngFor="let item of comboItems['controls'];let i=index;">
+                                    <div class="row no-gutters order_item_wrapper" *ngIf="!item.get('deletedFlag').value">
+                                        <div class="col-auto">
+                                            <div class="img_item">
+                                                <img *ngIf="item.get('featuredImage').value" [src]=" url + item.get('featuredImage').value" alt="">
+                                                <img *ngIf="!item.get('featuredImage').value" src="assets/images/food.jpg" alt="">
+                                            </div>
+                                        </div>
+                                        <div class="col">
+                                            <div class="order_item_card">
+                                                <div class="order-details col">
+                                                    <p class="product_name">{{ item.get('comboTitle').value  | titlecase }}
+                                                     <span class="order_item_card_strip" *ngIf="item.get('isParcel').value">Parcel</span></p>
+                                                    <p class="product_price">
+                                                        <small>Price: &nbsp;&nbsp;&nbsp;</small>
+                                                        <span>{{ item.get('price').value | currency  }}</span>
+                                                    </p>
+                                                    <p class="product_price" *ngIf="item.get('isParcel').value">
+                                                        <small>Pkg charge: &nbsp;&nbsp;&nbsp;</small>
+                                                        <span>{{ item.get('packagingCharges').value | currency  }}</span>
+                                                    </p>
+                                                    <p class="product_price">
+                                                        <small>Total: &nbsp;&nbsp;&nbsp;</small>
+                                                        <span>{{ item.get('totalPrice').value | currency }}</span>
+                                                    </p>
+                                                    <button type="button" mat-stroked-button color="warn" class="mt-15" *ngIf="item.get('productionRejectedQuantity').value > 0" (click)="handleRejectedItems(item)">Remove Rejected</button>
+                                                </div>
+                                                <div class="action_menu col-auto">
+                                                    <div class="input-group mb-0 ml-auto number_input item_btn">
+                                                        <div class="input-group-prepend">
+                                                            <button class="btn btn-outline-secondary" type="button" (click)="handleNumberControl(item, 'prev', i, 'combo')">-</button>
+                                                        </div>
+                                                        <input type="text" class="form-control" [formControl]="item.get('quantity')" (keyup)="handleNumberControl(item, 'text', i, 'combo')" digitOnly>
+                                                        <div class="input-group-append">
+                                                            <button class="btn btn-outline-secondary" type="button" (click)="handleNumberControl(item, 'next', i, 'combo')">+</button>
+                                                        </div>
+                                                    </div>
+                                                    <div class="d-flex item_track_wrapper" *ngIf="item.get('id').value">
+                                                        <p class="item_track served" [matTooltip]="item.get('servedItems').value + ' items served for customers'">{{ item.get('servedItems').value }}</p>
+                                                        <p class="item_track kitchen" [matTooltip]="(item.get('productionAcceptedQuantity').value - item.get('servedItems').value - item.get('productionRejectedQuantity').value)  + ' items are preparing in kitchen'">{{ item.get('productionAcceptedQuantity').value - item.get('servedItems').value - item.get('productionRejectedQuantity').value}}</p>
+                                                        <p class="item_track ready" [matTooltip]="(item.get('productionReadyQuantity').value - item.get('servedItems').value) + ' items ready in kitchen'">{{ item.get('productionReadyQuantity').value - item.get('servedItems').value}}</p>
+                                                        <p class="item_track rejected" [matTooltip]="item.get('productionRejectedQuantity').value + ' items rejected from kitchen'">{{ item.get('productionRejectedQuantity').value }}</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </ng-container>
+                            </div>
+                            <div class="row no-gutters align-items-center border-top py-5" *ngIf="(items['controls'].length > 0 || comboItems['controls'].length > 0) && !blockForms">
+
+                                <div class="col-12 px-15">
+                                    <div class="d-flex align-items-center justify-content-between">
+
+                                        <div class="ammount_box d-flex align-items-center">
+                                            <div class="d-inline-block orderAmuntChip mr-10" [class.paid]="form.get('isPaid').value">{{ form.get('orderAmount').value | currency }}</div>
+                                            <div class="d-inline-flex align-items-center">
+                                                <p class="my-0 mr-20 font-weight-500 paid_label">Paid ?</p>
+                                                <mat-slide-toggle [formControl]="form.get('isPaid')"></mat-slide-toggle>
+                                            </div>
+                                        </div>
+                                        <button mat-stroked-button color="primary" type="button" class="rounded-0" (click)="serveOrderItem()">
+                                            <img src="assets/images/icons/DONEDOUBLETICK.svg" alt="" class="icon_img">
+                                            Serve Items
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </mat-tab>
+                        <mat-tab *ngIf="selectedOrderType?.tableRequired">
+                            <ng-template mat-tab-label>
+                                <!-- <mat-icon class="example-tab-icon">view_module</mat-icon> -->
+                                <img class="example-tab-icon" src="assets/images/icons/TABLE.svg" class="icon_img" alt="">
+                                <p class="mb-0 ml-5 px-0"> Table</p>
+                            </ng-template>
+                            <div class="tab_inner_body scroll_style tableBox">
+                                <app-table-selection [form]="form" [blockForms]="blockForms"></app-table-selection>
+                            </div>
+
+                        </mat-tab>
+                        <mat-tab>
+                            <ng-template mat-tab-label>
+                                <!-- <mat-icon class="example-tab-icon">supervisor_account</mat-icon> -->
+                                <img class="example-tab-icon" src="assets/images/icons/USER.svg" class="icon_img" alt="">
+                                <p class="mb-0 ml-5 px-0"> Customer</p>
+                            </ng-template>
+
+                            <div class="tab_inner_body scroll_style">
+                                <div class="row mt-15">
+                                    <div class="col-md-6 col-12">
+                                        <mat-form-field appearance="outline" class="w-100">
+                                            <mat-label>Mobile Number</mat-label>
+                                            <input formControlName="mobileNumber" matInput (change)="isDirty=true">
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-md-6 col-12" [hidden]="!form.get('mobileNumber').value">
+                                        <mat-form-field appearance="outline" class="w-100">
+                                            <mat-label>Customer Name</mat-label>
+                                            <input formControlName="customerName" matInput (change)="isDirty=true">
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-12" [hidden]="!form.get('mobileNumber').value">
+                                        <mat-form-field appearance="outline" class="w-100">
+                                            <mat-label>Customer Address</mat-label>
+                                            <textarea formControlName="customerAddress" matInput (change)="isDirty=true"></textarea>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-12">
+                                        <mat-form-field appearance="outline" class="w-100">
+                                            <mat-label>Related Info</mat-label>
+                                            <textarea formControlName="relatedInfo" matInput (change)="isDirty=true"></textarea>
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                            </div>
+                        </mat-tab>
+                        <mat-tab *ngIf="items['controls'].length > 0">
+                            <ng-template mat-tab-label>
+                                <!-- <mat-icon class="example-tab-icon">local_offer</mat-icon> -->
+                                <img class="example-tab-icon" src="assets/images/icons/TAG.svg" class="icon_img" alt="">
+                                <p class="mb-0 ml-5 px-0"> Extras</p>
+                            </ng-template>
+                            <div class="tab_inner_body scroll_style bill">
+                                <div class="delivery_box mt-20">
+                                    <mat-form-field appearance="outline" class="w-100 inline-input">
+                                        <mat-label>Deliver Charge (Optional)</mat-label>
+                                        <input matInput  [formControl]="form.get('deliverCharge')" (change)="handleFinalPricing(true)" digitOnly [decimal]="true">
+                                    </mat-form-field>
+                                </div>
+                                <div class="delivery_box mt-20">
+                                    <mat-form-field appearance="outline" class="w-100 inline-input">
+                                        <mat-label>Discount Reason</mat-label>
+                                        <input matInput  [formControl]="form.get('discountReason')" (change)="handleFinalPricing(true)">
+                                    </mat-form-field>
+                                </div>
+                                <div class="delivery_box mt-20">
+                                    <mat-form-field appearance="outline" class="w-100 inline-input">
+                                        <mat-label>Discount Ammount</mat-label>
+                                        <input matInput  [formControl]="form.get('discountValue')" (change)="handleFinalPricing(true)" digitOnly [decimal]="true">
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                        </mat-tab>
+                        <mat-tab *ngIf="items['controls'].length > 0 || comboItems['controls'].length > 0">
+                            <ng-template mat-tab-label>
+                                <!-- <mat-icon class="example-tab-icon">receipt</mat-icon> -->
+                                <img class="example-tab-icon" src="assets/images/icons/BILL.svg" class="icon_img" alt="">
+                                <p class="mb-0 ml-5 px-0"> Bill</p>
+                            </ng-template>
+                            <div class="tab_inner_body scroll_style bill billing_body" [class.afterbilled]="form.get('orderStatus').value == 'completed' || form.get('orderStatus').value == 'cancelled'">
+                                <!-- <div class="delivery_box">
+                                    <mat-form-field appearance="outline" class="w-100 inline-input">
+                                        <mat-label>Deliver Charge (Optional)</mat-label>
+                                        <input matInput  [formControl]="form.get('deliverCharge')" (change)="handleFinalPricing()" digitOnly [decimal]="true">
+                                    </mat-form-field>
+                                </div> -->
+                                <div class="billing_wrapper">
+                                    <div class="billing_strip">
+                                        <p class="main_title">Order Summary</p>
+                                    </div>
+                                    <div class="billing_strip">
+                                        <p class="title">Order Item Total</p>
+                                        <span class="value_section">{{ form.get('orderItemTotal').value | currency }}</span>
+                                    </div>
+                                    <div class="billing_strip">
+                                        <p class="title">Order Combo Total</p>
+                                        <span class="value_section">{{ form.get('orderComboTotal').value | currency }}</span>
+                                    </div>
+                                    <div class="billing_strip" *ngIf="form.get('deliverCharge').value && form.get('deliverCharge').value > 0">
+                                        <p class="title">Delivery Charge</p>
+                                        <span class="value_section">{{ form.get('deliverCharge').value | currency }}</span>
+                                    </div>
+                                    <div class="billing_strip" *ngIf="form.get('packingCharge').value">
+                                        <p class="title">Total Pkg Charge</p>
+                                        <span class="value_section">{{ form.get('packingCharge').value | currency }}</span>
+                                    </div>
+
+                                    <div class="billing_strip" *ngIf="!form.get('taxDisabled').value">
+                                        <p class="title">CGST <small class="text-muted">({{ ((form.get('taxPercent').value > 0)?(form.get('taxPercent').value/2):0) | number : '2.2' }}%)</small></p>
+                                        <span class="value_section">{{ form.get('cgst').value | currency }}</span>
+                                    </div>
+                                    <div class="billing_strip" *ngIf="!form.get('taxDisabled').value">
+                                        <p class="title">SGST <small class="text-muted">({{ ((form.get('taxPercent').value > 0)?(form.get('taxPercent').value/2):0) | number : '2.2' }}%)</small></p>
+                                        <span class="value_section">{{ form.get('sgst').value | currency }}</span>
+                                    </div>
+                                    <div class="billing_strip" *ngIf="form.get('discountValue').value && form.get('discountValue').value > 0">
+                                        <p class="title">Discount</p>
+                                        <span class="value_section">{{ (-1 * form.get('discountValue').value) | currency }}</span>
+                                    </div>
+                                    <div class="billing_strip" *ngIf="form.get('roundOfAmount').value && form.get('roundOfAmount').value > 0">
+                                        <p class="title">Round Off</p>
+                                        <span class="value_section">{{ (-1 * form.get('roundOfAmount').value) | currency }}</span>
+                                    </div>
+                                    <div class="billing_strip totalAmountText">
+                                        <p class="title">Grand Total</p>
+                                        <span class="value_section">{{ form.get('orderAmount').value | currency }}</span>
+                                    </div>
+                                </div>
+                                <div class="remaning_box"  *ngIf="!blockForms">
+                                    <h4>Ballance Change Caluclator</h4>
+                                    <div class="d-flex align-items-center">
+                                        <div class="col px-0">
+                                            <mat-form-field appearance="outline" class="w-100 inline-input order-calc">
+                                                <input matInput digitOnly placeholder="Received" [formControl]="calAmount" [decimal]="true">
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="col-auto">
+                                            <div class="bal_change_box ew-150">
+
+                                                <p><span>Return</span> : {{(calAmount.value > 0) ? (calAmount.value - form.get('orderAmount').value) : 0  }}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="row no-gutters align-items-center border-top py-5">
+                                <div class="col-12 px-15" [class.pointer-none]="blockForms">
+                                    <mat-chip-list aria-label="Method selection">
+                                        <ng-container *ngFor="let item of paymentMethodList;">
+                                            <mat-chip color="primary" [selected]="item.id == form.get('paymentMethod').value" (click)="form.get('paymentMethod').setValue(item.id)">{{ item.methodTitle }}</mat-chip>
+                                        </ng-container>
+                                      </mat-chip-list>
+                                </div>
+                            </div>
+
+                            <div class="printBtn_box d-flex mb-10" *ngIf="form.get('orderStatus').value != 'completed' && form.get('orderStatus').value != 'cancelled' && !blockForms">
+                                <button mat-stroked-button color="success" class="w-100  rounded-0" (click)="saveOrder('complete')"> Complete Order</button>
+                                <button mat-stroked-button aria-label="" color="warn" class="w-100 rounded-0"  (click)="saveOrder('cancel')">
+                                    Cancel Order
+                                </button>
+                            </div>
+                        </mat-tab>
+                      </mat-tab-group>
+
+                    <div class="tab_footer border-top">
+                        <div class="d-flex flex-nowrap">
+
+                            <div class="w-100"  *ngIf="form.get('orderStatus').value == 'completed' || form.get('orderStatus').value == 'cancelled' || blockForms">
+                                <button mat-stroked-button color="primary" class="rounded-0 w-100" type="button" (click)="changeOrderStatusBack('new')"> Reopen</button>
+                            </div>
+                            <div class="w-100" *ngIf="form.get('orderStatus').value != 'completed' && form.get('orderStatus').value != 'cancelled' && !blockForms">
+                              <button mat-flat-button color="primary" class="w-100 rounded-0"
+                                  (click)="saveOrder('confirm')" [disabled]="orderProcessing"><img src="assets/images/icons/SAVE-WHITE.svg" alt="" class="icon_img mr-3">  Save</button>
+                            </div>
+                            <div class="d-flex flex-nowrap w-100" *ngIf="orderId">
+                                <button mat-flat-button color="accent" *ngIf="form.get('orderStatus').value == 'completed'" class="w-100 rounded-0" (click)="printOrder()"><img src="assets/images/icons/PRINT.svg" alt="" class="icon_img">  Print Bill</button>
+                                <button mat-flat-button color="accent" *ngIf="form.get('orderStatus').value != 'completed'" class="w-100 rounded-0" (click)="printAddress()"><img src="assets/images/icons/PRINT.svg" alt="" class="icon_img">  Print KOT</button>
+                                <!-- <button mat-flat-button aria-label="" color="accent" class="ew-40 rounded-0" [matMenuTriggerFor]="moreOption">
+                                    <img src="assets/images/icons/ARROWDOWN.svg" alt="" class="icon_img">
+                                </button>
+                                <mat-menu #moreOption="matMenu">
+                                    <button mat-menu-item type="button" (click)="printAddress()">Address Print</button>
+                                    <button mat-menu-item type="button" (click)="printAddress()">KOT</button>
+                                  </mat-menu> -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</form>
+
+<ng-template #noImg>
+    <div class="product_img" style="background-image: url('assets/images/food.jpg');"></div>
+</ng-template>
+<ng-template #noPrImg>
+    <div class="produt_img" style="background-image: url('assets/images/food.jpg');"></div>
+</ng-template>
