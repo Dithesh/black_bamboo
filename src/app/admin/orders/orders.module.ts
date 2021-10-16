@@ -11,10 +11,12 @@ import { ServeOrderItemComponent } from './components/serve-order-item/serve-ord
 import { TableSelectionComponent } from './components/table-selection/table-selection.component';
 import { OrderListsComponent } from './components/order-lists/order-lists.component';
 import { PrintKotComponent } from './components/print-kot/print-kot.component';
+import { QuickOrderComponent } from './components/quick-order/quick-order.component';
+import { QuickOrderUpdateComponent } from './components/quick-order/quick-order-update/quick-order-update.component';
 
 
 @NgModule({
-  declarations: [OrdersComponent, NewOrderComponent, PrintOrderInvoiceComponent, AddOrderItemComponent, ServeOrderItemComponent, TableSelectionComponent, OrderListsComponent, PrintKotComponent],
+  declarations: [OrdersComponent, NewOrderComponent, PrintOrderInvoiceComponent, AddOrderItemComponent, ServeOrderItemComponent, TableSelectionComponent, OrderListsComponent, PrintKotComponent, QuickOrderComponent, QuickOrderUpdateComponent],
   imports: [
     CommonModule,
     OrdersRoutingModule,
@@ -23,7 +25,8 @@ import { PrintKotComponent } from './components/print-kot/print-kot.component';
   entryComponents: [
     AddOrderItemComponent,
     ServeOrderItemComponent,
-    PrintKotComponent
+    PrintKotComponent,
+    QuickOrderUpdateComponent
   ]
 })
 export class OrdersModule { }

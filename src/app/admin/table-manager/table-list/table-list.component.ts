@@ -99,6 +99,7 @@ export class TableListComponent implements OnInit {
             isReserved: [t.isReserved],
             isActive: [t.isActive],
             branch_id: [t.branch_id],
+            room_id: [t.room_id],
             chairs: this.fb.array(chairs)
           }));
         });

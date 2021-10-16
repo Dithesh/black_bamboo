@@ -26,6 +26,7 @@ export class TableUpdateComponent implements OnInit {
     private dialogRef: MatDialogRef<TableUpdateComponent>,
     private serv: DataService
   ) {
+    console.log(data.table)
     this.form.patchValue(data.table);
     this.getBranchDetails(data.table.branch_id);
   }

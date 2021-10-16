@@ -57,7 +57,7 @@
                         <h2 class="productHeading">Products</h2>
                         <mat-form-field  appearance="outline" class="ml-auto pb-0">
                             <mat-label>Search</mat-label>
-                            <input type="text" matInput [(formControl)]="searchProductControl">
+                            <input type="text" matInput #searchInput [(formControl)]="searchProductControl">
                             <!-- <mat-icon matSuffix>search</mat-icon> -->
                             <button type="button" matSuffix mat-icon-button>
                                 <img matSuffix src="assets/images/icons/SEARCH.svg" alt="" class="icon_img">
@@ -339,7 +339,7 @@
                                 <img class="example-tab-icon" src="assets/images/icons/TAG.svg" class="icon_img" alt="">
                                 <p class="mb-0 ml-5 px-0"> Extras</p>
                             </ng-template>
-                            <div class="tab_inner_body scroll_style bill innerFooter">
+                            <div class="tab_inner_body scroll_style bill">
                                 <div class="delivery_box mt-20">
                                     <mat-form-field appearance="outline" class="w-100 inline-input">
                                         <mat-label>Deliver Charge (Optional)</mat-label>
@@ -366,7 +366,7 @@
                                 <img class="example-tab-icon" src="assets/images/icons/BILL.svg" class="icon_img" alt="">
                                 <p class="mb-0 ml-5 px-0"> Bill</p>
                             </ng-template>
-                            <div class="tab_inner_body scroll_style bill innerFooter">
+                            <div class="tab_inner_body scroll_style bill billing_body" [class.afterbilled]="form.get('orderStatus').value == 'completed' || form.get('orderStatus').value == 'cancelled'">
                                 <!-- <div class="delivery_box">
                                     <mat-form-field appearance="outline" class="w-100 inline-input">
                                         <mat-label>Deliver Charge (Optional)</mat-label>

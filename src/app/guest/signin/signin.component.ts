@@ -25,8 +25,8 @@ export class SigninComponent implements OnInit {
     localStorage.removeItem('lock_token');
     this.form = this.fb.group({
       username: ['1111111111', [Validators.required]],
-      password: ['R$g#D@5+2021', [Validators.required]]
-    })
+      password: ['R$g#D@5+2021', [Validators.required]]//
+    });
   }
 
   signIn(event) {

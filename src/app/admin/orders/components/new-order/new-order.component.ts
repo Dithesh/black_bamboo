@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import { MatSort } from '@angular/material/sort';
 import { FormGroup, FormBuilder, FormArray, AbstractControl, FormControl } from '@angular/forms';
 import { DataService } from 'src/app/shared/services/data.service';
@@ -14,6 +14,7 @@ import { ConfirmPopupComponent } from 'src/app/shared/components/confirm-popup/c
 import { debounceTime, map, startWith } from 'rxjs/operators';
 import { PrintKotComponent } from '../print-kot/print-kot.component';
 import * as math from 'exact-math';
+import {MatTabGroup} from "@angular/material/tabs";
 
 @Component({
   selector: 'app-new-order',
@@ -26,6 +27,8 @@ export class NewOrderComponent implements OnInit, OnDestroy {
   isDirtyFormSubscriber;
   calAmount = new FormControl('');
   @ViewChild(MatSort, { static: true }) sort: MatSort;
+  @ViewChild(MatTabGroup) tabGroup: MatTabGroup;
+  @ViewChild('searchInput') searchInput: ElementRef;
   step = 1;
   rating;
   orderProcessing = false;
@@ -53,11 +56,11 @@ export class NewOrderComponent implements OnInit, OnDestroy {
   keyListener = this.shortCutKeyHandler.bind(this);
 
   constructor(
-    private fb: FormBuilder,
-    private _serv: DataService,
-    private route: ActivatedRoute,
-    private router: Router,
-    private dialog: MatDialog
+    protected fb: FormBuilder,
+    protected _serv: DataService,
+    protected route: ActivatedRoute,
+    protected router: Router,
+    protected dialog: MatDialog
   ) {
     this.orderId = this.route.snapshot.params.id;
     this.form = this.fb.group({
@@ -93,7 +96,7 @@ export class NewOrderComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.userData = this._serv.getUserData();
-
+  alert(1)
     if (this.userData.company_id) {
       this.getCompanyDetails(this.userData.company_id);
     }
@@ -141,7 +144,7 @@ export class NewOrderComponent implements OnInit, OnDestroy {
       const item = { ...x };
       item.products = item.products.filter(y =>
       (
-        y.productName.toLowerCase().includes(value)
+        y.productName.toLowerCase().includes(value) || y.productNumber.toLowerCase().includes(value)
       ));
       list.push(item);
     });
@@ -901,13 +904,27 @@ export class NewOrderComponent implements OnInit, OnDestroy {
 
 
   shortCutKeyHandler(e) {
-    if (e.ctrlKey && e.which == 68) {
-      e.preventDefault();
-      this.form.get('taxDisabled').setValue(!this.form.get('taxDisabled').value);
-      this.handleFinalPricing();
-    } else if (e.ctrlKey && e.which == 83) {
-      e.preventDefault();
-      this.saveOrder('confirm');
+    if (!this.blockForms) {
+      if (e.code === 'F1') {
+        e.preventDefault();
+        this.searchInput.nativeElement.focus();
+      }else if (e.ctrlKey && e.code === 'KeyD') {
+        e.preventDefault();
+        this.form.get('taxDisabled').setValue(!this.form.get('taxDisabled').value);
+        this.handleFinalPricing();
+      } else if (e.ctrlKey && e.code === 'KeyS') {
+        e.preventDefault();
+        this.saveOrder('confirm');
+      } else if (e.ctrlKey && e.code === 'KeyQ') {
+        e.preventDefault();
+        const billIndex = this.selectedOrderType.tableRequired ? 4 : 3;
+        if(this.tabGroup.selectedIndex !== billIndex) {
+          this.tabGroup.selectedIndex = billIndex;
+        }else {
+          this.saveOrder('complete');
+        }
+        // this.saveOrder('complete');
+      }
     }
   }
 
