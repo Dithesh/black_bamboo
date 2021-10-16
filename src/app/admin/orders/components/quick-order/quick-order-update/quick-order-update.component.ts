@@ -155,6 +155,12 @@ export class QuickOrderUpdateComponent extends NewOrderComponent implements OnIn
         }else if(e.code === 'Escape') {
           this.dialogRef.close();
         }
+      } else if (e.ctrlKey && e.code === 'KeyK') {
+        this.saveOrder('confirm', () => {
+          this.printAddress();
+          this.dialogRef.close();
+        });
+        // this.saveOrder('complete');
       }
     }
   }

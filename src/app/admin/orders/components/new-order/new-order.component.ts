@@ -932,6 +932,9 @@ export class NewOrderComponent implements OnInit, OnDestroy {
           this.saveOrder('complete');
         }
         // this.saveOrder('complete');
+      } else if (e.ctrlKey && e.code === 'KeyK') {
+        this.printAddress();
+        // this.saveOrder('complete');
       }
     }
   }
