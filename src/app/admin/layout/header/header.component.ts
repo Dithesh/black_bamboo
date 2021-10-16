@@ -8,7 +8,6 @@ import { Router, NavigationEnd } from '@angular/router';
 import { DataService } from 'src/app/shared/services/data.service';
 import { environment } from 'src/environments/environment';
 import {Location} from '@angular/common';
-import { filter } from 'runrestro-win32-ia32/resources/app/node_modules/rxjs/operators';
 
 @Component({
   selector: 'app-header',
