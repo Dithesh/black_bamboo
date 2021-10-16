@@ -109,34 +109,34 @@ export class QuickOrderUpdateComponent extends NewOrderComponent implements OnIn
         const openNew = (e.code === 'KeyN') ? true : false;
 
         if (this.items.length > 0 || this.comboItems.length > 0) {
-          if (this.isDirty) {
             if (this._serv.notNull(this.form.get('id').value)) {
-              const dialogRef = this.dialog.open(ConfirmPopupComponent, {
-                data: {
-                  message: 'Order data is updated. Do you want to save'
-                }
-              });
-              dialogRef.afterClosed().subscribe(data => {
-                if (data) {
-                  this.saveOrder('confirm', () => {
+              if (this.isDirty) {
+                const dialogRef = this.dialog.open(ConfirmPopupComponent, {
+                  data: {
+                    message: 'Order data is updated. Do you want to save'
+                  }
+                });
+                dialogRef.afterClosed().subscribe(data => {
+                  if (data) {
+                    this.saveOrder('confirm', () => {
+                      this.dialogRef.close({
+                        openNew
+                      });
+                    });
+                  }else {
                     this.dialogRef.close({
                       openNew
                     });
-                  });
-                }else {
-                  this.dialogRef.close({
-                    openNew
-                  });
-                }
-              });
+                  }
+                });
+              }else {
+                this.dialogRef.close({
+                  openNew
+                });
+              }
             }else {
               this.unsavedDataUpdateAndClose(openNew);
             }
-          }else {
-            this.dialogRef.close({
-              openNew
-            });
-          }
         }else if(e.code === 'Escape') {
           this.dialogRef.close();
         }

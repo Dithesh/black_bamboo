@@ -137,8 +137,6 @@ export class NewOrderComponent implements OnInit, OnDestroy {
   _filterProductList(value) {
     value = value ? value : '';
     value = value.toLowerCase();
-    // alert(1)
-    console.log(this.productList, value);
     const productList = [...this.productList];
     // return [];
     const list = [];
@@ -150,7 +148,6 @@ export class NewOrderComponent implements OnInit, OnDestroy {
       ));
       list.push(item);
     });
-    console.log(list);
     return list;
   }
 
@@ -326,7 +323,6 @@ export class NewOrderComponent implements OnInit, OnDestroy {
         startWith(''),
         map(value => this._filterProductList(value))
       );
-      console.log(this.productList);
 
     });
   }
@@ -419,7 +415,6 @@ export class NewOrderComponent implements OnInit, OnDestroy {
     const [integer, decimal] = grandTotal.toString().split('.');
     grandTotal = parseInt(integer);
     const roundOfAmount = (decimal) ? parseFloat('0.' + decimal) : 0;
-    // console.log(math.div(grandTotal, ));
 
 
     // math;
@@ -564,7 +559,6 @@ export class NewOrderComponent implements OnInit, OnDestroy {
           orderGroup: item.orderGroup,
           deletedFlag: false
         });
-        // console.log('pussing');
 
         this.items.push(orderItem);
         this.getOrderItemTotal(orderItem);
@@ -594,7 +588,6 @@ export class NewOrderComponent implements OnInit, OnDestroy {
           featuredImage: item.product_combo.featuredImage,
           deletedFlag: false
         });
-        // console.log('pussing');
 
         this.comboItems.push(comboItem);
         this.getOrderItemComboTotal(comboItem);

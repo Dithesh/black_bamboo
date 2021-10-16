@@ -45,17 +45,20 @@ export class QuickOrderComponent implements OnInit, OnDestroy {
       this.blockShortCut = false;
       this.getOngoingOrders();
       if (response && response.unsavedData) {
+          console.log(response.unsavedData)
         if (unsavedIndex != null) {
-        this.unsavedOrderList[unsavedIndex] = {
-          ...response.unsavedData,
-          created_at: new Date()
-        };
+          this.unsavedOrderList[unsavedIndex] = {
+            ...response.unsavedData,
+            created_at: new Date()
+          };
         }else {
           this.unsavedOrderList.push({
             ...response.unsavedData,
             created_at: new Date()
           });
         }
+      } else if (unsavedIndex != null) {
+        this.removeUnsaved(unsavedIndex);
       }
       if (response && response.openNew) {
         this.openQuickUpdate();
@@ -85,6 +88,9 @@ export class QuickOrderComponent implements OnInit, OnDestroy {
         this.openQuickUpdate();
       }
     }
+  }
+  removeUnsaved(i) {
+    this.unsavedOrderList.splice(i, 1);
   }
 
   ngOnDestroy() {
