@@ -452,8 +452,8 @@
                             </div>
 
                             <div class="printBtn_box d-flex mb-10" *ngIf="form.get('orderStatus').value != 'completed' && form.get('orderStatus').value != 'cancelled' && !blockForms">
-                                <button mat-stroked-button color="success" class="w-100  rounded-0" (click)="saveOrder('complete')"> Complete Order</button>
-                                <button mat-stroked-button aria-label="" color="warn" class="w-100 rounded-0"  (click)="saveOrder('cancel')">
+                                <button mat-stroked-button color="success" class="w-100  rounded-0" (click)="saveOrder('complete', this.handlePopupClose.bind(this))"> Complete Order</button>
+                                <button mat-stroked-button aria-label="" color="warn" class="w-100 rounded-0"  (click)="saveOrder('cancel', this.handlePopupClose.bind(this))">
                                     Cancel Order
                                 </button>
                             </div>
@@ -468,7 +468,7 @@
                             </div>
                             <div class="w-100" *ngIf="form.get('orderStatus').value != 'completed' && form.get('orderStatus').value != 'cancelled' && !blockForms">
                               <button mat-flat-button color="primary" class="w-100 rounded-0"
-                                  (click)="saveOrder('confirm')" [disabled]="orderProcessing"><img src="assets/images/icons/SAVE-WHITE.svg" alt="" class="icon_img mr-3">  Save</button>
+                                  (click)="saveOrder('confirm', this.handlePopupClose.bind(this))" [disabled]="orderProcessing"><img src="assets/images/icons/SAVE-WHITE.svg" alt="" class="icon_img mr-3">  Save</button>
                             </div>
                             <div class="d-flex flex-nowrap w-100" *ngIf="orderId">
                                 <button mat-flat-button color="accent" *ngIf="form.get('orderStatus').value == 'completed'" class="w-100 rounded-0" (click)="printOrder()"><img src="assets/images/icons/PRINT.svg" alt="" class="icon_img">  Print Bill</button>

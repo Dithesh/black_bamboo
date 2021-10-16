@@ -1,10 +1,10 @@
-import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, Inject, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import { MatSort } from '@angular/material/sort';
 import { FormGroup, FormBuilder, FormArray, AbstractControl, FormControl } from '@angular/forms';
 import { DataService } from 'src/app/shared/services/data.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BehaviorSubject, Observable, of } from 'rxjs';
-import { MatDialog } from '@angular/material/dialog';
+import {MAT_DIALOG_DATA, MatDialog} from '@angular/material/dialog';
 import { PrintOrderInvoiceComponent } from '../print-order-invoice/print-order-invoice.component';
 import { AddOrderItemComponent } from '../add-order-item/add-order-item.component';
 import { environment } from 'src/environments/environment';
@@ -54,6 +54,7 @@ export class NewOrderComponent implements OnInit, OnDestroy {
   branchDetail: any;
   orderDetails: any;
   keyListener = this.shortCutKeyHandler.bind(this);
+  accessType = 'page';
 
   constructor(
     protected fb: FormBuilder,
@@ -62,7 +63,6 @@ export class NewOrderComponent implements OnInit, OnDestroy {
     protected router: Router,
     protected dialog: MatDialog
   ) {
-    this.orderId = this.route.snapshot.params.id;
     this.form = this.fb.group({
       id: [''],
       branch_id: [''],
@@ -95,6 +95,9 @@ export class NewOrderComponent implements OnInit, OnDestroy {
 
 
   ngOnInit() {
+    if (this.accessType === 'page') {
+      this.orderId = this.route.snapshot.params.id;
+    }
     this.userData = this._serv.getUserData();
     if (this.userData.company_id) {
       this.getCompanyDetails(this.userData.company_id);
@@ -664,7 +667,7 @@ export class NewOrderComponent implements OnInit, OnDestroy {
     }
   }
 
-  saveOrder(type = 'confirm') {
+  saveOrder(type = 'confirm', callback = (type) => {}) {
     const orderData = { ...this.form.value };
 
     if (this.selectedOrderType.tableRequired) {
@@ -686,7 +689,7 @@ export class NewOrderComponent implements OnInit, OnDestroy {
     let message = '';
     if (type == 'confirm') {
       orderData.orderStatus = 'new';
-      this.updateOrder(orderData);
+      this.updateOrder(orderData, callback);
       return;
     } else if (type == 'complete') {
       orderData.orderStatus = 'completed';
@@ -696,11 +699,11 @@ export class NewOrderComponent implements OnInit, OnDestroy {
       message = 'Data will be freezed after cancelling. Are you sure want to proceed?';
     }
 
-    this.takeConfirmation(orderData, message);
+    this.takeConfirmation(orderData, message, callback);
 
   }
 
-  takeConfirmation(orderData, message) {
+  takeConfirmation(orderData, message, callback) {
     const dialogRef = this.dialog.open(ConfirmPopupComponent, {
       data: {
         message
@@ -708,12 +711,12 @@ export class NewOrderComponent implements OnInit, OnDestroy {
     });
     dialogRef.afterClosed().subscribe(data => {
       if (data) {
-        this.updateOrder(orderData);
+        this.updateOrder(orderData, callback);
       }
     });
   }
 
-  updateOrder(orderData) {
+  updateOrder(orderData, callback) {
     if (this.orderProcessing) { return; }
     this.orderProcessing = true;
     this._serv.endpoint = 'order-manager/order';
@@ -726,11 +729,16 @@ export class NewOrderComponent implements OnInit, OnDestroy {
       // }
       if (this._serv.notNull(this.orderId)) {
         this.getOrderDetail();
-        if (orderData.orderStatus == 'completed') {
+        if (orderData.orderStatus === 'completed') {
           this.printOrder(orderData);
         }
+        callback('after-save');
       } else {
-        this.router.navigateByUrl('/admin/order/update/' + response.id);
+        if (this.accessType === 'page') {
+          this.router.navigateByUrl('/admin/order/update/' + response.id);
+        }else {
+          callback('after-save');
+        }
       }
       // this.orderId = response.id;
       // }else {
