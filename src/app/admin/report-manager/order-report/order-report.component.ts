@@ -54,7 +54,7 @@ export class OrderReportComponent implements OnInit {
     }else {
       this.filterForm.get('company_id').setValue(this.userData.company_id);
       this.filterForm.get('branch_id').setValue(this.userData.branch_id);
-      // let calOlist = function calOlist(){this.getOrderList()}; 
+      // let calOlist = function calOlist(){this.getOrderList()};
       this.getBranchDetail(this.getOrderList.bind(this));
       // this.getOrderList();
     }
@@ -110,7 +110,7 @@ export class OrderReportComponent implements OnInit {
       this.branchDetail = response;
       this.orderTypeList = response.order_types as any[];
       this.paymentMethodList = response.payment_methods as any[];
-      
+
       if(this.orderTypeList.length > 0){
         let ordval = this.orderTypeList.map(x => x.id);
         this.filterForm.get('typeOfOrder').setValue(ordval);
@@ -123,7 +123,7 @@ export class OrderReportComponent implements OnInit {
         functionCall();
       }
     })
-    
+
   }
 
 
@@ -135,6 +135,15 @@ export class OrderReportComponent implements OnInit {
     if (this.serv.notNull(filterValue.startDate) && this.serv.notNull(filterValue.endDate)) {
       startDate = moment(filterValue.startDate).format('YYYY-MM-DD');
       endDate = moment(filterValue.endDate).format('YYYY-MM-DD');
+    }
+    if (Array.isArray(filterValue.paymentMethod)) {
+      filterValue.paymentMethod = filterValue.paymentMethod.join(',');
+    }
+    if (Array.isArray(filterValue.typeOfOrder)) {
+      filterValue.typeOfOrder = filterValue.typeOfOrder.join(',');
+    }
+    if (Array.isArray(filterValue.orderStatus)) {
+      filterValue.orderStatus = filterValue.orderStatus.join(',');
     }
     this.serv.endpoint = 'order-manager/order';
     this.serv.getByParam({
