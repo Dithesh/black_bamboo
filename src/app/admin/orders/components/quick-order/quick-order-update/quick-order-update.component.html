@@ -32,6 +32,7 @@
                     </ng-container>
                 </mat-chip-list>
             </div>
+            <h2 class="mb-0 id_Pill" [class.new]="!orderId">{{orderId ? '#'+orderId : 'New Order'}}</h2>
 
             <div *ngIf="orderData?.rejectedCount > 0 && orderData?.orderStatus == 'new'" class="status_box ml-auto red">
                 Items Rejected
