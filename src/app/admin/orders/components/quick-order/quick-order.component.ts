@@ -13,6 +13,7 @@ export class QuickOrderComponent implements OnInit, OnDestroy {
   ongoingorders: any[] = [];
   blockShortCut = false;
   keyListener = this.shortCutKeyHandler.bind(this);
+  unsavedOrderList: any[] = [];
 
   constructor(
     private dialog: MatDialog,
@@ -24,7 +25,7 @@ export class QuickOrderComponent implements OnInit, OnDestroy {
     window.addEventListener('keydown', this.keyListener, true);
   }
 
-  openQuickUpdate(item = null) {
+  openQuickUpdate(item = null, type="saved", unsavedIndex = null) {
     this.blockShortCut = true;
     const dialogRef = this.dialog.open(
       QuickOrderUpdateComponent,
@@ -33,7 +34,9 @@ export class QuickOrderComponent implements OnInit, OnDestroy {
         width: 'calc(100vw - 50px)',
         height: 'calc(100vh - 50px)',
         data: {
-          orderId: (item ? item.id : '')
+          orderId: (item ? item.id : ''),
+          unsavedData: item,
+          itemSavedType: type
         }
       }
     );
@@ -41,7 +44,20 @@ export class QuickOrderComponent implements OnInit, OnDestroy {
     dialogRef.afterClosed().subscribe(response => {
       this.blockShortCut = false;
       this.getOngoingOrders();
-      if (response.openNew) {
+      if (response && response.unsavedData) {
+        if (unsavedIndex != null) {
+        this.unsavedOrderList[unsavedIndex] = {
+          ...response.unsavedData,
+          created_at: new Date()
+        };
+        }else {
+          this.unsavedOrderList.push({
+            ...response.unsavedData,
+            created_at: new Date()
+          });
+        }
+      }
+      if (response && response.openNew) {
         this.openQuickUpdate();
       }
     });

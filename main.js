@@ -54,9 +54,9 @@ var menu = Menu.buildFromTemplate([
         // label: 'Toggle Full Screen',
         role: 'togglefullscreen'
       },
-      // {
-      //   role: 'toggleDevTools'
-      // },
+      {
+        role: 'toggleDevTools'
+      },
       {
         label: 'Exit Application',
         click() {

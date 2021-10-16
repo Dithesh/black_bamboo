@@ -35,8 +35,55 @@ export class QuickOrderUpdateComponent extends NewOrderComponent implements OnIn
     }
   }
 
+  ngOnInit() {
+    super.ngOnInit();
+
+    if (this.data.itemSavedType === 'unsaved') {
+      this.patchPreviousData(this.data.unsavedData);
+    }
+  }
+
+  patchPreviousData(data) {
+      this.form.patchValue(data);
+
+      if (data.orderStatus === 'completed' || data.orderStatus === 'cancelled' || data.rejectedCount > 0 || this.userData.roles === 'Super Admin' || this.userData.roles === 'Company Admin') {
+        this.blockForms = true;
+        this.form.disable();
+      } else {
+        this.blockForms = false;
+        this.form.enable();
+      }
+
+      this.items.controls = [];
+      this.items.reset();
+      data.items.forEach(item => {
+
+        const orderItem = this.addOrderItem();
+        if (this.blockForms === true) { orderItem.disable(); }
+        orderItem.patchValue(item);
+        this.items.push(orderItem);
+        this.getOrderItemTotal(orderItem);
+      });
+
+
+      this.comboItems.controls = [];
+      this.comboItems.reset();
+      data.comboItems.forEach(item => {
+
+        const comboItem = this.addOrderItemCombo();
+        if (this.blockForms === true) { comboItem.disable(); }
+        comboItem.patchValue(item);
+        this.comboItems.push(comboItem);
+        this.getOrderItemComboTotal(comboItem);
+      });
+
+      this.getBranchDetail(data.branch_id);
+      this.handleFinalPricing();
+  }
+
   shortCutKeyHandler(e) {
     if (!this.blockForms) {
+      console.log(e.code)
       if (e.code === 'F1') {
         e.preventDefault();
         this.searchInput.nativeElement.focus();
@@ -56,7 +103,11 @@ export class QuickOrderUpdateComponent extends NewOrderComponent implements OnIn
           this.saveOrder('complete', this.handlePopupClose.bind(this));
         }
         // this.saveOrder('complete');
-      } else if (e.ctrlKey && e.code === 'KeyN') {
+      } else if ((e.ctrlKey && e.code === 'KeyN') || e.code === 'Escape') {
+        e.preventDefault();
+        e.stopPropagation();
+        const openNew = (e.code === 'KeyN') ? true : false;
+
         if (this.items.length > 0 || this.comboItems.length > 0) {
           if (this.isDirty) {
             if (this._serv.notNull(this.form.get('id').value)) {
@@ -69,30 +120,38 @@ export class QuickOrderUpdateComponent extends NewOrderComponent implements OnIn
                 if (data) {
                   this.saveOrder('confirm', () => {
                     this.dialogRef.close({
-                      openNew: true
+                      openNew
                     });
                   });
                 }else {
                   this.dialogRef.close({
-                    openNew: true
+                    openNew
                   });
                 }
               });
             }else {
-              //neds tp be handled
+              this.unsavedDataUpdateAndClose(openNew);
             }
           }else {
             this.dialogRef.close({
-              openNew: true
+              openNew
             });
           }
+        }else if(e.code === 'Escape') {
+          this.dialogRef.close();
         }
       }
     }
   }
 
+  unsavedDataUpdateAndClose(openNew) {
+    this.dialogRef.close({
+      openNew,
+      unsavedData: this.saveOrder('unsave')
+    });
+  }
+
   handlePopupClose(type = 'new') {
-    console.log(type)
     if ( type === 'after-save') {
       this.dialogRef.close();
     }

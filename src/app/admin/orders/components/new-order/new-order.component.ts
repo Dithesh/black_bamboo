@@ -697,6 +697,11 @@ export class NewOrderComponent implements OnInit, OnDestroy {
     } else if (type == 'cancel') {
       orderData.orderStatus = 'cancelled';
       message = 'Data will be freezed after cancelling. Are you sure want to proceed?';
+    } else if (type === 'unsave') {
+      return {
+        ...orderData,
+        selectedOrderType: this.selectedOrderType
+      };
     }
 
     this.takeConfirmation(orderData, message, callback);
