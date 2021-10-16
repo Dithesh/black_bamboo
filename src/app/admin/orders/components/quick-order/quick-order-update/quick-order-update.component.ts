@@ -1,6 +1,6 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {NewOrderComponent} from "../../new-order/new-order.component";
-import {FormBuilder} from "@angular/forms";
+import {FormArray, FormBuilder} from "@angular/forms";
 import {DataService} from "../../../../../shared/services/data.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog";
@@ -40,6 +40,8 @@ export class QuickOrderUpdateComponent extends NewOrderComponent implements OnIn
 
     if (this.data.itemSavedType === 'unsaved') {
       this.patchPreviousData(this.data.unsavedData);
+    }else {
+      this.getTableInfo();
     }
   }
 
@@ -79,7 +81,22 @@ export class QuickOrderUpdateComponent extends NewOrderComponent implements OnIn
 
       this.getBranchDetail(data.branch_id);
       this.handleFinalPricing();
+      this.getTableInfo(() => {
+        console.log(data);
+        this.tables.controls.forEach(control => {
+          data.tables.forEach(elem => {
+            if (control.get('id').value === elem.id) {
+              (control.get('chairs') as FormArray).controls.forEach(chair => {
+                if (elem.chairs.indexOf(chair.get('chairId').value) >= 0) {
+                  chair.get('isSelected').setValue(true);
+                }
+              });
+            }
+          });
+        });
+      });
   }
+
 
   shortCutKeyHandler(e) {
     if (!this.blockForms) {

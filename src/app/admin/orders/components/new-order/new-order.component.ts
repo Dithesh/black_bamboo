@@ -119,7 +119,9 @@ export class NewOrderComponent implements OnInit, OnDestroy {
     // if(this.userData.roles == 'Super Admin') {
     //   this.getAllBranches();
     // }
-    this.getTableInfo();
+    if (this.accessType === 'page') {
+      this.getTableInfo();
+    }
     this.getAllProducts();
     this.getAllProductItemCombo();
 
@@ -449,7 +451,7 @@ export class NewOrderComponent implements OnInit, OnDestroy {
     return this.form.get('tables') as FormArray;
   }
 
-  getTableInfo() {
+  getTableInfo(callback = () => {}) {
     this._serv.endpoint = 'order-manager/tables?showActive=true&orderId=' + ((this.orderId) ? this.orderId : '');
     this._serv.get().subscribe(response => {
       const responseData = response as any[];
@@ -488,6 +490,7 @@ export class NewOrderComponent implements OnInit, OnDestroy {
 
         });
       }
+      callback();
     });
   }
 
