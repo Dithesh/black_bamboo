@@ -84,7 +84,7 @@
                             <ng-container *ngFor="let t of item.order_tables; let ti=index;let last=last">{{ t.table.tableId }} <ng-container *ngIf="!last">, </ng-container></ng-container>
                         </td>
                         <td>
-                            {{item.orderAmount| currency:'':''}}
+                            <span class="d-inline-block mr-5"> &#8377;</span>{{item.orderAmount| currency:'':''}}
                         </td>
                         <td>
                             {{item.orderStatus|titlecase}}

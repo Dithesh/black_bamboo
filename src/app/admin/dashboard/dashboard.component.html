@@ -78,7 +78,7 @@
                             {{ item.created_at | datex:'DD-MM-YYYY hh:mm a' }}
                         </div>
                         <div class="orderBox_footer">
-                            <p class="price_tag">{{ item.orderAmount | currency }}</p>
+                            <p class="price_tag"><span class="d-inline-block mr-5"> &#8377;</span>{{ item.orderAmount | currency:'':''}}</p>
                             <a href="javascript:;" [routerLink]="['/admin/order/update/'+item.id]" class="btn viewBtn">View Order</a>
                         </div>
                     </div>

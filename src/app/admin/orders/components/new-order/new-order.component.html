@@ -76,7 +76,7 @@
                                             <!-- <div class="produt_img" style="background-image: url('/assets/images/food.jpg');"></div> -->
                                             <div class="textbox">
                                                 <p>{{ item.productName | titlecase }}</p>
-                                                <span>{{ item.price | currency }}</span>
+                                                <span><span class="d-inline-block mr-5"> &#8377;</span>{{ item.price | currency:'':'' }}</span>
                                             </div>
                                             <div class="buttonBox text-right">
                                                 <button mat-icon-button aria-label="add" class="addShowBtn pointer-none" color="primary">
@@ -125,7 +125,7 @@
                                       <!-- <div class="produt_img" style="background-image: url('/assets/images/food.jpg');"></div> -->
                                       <div class="textbox">
                                           <p>{{ item.comboTitle | titlecase }}</p>
-                                          <span>{{ item.comboTotal | currency }}</span>
+                                          <span><span class="d-inline-block mr-5"> &#8377;</span>{{ item.comboTotal | currency :'':''}}</span>
                                       </div>
                                       <div class="buttonBox text-right">
                                           <button mat-icon-button aria-label="add" class="addShowBtn pointer-none" color="primary">
@@ -182,15 +182,15 @@
                                                      <span class="order_item_card_strip" *ngIf="item.get('isParcel').value">Parcel</span></p>
                                                     <p class="product_price">
                                                         <small>Price: &nbsp;&nbsp;&nbsp;</small>
-                                                        <span>{{ item.get('price').value | currency  }}</span>
+                                                        <span><span class="d-inline-block mr-5"> &#8377;</span>{{ item.get('price').value | currency:'':''  }}</span>
                                                     </p>
                                                     <p class="product_price" *ngIf="item.get('isParcel').value">
                                                         <small>Pkg charge: &nbsp;&nbsp;&nbsp;</small>
-                                                        <span>{{ item.get('packagingCharges').value | currency  }}</span>
+                                                        <span><span class="d-inline-block mr-5"> &#8377;</span>{{ item.get('packagingCharges').value | currency:'':'' }}</span>
                                                     </p>
                                                     <p class="product_price">
                                                         <small>Total: &nbsp;&nbsp;&nbsp;</small>
-                                                        <span>{{ item.get('totalPrice').value | currency }}</span>
+                                                        <span><span class="d-inline-block mr-5"> &#8377;</span>{{ item.get('totalPrice').value | currency:'':''}}</span>
                                                     </p>
                                                     <button type="button" mat-stroked-button color="warn" class="mt-15" *ngIf="item.get('productionRejectedQuantity').value > 0" (click)="handleRejectedItems(item)">Remove Rejected</button>
                                                 </div>
@@ -231,15 +231,15 @@
                                                      <span class="order_item_card_strip" *ngIf="item.get('isParcel').value">Parcel</span></p>
                                                     <p class="product_price">
                                                         <small>Price: &nbsp;&nbsp;&nbsp;</small>
-                                                        <span>{{ item.get('price').value | currency  }}</span>
+                                                        <span><span class="d-inline-block mr-5"> &#8377;</span>{{ item.get('price').value | currency:'':''}}</span>
                                                     </p>
                                                     <p class="product_price" *ngIf="item.get('isParcel').value">
                                                         <small>Pkg charge: &nbsp;&nbsp;&nbsp;</small>
-                                                        <span>{{ item.get('packagingCharges').value | currency  }}</span>
+                                                        <span><span class="d-inline-block mr-5"> &#8377;</span>{{ item.get('packagingCharges').value | currency :'':''}}</span>
                                                     </p>
                                                     <p class="product_price">
                                                         <small>Total: &nbsp;&nbsp;&nbsp;</small>
-                                                        <span>{{ item.get('totalPrice').value | currency }}</span>
+                                                        <span><span class="d-inline-block mr-5"> &#8377;</span>{{ item.get('totalPrice').value | currency:'':''}}</span>
                                                     </p>
                                                     <button type="button" mat-stroked-button color="warn" class="mt-15" *ngIf="item.get('productionRejectedQuantity').value > 0" (click)="handleRejectedItems(item)">Remove Rejected</button>
                                                 </div>
@@ -271,7 +271,7 @@
                                     <div class="d-flex align-items-center justify-content-between">
 
                                         <div class="ammount_box d-flex align-items-center">
-                                            <div class="d-inline-block orderAmuntChip mr-10" [class.paid]="form.get('isPaid').value">{{ form.get('orderAmount').value | currency }}</div>
+                                            <div class="d-inline-block orderAmuntChip mr-10" [class.paid]="form.get('isPaid').value"><span class="d-inline-block mr-5"> &#8377;</span>{{ form.get('orderAmount').value | currency:'':''}}</div>
                                             <div class="d-inline-flex align-items-center">
                                                 <p class="my-0 mr-20 font-weight-500 paid_label">Paid ?</p>
                                                 <mat-slide-toggle [formControl]="form.get('isPaid')"></mat-slide-toggle>
@@ -379,40 +379,40 @@
                                     </div>
                                     <div class="billing_strip">
                                         <p class="title">Order Item Total</p>
-                                        <span class="value_section">{{ form.get('orderItemTotal').value | currency }}</span>
+                                        <span class="value_section"><span class="d-inline-block mr-5"> &#8377;</span>{{ form.get('orderItemTotal').value | currency:'':''}}</span>
                                     </div>
                                     <div class="billing_strip">
                                         <p class="title">Order Combo Total</p>
-                                        <span class="value_section">{{ form.get('orderComboTotal').value | currency }}</span>
+                                        <span class="value_section"><span class="d-inline-block mr-5"> &#8377;</span>{{ form.get('orderComboTotal').value | currency:'':''}}</span>
                                     </div>
                                     <div class="billing_strip" *ngIf="form.get('deliverCharge').value && form.get('deliverCharge').value > 0">
                                         <p class="title">Delivery Charge</p>
-                                        <span class="value_section">{{ form.get('deliverCharge').value | currency }}</span>
+                                        <span class="value_section"><span class="d-inline-block mr-5"> &#8377;</span>{{ form.get('deliverCharge').value | currency:'':''}}</span>
                                     </div>
                                     <div class="billing_strip" *ngIf="form.get('packingCharge').value">
                                         <p class="title">Total Pkg Charge</p>
-                                        <span class="value_section">{{ form.get('packingCharge').value | currency }}</span>
+                                        <span class="value_section"><span class="d-inline-block mr-5"> &#8377;</span>{{ form.get('packingCharge').value | currency:'':''}}</span>
                                     </div>
 
                                     <div class="billing_strip" *ngIf="!form.get('taxDisabled').value">
                                         <p class="title">CGST <small class="text-muted">({{ ((form.get('taxPercent').value > 0)?(form.get('taxPercent').value/2):0) | number : '2.2' }}%)</small></p>
-                                        <span class="value_section">{{ form.get('cgst').value | currency }}</span>
+                                        <span class="value_section"><span class="d-inline-block mr-5"> &#8377;</span>{{ form.get('cgst').value | currency:'':''}}</span>
                                     </div>
                                     <div class="billing_strip" *ngIf="!form.get('taxDisabled').value">
                                         <p class="title">SGST <small class="text-muted">({{ ((form.get('taxPercent').value > 0)?(form.get('taxPercent').value/2):0) | number : '2.2' }}%)</small></p>
-                                        <span class="value_section">{{ form.get('sgst').value | currency }}</span>
+                                        <span class="value_section"><span class="d-inline-block mr-5"> &#8377;</span>{{ form.get('sgst').value | currency:'':''}}</span>
                                     </div>
                                     <div class="billing_strip" *ngIf="form.get('discountValue').value && form.get('discountValue').value > 0">
                                         <p class="title">Discount</p>
-                                        <span class="value_section">{{ (-1 * form.get('discountValue').value) | currency }}</span>
+                                        <span class="value_section"><span class="d-inline-block mr-5"> &#8377;</span>{{ (-1 * form.get('discountValue').value) | currency:'':''}}</span>
                                     </div>
                                     <div class="billing_strip" *ngIf="form.get('roundOfAmount').value && form.get('roundOfAmount').value > 0">
                                         <p class="title">Round Off</p>
-                                        <span class="value_section">{{ (-1 * form.get('roundOfAmount').value) | currency }}</span>
+                                        <span class="value_section"><span class="d-inline-block mr-5"> &#8377;</span>{{ (-1 * form.get('roundOfAmount').value) | currency:'':''}}</span>
                                     </div>
                                     <div class="billing_strip totalAmountText">
                                         <p class="title">Grand Total</p>
-                                        <span class="value_section">{{ form.get('orderAmount').value | currency }}</span>
+                                        <span class="value_section"><span class="d-inline-block mr-5"> &#8377;</span>{{ form.get('orderAmount').value | currency:'':''}}</span>
                                     </div>
                                 </div>
                                 <div class="remaning_box"  *ngIf="!blockForms">

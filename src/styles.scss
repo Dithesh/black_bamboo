@@ -1828,7 +1828,7 @@ label.mat-checkbox-layout {
         }
     }
     .category_list{
-        max-height: calc(100vh - 360px);
+        max-height: calc(100vh - 368px);
         min-height: 200px;
         overflow-y: auto;
         li{
@@ -1964,7 +1964,7 @@ label.mat-checkbox-layout {
         }
     }
     .items_list_ul{
-        max-height: calc(100vh - 330px);
+        max-height: calc(100vh - 351px);
         overflow-y: auto;
         overflow-x: hidden;
         margin: 0px -15px;
@@ -2100,14 +2100,14 @@ label.mat-checkbox-layout {
     }
     .tab_inner_body{
         padding: 15px;
-        height: calc(100vh - 360px);
-        min-height: 373px;
+        height: calc(100vh - 380px);
+        min-height: 289px;
         overflow-y: auto;
         &.innerFooter{
-            height: calc(100vh - 405px);
+            height: calc(100vh - 427px);
         }
         &.billing_body {
-            height: calc(100vh - 450px);
+            height: calc(100vh - 469px);
           &.afterbilled {
             height: calc(100vh - 400px);
           }

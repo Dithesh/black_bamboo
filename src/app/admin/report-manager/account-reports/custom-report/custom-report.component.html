@@ -65,19 +65,19 @@
                 <ng-container>
                     <tr>
                         <td *ngIf="Sales.value">
-                            {{ orderSummary.salesTotal | currency }}
+                            <span class="d-inline-block mr-5"> &#8377;</span>{{ orderSummary.salesTotal | currency:'':'' }}
                         </td>
                         <td *ngIf="Purchase.value">
-                            {{ orderSummary.purchaseTotal | currency }}
+                            <span class="d-inline-block mr-5"> &#8377;</span>{{ orderSummary.purchaseTotal | currency:'':'' }}
                         </td>
                         <td *ngIf="Payment.value">
-                            {{ orderSummary.paymentTotal | currency }}
+                            <span class="d-inline-block mr-5"> &#8377;</span>{{ orderSummary.paymentTotal | currency:'':'' }}
                         </td>
                         <td *ngIf="Receipt.value">
-                            {{ orderSummary.receiptTotal | currency }}
+                            <span class="d-inline-block mr-5"> &#8377;</span>{{ orderSummary.receiptTotal | currency:'':'' }}
                         </td>
                         <td *ngIf="Orders.value">
-                            {{ orderSummary.ordersTotal | currency }}
+                            <span class="d-inline-block mr-5"> &#8377;</span>{{ orderSummary.ordersTotal | currency:'':'' }}
                         </td>
 
                     </tr>
@@ -129,7 +129,7 @@
                             {{ item.description }}
                         </td>
                         <td>
-                            {{ item.grandTotal | currency:'':'' }}
+                            <span class="d-inline-block mr-5"> &#8377;</span>{{ item.grandTotal | currency:'':'' }}
                         </td>
 
                     </tr>
@@ -138,7 +138,7 @@
                     </tr>
                     <tr class="total_row">
                         <td colspan="4" >Grand Total</td>
-                        <td class="ew-180">{{orderSummary.transactionTotal| currency:'':''}}</td>
+                        <td class="ew-180"><span class="d-inline-block mr-5"> &#8377;</span>{{orderSummary.transactionTotal| currency:'':''}}</td>
                     </tr>
                 </ng-container>
             </tbody>
@@ -173,7 +173,7 @@
                             {{ item.order_type.orderType }}
                         </td>
                         <td>
-                            {{ item.orderAmount| currency:'':'' }}
+                            <span class="d-inline-block mr-5"> &#8377;</span>{{ item.orderAmount| currency:'':'' }}
                         </td>
 
                     </tr>
@@ -183,7 +183,7 @@
                 </tr>
                 <tr class="total_row">
                     <td colspan="3" >Grand Total</td>
-                    <td class="ew-180">{{ orderSummary.ordersTotal| currency:'':'' }}</td>
+                    <td class="ew-180"><span class="d-inline-block mr-5"> &#8377;</span>{{ orderSummary.ordersTotal| currency:'':'' }}</td>
                 </tr>
             </tbody>
         </table>

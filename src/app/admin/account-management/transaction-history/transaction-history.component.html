@@ -110,7 +110,7 @@
                                         </span>
                                     </td>
                                     <td>
-                                        {{ item.grandTotal| currency:'':'' }}
+                                        <span class="d-inline-block mr-5"> &#8377;</span>{{ item.grandTotal| currency:'':'' }}
                                     </td>
                                     <td>
                                         <ng-container *ngIf="item.description else noData">
