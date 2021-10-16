@@ -19,7 +19,8 @@ export class QuickOrderComponent implements OnInit {
   openQuickUpdate(item = null) {
     this.dialog.open(
       QuickOrderUpdateComponent,
-      {
+      { 
+        maxWidth:'1530px',
         width: 'calc(100vw - 50px)',
         height: 'calc(100vh - 50px)'
       }

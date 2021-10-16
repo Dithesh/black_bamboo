@@ -96,7 +96,6 @@ export class NewOrderComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.userData = this._serv.getUserData();
-  alert(1)
     if (this.userData.company_id) {
       this.getCompanyDetails(this.userData.company_id);
     }

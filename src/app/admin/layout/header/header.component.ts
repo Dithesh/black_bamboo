@@ -1,12 +1,14 @@
+import { ActivatedRoute } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { LayoutService } from '../services/layout.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ChangePasswordComponent } from '../component/change-password/change-password.component';
 import { ChangeProfileComponent } from '../component/change-profile/change-profile.component';
-import { Router } from '@angular/router';
+import { Router, NavigationEnd } from '@angular/router';
 import { DataService } from 'src/app/shared/services/data.service';
 import { environment } from 'src/environments/environment';
 import {Location} from '@angular/common';
+import { filter } from 'runrestro-win32-ia32/resources/app/node_modules/rxjs/operators';
 
 @Component({
   selector: 'app-header',
@@ -19,12 +21,27 @@ export class HeaderComponent implements OnInit {
   imgSrc = "url('assets/images/user.png')";
   isOffline = environment.isOffline;
   syncOn=false;
+  isVisible=true;
   constructor(
     public _layout: LayoutService, 
     private dialog:MatDialog, 
     private router: Router,
+    private route:ActivatedRoute,
     private location: Location,
-    private _serv: DataService) { }
+    private _serv: DataService) {
+
+      
+      this.router.events.subscribe((event => {
+        if(event instanceof NavigationEnd){
+          if(event.url.includes('/dashboard')){
+            this.isVisible = false
+          }else{
+            this.isVisible = true;
+          }
+
+        }
+      }))
+    }
 
   ngOnInit(): void {
     this.getCurrentUser();
@@ -43,6 +60,8 @@ export class HeaderComponent implements OnInit {
   }
 
   goBack(){
+    console.log(this.location);
+    
     this.location.back();
   }
 
