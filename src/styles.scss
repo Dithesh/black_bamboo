@@ -143,6 +143,9 @@ html, body {
 .mat-elevation-z4{
     box-shadow: 0px 3px 10px #CCCEE9;
 }
+.text-black{
+    color: #000;
+}
 .scroll_style{
     &::-webkit-scrollbar {
         width: 5px;
@@ -174,6 +177,9 @@ button.bg-primary{
         background-color: $color-primary !important;
         color: #fff;
     }
+}
+.bg-white{
+    background-color:#fff;
 }
 button:focus {
     outline: none;
@@ -325,6 +331,11 @@ h3.page_title {
         font-weight: 500;
         font-size: 1.8rem;
     }
+}
+.prefix-top-0{
+        .mat-form-field-prefix{
+            top: 0 !important;
+        }
 }
 
 // mat form-field padding
@@ -1540,8 +1551,9 @@ label.mat-checkbox-layout {
 .billing_wrapper {
     // padding: 20px 20px 45px;
     position: relative;
-    width: 400px;
+    // width: 400px;
     margin: 20px auto 20px;
+    padding: 0px 12px;
     max-width: 100%;
 
     @media (max-width: 1400px) {
@@ -1553,6 +1565,14 @@ label.mat-checkbox-layout {
         align-items: center;
         flex-wrap: nowrap;
         margin-bottom: 10px;
+
+        .inline-input{
+            font-size: 16px;
+            font-weight: 500;
+            &.mr-m-11{
+                margin-right: -11px;
+            }
+        }
 
         @media (max-width: 1400px) {
           margin-bottom: 5px;
@@ -2373,6 +2393,7 @@ label.mat-checkbox-layout {
 
 
 // new popup design
+
 .popuUpBox{
     .right_details_box {
         .tab_inner_body{

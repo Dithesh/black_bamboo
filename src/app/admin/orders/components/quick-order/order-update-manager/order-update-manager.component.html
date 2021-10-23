@@ -1,77 +1,237 @@
 <form [formGroup]="form" class="order_new_wrapper">
-  <div class="new_order_header">
-      <mat-chip-list aria-label="Fish selection">
-          <ng-container *ngFor="let item of orderTypeList;">
-              <mat-chip *ngIf="item.isActive" color="primary" [selected]="item.id == form.get('orderType').value" (click)="changeOrderType(item.id, 'button')">{{ item.orderType }}</mat-chip>
-          </ng-container>
-      </mat-chip-list>
-      <div class="table_selected_row" *ngIf="selectedOrderType?.tableRequired">
-        <p *ngIf="false">
-          No Table Selected
-        </p>
-        <ul>
-          <li>
-            T1
-          </li>
-          <li>
-            T2
-          </li>
-          <li>
-            T3
-          </li>
-        </ul>
-      </div>
-
-      <h2 class="id_Pill" [class.new]="!orderDetails" [class.completed]="orderDetails && orderDetails?.orderStatus == 'completed'" [class.cancelled]="orderDetails && orderDetails?.orderStatus == 'cancelled'">{{orderDetails ? '#'+orderDetails.id : '# - - - - - -'}}</h2>
-  </div>
-  <div class="search_header_row">
-    <div class="search_wraper">
-      <input type="text"
-           placeholder="Search for a item"
-           [formControl]="searchControl"
-           [matAutocomplete]="auto">
-      <mat-autocomplete #auto="matAutocomplete">
-        <ng-container *ngFor="let cat of productListObserver|async">
-          <mat-optgroup *ngIf="cat.products.length > 0" [label]="cat.categoryName"
-                        [disabled]="cat.products.length <= 0">
-            <mat-option *ngFor="let item of cat.products" [value]="item.id">
-              {{ item.productName | titlecase }}
-              <span>{{ item.price | currency }}</span>
-            </mat-option>
-          </mat-optgroup>
-        </ng-container>
-      </mat-autocomplete>
-    </div>
-  </div>
-  <div class="content_body_row">
-    <div class="row no-gutters">
-      <div class="col fav_menu_wrapper">
-          <mat-selection-list class="selection_list" [multiple]="false">
-            <ng-container *ngFor="let menu of favoriteMenuList">
-              <div mat-subheader class="selection_list_header">{{menu.menuTitle}}</div>
-              <mat-list-option class="selection_list_option" *ngFor="let product of menu.products">
-  <!--              <mat-icon mat-list-icon>folder</mat-icon>-->
-                <div mat-line class="selection_list_line">
-                  <span class="title">{{ product.productName }}</span>
-                  <div> {{ product.price }} </div>
-                </div>
-              </mat-list-option>
-              <mat-divider></mat-divider>
+    <div class="new_order_header">
+        <mat-chip-list aria-label="Fish selection">
+            <ng-container *ngFor="let item of orderTypeList;">
+                <mat-chip *ngIf="item.isActive" color="primary" [selected]="item.id == form.get('orderType').value"
+                    (click)="changeOrderType(item.id, 'button')">{{ item.orderType }}</mat-chip>
             </ng-container>
-          </mat-selection-list>
-      </div>
-      <div class="col">
+        </mat-chip-list>
+        <div class="table_selected_row" *ngIf="selectedOrderType?.tableRequired">
+            <p *ngIf="false">
+                No Table Selected
+            </p>
+            <ul>
+                <li>
+                    T1
+                </li>
+                <li>
+                    T2
+                </li>
+                <li>
+                    T3
+                </li>
+            </ul>
+        </div>
 
-      </div>
-      <div class="col">
-
-      </div>
+        <h2 class="id_Pill" [class.new]="!orderDetails"
+            [class.completed]="orderDetails && orderDetails?.orderStatus == 'completed'"
+            [class.cancelled]="orderDetails && orderDetails?.orderStatus == 'cancelled'">{{orderDetails ?
+            '#'+orderDetails.id : '# - - - - - -'}}</h2>
     </div>
-  </div>
-  <div class="footer_row">
-    <button mat-stroked-button color="success"> Complete Order</button>
-    <button mat-stroked-button aria-label="" color="warn">Cancel Order</button>
-    <button mat-stroked-button *ngIf="form.get('orderStatus').value == 'completed' || form.get('orderStatus').value == 'cancelled' || blockForms" color="primary" type="button"> Reopen</button>
-
-  </div>
+    <div class="search_header_row">
+        <div class="search_wraper">
+            <input type="text" placeholder="Search for a item" [formControl]="searchControl" [matAutocomplete]="auto">
+            <mat-autocomplete #auto="matAutocomplete">
+                <ng-container *ngFor="let cat of productListObserver|async">
+                    <mat-optgroup *ngIf="cat.products.length > 0" [label]="cat.categoryName"
+                        [disabled]="cat.products.length <= 0">
+                        <mat-option *ngFor="let item of cat.products" [value]="item.id">
+                            {{ item.productName | titlecase }}
+                            <span>{{ item.price | currency }}</span>
+                        </mat-option>
+                    </mat-optgroup>
+                </ng-container>
+            </mat-autocomplete>
+        </div>
+    </div>
+    <div class="content_body_row">
+        <div class="row no-gutters">
+            <div class="col fav_menu_wrapper">
+                <mat-selection-list class="selection_list" [multiple]="false">
+                    <ng-container *ngFor="let menu of favoriteMenuList">
+                        <div mat-subheader class="selection_list_header">{{menu.menuTitle}}</div>
+                        <mat-list-option class="selection_list_option" *ngFor="let product of menu.products">
+                            <!--              <mat-icon mat-list-icon>folder</mat-icon>-->
+                            <div mat-line class="selection_list_line">
+                                <span class="title">{{ product.productName }}</span>
+                                <div> {{ product.price }} </div>
+                            </div>
+                        </mat-list-option>
+                        <mat-divider></mat-divider>
+                    </ng-container>
+                </mat-selection-list>
+            </div>
+            <div class="col bg-white">
+                <div class="order_item_wrapper px-3">
+                    <mat-selection-list [multiple]="false">
+                        <mat-list-option>
+                            <div class="order_item_card">
+                                <div class="order-details col">
+                                    <p class="product_name">Iddli
+                                        <span class="order_item_card_strip">Parcel</span></p>
+                                        <!-- <div class="d-flex align-items-center"> -->
+                                        <p class="product_price mr-2">
+                                            <small>Price: </small>
+                                            <span class=""><span class="d-inline-block"> &#8377;</span>10</span>
+                                        </p>
+                                        <p class="product_price mr-2">
+                                            <small>Pkg charge: </small>
+                                            <span class=""><span class="d-inline-block"> &#8377;</span>20</span>
+                                        </p>
+                                        <p class="product_price mr-2">
+                                            <small>Total: </small>
+                                            <span class="text-black"><span class="d-inline-block"> &#8377;</span>10</span>
+                                        </p>
+                                        <!-- </div> -->
+                                </div>
+                                <div class="action_menu col-auto">
+                                    <button type="button" mat-stroked-button color="warn" class="small_btn mb-10">Remove Rejected</button>
+                                    <div class="input-group mb-0 ml-auto number_input item_btn">
+                                        <div class="input-group-prepend">
+                                            <button class="btn btn-outline-secondary" type="button">-</button>
+                                        </div>
+                                        <input type="text" class="form-control" digitOnly>
+                                        <div class="input-group-append">
+                                            <button class="btn btn-outline-secondary" type="button">+</button>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex item_track_wrapper">
+                                        <p class="item_track served" [matTooltip]="6 + ' items served for customers'">6</p>
+                                        <!-- <p class="item_track kitchen" [matTooltip]="(item.get('productionAcceptedQuantity').value - item.get('servedItems').value - item.get('productionRejectedQuantity').value)  + ' items are preparing in kitchen'">{{ item.get('productionAcceptedQuantity').value - item.get('servedItems').value - item.get('productionRejectedQuantity').value}}</p>
+                                        <p class="item_track ready" [matTooltip]="(item.get('productionReadyQuantity').value - item.get('servedItems').value) + ' items ready in kitchen'">{{ item.get('productionReadyQuantity').value - item.get('servedItems').value}}</p>
+                                        <p class="item_track rejected" [matTooltip]="item.get('productionRejectedQuantity').value + ' items rejected from kitchen'">{{ item.get('productionRejectedQuantity').value }}</p> -->
+                                    </div>
+                                </div>
+                            </div>
+                        </mat-list-option>
+                        <mat-list-option>
+                            <div class="order_item_card">
+                                <div class="order-details col">
+                                    <p class="product_name">Iddli
+                                        <span class="order_item_card_strip">Parcel</span></p>
+                                        <!-- <div class="d-flex align-items-center"> -->
+                                        <p class="product_price mr-2">
+                                            <small>Price: </small>
+                                            <span class=""><span class="d-inline-block"> &#8377;</span>10</span>
+                                        </p>
+                                        <p class="product_price mr-2">
+                                            <small>Pkg charge: </small>
+                                            <span class=""><span class="d-inline-block"> &#8377;</span>20</span>
+                                        </p>
+                                        <p class="product_price mr-2">
+                                            <small>Total: </small>
+                                            <span class="text-black"><span class="d-inline-block"> &#8377;</span>10</span>
+                                        </p>
+                                        <!-- </div> -->
+                                </div>
+                                <div class="action_menu col-auto">
+                                    <button type="button" mat-stroked-button color="warn" class="small_btn mb-10">Remove Rejected</button>
+                                    <div class="input-group mb-0 ml-auto number_input item_btn">
+                                        <div class="input-group-prepend">
+                                            <button class="btn btn-outline-secondary" type="button">-</button>
+                                        </div>
+                                        <input type="text" class="form-control" digitOnly>
+                                        <div class="input-group-append">
+                                            <button class="btn btn-outline-secondary" type="button">+</button>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex item_track_wrapper">
+                                        <p class="item_track served" [matTooltip]="6 + ' items served for customers'">6</p>
+                                        <!-- <p class="item_track kitchen" [matTooltip]="(item.get('productionAcceptedQuantity').value - item.get('servedItems').value - item.get('productionRejectedQuantity').value)  + ' items are preparing in kitchen'">{{ item.get('productionAcceptedQuantity').value - item.get('servedItems').value - item.get('productionRejectedQuantity').value}}</p>
+                                        <p class="item_track ready" [matTooltip]="(item.get('productionReadyQuantity').value - item.get('servedItems').value) + ' items ready in kitchen'">{{ item.get('productionReadyQuantity').value - item.get('servedItems').value}}</p>
+                                        <p class="item_track rejected" [matTooltip]="item.get('productionRejectedQuantity').value + ' items rejected from kitchen'">{{ item.get('productionRejectedQuantity').value }}</p> -->
+                                    </div>
+                                </div>
+                            </div>
+                        </mat-list-option>
+                    </mat-selection-list>
+                </div>
+            </div>
+            <div class="col postion-relative px-4">
+                <div class="tab_inner_body scroll_style bill billing_body">
+                    <!-- <div class="delivery_box">
+                            <mat-form-field appearance="outline" class="w-100 inline-input">
+                                <mat-label>Deliver Charge (Optional)</mat-label>
+                                <input matInput  [formControl]="form.get('deliverCharge')" (change)="handleFinalPricing()" digitOnly [decimal]="true">
+                            </mat-form-field>
+                        </div> -->
+                    <div class="billing_wrapper">
+                        <div class="billing_strip">
+                            <p class="main_title">Order Summary</p>
+                        </div>
+                        <div class="billing_strip">
+                            <p class="title">Order Item Total</p>
+                            <span class="value_section"><span class="d-inline-block mr-5"> &#8377;</span>00</span>
+                        </div>
+                        <div class="billing_strip">
+                            <p class="title">Order Combo Total</p>
+                            <span class="value_section"><span class="d-inline-block mr-5"> &#8377;</span>00</span>
+                        </div>
+                        <div class="billing_strip">
+                            <p class="title">Total Pkg Charge</p>
+                            <span class="value_section"><span class="d-inline-block mr-5"> &#8377;</span>00</span>
+                        </div>
+                        <div class="billing_strip">
+                            <p class="title">Delivery Charge</p>
+                            <mat-form-field appearance="outline" class="ew-80 pb-0 mr-m-11 inline-input text-right prefix-top-0">
+                                <span matPrefix class="">&#8377;</span>
+                                <input matInput digitOnly placeholder="00" [decimal]="true">
+                            </mat-form-field>
+                            <!-- <span class="value_section"><span class="d-inline-block mr-5"> &#8377;</span>00</span> -->
+                        </div>
+                        <div class="billing_strip">
+                            <p class="title">CGST <small class="text-muted">6%</small></p>
+                            <span class="value_section"><span class="d-inline-block mr-5"> &#8377;</span>00</span>
+                        </div>
+                        <div class="billing_strip">
+                            <p class="title">SGST <small class="text-muted">6%</small></p>
+                            <span class="value_section"><span class="d-inline-block mr-5"> &#8377;</span>00</span>
+                        </div>
+                        <hr>
+                        <div class="billing_strip totalAmountText">
+                            <p class="title">Sub Total</p>
+                            <span class="value_section"><span class="d-inline-block mr-5"> &#8377;</span>00</span>
+                        </div>
+                        <div class="billing_strip">
+                            <p class="title">Discount</p>
+                            <mat-form-field appearance="outline" class="ew-80 mr-m-11 pb-0 inline-input text-right prefix-top-0">
+                                <span matPrefix class="">&#8377;</span>
+                                <input matInput digitOnly placeholder="00" [decimal]="true">
+                            </mat-form-field>
+                            <!-- <span class="value_section"><span class="d-inline-block mr-5"> &#8377;</span>00</span> -->
+                        </div>
+                        <div class="billing_strip">
+                            <p class="title">Round Off</p>
+                            <span class="value_section"><span class="d-inline-block mr-5"> &#8377;</span>00</span>
+                        </div>
+                        <hr>
+                        <div class="billing_strip totalAmountText">
+                            <p class="title">Grand Total</p>
+                            <span class="value_section"><span class="d-inline-block mr-5"> &#8377;</span>00</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="remaning_box floating_bottom mx-0">
+                    <h4>Diff Caluclator</h4>
+                    <div class="d-flex align-items-center">
+                        <div class="col px-0">
+                            <mat-form-field appearance="outline" class="w-100 pb-0 inline-input order-calc">
+                                <input matInput digitOnly placeholder="Received" [decimal]="true">
+                            </mat-form-field>
+                        </div>
+                        <div class="col-auto">
+                            <div class="bal_change_box ew-150">
+                                <p class="mb-0"><span>Return</span> : 00</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="footer_row">
+        <button mat-stroked-button color="success"> Complete Order</button>
+        <button mat-stroked-button aria-label="" color="warn">Cancel Order</button>
+        <!-- <button mat-stroked-button *ngIf="form.get('orderStatus').value == 'completed' || form.get('orderStatus').value == 'cancelled' || blockForms" color="primary" type="button"> Reopen</button> -->
+    </div>
 </form>
