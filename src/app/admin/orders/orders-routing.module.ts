@@ -6,6 +6,7 @@ import { NewOrderComponent } from './components/new-order/new-order.component';
 import { RoleGaurd } from 'src/app/shared/gaurd/role-gaurd';
 import {CompanyListResolver} from '../resolvers/company-list.resolver';
 import {QuickOrderComponent} from "./components/quick-order/quick-order.component";
+import {QuickOrderResolverResolver} from "./components/quick-order/quick-order-resolver.resolver";
 
 
 const routes: Routes = [
@@ -32,7 +33,8 @@ const routes: Routes = [
             path: 'quick-order',
             component: QuickOrderComponent,
             resolve: {
-              companyList: CompanyListResolver
+              companyList: CompanyListResolver,
+              data: QuickOrderResolverResolver
             },
             data: {
               module: 'orders',

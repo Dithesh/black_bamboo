@@ -1,0 +1,127 @@
+<form [formGroup]="form" (submit)="saveFavMenu($event)">
+
+    <div class="add_formWrapper">
+        <div class="row">
+            <div class="col-sm col-md">
+                <div class="row">
+                      <div class="col-md-12">
+                          <mat-form-field appearance="fill" class="w-100">
+                              <mat-label>Menu Title</mat-label>
+                              <input matInput required formControlName="menuTitle" type="text">
+                          </mat-form-field>
+                      </div>
+                      <div class="col-12 col-md-6" [hidden]="userData?.roles != 'Super Admin'">
+                          <mat-form-field appearance="fill" class="w-100 mb-5">
+                              <mat-label>Company</mat-label>
+                              <mat-select formControlName="company_id" (selectionChange)="onCompanySelect()" [required]="userData?.roles == 'Super Admin'">
+                                  <mat-option *ngFor="let item of companyList" [value]="item.id">{{ item.companyName }}</mat-option>
+                              </mat-select>
+                              <mat-error>Company is required</mat-error>
+                            </mat-form-field>
+                      </div>
+                      <div class="col-12 col-md-6" [hidden]="userData?.roles != 'Super Admin' && userData?.roles != 'Company Admin' && userData?.roles != 'Company Accountant'">
+                          <mat-form-field appearance="fill" class="w-100" >
+                              <mat-label>Branch</mat-label>
+                              <mat-select matNativeControl formControlName="branch_id"  [required]="userData?.roles == 'Super Admin' || userData?.roles == 'Company Admin' || userData?.roles == 'Company Accountant'">
+                                  <mat-option *ngFor="let item of branchList;" [value]="item.id">{{ item.branchTitle }}</mat-option>
+                              </mat-select>
+                          </mat-form-field>
+                      </div>
+                      <div class="col-12">
+                          <mat-form-field appearance="fill" class="w-100">
+                              <mat-label>Description</mat-label>
+                              <textarea matInput formControlName="description" rows="3" cdkTextareaAutosize></textarea>
+                          </mat-form-field>
+                      </div>
+                      <div class="col-6">
+                          <mat-form-field appearance="fill" class="w-100">
+                              <mat-label>Start Time</mat-label>
+                              <mat-select matNativeControl formControlName="startTime">
+                                  <mat-option *ngFor="let item of timeList;" [value]="item.key">{{ item.display }}</mat-option>
+                              </mat-select>
+                          </mat-form-field>
+                      </div>
+                      <div class="col-6">
+                          <mat-form-field appearance="fill" class="w-100">
+                              <mat-label>End Time</mat-label>
+                              <mat-select matNativeControl formControlName="endTime">
+                                  <mat-option *ngFor="let item of timeList;" [value]="item.key">{{ item.display }}</mat-option>
+                              </mat-select>
+                          </mat-form-field>
+                      </div>
+                  </div>
+
+            </div>
+        </div>
+
+      <mat-card class="mb-30">
+
+        <div class="row">
+
+              <div class="col-12">
+                          <div class="title_div d-flex align-items-center mb-15">
+                              <h3 class="my-0 font-1_4 font-weight-500">Items</h3>
+                              <button mat-button color="primary" class="ml-10" type="button" (click)="addAnotherItem()">Add +</button>
+                          </div>
+                          <div formArrayName="items">
+                              <ng-container *ngFor="let item of items['controls']; let i=index;">
+                                  <div class="row flex-nowrap gutters-10" *ngIf="!item.get('deletedFlag').value" [formGroupName]="i">
+                                      <div class="col ew-mn-50">
+                                        <mat-form-field appearance="fill" class="w-100" >
+                                            <mat-label>Product</mat-label>
+                                            <mat-select matNativeControl formControlName="productId" required>
+                                                <mat-option *ngFor="let prod of productList;" [value]="prod.id">{{ prod.productName }}</mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+                                      </div>
+                                      <div class="col-auto">
+                                          <button mat-button color="warn" type="button" (click)="removeItem(item, i)">Remove -</button>
+                                      </div>
+                                  </div>
+                              </ng-container>
+                          </div>
+                    </div>
+        </div>
+      </mat-card>
+
+      <mat-card class="mb-30">
+
+        <div class="row">
+
+              <div class="col-12">
+                          <div class="title_div d-flex align-items-center mb-15">
+                              <h3 class="my-0 font-1_4 font-weight-500">Combo Items</h3>
+                              <button mat-button color="primary" class="ml-10" type="button" (click)="addAnotherComboItem()">Add +</button>
+                          </div>
+                          <div formArrayName="comboItems">
+                              <ng-container *ngFor="let item of comboItems['controls']; let i=index;">
+                                  <div class="row flex-nowrap gutters-10" *ngIf="!item.get('deletedFlag').value" [formGroupName]="i">
+                                      <div class="col ew-mn-50">
+                                        <mat-form-field appearance="fill" class="w-100" >
+                                            <mat-label>Combo</mat-label>
+                                            <mat-select matNativeControl formControlName="comboId" required>
+                                                <mat-option *ngFor="let prod of productComboList;" [value]="prod.id">{{ prod.comboTitle }}</mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+                                      </div>
+                                      <div class="col-auto">
+                                          <button mat-button color="warn" type="button" (click)="removeComboItem(item, i)">Remove -</button>
+                                      </div>
+                                  </div>
+                              </ng-container>
+                          </div>
+                    </div>
+        </div>
+      </mat-card>
+
+        <!-- <div class="d-flex align-items-center my-10">
+        </div>
+        <div class="d-flex align-items-center my-10">
+        </div>
+         -->
+        <div class="button_wrapper">
+            <button mat-raised-button color="primary" class="mr-20" type="submit">{{ (favoriteMenuId)?'Update':'Add'}}</button>
+            <button mat-raised-button color="warn" type="button" routerLink="/admin/favorite-menu/list">Cancel</button>
+        </div>
+    </div>
+</form>

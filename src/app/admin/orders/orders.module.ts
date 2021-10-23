@@ -13,20 +13,26 @@ import { OrderListsComponent } from './components/order-lists/order-lists.compon
 import { PrintKotComponent } from './components/print-kot/print-kot.component';
 import { QuickOrderComponent } from './components/quick-order/quick-order.component';
 import { QuickOrderUpdateComponent } from './components/quick-order/quick-order-update/quick-order-update.component';
+import { OrderUpdateManagerComponent } from './components/quick-order/order-update-manager/order-update-manager.component';
+import {MatListModule} from "@angular/material/list";
+import {MatDividerModule} from "@angular/material/divider";
 
 
 @NgModule({
-  declarations: [OrdersComponent, NewOrderComponent, PrintOrderInvoiceComponent, AddOrderItemComponent, ServeOrderItemComponent, TableSelectionComponent, OrderListsComponent, PrintKotComponent, QuickOrderComponent, QuickOrderUpdateComponent],
+  declarations: [OrdersComponent, NewOrderComponent, PrintOrderInvoiceComponent, AddOrderItemComponent, ServeOrderItemComponent, TableSelectionComponent, OrderListsComponent, PrintKotComponent, QuickOrderComponent, QuickOrderUpdateComponent, OrderUpdateManagerComponent],
   imports: [
     CommonModule,
     OrdersRoutingModule,
-    SharedModule
+    SharedModule,
+    MatListModule,
+    MatDividerModule
   ],
   entryComponents: [
     AddOrderItemComponent,
     ServeOrderItemComponent,
     PrintKotComponent,
-    QuickOrderUpdateComponent
+    QuickOrderUpdateComponent,
+    OrderUpdateManagerComponent
   ]
 })
 export class OrdersModule { }

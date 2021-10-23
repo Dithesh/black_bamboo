@@ -362,6 +362,10 @@ mat-form-field{
         }
     }
 }
+.cdk-overlay-dark-backdrop {
+    background: rgba(185,176,176,0.5);
+    backdrop-filter: blur(10px);
+}
 .backdrop{
     position: fixed;
     top: 0;
@@ -2307,6 +2311,20 @@ label.mat-checkbox-layout {
 
 }
 
+.mat-autocomplete-panel {
+    &::-webkit-scrollbar {
+        width: 5px;
+        height: 5px;
+    }
+    &::-webkit-scrollbar-track {
+        background-color: transparent;
+    }
+    &::-webkit-scrollbar-thumb {
+        background-color: #c8c8c8;
+        border-radius: 10px;
+    }
+}
+
 // icon change
 .icon_img{
     max-width: 20px;
@@ -2363,7 +2381,7 @@ label.mat-checkbox-layout {
                 &.inPopup{
                     height: calc(100vh - 316px);
                 }
-                
+
             }
             &.inPopup{
                 height: calc(100vh - 227px);

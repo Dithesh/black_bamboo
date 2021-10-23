@@ -21,6 +21,11 @@
                 <img src="assets/images/icons/add_squar_fill.svg" alt="" class="icon_img"> <span class="d-inline-block ml-3">Product Combo</span>
             </a>
         </li>
+        <li routerLinkActive="active" *ngIf="this._serv.getPermission('favorite-menu', 'read')">
+            <a href="javascript:;" routerLink="/admin/favorite-menu" matRipple [matRippleUnbounded]="false">
+                <img src="assets/images/icons/add_squar_fill.svg" alt="" class="icon_img"> <span class="d-inline-block ml-3">Favorite Menu</span>
+            </a>
+        </li>
         <li routerLinkActive="active" *ngIf=" this._serv.getPermission('order-tables', 'full')">
             <a href="javascript:;" routerLink="/admin/tables" matRipple [matRippleUnbounded]="false">
                 <img src="assets/images/icons/TABLE.svg" alt="" class="icon_img"> <span class="d-inline-block ml-3">Tables</span>

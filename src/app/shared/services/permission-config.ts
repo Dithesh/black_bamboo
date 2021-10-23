@@ -89,6 +89,16 @@ export const permissions = {
         'Kitchen Manager' : 'denied',
         Bearer : 'denied'
     },
+  'favorite-menu': {
+        'Super Admin': 'denied',
+        'Company Admin': 'denied',
+        'Branch Admin' : 'full',
+        'Branch Accountant' : 'denied',
+        'Branch Manager' : 'full',
+        'Branch Order Manager' : 'denied',
+        'Kitchen Manager' : 'denied',
+        Bearer : 'denied'
+    },
     tables: {
         'Super Admin': 'read',
         'Company Admin': 'read',

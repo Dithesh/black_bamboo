@@ -29,6 +29,10 @@ const routes: Routes = [
         loadChildren: () => import('./product-combo/product-combo.module').then(mod => mod.ProductComboModule)
       },
       {
+        path: 'favorite-menu',
+        loadChildren: () => import('./favorite-product/favorite-product.module').then(mod => mod.FavoriteProductModule)
+      },
+      {
         path: 'tables',
         loadChildren: () => import('./table-manager/table-manager.module').then(mod => mod.TableManagerModule)
       },

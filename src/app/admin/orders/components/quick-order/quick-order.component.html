@@ -2,7 +2,7 @@
   <div class="row">
     <ng-container *ngFor="let item of unsavedOrderList; let i=index;">
       <div class="col-xxxxl-3 col-xl-4">
-      <div class="quick_order_card not_saved" (click)="openQuickUpdate(item, 'unsaved', i)">
+      <div class="quick_order_card not_saved" (click)="openOrderUpdateManager(item, 'unsaved', i)">
         <div class="close_btn" (click)="removeUnsaved(i)">
           <img src="assets/images/icons/CLOSE.svg" alt="">
         </div>
@@ -26,7 +26,7 @@
     </ng-container>
     <ng-container *ngFor="let item of ongoingorders">
       <div class="col-sm-6 col-xl-4 col-xxxxl-3">
-      <div class="quick_order_card" (click)="openQuickUpdate(item)">
+      <div class="quick_order_card" (click)="getOrderDetail(item)">
         <div class="order_header">
           <span class="header_title">#{{item.id}}</span>
           <div class="tables" *ngIf="item.order_tables.length > 0">
@@ -47,6 +47,6 @@
     </ng-container>
   </div>
 
-  <button type="button" (click)="openQuickUpdate()" mat-fab color="primary" class="fixed_add_button">
+  <button type="button" (click)="openOrderUpdateManager()" mat-fab color="primary" class="fixed_add_button">
     <img src="assets/images/icons/ADD_ICON.svg" alt="">
   </button>

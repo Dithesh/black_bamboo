@@ -13,7 +13,7 @@ import { permissions } from './permission-config';
 export class DataService {
   apiUrl = environment.apiUrl;
   endpoint = '';
-  constructor(private http: HttpClient
+  constructor(public http: HttpClient
     ,         private snakBar: SnackService, private router: Router) { }
 
   get() {
