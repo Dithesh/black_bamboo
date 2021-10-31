@@ -1,52 +1,82 @@
-
-  <div class="row">
-    <ng-container *ngFor="let item of unsavedOrderList; let i=index;">
-      <div class="col-xxxxl-3 col-xl-4">
-      <div class="quick_order_card not_saved" (click)="openOrderUpdateManager(item, 'unsaved', i)">
-        <div class="close_btn" (click)="removeUnsaved(i)">
-          <img src="assets/images/icons/CLOSE.svg" alt="">
-        </div>
-        <div class="order_header">
-          <span class="header_title">#UNSAVED</span>
-          <div class="tables" *ngIf="item.tables.length > 0">
-            <span *ngFor="let t of item.tables">{{ t.tableId }}</span>
+<div class="row mt-20">
+  <div class="col-9">
+    <mat-card class="height_handler">
+      <h2 class="mb-0">Ongoing Orders</h2>
+      <div class="row">
+        <ng-container *ngFor="let item of unsavedOrderList; let i=index;">
+          <div class="col-xxxxl-3 col-xl-4">
+            <div class="quick_order_card not_saved" (click)="openOrderUpdateManager(item, 'unsaved', i)">
+              <div class="close_btn" (click)="removeUnsaved(i)">
+                <img src="assets/images/icons/CLOSE.svg" alt="">
+              </div>
+              <div class="order_header">
+                <span class="header_title">#UNSAVED</span>
+                <div class="tables" *ngIf="item.tables.length > 0">
+                  <span *ngFor="let t of item.tables">{{ t.tableId }}</span>
+                </div>
+              </div>
+              <div>---</div>
+              <div>
+                <span>{{ item.created_at | datex : 'DD-MM-YYYY' }}</span>
+                <span>{{ item.created_at | datex : 'hh:mm A' }}</span>
+              </div>
+              <div>
+                <span><span class="d-inline-block mr-5">&#8377;</span> {{ item.orderAmount | currency : "":"" }}</span>
+                <span>{{ item.selectedOrderType.orderType }}</span>
+              </div>
+            </div>
           </div>
-        </div>
-        <div>---</div>
-        <div>
-          <span>{{ item.created_at | datex : 'DD-MM-YYYY' }}</span>
-          <span>{{ item.created_at | datex : 'hh:mm A' }}</span>
-        </div>
-        <div>
-          <span><span class="d-inline-block mr-5">&#8377;</span> {{ item.orderAmount | currency : "":"" }}</span>
-          <span>{{ item.selectedOrderType.orderType }}</span>
-        </div>
-      </div>
-    </div>
-    </ng-container>
-    <ng-container *ngFor="let item of ongoingorders">
-      <div class="col-sm-6 col-xl-4 col-xxxxl-3">
-      <div class="quick_order_card" (click)="getOrderDetail(item)">
-        <div class="order_header">
-          <span class="header_title">#{{item.id}}</span>
-          <div class="tables" *ngIf="item.order_tables.length > 0">
-            <span *ngFor="let t of item.order_tables">{{ t.table.tableId }}</span>
+        </ng-container>
+        <ng-container *ngFor="let item of ongoingorders">
+          <div class="col-sm-6 col-xl-4 col-xxxxl-3">
+            <div class="quick_order_card" (click)="getOrderDetail(item)">
+              <div class="order_header">
+                <span class="header_title">#{{item.id}}</span>
+                <div class="tables" *ngIf="item.order_tables.length > 0">
+                  <span *ngFor="let t of item.order_tables">{{ t.table.tableId }}</span>
+                </div>
+              </div>
+              <div>{{ item.bearer.firstName }} {{ item.bearer.lastName }}</div>
+              <div>
+                <span>{{ item.created_at | datex : 'DD-MM-YYYY' }}</span>
+                <span>{{ item.created_at | datex : 'hh:mm A' }}</span>
+              </div>
+              <div>
+                <span><span class="d-inline-block mr-5">&#8377;</span> {{ item.orderAmount | currency : "":"" }}</span>
+                <span>{{ item.order_type.orderType }}</span>
+              </div>
+            </div>
           </div>
-        </div>
-        <div>{{ item.bearer.firstName }} {{ item.bearer.lastName }}</div>
-        <div>
-          <span>{{ item.created_at | datex : 'DD-MM-YYYY' }}</span>
-          <span>{{ item.created_at | datex : 'hh:mm A' }}</span>
-        </div>
-        <div>
-          <span><span class="d-inline-block mr-5">&#8377;</span> {{ item.orderAmount | currency : "":"" }}</span>
-          <span>{{ item.order_type.orderType }}</span>
-        </div>
+        </ng-container>
       </div>
-    </div>
-    </ng-container>
+    </mat-card>
   </div>
+  <div class="col-3">
+    <mat-card class="completed_section height_handler">
+      <h2>Completed Orders</h2>
+      <ng-container *ngFor="let item of completedOrders">
+        <div class="quick_order_card" (click)="getOrderDetail(item)">
+          <div class="order_header">
+            <span class="header_title">#{{item.id}}</span>
+            <div class="tables" *ngIf="item.order_tables.length > 0">
+              <span *ngFor="let t of item.order_tables">{{ t.table.tableId }}</span>
+            </div>
+          </div>
+          <div>{{ item.bearer.firstName }} {{ item.bearer.lastName }}</div>
+          <div>
+            <span>{{ item.created_at | datex : 'DD-MM-YYYY' }}</span>
+            <span>{{ item.created_at | datex : 'hh:mm A' }}</span>
+          </div>
+          <div>
+            <span><span class="d-inline-block mr-5">&#8377;</span> {{ item.orderAmount | currency : "":"" }}</span>
+            <span>{{ item.order_type.orderType }}</span>
+          </div>
+        </div>
+      </ng-container>
+    </mat-card>
+  </div>
+</div>
 
-  <button type="button" (click)="openOrderUpdateManager()" mat-fab color="primary" class="fixed_add_button">
-    <img src="assets/images/icons/ADD_ICON.svg" alt="">
-  </button>
+<button type="button" (click)="openOrderUpdateManager()" mat-fab color="primary" class="fixed_add_button">
+  <img src="assets/images/icons/ADD_ICON.svg" alt="">
+</button>

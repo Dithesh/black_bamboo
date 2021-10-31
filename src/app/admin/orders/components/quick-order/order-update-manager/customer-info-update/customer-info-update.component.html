@@ -1,0 +1,32 @@
+<form  [formGroup]="form" (submit)="saveData()">
+  <mat-dialog-content>
+    <h2>Customer Info</h2>
+
+
+    <mat-form-field class="w-100 mt-10" appearance="fill">
+      <mat-label>Mobile Number</mat-label>
+      <input matInput cdkFocusInitial formControlName="mobileNumber" tabindex="1">
+    </mat-form-field>
+
+    <mat-form-field class="w-100 mt-10" appearance="fill">
+      <mat-label>Customer Name</mat-label>
+      <input matInput formControlName="customerName" [readonly]="!form.get('mobileNumber').valid" tabindex="2">
+    </mat-form-field>
+
+    <mat-form-field class="w-100 mt-10" appearance="fill">
+      <mat-label>Address</mat-label>
+      <textarea matInput formControlName="customerAddress" [readonly]="!form.get('mobileNumber').valid" tabindex="3"></textarea>
+    </mat-form-field>
+
+    <mat-form-field class="w-100 mt-10" appearance="fill">
+      <mat-label>Related Info</mat-label>
+      <textarea matInput formControlName="relatedInfo" [readonly]="!form.get('mobileNumber').valid" tabindex="4"></textarea>
+    </mat-form-field>
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end">
+    <button mat-button color="warn" type="button" (click)="close()">Cancel</button>
+    <button mat-raised-button color="primary" [mat-dialog-close]="true" type="submit">Done</button>
+  </mat-dialog-actions>
+
+</form>

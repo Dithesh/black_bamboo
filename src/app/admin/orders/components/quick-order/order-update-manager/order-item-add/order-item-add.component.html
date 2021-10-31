@@ -1,0 +1,37 @@
+<div class="add_item_wrapper">
+  <h2>{{ product?.name }}</h2>
+
+  <ul class="add_item_variation mt-20" *ngIf="product?.advanced_pricing.length > 0">
+    <li *ngFor="let pricing of product?.advanced_pricing;">
+      <label [for]="'pr_' + pricing.id">
+        <input type="radio" name="pricig"  tabindex="-1" [(ngModel)]="product.advancedPriceId"  (change)="handleProductPriceChange()" [id]="'pr_' + pricing.id" [value]="pricing.id">
+        <span class="variation_title">{{pricing.title}}</span>
+      </label>
+    </li>
+  </ul>
+
+  <div class="input-group mb-0 mt-20 number_input item_btn">
+      <div class="input-group-prepend">
+          <button class="btn btn-outline-secondary" type="button"  tabindex="-1" (click)="handleOrderQuantityInput(product, 'prev')">-</button>
+      </div>
+      <input type="text" class="form-control" digitOnly  tabindex="3" [(ngModel)]="product.quantity" [ngModelOptions]="{standalone: true}"  (change)="handleOrderQuantityInput(product, 'change')">
+      <div class="input-group-append">
+          <button class="btn btn-outline-secondary" tabindex="-1" type="button" (click)="handleOrderQuantityInput(product, 'next')">+</button>
+      </div>
+  </div>
+  <mat-slide-toggle *ngIf="selectedOrderType?.tableRequired" [(ngModel)]="product.isParcel" color="accent" class="mr-10 mt-20">Parcel?</mat-slide-toggle>
+
+  <mat-form-field class="w-100 mt-20" appearance="fill" *ngIf="product.canPriceAltered">
+    <mat-label>Price</mat-label>
+    <input matInput [formControl]="priceControl" tabindex="2">
+    <mat-error *ngIf="priceControl.hasError('invalid')">{{ priceControl.errors.invalid }}</mat-error>
+  </mat-form-field>
+  <mat-form-field class="w-100 mt-20" appearance="fill">
+    <mat-label>Item serving prescription</mat-label>
+    <textarea matInput cdkFocusInitial [formControl]="descriptionControl" #description tabindex="1" placeholder="Ex: 1/2 for 2"></textarea>
+  </mat-form-field>
+  <div class="mt-30">
+    <button mat-flat-button color="primary" type="button" tabindex="4" (click)="saveItem()" class="mr-20">Save</button>
+    <button mat-stroked-button color="warn" type="button" tabindex="5" (click)="close()">Cancel</button>
+  </div>
+</div>

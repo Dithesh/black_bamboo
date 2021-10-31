@@ -225,14 +225,23 @@ export class FavoriteProductUpdateComponent implements OnInit {
     this.serv.get().subscribe((data: any) => {
       this.form.patchValue(data);
       this.items.controls = [];
-      data.items.forEach((elem, index) => {
+      this.comboItems.controls = [];
+      data.favorite_items.forEach((elem, index) => {
           const form = this.addItem();
           form.patchValue({
+            id: elem.id,
             productId: elem.productId
           });
           this.items.push(form);
       });
-
+      data.favorite_combo_items.forEach((elem, index) => {
+        const form = this.addComboItem();
+        form.patchValue({
+          id: elem.id,
+          comboId: elem.comboId
+        });
+        this.comboItems.push(form);
+      });
     });
   }
 

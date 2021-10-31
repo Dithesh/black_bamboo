@@ -1,0 +1,68 @@
+<form [formGroup]="form" (submit)="saveBranch($event)">
+
+    <div class="add_formWrapper">
+        <div class="row">
+            <div class="col-6">
+                <mat-form-field  appearance="fill" class="w-100 mb-5">
+                    <mat-label>Bill Printer</mat-label>
+                    <mat-select formControlName="billPrinter">
+                        <mat-option *ngFor="let item of printerList" [value]="item.name">{{ item.displayName }}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div class="col-6">
+                <mat-form-field  appearance="fill" class="w-100 mb-5">
+                    <mat-label>KOT Printer</mat-label>
+                    <mat-select formControlName="kotPrinter">
+                        <mat-option *ngFor="let item of printerList" [value]="item.name">{{ item.displayName }}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+
+        <div class="row align-items-center flex-wrap mb-15">
+            <div class="col-12">
+                <div class="d-flex align-items-center my-10">
+                    <p class="my-0 mr-20">Take confirmation while order completion?</p>
+                    <mat-slide-toggle formControlName="completeConfirmation"></mat-slide-toggle>
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="d-flex align-items-center my-10">
+                    <p class="my-0 mr-20">Take confirmation while order cancellation?</p>
+                    <mat-slide-toggle formControlName="cancelConfirmation"></mat-slide-toggle>
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="d-flex align-items-center my-10">
+                    <p class="my-0 mr-20">Auto print pending KOT after complete?</p>
+                    <mat-slide-toggle formControlName="afterCompleteKot"></mat-slide-toggle>
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="d-flex align-items-center my-10">
+                    <p class="my-0 mr-20">After Order save? </p>
+                    <mat-select class="single_selection_without label" formControlName="onSaveOrder" >
+                      <mat-option value="stayInSame">Stay in same window</mat-option>
+                      <mat-option value="closeOrderWindow">Close order window</mat-option>
+                      <mat-option value="closeAndOpenNewWindow">Close and open new window</mat-option>
+                    </mat-select>
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="d-flex align-items-center my-10">
+                    <p class="my-0 mr-20">After Order completion or cancellation? </p>
+                    <mat-select class="single_selection_without label" formControlName="onCompleteCancelOrder" >
+                      <mat-option value="stayInSame">Stay in same window</mat-option>
+                      <mat-option value="closeOrderWindow">Close order window</mat-option>
+                      <mat-option value="closeAndOpenNewWindow">Close and open new window</mat-option>
+                    </mat-select>
+                </div>
+            </div>
+        </div>
+
+        <div class="button_wrapper">
+            <button mat-raised-button color="primary" class="mr-20" type="submit">Update</button>
+        </div>
+    </div>
+</form>

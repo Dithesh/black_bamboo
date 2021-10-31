@@ -13,6 +13,10 @@ const routes: Routes = [
         loadChildren: () => import('./dashboard/dashboard.module').then(mod => mod.DashboardModule)
       },
       {
+        path: 'branch-profile',
+        loadChildren: () => import('./branch-profile/branch-profile.module').then(mod => mod.BranchProfileModule)
+      },
+      {
         path: 'order',
         loadChildren: () => import('./orders/orders.module').then(mod => mod.OrdersModule)
       },

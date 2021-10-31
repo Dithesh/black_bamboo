@@ -1,0 +1,54 @@
+<div class="ticket only-print" id="print-section">
+    <p class="centered">
+        <b class="title">{{orderData?.branch.branchTitle}}</b>
+    </p>
+    <pre class="centered" style="line-height: 1">{{orderData?.branch.branchAddress}}</pre>
+    <p class="mb-0" *ngIf="branchData.gstNumber">GST : {{ branchData.gstNumber }}</p>
+    <div class="d-flex justify-content-between">
+        <p class="mb-0">By : {{ orderData?.bearer.firstName }} {{ orderData?.bearer.lastName }}</p>
+        <p class="mb-0">{{ orderData?.created_at | datex: 'DD-MM-YYYY hh:mm A' }}</p>
+    </div>
+    <div class="d-flex justify-content-between">
+        <p class="mb-0">#{{ orderData?.id }}</p>
+    </div>
+    <div *ngIf="orderData?.customer">
+        <br>
+        <div class="customerAddress">
+            <p style="line-height: 1;">&nbsp;</p>
+            <p>To: {{orderData?.customer.customerName}}</p>
+            <p>Number : {{orderData?.customer.mobileNumber}}</p>
+            <p>Address : {{orderData?.customerAddress}}</p>
+            <p>Info : {{orderData?.relatedInfo}}</p>
+            <p style="line-height: 1;">&nbsp;</p>
+        </div>
+        <br>
+    </div>
+    <div>
+        <ng-container *ngFor="let item of orderData?.order_tables; let i=index;">
+            {{ item.table.tableId }}
+            <ng-container *ngIf="i != (orderData?.order_tables.length - 1)">
+                ,
+            </ng-container>
+        </ng-container>
+    </div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th class="description">Desc.</th>
+                <th class="price"></th>
+                <th class="quantity">Q.</th>
+            </tr>
+        </thead>
+        <tbody>
+            <ng-container *ngFor="let item of orderData?.order_items;let i=index;">
+                <tr *ngIf="item.kot_pending > 0">
+                    <td class="description">{{ item.product.productName }} {{item.advancedPriceTitle ? '('+ item.advancedPriceTitle +')' : ''}}</td>
+                    <td class="price">{{item.isParcel ? 'PARCEL':''}}</td>
+                    <td class="quantity">{{ item.kot_pending }}</td>
+                </tr>
+            </ng-container>
+        </tbody>
+    </table>
+    <p>&nbsp;</p>
+    <p class="centered">Thank You ☺</p>
+</div>

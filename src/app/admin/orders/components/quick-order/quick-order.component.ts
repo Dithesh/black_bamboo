@@ -1,6 +1,5 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {MatDialog} from '@angular/material/dialog';
-import {QuickOrderUpdateComponent} from './quick-order-update/quick-order-update.component';
 import * as moment from 'moment';
 import {DataService} from '../../../../shared/services/data.service';
 import {OrderUpdateManagerComponent} from './order-update-manager/order-update-manager.component';
@@ -21,9 +20,9 @@ export class QuickOrderComponent implements OnInit, OnDestroy {
   userData: any;
   blockOrdering = false;
   productList: any[] = [];
-  comboItemList: any[] = [];
   favItemMenu: any[] = [];
   branchDetails: any;
+  completedOrders;
 
   constructor(
     private dialog: MatDialog,
@@ -34,14 +33,15 @@ export class QuickOrderComponent implements OnInit, OnDestroy {
 
       this.branchDetails = response.data.branchDetails;
 
-      this.handleProductData(response.data.productList);
-      this.handeProductItemCombo(response.data.comboList);
+      this.handleProductData(response.data.productList, response.data.comboList);
+      // this.handeProductItemCombo(response.data.comboList);
       this.handleFavoritemenuData(response.data.favItems);
     });
   }
 
   ngOnInit(): void {
     this.getOngoingOrders();
+    this.getFinishedOrders();
     window.addEventListener('keydown', this.keyListener, true);
 
 
@@ -50,11 +50,11 @@ export class QuickOrderComponent implements OnInit, OnDestroy {
       this.blockOrdering = true;
     }
 
-    this.openOrderUpdateManager();
+    // this.openOrderUpdateManager();
   }
 
-  handleProductData(response) {
-    this.productList = (response as any[]).map(item => {
+  handleProductData(products, combos) {
+    this.productList = (products as any[]).map(item => {
       item.products = item.products.map(product => {
         let advancedPriceId = '';
         let advancedPriceTitle = '';
@@ -67,6 +67,8 @@ export class QuickOrderComponent implements OnInit, OnDestroy {
         }
         return {
           ...product,
+          uid: 'product_' + product.id,
+          name: product.productName,
           isParcel: false,
           quantity: 1,
           price,
@@ -76,10 +78,25 @@ export class QuickOrderComponent implements OnInit, OnDestroy {
       });
       return item;
     });
+    this.productList.push({
+      categoryName: 'Combo Items',
+      products: (combos as any[]).map(item => {
+        return {
+          ...item,
+          uid: 'combo_' + item.id,
+          name: item.comboTitle,
+          productNumber: '',
+          advanced_pricing: [],
+          advancedPriceId: '',
+          advancedPriceTitle: '',
+          isParcel: false,
+          quantity: 1
+        };
+      })
+    });
   }
 
   handleFavoritemenuData(response) {
-    console.log(response);
     this.favItemMenu = (response as any[]).map(item => {
       item.products = item.favorite_items.map(fav => {
         const product = fav.product;
@@ -94,6 +111,7 @@ export class QuickOrderComponent implements OnInit, OnDestroy {
         }
         return {
           ...product,
+          uid: 'product_' + product.id,
           isParcel: false,
           quantity: 1,
           price,
@@ -101,19 +119,22 @@ export class QuickOrderComponent implements OnInit, OnDestroy {
           advancedPriceTitle,
         };
       });
-      delete item['item.favorite_items'];
-      return item;
-    });
-  }
-
-
-  handeProductItemCombo(response) {
-    this.comboItemList = (response as any[]).map(item => {
+      item.combos = item.favorite_combo_items.map(fav => {
+        const combo = fav.product;
         return {
-          ...item,
+          ...combo,
+          uid: 'combo_' + combo.id,
           isParcel: false,
-          quantity: 1
+          quantity: 1,
+          advanced_pricing: [],
+          advancedPriceId: '',
+          advancedPriceTitle: '',
+          price: combo.comboTotal
         };
+      });
+      delete item['item.favorite_items'];
+      delete item['item.favorite_combo_items'];
+      return item;
     });
   }
 
@@ -124,8 +145,9 @@ export class QuickOrderComponent implements OnInit, OnDestroy {
     });
   }
 
-  openOrderUpdateManager(item = null, type= 'saved', unsavedIndex = null) {this.blockShortCut = true;
-                                                                           const dialogRef = this.dialog.open(
+  openOrderUpdateManager(item = null, type = 'saved', unsavedIndex = null) {
+    this.blockShortCut = true;
+    const dialogRef = this.dialog.open(
       OrderUpdateManagerComponent,
       {
         maxWidth: '1530px',
@@ -138,23 +160,23 @@ export class QuickOrderComponent implements OnInit, OnDestroy {
           itemSavedType: type,
           branchDetails: this.branchDetails,
           productList: this.productList,
-          comboItemList: this.comboItemList,
           favItemMenu: this.favItemMenu
-        }
+        },
+        disableClose: true
       }
     );
 
-                                                                           dialogRef.afterClosed().subscribe(response => {
+    dialogRef.afterClosed().subscribe(response => {
       this.blockShortCut = false;
       this.getOngoingOrders();
+      this.getFinishedOrders();
       if (response && response.unsavedData) {
-          console.log(response.unsavedData);
-          if (unsavedIndex != null) {
+        if (unsavedIndex != null) {
           this.unsavedOrderList[unsavedIndex] = {
             ...response.unsavedData,
             created_at: new Date()
           };
-        }else {
+        } else {
           this.unsavedOrderList.push({
             ...response.unsavedData,
             created_at: new Date()
@@ -173,25 +195,40 @@ export class QuickOrderComponent implements OnInit, OnDestroy {
     const startDate = moment(new Date()).format('YYYY-MM-DD');
     const endDate = moment(new Date()).format('YYYY-MM-DD');
     this.serv.endpoint = 'order-manager/order?'
-                            + '&orderStatus=new,accepted,prepairing,packing'
-                            + '&startDate=' + startDate
-                            + '&endDate=' + endDate
-                            + '&orderType=desc'
-                            + '&orderCol=updated_at';
+      + '&orderStatus=new,accepted,prepairing,packing'
+      + '&startDate=' + startDate
+      + '&endDate=' + endDate
+      + '&orderType=desc'
+      + '&orderCol=updated_at';
     this.serv.get().subscribe((response: any) => {
       this.ongoingorders = response;
     });
   }
 
+  getFinishedOrders() {
+    const startDate = moment(new Date()).format('YYYY-MM-DD');
+    const endDate = moment(new Date()).format('YYYY-MM-DD');
+    this.serv.endpoint = 'order-manager/order?'
+      + '&orderStatus=completed,cancelled'
+      + '&startDate=' + startDate
+      + '&endDate=' + endDate
+      + '&orderType=desc'
+      + '&orderCol=updated_at';
+    this.serv.get().subscribe((response: any) => {
+      this.completedOrders = response;
+    });
+  }
+
   shortCutKeyHandler(e) {
     if (!this.blockShortCut) {
-      if (e.ctrlKey && e.code === 'KeyN') {
+      if ((e.ctrlKey && e.code === 'KeyN') || e.code === 'F2') {
         e.stopPropagation();
         e.preventDefault();
         this.openOrderUpdateManager();
       }
     }
   }
+
   removeUnsaved(i) {
     this.unsavedOrderList.splice(i, 1);
   }

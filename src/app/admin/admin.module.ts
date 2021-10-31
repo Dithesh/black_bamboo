@@ -22,6 +22,7 @@ import { SharedModule } from '../shared/shared.module';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { TokenInterceptor } from '../shared/services/intercepter';
 import { CompanyListResolver } from './resolvers/company-list.resolver';
+import {BranchUserBranchDetailsResolver} from "./resolvers/branch-user-branch-details.resolver";
 
 
 @NgModule({
@@ -37,7 +38,8 @@ import { CompanyListResolver } from './resolvers/company-list.resolver';
   entryComponents: [ChangePasswordComponent, ChangeProfileComponent],
   providers: [
     MatDialogModule,
-    CompanyListResolver
+    CompanyListResolver,
+    BranchUserBranchDetailsResolver
   ]
 })
 export class AdminModule { }

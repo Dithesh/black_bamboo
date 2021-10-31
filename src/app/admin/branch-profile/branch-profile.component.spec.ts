@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { QuickOrderUpdateComponent } from './quick-order-update.component';
+import { BranchProfileComponent } from './branch-profile.component';
 
-describe('QuickOrderUpdateComponent', () => {
-  let component: QuickOrderUpdateComponent;
-  let fixture: ComponentFixture<QuickOrderUpdateComponent>;
+describe('BranchProfileComponent', () => {
+  let component: BranchProfileComponent;
+  let fixture: ComponentFixture<BranchProfileComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ QuickOrderUpdateComponent ]
+      declarations: [ BranchProfileComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(QuickOrderUpdateComponent);
+    fixture = TestBed.createComponent(BranchProfileComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

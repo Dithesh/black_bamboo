@@ -1,0 +1,94 @@
+<div class="ticket only-print" id="print-section">
+    <p class="centered">
+        <b class="title">{{orderData?.branch.branchTitle}}</b>
+    </p>
+    <pre class="centered" style="line-height: 1">{{orderData?.branch.branchAddress}}</pre>
+    <p class="mb-0" *ngIf="branchData?.gstNumber">GST : {{ branchData?.gstNumber }}</p>
+    <div class="d-flex justify-content-between">
+        <p class="mb-0">By : {{ orderData?.bearer.firstName }} {{ orderData?.bearer.lastName }}</p>
+        <p class="mb-0">{{ orderData?.created_at | datex: 'DD-MM-YYYY hh:mm A' }}</p>
+    </div>
+    <div class="d-flex justify-content-between">
+        <p class="mb-0">No : #{{ orderData?.id | slice:4:20 }}</p>
+    </div>
+    <div>
+        <ng-container *ngFor="let item of orderData?.order_tables; let i=index;">
+            {{ item.tableId }}
+            <ng-container *ngIf="i != (orderData?.order_tables.length - 1)">
+                ,
+            </ng-container>
+        </ng-container>
+    </div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th class="quantity">Q.</th>
+                <th class="description">Desc.</th>
+                <th class="price">Rs.</th>
+            </tr>
+        </thead>
+        <tbody>
+            <ng-container *ngFor="let item of orderData?.order_items;let i=index;">
+                <tr>
+                    <td class="quantity">x{{ item.quantity }}</td>
+                    <td class="description">{{ item.product.productName }} {{item.advancedPriceTitle ? '('+ item.advancedPriceTitle +')' : ''}}</td>
+                    <td class="price">{{ item.totalPrice | currency: '':'' }}</td>
+                </tr>
+            </ng-container>
+            <ng-container *ngFor="let item of orderData?.order_item_combos;let i=index;">
+                <tr>
+                    <td class="quantity">x{{ item.quantity }}</td>
+                    <td class="description">{{ item.product_combo.comboTitle }}</td>
+                    <td class="price">{{ item.totalPrice | currency: '':'' }}</td>
+                </tr>
+            </ng-container>
+            <tr *ngIf="!orderData?.taxDisabled">
+                <td class="quantity"></td>
+                <th class="description">CGST <small class="text-muted">({{ ((orderData?.taxPercent > 0)?(orderData?.taxPercent/2):0) | number : '2.2' }}%)</small></th>
+                <th class="price">{{ orderData?.cgst | currency: '':'' }}</th>
+            </tr>
+            <tr  *ngIf="!orderData?.taxDisabled">
+                <td class="quantity"></td>
+                <th class="description">SGST <small class="text-muted">({{ ((orderData?.taxPercent > 0)?(orderData?.taxPercent/2):0) | number : '2.2' }}%)</small></th>
+                <th class="price">{{ orderData?.sgst | currency: '':'' }}</th>
+            </tr>
+            <tr *ngIf="orderData?.deliverCharge && orderData?.deliverCharge > 0">
+                <td class="quantity"></td>
+                <th class="description">Del. Chrg.</th>
+                <th class="price">{{ orderData?.deliverCharge | currency: '':'' }}</th>
+            </tr>
+            <tr *ngIf="orderData?.packingCharge && orderData?.packingCharge > 0">
+                <td class="quantity"></td>
+                <th class="description">Pkg. Chrg.</th>
+                <th class="price">{{ orderData?.packingCharge | currency: '':'' }}</th>
+            </tr>
+            <tr *ngIf="orderData?.discountValue && orderData?.discountValue > 0">
+                <td class="quantity"></td>
+                <th class="description">Discount</th>
+                <th class="price">{{ orderData?.discountValue | currency: '':'' }}</th>
+            </tr>
+            <tr *ngIf="orderData?.roundOfAmount && orderData?.roundOfAmount > 0">
+                <td class="quantity"></td>
+                <th class="description">Round Off</th>
+                <th class="price">- {{ orderData?.roundOfAmount | currency: '':'' }}</th>
+            </tr>
+            <tr class="totalRow">
+                <th class="quantity"></th>
+                <th class="description">TOTAL</th>
+                <th class="price">{{ orderData?.orderAmount | currency: '':'' }}</th>
+            </tr>
+        </tbody>
+    </table>
+
+    <p>&nbsp;</p>
+    <p class="centered">Thank You ☺
+        <br>Visit again</p>
+</div>
+
+
+<!--<div class="hidden-print text-center ew-300">-->
+<!--    <h3>Do you want to print again?</h3>-->
+
+<!--    <button mat-flat-button (click)="cancelPrint()" color="warn" class="mr-20">Cancel</button>-->
+<!--    <button mat-flat-button (click)="printPage()" color="primary">Print</button>-->
+<!--</div>-->

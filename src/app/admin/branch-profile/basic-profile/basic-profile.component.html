@@ -1,0 +1,161 @@
+<div class="add_formWrapper">
+  <div class="row">
+    <div class="col-sm-auto order-md-12">
+      <div class="product_imrBox">
+        <label title="Change Image" [ngStyle]="{'background-image': imageSrc}"></label>
+      </div>
+    </div>
+    <div class="col-sm 12 col-md">
+      <div class="row">
+        <div class="col-12">
+          <div class="row no-gutters flex-nowrap">
+            <div class="col-auto pr-2">
+              <mat-form-field appearance="fill" class="ew-150 mb-5">
+                <mat-label>Branch Code</mat-label>
+                <input type="text" readonly [ngModel]="branchData.branchCode" matInput>
+              </mat-form-field>
+            </div>
+            <div class="col">
+              <mat-form-field appearance="fill" class="w-100 mb-5">
+                <mat-label>Branch Title</mat-label>
+                <input type="text" readonly [ngModel]="branchData.branchCode" matInput>
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+        <div class="col-6">
+          <mat-form-field appearance="fill" class="w-100 mb-5">
+            <mat-label>GST Number</mat-label>
+            <input type="text" readonly [ngModel]="branchData.branchCode" matInput>
+          </mat-form-field>
+        </div>
+        <div class="col-6">
+          <mat-form-field appearance="fill" class="w-100 mb-5">
+            <mat-label>Tax Percentage</mat-label>
+            <input type="text" readonly [ngModel]="branchData.taxPercent" matInput>
+          </mat-form-field>
+        </div>
+        <div class="col-12">
+          <mat-form-field appearance="fill" class="w-100 mb-5">
+            <mat-label>Branch Address</mat-label>
+            <textarea readonly [ngModel]="branchData.branchAddress" cdkTextareaAutosize matInput></textarea>
+          </mat-form-field>
+        </div>
+
+        <div class="col-12">
+          <mat-form-field appearance="fill" class="w-100">
+            <mat-label>Description</mat-label>
+            <textarea matInput readonly [ngModel]="branchData.description" cdkTextareaAutosize></textarea>
+          </mat-form-field>
+        </div>
+        <div class="col-6">
+          <mat-form-field appearance="fill" class="w-100 mb-5">
+            <mat-label>Bill Printer</mat-label>
+            <input type="text" readonly [ngModel]="branchData.billPrinter" matInput>
+          </mat-form-field>
+        </div>
+        <div class="col-6">
+          <mat-form-field appearance="fill" class="w-100 mb-5">
+            <mat-label>KOT Printer</mat-label>
+            <input type="text" readonly [ngModel]="branchData.kotPrinter" matInput>
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <mat-card class="mt-15 only_boder">
+    <h3 class="mb-10 d-flex justify-content-between align-items-center">
+      Room Setup
+    </h3>
+
+    <div>
+      <ng-container *ngFor="let item of branchData.rooms;">
+        <div class="row align-items-center">
+          <div class="col">
+            <mat-form-field appearance="fill" class="w-100 mb-5">
+              <mat-label>Room Name</mat-label>
+              <input type="text" readonly [ngModel]="item.roomName" matInput>
+            </mat-form-field>
+          </div>
+          <div class="col-auto">
+            <mat-slide-toggle color="accent" class="mb-15 pointer-none" [ngModel]="item.withAc">AC?</mat-slide-toggle>
+          </div>
+          <div class="col-auto">
+            <mat-slide-toggle color="accent" class="mb-15 pointer-none" [ngModel]="item.serveLiquor">Liquor?</mat-slide-toggle>
+          </div>
+          <div class="col-auto">
+            <mat-slide-toggle color="accent" class="mb-15 pointer-none" [ngModel]="item.isActive">Active?</mat-slide-toggle>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+  </mat-card>
+
+
+  <mat-card class="mt-15 only_boder">
+    <h3 class="mb-10 d-flex justify-content-between align-items-center">
+      Kitchen Setup
+    </h3>
+
+    <div>
+      <ng-container *ngFor="let item of branchData.kitchens">
+        <div class="row align-items-center">
+          <div class="col-sm-4">
+            <mat-form-field appearance="fill" class="w-100 mb-5">
+              <mat-label>Kitchen Title</mat-label>
+              <input type="text" readonly [ngModel]="item.kitchenTitle" matInput>
+            </mat-form-field>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+  </mat-card>
+
+  <mat-card class="mt-15 only_boder">
+    <h3 class="mb-10 d-flex justify-content-between align-items-center">
+      Order Type Setup
+    </h3>
+
+    <div>
+      <ng-container *ngFor="let item of branchData.order_types">
+        <div class="row align-items-center">
+          <div class="col">
+            <mat-form-field appearance="fill" class="w-100 mb-5">
+              <mat-label>Title</mat-label>
+              <input type="text" readonly [ngModel]="item.orderType" matInput>
+            </mat-form-field>
+          </div>
+          <div class="col">
+            <mat-slide-toggle color="accent" class="mb-15 pointer-none" [ngModel]="item.tableRequired">Table Required?
+            </mat-slide-toggle>
+          </div>
+          <div class="col">
+            <mat-slide-toggle color="accent" class="mb-15 pointer-none" [ngModel]="item.isActive">Active?</mat-slide-toggle>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+  </mat-card>
+
+
+  <mat-card class="mt-15 only_boder">
+    <h3 class="mb-10 d-flex justify-content-between align-items-center">
+      Payment Method Setup
+    </h3>
+
+    <div>
+      <ng-container *ngFor="let item of branchData.payment_methods">
+        <div class="row align-items-center">
+          <div class="col-sm-4">
+            <mat-form-field appearance="fill" class="w-100 mb-5">
+              <mat-label>Method Title</mat-label>
+              <input type="text" [ngModel]="item.methodTitle" matInput>
+            </mat-form-field>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+  </mat-card>
+</div>

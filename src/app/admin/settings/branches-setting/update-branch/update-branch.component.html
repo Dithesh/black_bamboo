@@ -36,12 +36,6 @@
                     </div>
                     <div class="col-6">
                         <mat-form-field  appearance="fill" class="w-100 mb-5">
-                            <mat-label>Branch Address</mat-label>
-                            <input type="text" formControlName="branchAddress" matInput>
-                        </mat-form-field>
-                    </div>
-                    <div class="col-6">
-                        <mat-form-field  appearance="fill" class="w-100 mb-5">
                             <mat-label>GST Number</mat-label>
                             <input type="text" formControlName="gstNumber" matInput>
                         </mat-form-field>
@@ -50,6 +44,12 @@
                         <mat-form-field  appearance="fill" class="w-100 mb-5">
                             <mat-label>Tax Percentage</mat-label>
                             <input type="text" formControlName="taxPercent" matInput>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-12">
+                        <mat-form-field  appearance="fill" class="w-100 mb-5">
+                            <mat-label>Branch Address</mat-label>
+                            <textarea formControlName="branchAddress" cdkTextareaAutosize matInput></textarea>
                         </mat-form-field>
                     </div>
 
@@ -189,12 +189,49 @@
             </div>
         </mat-card>
 
-
         <div class="row align-items-center flex-wrap mb-15">
             <div class="col-12">
                 <div class="d-flex align-items-center my-10">
                     <p class="my-0 mr-20">Is Active?</p>
                     <mat-slide-toggle formControlName="isActive"></mat-slide-toggle>
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="d-flex align-items-center my-10">
+                    <p class="my-0 mr-20">Take confirmation while order completion?</p>
+                    <mat-slide-toggle formControlName="completeConfirmation"></mat-slide-toggle>
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="d-flex align-items-center my-10">
+                    <p class="my-0 mr-20">Take confirmation while order cancellation?</p>
+                    <mat-slide-toggle formControlName="cancelConfirmation"></mat-slide-toggle>
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="d-flex align-items-center my-10">
+                    <p class="my-0 mr-20">Auto print pending KOT after complete?</p>
+                    <mat-slide-toggle formControlName="afterCompleteKot"></mat-slide-toggle>
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="d-flex align-items-center my-10">
+                    <p class="my-0 mr-20">After Order save? </p>
+                    <mat-select class="single_selection_without label" formControlName="onSaveOrder" >
+                      <mat-option value="stayInSame">Stay in same window</mat-option>
+                      <mat-option value="closeOrderWindow">Close order window</mat-option>
+                      <mat-option value="closeAndOpenNewWindow">Close and open new window</mat-option>
+                    </mat-select>
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="d-flex align-items-center my-10">
+                    <p class="my-0 mr-20">After Order completion or cancellation? </p>
+                    <mat-select class="single_selection_without label" formControlName="onCompleteCancelOrder" >
+                      <mat-option value="stayInSame">Stay in same window</mat-option>
+                      <mat-option value="closeOrderWindow">Close order window</mat-option>
+                      <mat-option value="closeAndOpenNewWindow">Close and open new window</mat-option>
+                    </mat-select>
                 </div>
             </div>
         </div>

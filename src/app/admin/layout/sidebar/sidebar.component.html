@@ -13,17 +13,17 @@
         </li>
         <li routerLinkActive="active" *ngIf=" this._serv.getPermission('products', 'read')">
             <a href="javascript:;" routerLink="/admin/products" matRipple [matRippleUnbounded]="false">
-                <img src="assets/images/icons/add_squar_fill.svg" alt="" class="icon_img"> <span class="d-inline-block ml-3">Products</span>
+                <img src="assets/images/icons/Product.svg" alt="" class="icon_img"> <span class="d-inline-block ml-3">Products</span>
             </a>
         </li>
         <li routerLinkActive="active" *ngIf=" this._serv.getPermission('product-combo', 'read')">
             <a href="javascript:;" routerLink="/admin/product-combo" matRipple [matRippleUnbounded]="false">
-                <img src="assets/images/icons/add_squar_fill.svg" alt="" class="icon_img"> <span class="d-inline-block ml-3">Product Combo</span>
+                <img src="assets/images/icons/combo.svg" alt="" class="icon_img"> <span class="d-inline-block ml-3">Product Combo</span>
             </a>
         </li>
         <li routerLinkActive="active" *ngIf="this._serv.getPermission('favorite-menu', 'read')">
             <a href="javascript:;" routerLink="/admin/favorite-menu" matRipple [matRippleUnbounded]="false">
-                <img src="assets/images/icons/add_squar_fill.svg" alt="" class="icon_img"> <span class="d-inline-block ml-3">Favorite Menu</span>
+                <img src="assets/images/icons/fav_menu_filled.svg" alt="" class="icon_img"> <span class="d-inline-block ml-3">Favorite Menu</span>
             </a>
         </li>
         <li routerLinkActive="active" *ngIf=" this._serv.getPermission('order-tables', 'full')">
@@ -129,9 +129,33 @@
                 </li>
             </ul>
         </li>
+        <li routerLinkActive="subOpen" class="have_submenu" *ngIf=" this._serv.getPermission('branch-profile-menu', 'read')">
+            <a href="javascript:;" routerLink="/admin/branch-profile" (click)="openSubmenu()" matRipple [matRippleUnbounded]="false">
+                <img src="assets/images/icons/Branchsettings2.svg" alt="" class="icon_img"> <span class="d-inline-block ml-3">Branch Profile </span>
+                <img src="assets/images/icons/ARROWDOWN.svg" alt="" class="icon_img ml-auto right_arrow sub_menu_arrow">
+                <!-- <mat-icon class="ml-auto right_arrow">keyboard_arrow_down</mat-icon> -->
+            </a>
+            <ul routerLinkActive="active" class="list-unlisted submenu-Wrapper">
+                <li routerLinkActive="active" *ngIf=" this._serv.getPermission('branch-profile', 'full')">
+                    <a href="javascript:;" routerLink="/admin/branch-profile/profile" matRipple>
+                        Profile
+                    </a>
+                </li>
+                <li routerLinkActive="active" *ngIf=" this._serv.getPermission('branch-profile', 'full')">
+                    <a href="javascript:;" routerLink="/admin/branch-profile/configuration" matRipple>
+                        Configuration
+                    </a>
+                </li>
+                <li routerLinkActive="active" *ngIf=" this._serv.getPermission('branch-profile', 'full')">
+                    <a href="javascript:;" routerLink="/admin/branch-profile/guide" matRipple>
+                        App Info
+                    </a>
+                </li>
+            </ul>
+        </li>
         <li>
             <a href="javascript:;" matRipple [matRippleUnbounded]="false" (click)="signOut()">
-                <img src="assets/images/icons/LOGOUT.svg" alt="" class="icon_img"> <span class="d-inline-block ml-3">Sign Out</span>
+                <img src="assets/images/icons/LOGOUT1.svg" alt="" class="icon_img"> <span class="d-inline-block ml-3">Sign Out</span>
             </a>
         </li>
     </ul>

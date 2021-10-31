@@ -1,0 +1,60 @@
+<form (submit)="saveData()">
+<mat-dialog-content>
+  <fieldset *ngFor="let obj of roomList|keyvalue">
+    <legend>{{ obj.key }}</legend>
+
+
+    <div class="table_selectWrapper mt-20 mb-15">
+      <ng-container *ngFor="let item of obj.value;let ti=index;">
+        <div class="table_col" [class.reserved]="item.get('isReserved').value" [formGroup]="item">
+          <div class="row ew-130 mx-auto position-relative h-100 no-gutters">
+            <span class="table_circle" (click)="selectAllChairs(item)">{{ item.get('tableId').value }}</span>
+            <ng-container formArrayName="chairs">
+              <!-- <div class="table_innerBox col-auto order-1" *ngIf="item.get('chairs')['controls'].length > 0">
+                  <div class="table_seat_checkBox vertical" formGroupName="0">
+                      <input type="checkbox" formControlName="isSelected" [id]="0+'chair'+ti">
+                      <label [for]="0+'chair'+ti" [class.pointer-none]="item.get('chairs')['controls'][0].get('permission').value == 'blocked'"></label>
+                  </div>
+              </div>
+              <div class="table_innerBox col-auto order-3" *ngIf="item.get('chairs')['controls'].length > 1">
+                  <div class="table_seat_checkBox vertical" formGroupName="1">
+                      <input type="checkbox" formControlName="isSelected" [id]="1+'chair'+ti">
+                      <label [for]="1+'chair'+ti" [class.pointer-none]="item.get('chairs')['controls'][1].get('permission').value == 'blocked'"></label>
+                  </div>
+              </div> -->
+              <div class="table_innerBox col order-2">
+                <div class="d-flex mx-1 w-100">
+                  <ng-container *ngFor="let chair of item.get('chairs')['controls'];let ci = index;">
+                    <ng-container *ngIf="ci%2 == 0">
+                      <div class="radio_outer px-1">
+                        <div class="table_seat_checkBox horizontal" [formGroupName]="ci">
+                          <input type="checkbox" [id]="ci+'chair'+ti" formControlName="isSelected">
+                          <label [for]="ci+'chair'+ti"
+                                 [class.pointer-none]="item.get('chairs')['controls'][ci].get('permission').value == 'blocked'"></label>
+                        </div>
+                        <ng-container *ngIf="item.get('chairs')['controls'].length > (ci+1)">
+                          <div class="table_seat_checkBox horizontal" [formGroupName]="ci + 1">
+                            <input type="checkbox" [id]="ci+1+'chair'+ti" formControlName="isSelected">
+                            <label [for]="ci+1+'chair'+ti"
+                                   [class.pointer-none]="item.get('chairs')['controls'][ci+1].get('permission').value == 'blocked'"></label>
+                          </div>
+                        </ng-container>
+                      </div>
+                    </ng-container>
+                  </ng-container>
+                </div>
+              </div>
+            </ng-container>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+  </fieldset>
+
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button color="warn" type="button" (click)="resetForm()">Reset & Cancel</button>
+  <button mat-raised-button color="primary" type="submit" cdkFocusInitial>Done</button>
+</mat-dialog-actions>
+</form>

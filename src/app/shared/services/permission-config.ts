@@ -178,5 +178,25 @@ export const permissions = {
         'Branch Order Manager' : 'denied',
         'Kitchen Manager' : 'denied',
         Bearer : 'denied'
+    },
+    'branch-profile-menu': {
+        'Super Admin': 'full',
+        'Company Admin': 'denied',
+        'Branch Admin' : 'full',
+        'Branch Accountant' : 'denied',
+        'Branch Manager' : 'denied',
+        'Branch Order Manager' : 'denied',
+        'Kitchen Manager' : 'denied',
+        Bearer : 'denied'
+    },
+    'branch-profile': {
+        'Super Admin': 'full',
+        'Company Admin': 'denied',
+        'Branch Admin' : 'full',
+        'Branch Accountant' : 'denied',
+        'Branch Manager' : 'denied',
+        'Branch Order Manager' : 'denied',
+        'Kitchen Manager' : 'denied',
+        Bearer : 'denied'
     }
 };
