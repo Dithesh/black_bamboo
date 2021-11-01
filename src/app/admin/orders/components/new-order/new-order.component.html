@@ -2,7 +2,7 @@
 <form [formGroup]="form">
 <div class="row no-gutterd order_out_wrapper">
     <div class="col-md col-12 border-left">
-        <div class="left_bar">
+        <div class="left_bar details">
             <div class="left_header">
                 <h2>#{{orderId ? orderId : '--'}}</h2>
                 <div class="order_timeBox ml-auto">
@@ -38,7 +38,7 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-md-6 col-lg-auto col-12 px-0">
+            <div class="col-md-12 col-lg-12 col-12 px-0">
                 <div class="right_details_box">
                     <mat-tab-group>
                         <mat-tab>
@@ -48,7 +48,7 @@
                                 <p class="mb-0 ml-5 px-0"> Items</p>
                             </ng-template>
 
-                            <div class="tab_inner_body scroll_style items" [class.innerFooter]="(items['controls'].length > 0 || comboItems['controls'].length > 0) && !blockForms">
+                            <div class="tab_inner_body p-5 scroll_style items" [class.innerFooter]="(items['controls'].length > 0 || comboItems['controls'].length > 0) && !blockForms">
                                 <ng-container *ngFor="let item of items['controls'];let i=index;">
                                     <div class="row no-gutters order_item_wrapper" *ngIf="!item.get('deletedFlag').value">
                                         <div class="col-auto">
@@ -77,7 +77,8 @@
                                                     <button type="button" mat-stroked-button color="warn" class="mt-15" *ngIf="item.get('productionRejectedQuantity').value > 0" (click)="handleRejectedItems(item)">Remove Rejected</button>
                                                 </div>
                                                 <div class="action_menu col-auto">
-                                                    <div class="input-group mb-0 ml-auto number_input item_btn">
+                                                    <h3 class="text-right">Qty: {{item.get('quantity').value}}</h3>
+                                                    <!-- <div class="input-group mb-0 ml-auto number_input item_btn">
                                                         <div class="input-group-prepend">
                                                             <button class="btn btn-outline-secondary" type="button" (click)="handleNumberControl(item, 'prev', i)">-</button>
                                                         </div>
@@ -85,7 +86,7 @@
                                                         <div class="input-group-append">
                                                             <button class="btn btn-outline-secondary" type="button" (click)="handleNumberControl(item, 'next', i)">+</button>
                                                         </div>
-                                                    </div>
+                                                    </div> -->
                                                     <div class="d-flex item_track_wrapper" *ngIf="item.get('id').value">
                                                         <p class="item_track served" [matTooltip]="item.get('servedItems').value + ' items served for customers'">{{ item.get('servedItems').value }}</p>
                                                         <p class="item_track kitchen" [matTooltip]="(item.get('productionAcceptedQuantity').value - item.get('servedItems').value - item.get('productionRejectedQuantity').value)  + ' items are preparing in kitchen'">{{ item.get('productionAcceptedQuantity').value - item.get('servedItems').value - item.get('productionRejectedQuantity').value}}</p>
@@ -126,7 +127,8 @@
                                                     <button type="button" mat-stroked-button color="warn" class="mt-15" *ngIf="item.get('productionRejectedQuantity').value > 0" (click)="handleRejectedItems(item)">Remove Rejected</button>
                                                 </div>
                                                 <div class="action_menu col-auto">
-                                                    <div class="input-group mb-0 ml-auto number_input item_btn">
+                                                    <h3 class="text-right">Qty: {{item.get('quantity').value}}</h3>
+                                                    <!-- <div class="input-group mb-0 ml-auto number_input item_btn">
                                                         <div class="input-group-prepend">
                                                             <button class="btn btn-outline-secondary" type="button" (click)="handleNumberControl(item, 'prev', i, 'combo')">-</button>
                                                         </div>
@@ -134,7 +136,7 @@
                                                         <div class="input-group-append">
                                                             <button class="btn btn-outline-secondary" type="button" (click)="handleNumberControl(item, 'next', i, 'combo')">+</button>
                                                         </div>
-                                                    </div>
+                                                    </div> -->
                                                     <div class="d-flex item_track_wrapper" *ngIf="item.get('id').value">
                                                         <p class="item_track served" [matTooltip]="item.get('servedItems').value + ' items served for customers'">{{ item.get('servedItems').value }}</p>
                                                         <p class="item_track kitchen" [matTooltip]="(item.get('productionAcceptedQuantity').value - item.get('servedItems').value - item.get('productionRejectedQuantity').value)  + ' items are preparing in kitchen'">{{ item.get('productionAcceptedQuantity').value - item.get('servedItems').value - item.get('productionRejectedQuantity').value}}</p>
@@ -174,7 +176,7 @@
                                 <img class="example-tab-icon" src="assets/images/icons/TABLE.svg" class="icon_img" alt="">
                                 <p class="mb-0 ml-5 px-0"> Table</p>
                             </ng-template>
-                            <div class="tab_inner_body scroll_style tableBox">
+                            <div class="tab_inner_body p-5 scroll_style tableBox">
                                 <app-table-selection [form]="form" [blockForms]="blockForms"></app-table-selection>
                             </div>
 
@@ -186,7 +188,7 @@
                                 <p class="mb-0 ml-5 px-0"> Customer</p>
                             </ng-template>
 
-                            <div class="tab_inner_body scroll_style">
+                            <div class="tab_inner_body p-5 scroll_style">
                                 <div class="row mt-15">
                                     <div class="col-md-6 col-12">
                                         <mat-form-field appearance="outline" class="w-100">
@@ -221,7 +223,7 @@
                                 <img class="example-tab-icon" src="assets/images/icons/TAG.svg" class="icon_img" alt="">
                                 <p class="mb-0 ml-5 px-0"> Extras</p>
                             </ng-template>
-                            <div class="tab_inner_body scroll_style bill">
+                            <div class="tab_inner_body p-5 scroll_style bill">
                                 <div class="delivery_box mt-20">
                                     <mat-form-field appearance="outline" class="w-100 inline-input">
                                         <mat-label>Deliver Charge (Optional)</mat-label>
@@ -248,7 +250,7 @@
                                 <img class="example-tab-icon" src="assets/images/icons/BILL.svg" class="icon_img" alt="">
                                 <p class="mb-0 ml-5 px-0"> Bill</p>
                             </ng-template>
-                            <div class="tab_inner_body scroll_style bill billing_body" [class.afterbilled]="form.get('orderStatus').value == 'completed' || form.get('orderStatus').value == 'cancelled'">
+                            <div class="tab_inner_body p-4 scroll_style bill billing_body" [class.afterbilled]="form.get('orderStatus').value == 'completed' || form.get('orderStatus').value == 'cancelled'">
                                 <!-- <div class="delivery_box">
                                     <mat-form-field appearance="outline" class="w-100 inline-input">
                                         <mat-label>Deliver Charge (Optional)</mat-label>
@@ -335,7 +337,7 @@
                       </mat-tab-group>
 
                     <div class="tab_footer border-top">
-                        <div class="d-flex flex-nowrap">
+                        <!-- <div class="d-flex flex-nowrap">
 
                             <div class="w-100"  *ngIf="form.get('orderStatus').value == 'completed' || form.get('orderStatus').value == 'cancelled' || blockForms">
                                 <button mat-stroked-button color="primary" class="rounded-0 w-100" type="button" (click)="changeOrderStatusBack('new')"> Reopen</button>
@@ -347,15 +349,9 @@
                             <div class="d-flex flex-nowrap w-100" *ngIf="orderId">
                                 <button mat-flat-button color="accent" *ngIf="form.get('orderStatus').value == 'completed'" class="w-100 rounded-0" (click)="printOrder()"><img src="assets/images/icons/PRINT.svg" alt="" class="icon_img">  Print Bill</button>
                                 <button mat-flat-button color="accent" *ngIf="form.get('orderStatus').value != 'completed'" class="w-100 rounded-0" (click)="printAddress()"><img src="assets/images/icons/PRINT.svg" alt="" class="icon_img">  Print KOT</button>
-                                <!-- <button mat-flat-button aria-label="" color="accent" class="ew-40 rounded-0" [matMenuTriggerFor]="moreOption">
-                                    <img src="assets/images/icons/ARROWDOWN.svg" alt="" class="icon_img">
-                                </button>
-                                <mat-menu #moreOption="matMenu">
-                                    <button mat-menu-item type="button" (click)="printAddress()">Address Print</button>
-                                    <button mat-menu-item type="button" (click)="printAddress()">KOT</button>
-                                  </mat-menu> -->
+                                
                             </div>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
             </div>
