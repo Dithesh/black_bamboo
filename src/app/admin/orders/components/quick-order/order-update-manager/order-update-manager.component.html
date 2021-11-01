@@ -214,6 +214,12 @@
                       <p class="item_track rejected"
                          [matTooltip]="item.get('productionRejectedQuantity').value + ' items rejected from kitchen'">{{ item.get('productionRejectedQuantity').value }}</p>
                     </div>
+                    <div class="comment_item">
+                      <a href="javascript:;" class="close_btn">
+                        <img src="assets/images/icons/TRASHBIN.svg" alt="">
+                      </a>
+                      Some test comment
+                    </div>
                   </div>
                 </div>
               </mat-list-option>
@@ -324,30 +330,30 @@
   <div class="footer_row">
     <h4 class="mb-0 mr-auto" *ngIf="orderDetails?.bearer">Bearer
       : {{orderDetails?.bearer.firstName}} {{orderDetails?.bearer.lastName}}</h4>
-    <button mat-stroked-button color="primary"
+    <button mat-stroked-button type="button" color="primary"
             [disabled]="selectedItemTotal <= 0"
             (click)="openNewHandler({'code': 'new'})"> New Order (F2)
     </button>
-    <button mat-raised-button color="primary"
+    <button mat-raised-button type="button" color="primary"
             [disabled]="form.get('orderAmount').value <= 0 || orderProcessing || form.get('orderStatus').value === 'completed' || form.get('orderStatus').value === 'cancelled' || blockForms"
             (click)="saveOrder('confirm')"> Temp Save (F3)
     </button>
-    <button mat-raised-button color="accent" [disabled]="form.get('orderAmount').value <= 0" (click)="saveOrder('kot')">
+    <button mat-raised-button type="button" color="accent" [disabled]="form.get('orderAmount').value <= 0" (click)="saveOrder('kot')">
       KOT (F4)
     </button>
-    <button mat-raised-button color="success"
+    <button mat-raised-button type="button" color="success"
             [disabled]="form.get('orderAmount').value <= 0 || form.get('orderStatus').value === 'completed' || form.get('orderStatus').value === 'cancelled' || blockForms"
             (click)="saveOrder('complete')"> Print Bill (F9)
     </button>
-    <button mat-stroked-button aria-label="" color="warn"
+    <button mat-stroked-button type="button" aria-label="" color="warn"
             [disabled]="!orderDetails || form.get('orderStatus').value === 'completed' || form.get('orderStatus').value === 'cancelled' || blockForms"
             (click)="saveOrder('cancel')">Cancel Order (F12)
     </button>
-    <button mat-raised-button color="primary"
+    <button mat-raised-button type="button" color="primary"
             [disabled]="form.get('orderStatus').value != 'completed' && form.get('orderStatus').value != 'cancelled'"
             (click)="changeOrderStatusBack('new')"> Re-open (F6)
     </button>
-    <button mat-stroked-button color="danger"
+    <button type="button" mat-stroked-button color="danger"
             (click)="openNewHandler({code: 'Escape'})"> Close (Esc)
     </button>
     <!-- <button mat-stroked-button *ngIf="form.get('orderStatus').value == 'completed' || form.get('orderStatus').value == 'cancelled' || blockForms" color="primary" type="button"> Reopen</button> -->

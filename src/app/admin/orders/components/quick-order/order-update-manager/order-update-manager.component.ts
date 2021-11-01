@@ -345,6 +345,10 @@ export class OrderUpdateManagerComponent implements OnInit, OnDestroy {
     this.getOrderItemTotal(form);
     item.quantity = 1;
     item.isParcel = false;
+    if (this.serv.notNull(item.itemDescription)) {
+      item.itemDescription  = item.productName + ': ' + item.itemDescription;
+    }
+    this.addAnotherComment(form, item.itemDescription);
   }
 
   onAddComboItem(item) {
@@ -508,7 +512,8 @@ export class OrderUpdateManagerComponent implements OnInit, OnDestroy {
       totalPrice: ['0.00'],
       featuredImage: [''],
       orderGroup: [''],
-      deletedFlag: [false]
+      deletedFlag: [false],
+      comments: this.fb.array([])
     });
   }
 
@@ -533,7 +538,8 @@ export class OrderUpdateManagerComponent implements OnInit, OnDestroy {
       totalPrice: ['0.00'],
       featuredImage: [''],
       orderGroup: [''],
-      deletedFlag: [false]
+      deletedFlag: [false],
+      comments: this.fb.array([])
     });
   }
 
@@ -541,6 +547,31 @@ export class OrderUpdateManagerComponent implements OnInit, OnDestroy {
     return this.form.get('comboItems') as FormArray;
   }
 
+  addAnotherComment(item, description) {
+    if (this.serv.notNull(description)) {
+      const formArray = item.get('comments') as FormArray;
+      const form = this.addComment();
+      form.get('description').setValue(description);
+      formArray.push(form);
+    }
+  }
+
+  deleteComment(item, index) {
+      const formArray = item.get('comments') as FormArray;
+      if (this.serv.notNull(formArray.controls[index].get('id'))) {
+        formArray.controls[index].get('deletedFlag').setValue(true);
+      }else {
+        formArray.removeAt(index);
+      }
+  }
+
+  addComment() {
+    return this.fb.group({
+      id: [''],
+      description: [''],
+      deletedFlag: [false]
+    });
+  }
 
   handleOrderDetails() {
 
@@ -739,6 +770,7 @@ export class OrderUpdateManagerComponent implements OnInit, OnDestroy {
 
 
   shortCutKeyHandler(e) {
+    if(this.shortCutBlocked)return;
     if (!this.blockForms) {
       if (e.code === 'F1') {
         e.preventDefault();
@@ -865,12 +897,14 @@ export class OrderUpdateManagerComponent implements OnInit, OnDestroy {
   }
 
   takeConfirmation(orderData, message) {
+    this.shortCutBlocked = true;
     const dialogRef = this.dialog.open(ConfirmPopupComponent, {
       data: {
         message
       }
     });
     dialogRef.afterClosed().subscribe(data => {
+      this.shortCutBlocked = false;
       if (data) {
         this.updateOrder(orderData);
       }

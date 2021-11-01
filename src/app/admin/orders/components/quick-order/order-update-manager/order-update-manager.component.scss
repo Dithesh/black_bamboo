@@ -457,6 +457,29 @@
         }
 
       }
+
+      .comment_item {
+        width: 100%;
+        font-size: 13px;
+        line-height: 20px;
+        color: #1c1b2a;
+        position: relative;
+
+        & .close_btn {
+          position: absolute;
+          top: 0;
+          right: 20px;
+          width: 18px;
+          height: 18px;
+          border-radius: 5px;
+          background-color: #ffffff;
+          padding: 3px;
+
+          & img {
+            width: 100%;
+          }
+        }
+      }
     }
   }
 
