@@ -107,6 +107,10 @@ export class OrderListsComponent implements OnInit, AfterViewInit, OnDestroy {
       startDate = moment(filterValue.startDate).format('YYYY-MM-DD');
       endDate = moment(filterValue.endDate).format('YYYY-MM-DD');
     }
+
+    if (Array.isArray(filterValue.orderStatus)) {
+      filterValue.orderStatus = filterValue.orderStatus.join(',');
+    }
     this.serv.endpoint = 'order-manager/order'
     this.serv.getByParam({
       pageNumber: page,

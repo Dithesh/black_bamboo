@@ -167,6 +167,7 @@ export class QuickOrderComponent implements OnInit, OnDestroy {
     );
 
     dialogRef.afterClosed().subscribe(response => {
+      console.log(response, unsavedIndex);
       this.blockShortCut = false;
       this.getOngoingOrders();
       this.getFinishedOrders();

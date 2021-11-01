@@ -306,6 +306,15 @@
               <span class="value_section"><span
                 class="d-inline-block mr-5"> &#8377;</span>{{ form.get('orderAmount').value | currency:'':''}}</span>
             </div>
+            <div class="billing_strip totalAmountText">
+              <p class="title">Payment Method</p>
+
+                <mat-select class="single_selection_without payment_method" formControlName="paymentMethod" >
+                  <ng-container *ngFor="let payment of branchDetails?.payment_methods;">
+                    <mat-option [value]="payment.id">{{ payment.methodTitle }}</mat-option>
+                  </ng-container>
+                </mat-select>
+            </div>
           </div>
         </div>
         <div class="remaning_box floating_bottom mx-0">

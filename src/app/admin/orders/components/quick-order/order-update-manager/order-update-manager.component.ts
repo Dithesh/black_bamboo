@@ -87,7 +87,13 @@ export class OrderUpdateManagerComponent implements OnInit, OnDestroy {
     this.userData = this.serv.getUserData();
     this.orderDetails = this.dialogData.orderDetails;
     this.branchDetails = this.dialogData.branchDetails;
-    this.orderTypeList = this.branchDetails.order_types as any[];
+    if (this.branchDetails) {
+      if (this.branchDetails && this.branchDetails.taxPercent && !this.serv.notNull(this.orderDetails)) {
+        this.form.get('taxPercent').setValue(this.branchDetails.taxPercent);
+      }
+
+      this.orderTypeList = this.branchDetails.order_types as any[];
+    }
     this.productList = this.dialogData.productList;
     this.productListObserver.next(this.productList);
     this.favoriteMenuList = this.dialogData.favItemMenu;
@@ -104,6 +110,10 @@ export class OrderUpdateManagerComponent implements OnInit, OnDestroy {
       this.getTableInfo();
     } else {
       this.getTableInfo();
+    }
+
+    if (this.branchDetails && this.branchDetails.payment_methods && this.branchDetails.payment_methods.length > 0 && ((!this.serv.notNull(this.orderDetails)) || (this.serv.notNull(this.orderDetails) && !this.serv.notNull(this.orderDetails.paymentMethod)))) {
+      this.form.get('paymentMethod').setValue(this.branchDetails.payment_methods[0].id);
     }
   }
 
@@ -793,7 +803,6 @@ export class OrderUpdateManagerComponent implements OnInit, OnDestroy {
 
   openNewHandler(e) {
     const openNew = (e.code === 'new' || e.code === 'F2' || e.code === 'KeyN') ? true : false;
-
     if (this.items.length > 0 || this.comboItems.length > 0) {
       if (this.serv.notNull(this.form.get('id').value)) {
         if (this.isDirty) {
@@ -921,6 +930,7 @@ export class OrderUpdateManagerComponent implements OnInit, OnDestroy {
       this.isDirty = false;
       this.orderProcessing = false;
       this.orderDetails = response;
+      this.handleOrderDetails();
       if (this.orderDetails.orderStatus === 'completed') {
         this.currentlyPrinting = 'bill';
         setTimeout(() => {
