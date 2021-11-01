@@ -102,125 +102,139 @@
             <ng-container *ngFor="let item of items['controls'];let i=index;">
               <mat-list-option *ngIf="!item.get('deletedFlag').value">
                 <div class="order_item_card">
-                  <div class="order-details col">
-                    <p class="product_name">{{ item.get('productName').value  | titlecase }}
-                      <ng-container *ngIf="item.get('advancedPriceTitle').value">
-                        ({{item.get('advancedPriceTitle').value}})
-                      </ng-container>
-                      <span class="order_item_card_strip" *ngIf="item.get('isParcel').value">Parcel</span></p>
-                    <!-- <div class="d-flex align-items-center"> -->
-                    <p class="product_price mr-2">
-                      <small>Price: </small>
-                      <span class=""><span
-                        class="d-inline-block mr-5"> &#8377;</span>{{ item.get('price').value | currency:'':''  }}</span>
-                    </p>
-                    <p class="product_price mr-2" *ngIf="item.get('isParcel').value">
-                      <small>Pkg charge: </small>
-                      <span class=""><span
-                        class="d-inline-block mr-5"> &#8377;</span>{{ item.get('packagingCharges').value | currency:'':'' }}</span>
-                    </p>
-                    <p class="product_price mr-2">
-                      <small>Total: </small>
-                      <span class="text-black"><span
-                        class="d-inline-block mr-5"> &#8377;</span>{{ item.get('totalPrice').value | currency:'':''}}</span>
-                    </p>
-                    <!-- </div> -->
-                  </div>
-                  <div class="action_menu col-auto">
-                    <button type="button" mat-stroked-button color="warn" class="small_btn mb-10"
-                            *ngIf="item.get('productionRejectedQuantity').value > 0"
-                            (click)="handleRejectedItems(item, i)">Remove Rejected
-                    </button>
+                  <div class="order_main_content">
+                    <div class="order-details col">
+                      <p class="product_name">{{ item.get('productName').value  | titlecase }}
+                        <ng-container *ngIf="item.get('advancedPriceTitle').value">
+                          ({{item.get('advancedPriceTitle').value}})
+                        </ng-container>
+                        <span class="order_item_card_strip" *ngIf="item.get('isParcel').value">Parcel</span></p>
+                      <!-- <div class="d-flex align-items-center"> -->
+                      <p class="product_price mr-2">
+                        <small>Price: </small>
+                        <span class=""><span
+                          class="d-inline-block mr-5"> &#8377;</span>{{ item.get('price').value | currency:'':''  }}</span>
+                      </p>
+                      <p class="product_price mr-2" *ngIf="item.get('isParcel').value">
+                        <small>Pkg charge: </small>
+                        <span class=""><span
+                          class="d-inline-block mr-5"> &#8377;</span>{{ item.get('packagingCharges').value | currency:'':'' }}</span>
+                      </p>
+                      <p class="product_price mr-2">
+                        <small>Total: </small>
+                        <span class="text-black"><span
+                          class="d-inline-block mr-5"> &#8377;</span>{{ item.get('totalPrice').value | currency:'':''}}</span>
+                      </p>
+                      <!-- </div> -->
+                    </div>
+                    <div class="action_menu col-auto">
+                      <button type="button" mat-stroked-button color="warn" class="small_btn mb-10"
+                              *ngIf="item.get('productionRejectedQuantity').value > 0"
+                              (click)="handleRejectedItems(item, i)">Remove Rejected
+                      </button>
 
-                    <div class="input-group mb-0 ml-auto number_input item_btn">
-                      <div class="input-group-prepend">
-                        <button class="btn btn-outline-secondary" type="button"
-                                (click)="handleNumberControl(item, 'prev', i)">-
-                        </button>
+                      <div class="input-group mb-0 ml-auto number_input item_btn">
+                        <div class="input-group-prepend">
+                          <button class="btn btn-outline-secondary" type="button"
+                                  (click)="handleNumberControl(item, 'prev', i)">-
+                          </button>
+                        </div>
+                        <input type="text" class="form-control" [formControl]="item.get('quantity')"
+                               (keyup)="handleNumberControl(item, 'text', i)" digitOnly>
+                        <div class="input-group-append">
+                          <button class="btn btn-outline-secondary" type="button"
+                                  (click)="handleNumberControl(item, 'next', i)">+
+                          </button>
+                        </div>
                       </div>
-                      <input type="text" class="form-control" [formControl]="item.get('quantity')"
-                             (keyup)="handleNumberControl(item, 'text', i)" digitOnly>
-                      <div class="input-group-append">
-                        <button class="btn btn-outline-secondary" type="button"
-                                (click)="handleNumberControl(item, 'next', i)">+
-                        </button>
+
+                      <div class="d-flex item_track_wrapper" *ngIf="item.get('id').value">
+                        <p class="item_track served"
+                           [matTooltip]="item.get('servedItems').value + ' items served for customers'">{{ item.get('servedItems').value }}</p>
+                        <p class="item_track kitchen"
+                           [matTooltip]="(item.get('productionAcceptedQuantity').value - item.get('servedItems').value - item.get('productionRejectedQuantity').value)  + ' items are preparing in kitchen'">{{ item.get('productionAcceptedQuantity').value - item.get('servedItems').value - item.get('productionRejectedQuantity').value}}</p>
+                        <p class="item_track ready"
+                           [matTooltip]="(item.get('productionReadyQuantity').value - item.get('servedItems').value) + ' items ready in kitchen'">{{ item.get('productionReadyQuantity').value - item.get('servedItems').value}}</p>
+                        <p class="item_track rejected"
+                           [matTooltip]="item.get('productionRejectedQuantity').value + ' items rejected from kitchen'">{{ item.get('productionRejectedQuantity').value }}</p>
                       </div>
                     </div>
-
-                    <div class="d-flex item_track_wrapper" *ngIf="item.get('id').value">
-                      <p class="item_track served"
-                         [matTooltip]="item.get('servedItems').value + ' items served for customers'">{{ item.get('servedItems').value }}</p>
-                      <p class="item_track kitchen"
-                         [matTooltip]="(item.get('productionAcceptedQuantity').value - item.get('servedItems').value - item.get('productionRejectedQuantity').value)  + ' items are preparing in kitchen'">{{ item.get('productionAcceptedQuantity').value - item.get('servedItems').value - item.get('productionRejectedQuantity').value}}</p>
-                      <p class="item_track ready"
-                         [matTooltip]="(item.get('productionReadyQuantity').value - item.get('servedItems').value) + ' items ready in kitchen'">{{ item.get('productionReadyQuantity').value - item.get('servedItems').value}}</p>
-                      <p class="item_track rejected"
-                         [matTooltip]="item.get('productionRejectedQuantity').value + ' items rejected from kitchen'">{{ item.get('productionRejectedQuantity').value }}</p>
-                    </div>
                   </div>
+                  <ng-container *ngFor="let comment of item.get('comments')['controls'];let comi = index;">
+                    <div class="comment_item" *ngIf="!comment.get('deletedFlag').value">
+                        <a href="javascript:;" class="close_btn" (click)="deleteComment(item, comi)">
+                          <img src="assets/images/icons/TRASHBIN.svg" alt="">
+                        </a>
+                        {{ comment.get('description').value }}
+                    </div>
+                  </ng-container>
                 </div>
               </mat-list-option>
             </ng-container>
             <ng-container *ngFor="let item of comboItems['controls'];let i=index;">
               <mat-list-option *ngIf="!item.get('deletedFlag').value">
                 <div class="order_item_card">
-                  <div class="order-details col">
-                    <p class="product_name">{{ item.get('comboTitle').value  | titlecase }}
-                      <span class="order_item_card_strip" *ngIf="item.get('isParcel').value">Parcel</span></p>
-                    <!-- <div class="d-flex align-items-center"> -->
-                    <p class="product_price mr-2">
-                      <small>Price: </small>
-                      <span class=""><span
-                        class="d-inline-block"> &#8377;</span>{{ item.get('price').value | currency:'':''}}</span>
-                    </p>
-                    <p class="product_price mr-2" *ngIf="item.get('isParcel').value">
-                      <small>Pkg charge: </small>
-                      <span class=""><span
-                        class="d-inline-block"> &#8377;</span>{{ item.get('packagingCharges').value | currency :'':''}}</span>
-                    </p>
-                    <p class="product_price mr-2">
-                      <small>Total: </small>
-                      <span class="text-black"><span
-                        class="d-inline-block"> &#8377;</span>{{ item.get('totalPrice').value | currency:'':''}}</span>
-                    </p>
-                    <!-- </div> -->
-                  </div>
-                  <div class="action_menu col-auto">
-                    <button type="button" mat-stroked-button color="warn" class="small_btn mb-10"
-                            *ngIf="item.get('productionRejectedQuantity').value > 0"
-                            (click)="handleRejectedItems(item, i, 'combo')">Remove Rejected
-                    </button>
-                    <div class="input-group mb-0 ml-auto number_input item_btn">
-                      <div class="input-group-prepend">
-                        <button class="btn btn-outline-secondary" type="button"
-                                (click)="handleNumberControl(item, 'prev', i, 'combo')">-
-                        </button>
-                      </div>
-                      <input type="text" class="form-control" digitOnly [formControl]="item.get('quantity')"
-                             (keyup)="handleNumberControl(item, 'text', i, 'combo')">
-                      <div class="input-group-append">
-                        <button class="btn btn-outline-secondary" type="button"
-                                (click)="handleNumberControl(item, 'next', i, 'combo')">+
-                        </button>
-                      </div>
+                  <div class="order_main_content">
+                    <div class="order-details col">
+                      <p class="product_name">{{ item.get('comboTitle').value  | titlecase }}
+                        <span class="order_item_card_strip" *ngIf="item.get('isParcel').value">Parcel</span></p>
+                      <!-- <div class="d-flex align-items-center"> -->
+                      <p class="product_price mr-2">
+                        <small>Price: </small>
+                        <span class=""><span
+                          class="d-inline-block"> &#8377;</span>{{ item.get('price').value | currency:'':''}}</span>
+                      </p>
+                      <p class="product_price mr-2" *ngIf="item.get('isParcel').value">
+                        <small>Pkg charge: </small>
+                        <span class=""><span
+                          class="d-inline-block"> &#8377;</span>{{ item.get('packagingCharges').value | currency :'':''}}</span>
+                      </p>
+                      <p class="product_price mr-2">
+                        <small>Total: </small>
+                        <span class="text-black"><span
+                          class="d-inline-block"> &#8377;</span>{{ item.get('totalPrice').value | currency:'':''}}</span>
+                      </p>
+                      <!-- </div> -->
                     </div>
-                    <div class="d-flex item_track_wrapper" *ngIf="item.get('id').value">
-                      <p class="item_track served"
-                         [matTooltip]="item.get('servedItems').value + ' items served for customers'">{{ item.get('servedItems').value }}</p>
-                      <p class="item_track kitchen"
-                         [matTooltip]="(item.get('productionAcceptedQuantity').value - item.get('servedItems').value - item.get('productionRejectedQuantity').value)  + ' items are preparing in kitchen'">{{ item.get('productionAcceptedQuantity').value - item.get('servedItems').value - item.get('productionRejectedQuantity').value}}</p>
-                      <p class="item_track ready"
-                         [matTooltip]="(item.get('productionReadyQuantity').value - item.get('servedItems').value) + ' items ready in kitchen'">{{ item.get('productionReadyQuantity').value - item.get('servedItems').value}}</p>
-                      <p class="item_track rejected"
-                         [matTooltip]="item.get('productionRejectedQuantity').value + ' items rejected from kitchen'">{{ item.get('productionRejectedQuantity').value }}</p>
-                    </div>
-                    <div class="comment_item">
-                      <a href="javascript:;" class="close_btn">
-                        <img src="assets/images/icons/TRASHBIN.svg" alt="">
-                      </a>
-                      Some test comment
+                    <div class="action_menu col-auto">
+                      <button type="button" mat-stroked-button color="warn" class="small_btn mb-10"
+                              *ngIf="item.get('productionRejectedQuantity').value > 0"
+                              (click)="handleRejectedItems(item, i, 'combo')">Remove Rejected
+                      </button>
+                      <div class="input-group mb-0 ml-auto number_input item_btn">
+                        <div class="input-group-prepend">
+                          <button class="btn btn-outline-secondary" type="button"
+                                  (click)="handleNumberControl(item, 'prev', i, 'combo')">-
+                          </button>
+                        </div>
+                        <input type="text" class="form-control" digitOnly [formControl]="item.get('quantity')"
+                               (keyup)="handleNumberControl(item, 'text', i, 'combo')">
+                        <div class="input-group-append">
+                          <button class="btn btn-outline-secondary" type="button"
+                                  (click)="handleNumberControl(item, 'next', i, 'combo')">+
+                          </button>
+                        </div>
+                      </div>
+                      <div class="d-flex item_track_wrapper" *ngIf="item.get('id').value">
+                        <p class="item_track served"
+                           [matTooltip]="item.get('servedItems').value + ' items served for customers'">{{ item.get('servedItems').value }}</p>
+                        <p class="item_track kitchen"
+                           [matTooltip]="(item.get('productionAcceptedQuantity').value - item.get('servedItems').value - item.get('productionRejectedQuantity').value)  + ' items are preparing in kitchen'">{{ item.get('productionAcceptedQuantity').value - item.get('servedItems').value - item.get('productionRejectedQuantity').value}}</p>
+                        <p class="item_track ready"
+                           [matTooltip]="(item.get('productionReadyQuantity').value - item.get('servedItems').value) + ' items ready in kitchen'">{{ item.get('productionReadyQuantity').value - item.get('servedItems').value}}</p>
+                        <p class="item_track rejected"
+                           [matTooltip]="item.get('productionRejectedQuantity').value + ' items rejected from kitchen'">{{ item.get('productionRejectedQuantity').value }}</p>
+                      </div>
                     </div>
                   </div>
+                  <ng-container *ngFor="let comment of item.get('comments')['controls'];let comi = index;">
+                    <div class="comment_item" *ngIf="!comment.get('deletedFlag').value">
+                        <a href="javascript:;" class="close_btn" (click)="deleteComment(item, comi)">
+                          <img src="assets/images/icons/TRASHBIN.svg" alt="">
+                        </a>
+                        {{ comment.get('description').value }}
+                    </div>
+                  </ng-container>
                 </div>
               </mat-list-option>
 

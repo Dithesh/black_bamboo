@@ -158,6 +158,17 @@ export class OrderUpdateManagerComponent implements OnInit, OnDestroy {
         orderItem.disable();
       }
       orderItem.patchValue(item);
+
+      const commentArray = orderItem.get('comments') as FormArray;
+      commentArray.controls = [];
+      commentArray.reset();
+      if (item.comments) {
+        item.comments.forEach(comment => {
+          const cform = this.addComment();
+          cform.patchValue(comment);
+          commentArray.push(cform);
+        });
+      }
       this.items.push(orderItem);
       this.getOrderItemTotal(orderItem);
     });
@@ -172,6 +183,17 @@ export class OrderUpdateManagerComponent implements OnInit, OnDestroy {
         comboItem.disable();
       }
       comboItem.patchValue(item);
+
+      const commentArray = comboItem.get('comments') as FormArray;
+      commentArray.controls = [];
+      commentArray.reset();
+      if (item.comments) {
+        item.comments.forEach(comment => {
+          const cform = this.addComment();
+          cform.patchValue(comment);
+          commentArray.push(cform);
+        });
+      }
       this.comboItems.push(comboItem);
       this.getOrderItemComboTotal(comboItem);
     });
@@ -356,7 +378,7 @@ export class OrderUpdateManagerComponent implements OnInit, OnDestroy {
     item.quantity = 1;
     item.isParcel = false;
     if (this.serv.notNull(item.itemDescription)) {
-      item.itemDescription  = item.productName + ': ' + item.itemDescription;
+      item.itemDescription  = item.name + ': ' + item.itemDescription;
     }
     this.addAnotherComment(form, item.itemDescription);
   }
@@ -393,6 +415,10 @@ export class OrderUpdateManagerComponent implements OnInit, OnDestroy {
     this.getOrderItemComboTotal(form);
     item.quantity = 1;
     item.isParcel = false;
+    if (this.serv.notNull(item.itemDescription)) {
+      item.itemDescription  = item.name + ': ' + item.itemDescription;
+    }
+    this.addAnotherComment(form, item.itemDescription);
   }
 
   onKeyboardOrderTypeChange(itd) {
@@ -630,6 +656,7 @@ export class OrderUpdateManagerComponent implements OnInit, OnDestroy {
       if (this.blockForms === true) {
         orderItem.disable();
       }
+
       orderItem.patchValue({
         id: item.id,
         productId: item.product.id,
@@ -648,8 +675,18 @@ export class OrderUpdateManagerComponent implements OnInit, OnDestroy {
         totalPrice: item.totalPrice,
         featuredImage: item.product.featuredImage,
         orderGroup: item.orderGroup,
-        deletedFlag: false
+        deletedFlag: false,
       });
+      const commentArray = orderItem.get('comments') as FormArray;
+      commentArray.controls = [];
+      commentArray.reset();
+      if (item.comments) {
+        item.comments.forEach(comment => {
+          const cform = this.addComment();
+          cform.patchValue(comment);
+          commentArray.push(cform);
+        });
+      }
 
       this.items.push(orderItem);
       this.getOrderItemTotal(orderItem);
@@ -681,6 +718,16 @@ export class OrderUpdateManagerComponent implements OnInit, OnDestroy {
         featuredImage: item.product_combo.featuredImage,
         deletedFlag: false
       });
+      const commentArray = comboItem.get('comments') as FormArray;
+      commentArray.controls = [];
+      commentArray.reset();
+      if (item.comments) {
+        item.comments.forEach(comment => {
+          const cform = this.addComment();
+          cform.patchValue(comment);
+          commentArray.push(cform);
+        });
+      }
 
       this.comboItems.push(comboItem);
       this.getOrderItemComboTotal(comboItem);
