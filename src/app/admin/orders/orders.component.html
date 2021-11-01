@@ -10,14 +10,14 @@
     <div class="body_inner_card">
         <div class="tab_header">
             <div class="tab_btn" routerLink="/admin/order/quick-order" routerLinkActive="active">
-                <a href="javascript:;">Quick Order</a>
+                <a href="javascript:;">Running Orders</a>
             </div>
             <div class="tab_btn" routerLink="/admin/order/list" routerLinkActive="active">
-                <a href="javascript:;">Order Lists</a>
+                <a href="javascript:;">Order History</a>
             </div>
-            <div class="tab_btn" routerLink="/admin/order/update" routerLinkActive="active pointer-none">
-                <a href="javascript:;">{{editId?'Update Order': 'Add Order'}} </a>
-            </div>
+<!--            <div class="tab_btn" routerLink="/admin/order/update" routerLinkActive="active pointer-none">-->
+<!--                <a href="javascript:;">{{editId?'Update Order': 'Add Order'}} </a>-->
+<!--            </div>-->
         </div>
         <div class="tab_body">
             <router-outlet></router-outlet>

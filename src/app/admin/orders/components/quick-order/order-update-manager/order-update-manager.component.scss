@@ -184,6 +184,59 @@
               overflow: auto;
               border-right: 1px solid #ddd;
 
+              & .no_fav_item {
+                width: 100%;
+                aspect-ratio: 1/1;
+                position: relative;
+                margin-top: 20%;
+                opacity: 0.3;
+
+                .clock_body {
+                  width: 70%;
+                  position: absolute;
+                  top: 50%;
+                  left: 50%;
+                  transform: translate(-50%, -50%);
+                }
+
+                .clock_pin {
+                  position: absolute;
+                  width: 25%;
+                  top: 50%;
+                  left: 50%;
+                  transform: translateY(-50%);
+                  transform-origin: left center;
+                  &.hour {
+                    width: 17%;
+                    transform: translateY(-50%) rotate(45deg);
+                  }
+                }
+
+                .left_stand {
+                  position: absolute;
+                  width: 15%;
+                  top: 75%;
+                  left: 15%;
+                  &.right {
+                    left: auto;
+                    right: 15%;
+                  }
+                }
+
+                h2 {
+                  font-size: 16px;
+                  width: 100%;
+                  position: absolute;
+                  bottom: -20px;
+                  line-height: 20px;
+                  text-transform: uppercase;
+                  color: #4e555b;
+                  padding: 0 30px;
+                  text-align: center;
+                }
+
+              }
+
               &::-webkit-scrollbar {
                 width: 5px;
                 height: 5px;
@@ -487,4 +540,23 @@
     padding: 0 2px;
   }
 
+}
+
+.not_loaded {
+    margin: 20px;
+    width: calc(100% - 40px);
+    height: 90px;
+    border-radius: 3px;
+    background-image: linear-gradient(90deg, #e2e2e2 0px, #efefef 30px, #e2e2e2 60px);
+    background-size: calc(160px + 160px);
+    animation: refresh 1.2s infinite ease-out;
+}
+
+@keyframes refresh {
+  0% {
+    background-position: calc(-160px);
+  }
+  60%, 100% {
+    background-position: 160px;
+  }
 }

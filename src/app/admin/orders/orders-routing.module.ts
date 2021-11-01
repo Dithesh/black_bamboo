@@ -62,7 +62,7 @@ const routes: Routes = [
           },
           {
             path: '**',
-            redirectTo: 'list'
+            redirectTo: 'quick-order'
           }
         ]
       }

@@ -12,6 +12,7 @@ import {PrintKotComponent} from "../../print-kot/print-kot.component";
 import {InvoicePrintingComponent} from "./invoice-printing/invoice-printing.component";
 import {CustomerInfoUpdateComponent} from "./customer-info-update/customer-info-update.component";
 import {KotPrintingComponent} from "./kot-printing/kot-printing.component";
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-order-update-manager',
@@ -23,6 +24,9 @@ export class OrderUpdateManagerComponent implements OnInit, OnDestroy {
   @ViewChild('searchInput') searchInput: ElementRef;
   @ViewChild('invoicePrintHolder') invoicePrintHolder: InvoicePrintingComponent;
   @ViewChild('kotPrintHolder') kotPrintHolder: KotPrintingComponent;
+  selectedItemTotal = 0;
+  hourRotation = 0;
+  minuteRotation = 0;
   currentlyPrinting;
   blockForms = false;
   isDirty = false;
@@ -40,6 +44,7 @@ export class OrderUpdateManagerComponent implements OnInit, OnDestroy {
   ordertypeControl: FormControl = new FormControl('');
   keyListener = this.shortCutKeyHandler.bind(this);
   orderProcessing = false;
+  array = Array;
   form: FormGroup = this.fb.group({
     id: [''],
     branch_id: [''],
@@ -103,6 +108,7 @@ export class OrderUpdateManagerComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.manageClock();
     window.addEventListener('keydown', this.keyListener, true);
     this.searchControl.valueChanges.pipe(
       debounceTime(300)
@@ -426,8 +432,10 @@ export class OrderUpdateManagerComponent implements OnInit, OnDestroy {
     let totalPrice = 0;
     let totalComboPrice = 0;
     let grandTotal = 0;
+    this.selectedItemTotal = 0;
     orderItems.forEach(item => {
       if (!item.deletedFlag) {
+        this.selectedItemTotal++;
         totalPrice = totalPrice + parseFloat(item.totalPrice);
       }
     });
@@ -435,6 +443,7 @@ export class OrderUpdateManagerComponent implements OnInit, OnDestroy {
     const comboItems = this.comboItems.value;
     comboItems.forEach(item => {
       if (!item.deletedFlag) {
+        this.selectedItemTotal++;
         totalComboPrice = totalComboPrice + parseFloat(item.totalPrice);
       }
     });
@@ -1004,6 +1013,22 @@ export class OrderUpdateManagerComponent implements OnInit, OnDestroy {
         this.form.patchValue(response);
       }
     })
+  }
+
+  manageClock() {
+    let currentHour = parseInt((moment(new Date())).format('hh'));
+    let currentMinute = parseInt((moment(new Date())).format('mm'));
+    if (currentHour < 3) {
+      currentHour = currentHour + 12;
+    }
+    this.hourRotation = (currentHour - 3) * 30;
+    if (currentMinute > 40) {
+      this.hourRotation = this.hourRotation + 15;
+    }
+    if (currentMinute < 15) {
+      currentMinute = currentMinute + 60;
+    }
+    this.minuteRotation = (currentMinute - 15) * 6;
   }
 
   ngOnDestroy() {

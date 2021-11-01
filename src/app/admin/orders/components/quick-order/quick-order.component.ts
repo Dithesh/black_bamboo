@@ -50,7 +50,7 @@ export class QuickOrderComponent implements OnInit, OnDestroy {
       this.blockOrdering = true;
     }
 
-    // this.openOrderUpdateManager();
+    this.openOrderUpdateManager();
   }
 
   handleProductData(products, combos) {
