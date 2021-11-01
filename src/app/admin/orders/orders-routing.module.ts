@@ -43,16 +43,7 @@ const routes: Routes = [
             canActivate: [ RoleGaurd ]
           },
           {
-            path: 'update',
-            component: NewOrderComponent,
-            data: {
-              module: 'orders',
-              mode: 'read'
-            },
-            canActivate: [ RoleGaurd ]
-          },
-          {
-            path: 'update/:id',
+            path: 'list/:id',
             component: NewOrderComponent,
             data: {
               module: 'orders',
