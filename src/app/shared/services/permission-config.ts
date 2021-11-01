@@ -180,7 +180,7 @@ export const permissions = {
         Bearer : 'denied'
     },
     'branch-profile-menu': {
-        'Super Admin': 'full',
+        'Super Admin': 'denied',
         'Company Admin': 'denied',
         'Branch Admin' : 'full',
         'Branch Accountant' : 'denied',
@@ -190,7 +190,7 @@ export const permissions = {
         Bearer : 'denied'
     },
     'branch-profile': {
-        'Super Admin': 'full',
+        'Super Admin': 'denied',
         'Company Admin': 'denied',
         'Branch Admin' : 'full',
         'Branch Accountant' : 'denied',
