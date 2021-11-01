@@ -815,7 +815,7 @@ export class OrderUpdateManagerComponent implements OnInit, OnDestroy {
     }
 
 
-    if (this.selectedItemTotal <= 0) {
+    if (this.selectedItemTotal <= 0 && orderData.orderStatus !== 'cancelled') {
       this.serv.showMessage('Please add items.', 'error');
       return;
     }
