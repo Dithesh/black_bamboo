@@ -11,7 +11,7 @@
     "e2e": "ng e2e",
     "electron": "electron .",
     "electron-build": "ng build --base-href ./ && electron .",
-    "app:build": "ng build --base-href ./ && electron-packager . --platform=win32 --arch=ia32 --overwrite --icon='/assets/icon.ico' --ignore=^/node_modules --ignore=^/src --ignore=^/runrestro-win32-ia32 --ignore=^/e2e"
+    "app:build": "ng build --base-href ./ && electron-packager . --platform=win32 --arch=ia32 --asar --overwrite --icon='dist/assets/icon.ico' --ignore=^/node_modules --ignore=^/src --ignore=^/runrestro-win32-ia32 --ignore=^/e2e"
   },
   "private": true,
   "dependencies": {

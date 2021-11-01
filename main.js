@@ -11,7 +11,7 @@ function createWindow() {
     minHeight: 800,
     minWidth: 1100,
     fullscreen: fullScreen,
-    icon: path.join(__dirname, `/dist/assets/images/app.png`),
+    icon: path.join(__dirname, `dist/assets/icon.ico`),
     webPreferences: {
       nodeIntegration: true,
       enableRemoteModule: true,
@@ -19,14 +19,14 @@ function createWindow() {
       preload: path.join(__dirname, 'preload.js')
     }
   })
-    mainWindow.loadURL(`http://localhost:4200/`)
-  // mainWindow.loadURL(
-  //   url.format({
-  //     pathname: path.join(__dirname, `/dist/index.html`),
-  //     protocol: "file:",
-  //     slashes: true
-  //   })
-  // );
+    // mainWindow.loadURL(`http://localhost:4200/`)
+  mainWindow.loadURL(
+    url.format({
+      pathname: path.join(__dirname, `/dist/index.html`),
+      protocol: "file:",
+      slashes: true
+    })
+  );
 
   ipcMain.on('print_invoice', (event, arg) => {
     mainWindow.webContents.print({
