@@ -780,24 +780,30 @@ export class OrderUpdateManagerComponent implements OnInit, OnDestroy {
 
 
   shortCutKeyHandler(e) {
-    if(this.shortCutBlocked)return;
-    if (!this.blockForms) {
-      if (e.code === 'F1') {
-        e.preventDefault();
-        this.searchInput.nativeElement.focus();
-      } else if ((e.code === 'F2') || (e.ctrlKey && e.code === 'KeyN') || e.code === 'Escape') {
-        e.preventDefault();
-        e.stopPropagation();
-        this.openNewHandler(e);
-      } else if ((e.ctrlKey && e.code === 'KeyS') || e.code === 'F3') {
-        this.saveOrder('confirm');
-      } else if ((e.ctrlKey && e.code === 'KeyK') || e.code === 'F4') {
-        this.saveOrder('kot');
-      } else if ((e.ctrlKey && e.code === 'KeyQ') || e.code === 'F9') {
-        this.saveOrder('complete');
-      } else if ((e.ctrlKey && e.code === 'KeyX') || e.code === 'F12') {
-        this.saveOrder('cancel');
-      }
+    if (this.shortCutBlocked)return;
+
+    if (e.code === 'F1') {
+      if (this.blockForms) return;
+      e.preventDefault();
+      this.searchInput.nativeElement.focus();
+    } else if ((e.code === 'F2') || (e.ctrlKey && e.code === 'KeyN') || e.code === 'Escape') {
+      e.preventDefault();
+      e.stopPropagation();
+      this.openNewHandler(e);
+    } else if ((e.ctrlKey && e.code === 'KeyS') || e.code === 'F3') {
+      if (this.blockForms) return;
+      this.saveOrder('confirm');
+    } else if ((e.ctrlKey && e.code === 'KeyK') || e.code === 'F4') {
+      if (this.blockForms) return;
+      this.saveOrder('kot');
+    } else if ((e.ctrlKey && e.code === 'KeyQ') || e.code === 'F9') {
+      if (this.blockForms) return;
+      this.saveOrder('complete');
+    } else if ((e.ctrlKey && e.code === 'KeyX') || e.code === 'F12') {
+      if (this.blockForms) return;
+      this.saveOrder('cancel');
+    } else if (e.code === 'F6') {
+      this.changeOrderStatusBack('new');
     }
   }
 
