@@ -815,7 +815,7 @@ export class OrderUpdateManagerComponent implements OnInit, OnDestroy {
     }
 
 
-    if (orderData.items.length <= 0 && orderData.comboItems.length <= 0) {
+    if (this.selectedItemTotal <= 0) {
       this.serv.showMessage('Please add items.', 'error');
       return;
     }
