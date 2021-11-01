@@ -37,7 +37,7 @@ export class OrderListsComponent implements OnInit, AfterViewInit, OnDestroy {
   ) {
     this.filterForm = this.fb.group({
       searchString: [''],
-      orderStatus: [''],
+      orderStatus: [['completed']],
       startDate: [''],
       selectedCompany: [''],
       selectedBranch: [''],

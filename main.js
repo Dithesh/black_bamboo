@@ -11,7 +11,7 @@ function createWindow() {
     minHeight: 800,
     minWidth: 1100,
     fullscreen: fullScreen,
-    icon: path.join(__dirname, `/dist/assets/images/app.png`),
+    icon: path.join(__dirname, `dist/assets/icon.ico`),
     webPreferences: {
       nodeIntegration: true,
       enableRemoteModule: true,

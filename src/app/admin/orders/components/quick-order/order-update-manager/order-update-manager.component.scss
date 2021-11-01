@@ -237,20 +237,6 @@
 
               }
 
-              &::-webkit-scrollbar {
-                width: 5px;
-                height: 5px;
-              }
-
-              &::-webkit-scrollbar-track {
-                background-color: transparent;
-              }
-
-              &::-webkit-scrollbar-thumb {
-                background-color: #c8c8c8;
-                border-radius: 10px;
-              }
-
               .selection_list {
                 outline: none;
 
@@ -288,33 +274,9 @@
   }
 
   .tab_inner_body {
-    &::-webkit-scrollbar {
-      width: 5px;
-      height: 5px;
-    }
-
-    &::-webkit-scrollbar-track {
-      background-color: transparent;
-    }
-
-    &::-webkit-scrollbar-thumb {
-      background-color: #c8c8c8;
-      border-radius: 10px;
-    }
-
-    // padding: 15px;
     height: calc(100% - 78px);
     min-height: 289px;
     overflow-y: auto;
-    // &.innerFooter{
-    //     height: calc(100vh - 427px);
-    // }
-    // &.billing_body {
-    //     height: calc(100vh - 469px);
-    //   &.afterbilled {
-    //     height: calc(100vh - 400px);
-    //   }
-    // }
 
   }
 
@@ -365,47 +327,10 @@
     }
 
     margin-bottom: 0;
-
-    &::-webkit-scrollbar {
-      width: 5px;
-      height: 5px;
-    }
-
-    &::-webkit-scrollbar-track {
-      background-color: transparent;
-    }
-
-    &::-webkit-scrollbar-thumb {
-      background-color: #c8c8c8;
-      border-radius: 10px;
-    }
-
     max-height: calc(100vh - 247px);
     overflow-y: auto;
-    // & .img_item {
-    //     width: 90px;
-    //     height: 90px;
-    //     background-color: #fff;
-    //     box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
-    //     border-radius: 50%;
-    //     margin-right: 15px;
-    //     overflow: hidden;
-
-    //     @media (max-width: 1400px) {
-    //       width: 45px;
-    //       height: 45px;
-    //     }
-
-    //     & img {
-    //         width: 100%;
-    //         height: 100%;
-    //         object-fit: cover;
-    //     }
-    // }
     .order_item_card {
       display: flex;
-      // grid-template-columns: 1fr 120px;
-      // grid-auto-rows: minmax(min-content, max-content);
       background-color: transparent;
       box-shadow: none;
       border-radius: 0px;
@@ -540,23 +465,4 @@
     padding: 0 2px;
   }
 
-}
-
-.not_loaded {
-    margin: 20px;
-    width: calc(100% - 40px);
-    height: 90px;
-    border-radius: 3px;
-    background-image: linear-gradient(90deg, #e2e2e2 0px, #efefef 30px, #e2e2e2 60px);
-    background-size: calc(160px + 160px);
-    animation: refresh 1.2s infinite ease-out;
-}
-
-@keyframes refresh {
-  0% {
-    background-position: calc(-160px);
-  }
-  60%, 100% {
-    background-position: 160px;
-  }
 }

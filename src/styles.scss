@@ -2131,74 +2131,6 @@ label.mat-checkbox-layout {
     }
 
 }
-.right_details_box{
-    width: 600px;
-
-    @media (max-width: 1400px) {
-      width: 430px;
-    }
-    .tab_inner_body{
-        padding: 15px;
-        height: calc(100vh - 380px);
-        min-height: 289px;
-        overflow-y: auto;
-        &.innerFooter{
-            height: calc(100vh - 427px);
-        }
-        &.billing_body {
-            height: calc(100vh - 469px);
-          &.afterbilled {
-            height: calc(100vh - 400px);
-          }
-        }
-    }
-    h3.completeText{
-        font-size: 1.8rem;
-        margin-bottom: 0px;
-        font-weight: 500;
-        color: #505050;
-        white-space: nowrap;
-    }
-    .ammount_box{
-            padding: 5px 0px;
-            .orderAmuntChip{
-                font-size: 1.4rem;
-                padding: 5px 10px 5px 30px;
-                border: 1px solid #faae1a;
-                border-radius: 10px;
-                color: #000000;
-                line-height: 1;
-                font-weight: 500;
-                position: relative;
-                background-color: rgba(250, 174, 26, 0.4);
-                &.paid{
-                    border-color: #2faa4b;
-                    color: #2faa4b;
-                    background-color: rgba(47, 170, 75, 0.2);
-                }
-                &::before{
-                    content: 'Rs.';
-                    font-size: 1.4rem;
-                    position: absolute;
-                    left: 5px;
-                    top: 50%;
-                    -webkit-transform: translateY(-50%);
-                    -moz-transform: translateY(-50%);
-                    -ms-transform: translateY(-50%);
-                    transform: translateY(-50%);
-                }
-            }
-            // h3{
-            //     margin-bottom: 0px;
-            //     font-size: 1.8rem;
-            //     font-weight: 500;
-            //     color: #505050;
-            //     span{
-            //         color: #adadad;
-            //     }
-            // }
-      }
-}
 .remaning_box{
     background-color: #e9eaf3;
     margin-left: -15px;
@@ -2216,23 +2148,6 @@ label.mat-checkbox-layout {
             font-size: 16px;
             margin-bottom: 20px;
         }
-    }
-}
-.right_details_box{
-    .mat-tab-labels{
-        .mat-tab-label{
-            min-width: 80px;
-            @media(max-width:1400px){
-                font-size: 12px;
-                padding: 0px 10px;
-            }
-            &.mat-tab-label-active{
-                background-color: rgb(234, 234, 243);
-                color: #2e358e;
-                opacity: 1;
-            }
-        }
-
     }
 }
 .moreBox{
@@ -2462,4 +2377,25 @@ label.mat-checkbox-layout {
             }
         }
     }
+}
+
+
+
+.not_loaded {
+    margin: 20px;
+    width: calc(100% - 40px);
+    height: 90px;
+    border-radius: 3px;
+    background-image: linear-gradient(90deg, #e2e2e2 0px, #efefef 30px, #e2e2e2 60px);
+    background-size: calc(160px + 160px);
+    animation: refresh 1.2s infinite ease-out;
+}
+
+@keyframes refresh {
+  0% {
+    background-position: calc(-160px);
+  }
+  60%, 100% {
+    background-position: 160px;
+  }
 }
