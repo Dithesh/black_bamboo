@@ -86,6 +86,7 @@ export class QuickOrderComponent implements OnInit, OnDestroy {
           uid: 'combo_' + item.id,
           name: item.comboTitle,
           productNumber: '',
+          price: item.comboTotal,
           advanced_pricing: [],
           advancedPriceId: '',
           advancedPriceTitle: '',
@@ -167,6 +168,7 @@ export class QuickOrderComponent implements OnInit, OnDestroy {
     );
 
     dialogRef.afterClosed().subscribe(response => {
+      console.log(response, unsavedIndex);
       this.blockShortCut = false;
       this.getOngoingOrders();
       this.getFinishedOrders();

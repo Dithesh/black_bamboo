@@ -21,6 +21,7 @@ export class OrderItemAddComponent implements OnInit, OnDestroy {
   ) {
     this.product = data.item;
     this.selectedOrderType = data.selectedOrderType;
+    console.log(this.product)
     this.priceControl.setValue(this.product.price);
     this.advancedPricigArray = this.product.advanced_pricing.map(elem => elem.id);
   }

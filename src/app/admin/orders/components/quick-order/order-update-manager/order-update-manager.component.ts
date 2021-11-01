@@ -87,7 +87,13 @@ export class OrderUpdateManagerComponent implements OnInit, OnDestroy {
     this.userData = this.serv.getUserData();
     this.orderDetails = this.dialogData.orderDetails;
     this.branchDetails = this.dialogData.branchDetails;
-    this.orderTypeList = this.branchDetails.order_types as any[];
+    if (this.branchDetails) {
+      if (this.branchDetails && this.branchDetails.taxPercent && !this.serv.notNull(this.orderDetails)) {
+        this.form.get('taxPercent').setValue(this.branchDetails.taxPercent);
+      }
+
+      this.orderTypeList = this.branchDetails.order_types as any[];
+    }
     this.productList = this.dialogData.productList;
     this.productListObserver.next(this.productList);
     this.favoriteMenuList = this.dialogData.favItemMenu;
@@ -104,6 +110,10 @@ export class OrderUpdateManagerComponent implements OnInit, OnDestroy {
       this.getTableInfo();
     } else {
       this.getTableInfo();
+    }
+
+    if (this.branchDetails && this.branchDetails.payment_methods && this.branchDetails.payment_methods.length > 0 && ((!this.serv.notNull(this.orderDetails)) || (this.serv.notNull(this.orderDetails) && !this.serv.notNull(this.orderDetails.paymentMethod)))) {
+      this.form.get('paymentMethod').setValue(this.branchDetails.payment_methods[0].id);
     }
   }
 
@@ -770,30 +780,35 @@ export class OrderUpdateManagerComponent implements OnInit, OnDestroy {
 
 
   shortCutKeyHandler(e) {
-    if(this.shortCutBlocked)return;
-    if (!this.blockForms) {
-      if (e.code === 'F1') {
-        e.preventDefault();
-        this.searchInput.nativeElement.focus();
-      } else if ((e.code === 'F2') || (e.ctrlKey && e.code === 'KeyN') || e.code === 'Escape') {
-        e.preventDefault();
-        e.stopPropagation();
-        this.openNewHandler(e);
-      } else if ((e.ctrlKey && e.code === 'KeyS') || e.code === 'F3') {
-        this.saveOrder('confirm');
-      } else if ((e.ctrlKey && e.code === 'KeyK') || e.code === 'F4') {
-        this.saveOrder('kot');
-      } else if ((e.ctrlKey && e.code === 'KeyQ') || e.code === 'F9') {
-        this.saveOrder('complete');
-      } else if ((e.ctrlKey && e.code === 'KeyX') || e.code === 'F12') {
-        this.saveOrder('cancel');
-      }
+    if (this.shortCutBlocked)return;
+
+    if (e.code === 'F1') {
+      if (this.blockForms) return;
+      e.preventDefault();
+      this.searchInput.nativeElement.focus();
+    } else if ((e.code === 'F2') || (e.ctrlKey && e.code === 'KeyN') || e.code === 'Escape') {
+      e.preventDefault();
+      e.stopPropagation();
+      this.openNewHandler(e);
+    } else if ((e.ctrlKey && e.code === 'KeyS') || e.code === 'F3') {
+      if (this.blockForms) return;
+      this.saveOrder('confirm');
+    } else if ((e.ctrlKey && e.code === 'KeyK') || e.code === 'F4') {
+      if (this.blockForms) return;
+      this.saveOrder('kot');
+    } else if ((e.ctrlKey && e.code === 'KeyQ') || e.code === 'F9') {
+      if (this.blockForms) return;
+      this.saveOrder('complete');
+    } else if ((e.ctrlKey && e.code === 'KeyX') || e.code === 'F12') {
+      if (this.blockForms) return;
+      this.saveOrder('cancel');
+    } else if (e.code === 'F6') {
+      this.changeOrderStatusBack('new');
     }
   }
 
   openNewHandler(e) {
     const openNew = (e.code === 'new' || e.code === 'F2' || e.code === 'KeyN') ? true : false;
-
     if (this.items.length > 0 || this.comboItems.length > 0) {
       if (this.serv.notNull(this.form.get('id').value)) {
         if (this.isDirty) {
@@ -921,6 +936,7 @@ export class OrderUpdateManagerComponent implements OnInit, OnDestroy {
       this.isDirty = false;
       this.orderProcessing = false;
       this.orderDetails = response;
+      this.handleOrderDetails();
       if (this.orderDetails.orderStatus === 'completed') {
         this.currentlyPrinting = 'bill';
         setTimeout(() => {
