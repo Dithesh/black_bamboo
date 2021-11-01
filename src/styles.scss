@@ -1841,6 +1841,11 @@ label.mat-checkbox-layout {
     @media(max-width:1400px){
         width: 250px;
     }
+    &.details{
+        @media(max-width:1400px){
+            width: 350px;
+        }
+    }
     // border-right: 1px solid #ddd;
     .left_header{
         padding: 15px;
