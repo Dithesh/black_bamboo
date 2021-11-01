@@ -198,6 +198,7 @@ export class QuickOrderComponent implements OnInit, OnDestroy {
       + '&orderStatus=new,accepted,prepairing,packing'
       + '&startDate=' + startDate
       + '&endDate=' + endDate
+      + '&ongoing=true'
       + '&orderType=desc'
       + '&orderCol=updated_at';
     this.serv.get().subscribe((response: any) => {
