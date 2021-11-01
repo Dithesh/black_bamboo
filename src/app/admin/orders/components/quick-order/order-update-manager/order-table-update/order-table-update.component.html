@@ -1,6 +1,6 @@
 <form (submit)="saveData()">
 <mat-dialog-content>
-  <fieldset *ngFor="let obj of roomList|keyvalue">
+  <fieldset *ngFor="let obj of roomList|keyvalue; let roomIndex=index;">
     <legend>{{ obj.key }}</legend>
 
 
@@ -28,14 +28,14 @@
                     <ng-container *ngIf="ci%2 == 0">
                       <div class="radio_outer px-1">
                         <div class="table_seat_checkBox horizontal" [formGroupName]="ci">
-                          <input type="checkbox" [id]="ci+'chair'+ti" formControlName="isSelected">
-                          <label [for]="ci+'chair'+ti"
+                          <input type="checkbox" [id]="roomIndex+'_'+ci+'chair'+ti" formControlName="isSelected">
+                          <label [for]="roomIndex+'_'+ci+'chair'+ti"
                                  [class.pointer-none]="item.get('chairs')['controls'][ci].get('permission').value == 'blocked'"></label>
                         </div>
                         <ng-container *ngIf="item.get('chairs')['controls'].length > (ci+1)">
                           <div class="table_seat_checkBox horizontal" [formGroupName]="ci + 1">
-                            <input type="checkbox" [id]="ci+1+'chair'+ti" formControlName="isSelected">
-                            <label [for]="ci+1+'chair'+ti"
+                            <input type="checkbox" [id]="roomIndex+'_'+ci+1+'chair'+ti" formControlName="isSelected">
+                            <label [for]="roomIndex+'_'+ci+1+'chair'+ti"
                                    [class.pointer-none]="item.get('chairs')['controls'][ci+1].get('permission').value == 'blocked'"></label>
                           </div>
                         </ng-container>
