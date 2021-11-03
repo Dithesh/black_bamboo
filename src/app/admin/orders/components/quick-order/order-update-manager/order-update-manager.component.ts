@@ -1073,13 +1073,14 @@ export class OrderUpdateManagerComponent implements OnInit, OnDestroy {
 
 
   changeOrderStatusBack(status) {
-
+    this.shortCutBlocked=true;
     const dialogRef = this.dialog.open(ConfirmPopupComponent, {
       data: {
         message: 'Are sure want to reopen?'
       }
     });
     dialogRef.afterClosed().subscribe(data => {
+      this.shortCutBlocked = false;
       if (data) {
         this.serv.endpoint = 'order-manager/order/change-order-status';
         this.serv.post({id: this.orderDetails.id, status}).subscribe(response => {
