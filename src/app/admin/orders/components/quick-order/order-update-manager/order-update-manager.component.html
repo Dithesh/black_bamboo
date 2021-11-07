@@ -1,6 +1,6 @@
 <form [formGroup]="form" class="order_new_wrapper hidden-print">
   <div class="new_order_header">
-    <mat-chip-list cdkFocusInitial aria-label="Fish selection" #orderTypeChips
+    <mat-chip-list cdkFocusInitial #orderTypeChips
                    (change)="onKeyboardOrderTypeChange(orderTypeChips)">
       <ng-container *ngFor="let item of orderTypeList;">
         <mat-chip *ngIf="item.isActive" color="primary" [value]="item.id"
@@ -8,15 +8,25 @@
                   (click)="changeOrderType(item.id, 'button')">{{ item.orderType }}</mat-chip>
       </ng-container>
     </mat-chip-list>
-    <div class="table_selected_row" *ngIf="selectedOrderType?.tableRequired" (click)="openTableUpdate()">
-      <p *ngIf="selectedTables.length <= 0">
-        Add Table Info
-      </p>
-      <ul *ngIf="selectedTables.length > 0">
-        <li *ngFor="let table of selectedTables">
-          {{ table.tableId }}
-        </li>
-      </ul>
+    <div class="table_selected_row d-flex" *ngIf="selectedOrderType?.tableRequired">
+      <mat-form-field appearance="outline" class="ew-80 mr-10 pb-0 inline-input prefix-top-0">
+        <input matInput placeholder="Tables " [formControl]="tableSelectionControl" [matAutocomplete]="tableSelection">
+        <mat-autocomplete #tableSelection="matAutocomplete"  (optionSelected)="onTableInputChange()">
+          <mat-option *ngFor="let tableOption of tableListObserver | async" [value]="tableOption">
+            {{tableOption.tableId}}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+      <a href="javascript:;" (click)="openTableUpdate()">
+        <p *ngIf="selectedTables.length <= 0">
+          Add Table Info
+        </p>
+        <ul *ngIf="selectedTables.length > 0">
+          <li *ngFor="let table of selectedTables">
+            {{ table.tableId }}
+          </li>
+        </ul>
+      </a>
     </div>
 
     <h2 class="id_Pill" [class.new]="!orderDetails"

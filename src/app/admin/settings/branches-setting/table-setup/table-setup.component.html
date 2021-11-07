@@ -25,7 +25,7 @@
                     <th mat-sort-header="tableId">Table NO</th>
                     <th mat-sort-header="tableId">Room</th>
                     <th mat-sort-header="description">Description</th>
-                    <th mat-sort-header="noOfChair" class="ew-200">Number Of Chairs</th>
+                    <th *ngIf="!brandDetails?.disableTableChairs" mat-sort-header="noOfChair" class="ew-200">Number Of Chairs</th>
                     <th class="ew-150">Is Active?</th>
                 </tr>
             </thead>
@@ -48,7 +48,7 @@
                             {{item.room.roomName }}
                         </td>
                         <td>{{item.description}}</td>
-                        <td>
+                        <td *ngIf="!brandDetails?.disableTableChairs">
                             {{item.noOfChair}}
                         </td>
 

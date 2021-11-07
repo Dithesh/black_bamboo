@@ -8,10 +8,10 @@ import {debounceTime} from 'rxjs/operators';
 import {OrderItemAddComponent} from './order-item-add/order-item-add.component';
 import {MatSelectionList} from '@angular/material/list';
 import {OrderTableUpdateComponent} from './order-table-update/order-table-update.component';
-import {PrintKotComponent} from "../../print-kot/print-kot.component";
-import {InvoicePrintingComponent} from "./invoice-printing/invoice-printing.component";
-import {CustomerInfoUpdateComponent} from "./customer-info-update/customer-info-update.component";
-import {KotPrintingComponent} from "./kot-printing/kot-printing.component";
+import {PrintKotComponent} from '../../print-kot/print-kot.component';
+import {InvoicePrintingComponent} from './invoice-printing/invoice-printing.component';
+import {CustomerInfoUpdateComponent} from './customer-info-update/customer-info-update.component';
+import {KotPrintingComponent} from './kot-printing/kot-printing.component';
 import * as moment from 'moment';
 
 @Component({
@@ -41,10 +41,12 @@ export class OrderUpdateManagerComponent implements OnInit, OnDestroy {
   searchControl: FormControl = new FormControl('');
   subTotal = 0;
   tableList: any[] = [];
+  tableListObserver: ReplaySubject<any[]> = new ReplaySubject<any[]>(1);
   ordertypeControl: FormControl = new FormControl('');
   keyListener = this.shortCutKeyHandler.bind(this);
   orderProcessing = false;
   array = Array;
+  tableSelectionControl: FormControl = new FormControl('');
   form: FormGroup = this.fb.group({
     id: [''],
     branch_id: [''],
@@ -136,6 +138,14 @@ export class OrderUpdateManagerComponent implements OnInit, OnDestroy {
         })
       );
     });
+
+    this.tableSelectionControl.valueChanges.pipe(
+      debounceTime(300)
+    ).subscribe((value: any) => {
+      if (typeof value === 'string') {
+        this.tableListObserver.next(this.tableList.filter(table => table.tableId.toLowerCase().includes(value.toLowerCase())));
+      }
+    });
   }
 
   patchPreviousData(data) {
@@ -220,6 +230,28 @@ export class OrderUpdateManagerComponent implements OnInit, OnDestroy {
     return this.form.get('tables') as FormArray;
   }
 
+  onTableInputChange() {
+    const selectedVal = this.tableSelectionControl.value;
+    if (selectedVal instanceof Object) {
+      this.tables.controls.forEach(control => {
+        if (control.get('id').value === selectedVal.id) {
+          this.selectAllChairs(control);
+        }
+      });
+      this.isDirty = true;
+      this.tableSelectionControl.setValue('');
+      this.seperateTableSelected();
+    }
+  }
+
+  selectAllChairs(table) {
+    (table.get('chairs') as FormArray).controls.forEach(elem => {
+      if (elem.get('permission').value === 'full') {
+        elem.get('isSelected').setValue(true);
+      }
+    });
+  }
+
   getTableInfo(callback = null) {
     this.serv.endpoint = 'order-manager/tables?showActive=true&orderId=' + ((this.orderDetails) ? this.orderDetails.id : '');
     this.serv.get().subscribe(response => {
@@ -228,6 +260,7 @@ export class OrderUpdateManagerComponent implements OnInit, OnDestroy {
       if (responseData.length > 0) {
         this.tableList = responseData[0].tables;
       }
+      this.tableListObserver.next(this.tableList);
       this.tables.controls = [];
       if (Array.isArray(this.tableList)) {
         this.tableList.forEach(t => {
@@ -289,6 +322,7 @@ export class OrderUpdateManagerComponent implements OnInit, OnDestroy {
   }
 
   openTableUpdate() {
+    this.shortCutBlocked = true;
     const dialogRef = this.dialog.open(
       OrderTableUpdateComponent,
       {
@@ -300,6 +334,7 @@ export class OrderUpdateManagerComponent implements OnInit, OnDestroy {
       }
     );
     dialogRef.afterClosed().subscribe(response => {
+    this.shortCutBlocked = false;
       if (response) {
         this.isDirty = true;
       }
@@ -827,10 +862,10 @@ export class OrderUpdateManagerComponent implements OnInit, OnDestroy {
 
 
   shortCutKeyHandler(e) {
-    if (this.shortCutBlocked)return;
+    if (this.shortCutBlocked) {return; }
 
     if (e.code === 'F1') {
-      if (this.blockForms) return;
+      if (this.blockForms) { return; }
       e.preventDefault();
       this.searchInput.nativeElement.focus();
     } else if ((e.code === 'F2') || (e.ctrlKey && e.code === 'KeyN') || e.code === 'Escape') {
@@ -838,16 +873,16 @@ export class OrderUpdateManagerComponent implements OnInit, OnDestroy {
       e.stopPropagation();
       this.openNewHandler(e);
     } else if ((e.ctrlKey && e.code === 'KeyS') || e.code === 'F3') {
-      if (this.blockForms) return;
+      if (this.blockForms) { return; }
       this.saveOrder('confirm');
     } else if ((e.ctrlKey && e.code === 'KeyK') || e.code === 'F4') {
-      if (this.blockForms) return;
+      if (this.blockForms) { return; }
       this.saveOrder('kot');
     } else if ((e.ctrlKey && e.code === 'KeyQ') || e.code === 'F9') {
-      if (this.blockForms) return;
+      if (this.blockForms) { return; }
       this.saveOrder('complete');
     } else if ((e.ctrlKey && e.code === 'KeyX') || e.code === 'F12') {
-      if (this.blockForms) return;
+      if (this.blockForms) { return; }
       this.saveOrder('cancel');
     } else if (e.code === 'F6') {
       this.changeOrderStatusBack('new');
@@ -1073,7 +1108,7 @@ export class OrderUpdateManagerComponent implements OnInit, OnDestroy {
 
 
   changeOrderStatusBack(status) {
-    this.shortCutBlocked=true;
+    this.shortCutBlocked = true;
     const dialogRef = this.dialog.open(ConfirmPopupComponent, {
       data: {
         message: 'Are sure want to reopen?'
@@ -1110,7 +1145,7 @@ export class OrderUpdateManagerComponent implements OnInit, OnDestroy {
       if (response) {
         this.form.patchValue(response);
       }
-    })
+    });
   }
 
   manageClock() {

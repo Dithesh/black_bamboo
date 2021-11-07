@@ -94,7 +94,8 @@ export class TableSetupComponent implements OnInit, AfterViewInit {
     const dialogRef = this.dialog.open(TableUpdateComponent, {
       width: '500px',
       data: {
-        table
+        table,
+        branchDetails: this.brandDetails
       }
     });
     dialogRef.afterClosed().subscribe(data => {

@@ -11,7 +11,7 @@ export class BranchUserBranchDetailsResolver implements Resolve<any> {
 
     resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
         const userData = this.serv.getUserData();
-        this.serv.endpoint = 'order-manager/branch/1';
+        this.serv.endpoint = 'order-manager/branch/' + userData.branch_id;
         return this.serv.get();
 
     }
