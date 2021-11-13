@@ -13,6 +13,12 @@
     backface-visibility: hidden;
     position: relative;
 
+    &.cancelled {
+      box-shadow: 0 2px 3px 0px rgba(#8e2e2e,0.3);
+      color: #8e2e2e;
+      text-decoration: line-through;
+    }
+
     & .close_btn {
           position: absolute;
           top: -10px;

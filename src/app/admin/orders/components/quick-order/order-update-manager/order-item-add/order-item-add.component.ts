@@ -46,12 +46,14 @@ export class OrderItemAddComponent implements OnInit, OnDestroy {
       if (currentIndex > 0) {
         this.product.advancedPriceId = this.advancedPricigArray[currentIndex - 1];
       }
+      this.handleProductPriceChange();
     } else if (e.code === 'ArrowDown') {
       e.preventDefault();
       const currentIndex = this.advancedPricigArray.indexOf(this.product.advancedPriceId);
       if (currentIndex < this.advancedPricigArray.length - 1) {
         this.product.advancedPriceId = this.advancedPricigArray[currentIndex + 1];
       }
+      this.handleProductPriceChange();
     }  else if ((e.shiftKey && e.code === 'Enter') || (e.shiftKey && e.code === 'NumpadEnter')) {
       e.preventDefault();
       this.descriptionControl.setValue(this.descriptionControl.value + '\n');

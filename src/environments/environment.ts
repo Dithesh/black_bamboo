@@ -10,13 +10,18 @@ export const environment = {
   // apiUrl: "http://192.168.0.106:8000/api/",
   // domain: "http://192.168.0.106:8000",
   // imgUrl: "http://192.168.0.106:8000",
-  // apiUrl: 'http://127.0.0.1:8000/api/',
-  // domain: 'http://127.0.0.1:8000',
-  // imgUrl: 'http://127.0.0.1:8000',
+  apiUrl: 'http://127.0.0.1:8000/api/',
+  domain: 'http://127.0.0.1:8000',
+  imgUrl: 'http://127.0.0.1:8000',
 
-  apiUrl: "https://api.runrestro.com/api/",
-  domain: "https://api.runrestro.com",
-  imgUrl: "https://api.runrestro.com",
+
+  // apiUrl: "https://open.runrestro.com/api/",
+  // domain: "https://open.runrestro.com",
+  // imgUrl: "https://open.runrestro.com",
+
+  // apiUrl: "https://api.runrestro.com/api/",
+  // domain: "https://api.runrestro.com",
+  // imgUrl: "https://api.runrestro.com",
 
   // apiUrl: "http://runapi.godreamt.com/api/",
   // domain: "http://runapi.godreamt.com/",

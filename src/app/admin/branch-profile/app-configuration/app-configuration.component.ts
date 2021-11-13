@@ -15,6 +15,7 @@ export class AppConfigurationComponent implements OnInit {
       cancelConfirmation: [false],
       afterCompleteKot: [false],
       onCompleteCancelOrder: ['stayInSame'],
+      finalisingOption: ['billWithComplete'],
       onSaveOrder: ['stayInSame'],
       billPrinter: [''],
       kotPrinter: ['']

@@ -55,7 +55,7 @@
     <mat-card class="completed_section height_handler">
       <h2>Completed Orders</h2>
       <ng-container *ngFor="let item of completedOrders">
-        <div class="quick_order_card" (click)="getOrderDetail(item)">
+        <div class="quick_order_card" [class.cancelled]="item.orderStatus == 'cancelled'" (click)="getOrderDetail(item)">
           <div class="order_header">
             <span class="header_title">#{{item.id}}</span>
             <div class="tables" *ngIf="item.order_tables.length > 0">

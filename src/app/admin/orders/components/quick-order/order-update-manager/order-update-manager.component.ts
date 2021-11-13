@@ -44,6 +44,8 @@ export class OrderUpdateManagerComponent implements OnInit, OnDestroy {
   tableListObserver: ReplaySubject<any[]> = new ReplaySubject<any[]>(1);
   ordertypeControl: FormControl = new FormControl('');
   keyListener = this.shortCutKeyHandler.bind(this);
+  keyUpListener = this.shortCutKeyUpHandler.bind(this);
+  keyBlocked = false;
   orderProcessing = false;
   array = Array;
   tableSelectionControl: FormControl = new FormControl('');
@@ -122,6 +124,7 @@ export class OrderUpdateManagerComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.manageClock();
     window.addEventListener('keydown', this.keyListener, true);
+    window.addEventListener('keyup', this.keyUpListener, true);
     this.searchControl.valueChanges.pipe(
       debounceTime(300)
     ).subscribe(value => {
@@ -863,7 +866,10 @@ export class OrderUpdateManagerComponent implements OnInit, OnDestroy {
 
   shortCutKeyHandler(e) {
     if (this.shortCutBlocked) {return; }
-
+    if (this.keyBlocked) {return; }
+    if (e.key !== 'Control' && e.key !== 'Shift' && e.key !== 'Alt') {
+      this.keyBlocked = true;
+    }
     if (e.code === 'F1') {
       if (this.blockForms) { return; }
       e.preventDefault();
@@ -880,6 +886,13 @@ export class OrderUpdateManagerComponent implements OnInit, OnDestroy {
       this.saveOrder('kot');
     } else if ((e.ctrlKey && e.code === 'KeyQ') || e.code === 'F9') {
       if (this.blockForms) { return; }
+      if (this.branchDetails.finalisingOption === 'printCompleteSeparate') {
+        this.saveOrder('print');
+      }else {
+        this.saveOrder('complete');
+      }
+    } else if (e.code === 'F10' && this.branchDetails.finalisingOption === 'printCompleteSeparate') {
+      if (this.blockForms) { return; }
       this.saveOrder('complete');
     } else if ((e.ctrlKey && e.code === 'KeyX') || e.code === 'F12') {
       if (this.blockForms) { return; }
@@ -887,6 +900,10 @@ export class OrderUpdateManagerComponent implements OnInit, OnDestroy {
     } else if (e.code === 'F6') {
       this.changeOrderStatusBack('new');
     }
+  }
+
+  shortCutKeyUpHandler(e) {
+    this.keyBlocked = false;
   }
 
   openNewHandler(e) {
@@ -964,6 +981,12 @@ export class OrderUpdateManagerComponent implements OnInit, OnDestroy {
       orderData.orderStatus = 'new';
       this.updateOrder(orderData);
       return;
+    } else if (type === 'print') {
+      if (!this.serv.notNull(orderData.orderStatus)) {
+        orderData.orderStatus = 'new';
+      }
+      this.updateOrder(orderData, 'print');
+      return;
     } else if (type === 'complete') {
       orderData.orderStatus = 'completed';
       message = 'Data will be freezed after completion. Are you sure want to proceed?';
@@ -1019,7 +1042,7 @@ export class OrderUpdateManagerComponent implements OnInit, OnDestroy {
       this.orderProcessing = false;
       this.orderDetails = response;
       this.handleOrderDetails();
-      if (this.orderDetails.orderStatus === 'completed') {
+      if (this.orderDetails.orderStatus === 'completed' && this.branchDetails.finalisingOption === 'billWithComplete') {
         this.currentlyPrinting = 'bill';
         setTimeout(() => {
           this.invoicePrintHolder.printPage();
@@ -1037,16 +1060,12 @@ export class OrderUpdateManagerComponent implements OnInit, OnDestroy {
         }, 200);
       } else {
         if (arg === 'kot') {
-
           this.printKot();
-          // this.currentlyPrinting = 'bill';
-          // setTimeout(() => {
-          //   this.invoicePrintHolder.printPage();
-          //   if (arg === 'kot') {
-          //     this.printKot();
-          //   }
-          //   this.handleAfterUpdate(this.orderDetails);
-          // }, 200);
+        } else if (arg === 'print') {
+          this.currentlyPrinting = 'bill';
+          setTimeout(() => {
+            this.invoicePrintHolder.printPage();
+          }, 300);
         } else {
           this.serv.showMessage('Order saved successfully', 'success');
           this.handleAfterUpdate(this.orderDetails);
@@ -1130,6 +1149,7 @@ export class OrderUpdateManagerComponent implements OnInit, OnDestroy {
 
   openCustomerInfoPopup() {
     const formValue = this.form.value;
+    this.shortCutBlocked = true;
     const dialofRef = this.dialog.open(CustomerInfoUpdateComponent, {
       width: '500px',
       data: {
@@ -1142,6 +1162,7 @@ export class OrderUpdateManagerComponent implements OnInit, OnDestroy {
       }
     });
     dialofRef.afterClosed().subscribe(response => {
+      this.shortCutBlocked = false;
       if (response) {
         this.form.patchValue(response);
       }

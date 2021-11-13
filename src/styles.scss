@@ -2210,11 +2210,21 @@ label.mat-checkbox-layout {
     }
 }
 
+
 .single_selection_without {
     width: 220px !important;
     border: 1px solid rgba(#1d2271, 0.3);
     padding: 5px 10px;
     border-radius: 20px;
+}
+
+
+.ew_300 {
+  width: 300px !important;
+}
+
+.ew_500 {
+  width: 500px !important;
 }
 
 // select box

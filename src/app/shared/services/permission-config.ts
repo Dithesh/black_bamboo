@@ -134,8 +134,8 @@ export const permissions = {
         'Company Admin': 'full',
         'Branch Admin' : 'full',
         'Branch Accountant' : 'full',
-        'Branch Manager' : 'full',
-        'Branch Order Manager' : 'full',
+        'Branch Manager' : 'denied',
+        'Branch Order Manager' : 'denied',
         'Kitchen Manager' : 'denied',
         Bearer : 'denied'
     },

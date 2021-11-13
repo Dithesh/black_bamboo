@@ -43,8 +43,11 @@
           <mat-optgroup *ngIf="cat.products.length > 0" [label]="cat.categoryName"
                         [disabled]="cat.products.length <= 0">
             <mat-option *ngFor="let item of cat.products" [value]="item.uid">
-              {{ item.name | titlecase }}
-              <span>{{ item.price | currency }}</span>
+              <div class="d-flex justify-content-between">
+
+                {{ item.name | titlecase }}
+                <small class="text-muted d-inline-block ml-auto"><span class="d-inline-block mr-5"> &#8377;</span>{{ item.price | currency:'':'' }}</small>
+              </div>
             </mat-option>
           </mat-optgroup>
         </ng-container>
@@ -85,7 +88,7 @@
               <!--              <mat-icon mat-list-icon>folder</mat-icon>-->
               <div mat-line class="selection_list_line">
                 <span class="title">{{ product.productName }}</span>
-                <div> {{ product.price }} </div>
+                <small class="text-muted d-inline-block"> <span class="d-inline-block mr-5"> &#8377;</span>{{ product.price | currency:'':'' }} </small>
               </div>
             </mat-list-option>
             <mat-divider></mat-divider>
@@ -95,7 +98,7 @@
                 <!--              <mat-icon mat-list-icon>folder</mat-icon>-->
                 <div mat-line class="selection_list_line">
                   <span class="title">{{ combo.comboTitle }}</span>
-                  <div> {{ combo.price }} </div>
+                  <small class="text-muted d-inline-block"><span class="d-inline-block mr-5"> &#8377;</span> {{ combo.price | currency:'':'' }} </small>
                 </div>
               </mat-list-option>
               <mat-divider></mat-divider>
@@ -374,10 +377,20 @@
     <button mat-raised-button type="button" color="accent" [disabled]="form.get('orderAmount').value <= 0" (click)="saveOrder('kot')">
       KOT (F4)
     </button>
-    <button mat-raised-button type="button" color="success"
+    <button *ngIf="branchDetails?.finalisingOption == 'billWithComplete'" mat-raised-button type="button" color="success"
             [disabled]="form.get('orderAmount').value <= 0 || form.get('orderStatus').value === 'completed' || form.get('orderStatus').value === 'cancelled' || blockForms"
             (click)="saveOrder('complete')"> Print Bill (F9)
     </button>
+    <ng-container  *ngIf="branchDetails?.finalisingOption == 'printCompleteSeparate'">
+        <button mat-stroked-button type="button" color="success"
+                [disabled]="form.get('orderAmount').value <= 0 || form.get('orderStatus').value === 'completed' || form.get('orderStatus').value === 'cancelled' || blockForms"
+                (click)="saveOrder('print')"> Print Bill (F9)
+        </button>
+        <button mat-raised-button type="button" color="success"
+                [disabled]="form.get('orderAmount').value <= 0 || form.get('orderStatus').value === 'completed' || form.get('orderStatus').value === 'cancelled' || blockForms"
+                (click)="saveOrder('complete')"> Complete (F10)
+        </button>
+    </ng-container>
     <button mat-stroked-button type="button" aria-label="" color="warn"
             [disabled]="!orderDetails || form.get('orderStatus').value === 'completed' || form.get('orderStatus').value === 'cancelled' || blockForms"
             (click)="saveOrder('cancel')">Cancel Order (F12)

@@ -15,6 +15,8 @@ export class QuickOrderComponent implements OnInit, OnDestroy {
   ongoingorders: any[] = [];
   blockShortCut = false;
   keyListener = this.shortCutKeyHandler.bind(this);
+  keyUpListener = this.shortCutKeyUpHandler.bind(this);
+  keyBlocked = false;
   unsavedOrderList: any[] = [];
 
   userData: any;
@@ -43,6 +45,7 @@ export class QuickOrderComponent implements OnInit, OnDestroy {
     this.getOngoingOrders();
     this.getFinishedOrders();
     window.addEventListener('keydown', this.keyListener, true);
+    window.addEventListener('keyup', this.keyUpListener, true);
 
 
     this.userData = this.serv.getUserData();
@@ -147,6 +150,7 @@ export class QuickOrderComponent implements OnInit, OnDestroy {
   }
 
   openOrderUpdateManager(item = null, type = 'saved', unsavedIndex = null) {
+    if (this.blockShortCut) { return; }
     this.blockShortCut = true;
     const dialogRef = this.dialog.open(
       OrderUpdateManagerComponent,
@@ -168,7 +172,6 @@ export class QuickOrderComponent implements OnInit, OnDestroy {
     );
 
     dialogRef.afterClosed().subscribe(response => {
-      console.log(response, unsavedIndex);
       this.blockShortCut = false;
       this.getOngoingOrders();
       this.getFinishedOrders();
@@ -224,12 +227,20 @@ export class QuickOrderComponent implements OnInit, OnDestroy {
 
   shortCutKeyHandler(e) {
     if (!this.blockShortCut) {
+      if (this.keyBlocked) {return; }
+      if (e.key !== 'Control' && e.key !== 'Shift' && e.key !== 'Alt') {
+        this.keyBlocked = true;
+      }
       if ((e.ctrlKey && e.code === 'KeyN') || e.code === 'F2') {
         e.stopPropagation();
         e.preventDefault();
         this.openOrderUpdateManager();
       }
     }
+  }
+
+  shortCutKeyUpHandler(e) {
+    this.keyBlocked = false;
   }
 
   removeUnsaved(i) {

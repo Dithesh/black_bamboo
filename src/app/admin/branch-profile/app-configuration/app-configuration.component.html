@@ -51,6 +51,15 @@
             </div>
             <div class="col-12">
                 <div class="d-flex align-items-center my-10">
+                    <p class="my-0 mr-20">Order Completion </p>
+                    <mat-select class="single_selection_without label ew_300" formControlName="finalisingOption" >
+                      <mat-option value="billWithComplete">Complete order with print bill</mat-option>
+                      <mat-option value="printCompleteSeparate">Print bill and complete order separate</mat-option>
+                    </mat-select>
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="d-flex align-items-center my-10">
                     <p class="my-0 mr-20">After Order completion or cancellation? </p>
                     <mat-select class="single_selection_without label" formControlName="onCompleteCancelOrder" >
                       <mat-option value="stayInSame">Stay in same window</mat-option>
