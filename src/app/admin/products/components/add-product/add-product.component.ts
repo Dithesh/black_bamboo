@@ -47,6 +47,7 @@ export class AddProductComponent implements OnInit {
         price: [''],
         isAdvancedPricing: [false],
         canPriceAltered: [false],
+        inclTax: [false],
         pricingGroups: this.fb.array([this.addAdvancePrice()]),
         taxPercent: [''],
         packagingCharges: [''],

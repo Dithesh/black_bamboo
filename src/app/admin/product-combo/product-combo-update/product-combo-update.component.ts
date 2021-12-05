@@ -42,6 +42,7 @@ export class ProductComboUpdateComponent implements OnInit {
         packagingCharges: [''],
         isActive: [true],
         canPriceAltered: [false],
+        inclTax: [false],
         branch_id: [''],
         company_id: [''],
         items: this.fb.array([])

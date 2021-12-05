@@ -249,6 +249,7 @@ export class QuickOrderComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     window.removeEventListener('keydown', this.keyListener, true);
+    window.removeEventListener('keyup', this.keyUpListener, true);
   }
 
 }

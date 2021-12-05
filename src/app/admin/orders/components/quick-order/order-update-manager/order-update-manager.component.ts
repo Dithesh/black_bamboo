@@ -3,7 +3,7 @@ import {FormArray, FormBuilder, FormControl, FormGroup} from '@angular/forms';
 import {DataService} from '../../../../../shared/services/data.service';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {ConfirmPopupComponent} from '../../../../../shared/components/confirm-popup/confirm-popup.component';
-import {ReplaySubject} from 'rxjs';
+import {ReplaySubject, Subscription} from 'rxjs';
 import {debounceTime} from 'rxjs/operators';
 import {OrderItemAddComponent} from './order-item-add/order-item-add.component';
 import {MatSelectionList} from '@angular/material/list';
@@ -64,6 +64,7 @@ export class OrderUpdateManagerComponent implements OnInit, OnDestroy {
     discountReason: [''],
     discountValue: [''],
     orderAmount: [''],
+    taxableAmount: [''],
     packingCharge: [''],
     deliverCharge: [''],
     orderStatus: ['new'],
@@ -80,6 +81,7 @@ export class OrderUpdateManagerComponent implements OnInit, OnDestroy {
   calAmount: FormControl = new FormControl('');
   selectedTables: any[] = [];
   shortCutBlocked = false;
+  subscription: Subscription = new Subscription();
 
   constructor(
     private fb: FormBuilder,
@@ -403,6 +405,7 @@ export class OrderUpdateManagerComponent implements OnInit, OnDestroy {
       productName: item.productName,
       featuredImage: item.featuredImage,
       isParcel: item.isParcel,
+      inclTax: item.inclTax,
       price: item.price,
       advancedPriceId: item.advancedPriceId,
       advancedPriceTitle: item.advancedPriceTitle,
@@ -442,11 +445,11 @@ export class OrderUpdateManagerComponent implements OnInit, OnDestroy {
       comboTitle: item.comboTitle,
       featuredImage: item.featuredImage,
       isParcel: item.isParcel,
+      inclTax: item.inclTax,
       price: item.comboTotal,
       quantity,
       packagingCharges: (item.isParcel) ? item.packagingCharges : '0'
     });
-    console.log(this.form.value);
     if (isNew) {
       this.comboItems.push(form);
     }
@@ -489,12 +492,16 @@ export class OrderUpdateManagerComponent implements OnInit, OnDestroy {
         this.selectedOrderType = elem;
         this.form.get('orderType').setValue(orderTypeId);
         if (isClearRequired) {
+          const removeArray = [];
           this.items.controls.forEach((control, index) => {
             if (this.serv.notNull(control.get('id').value)) {
               control.get('deletedFlag').setValue(true);
             } else {
-              this.items.removeAt(index);
+              removeArray.unshift(index);
             }
+          });
+          removeArray.forEach(index => {
+              this.items.removeAt(index);
           });
           this.handleFinalPricing();
         }
@@ -510,11 +517,18 @@ export class OrderUpdateManagerComponent implements OnInit, OnDestroy {
     let totalPrice = 0;
     let totalComboPrice = 0;
     let grandTotal = 0;
+    let nonTaxableAmount = 0;
+    let isOnlyNonTaxable = true;
     this.selectedItemTotal = 0;
     orderItems.forEach(item => {
       if (!item.deletedFlag) {
         this.selectedItemTotal++;
         totalPrice = totalPrice + parseFloat(item.totalPrice);
+        if (item.inclTax) {
+          nonTaxableAmount += parseFloat(item.totalPrice);
+        } else {
+          isOnlyNonTaxable = false;
+        }
       }
     });
     grandTotal += totalPrice;
@@ -523,15 +537,29 @@ export class OrderUpdateManagerComponent implements OnInit, OnDestroy {
       if (!item.deletedFlag) {
         this.selectedItemTotal++;
         totalComboPrice = totalComboPrice + parseFloat(item.totalPrice);
+
+        if (item.inclTax) {
+          nonTaxableAmount += parseFloat(item.totalPrice);
+        } else {
+          isOnlyNonTaxable = false;
+        }
       }
     });
     grandTotal += totalComboPrice;
+
+    if (!isOnlyNonTaxable) {
+      nonTaxableAmount = 0;
+    }
     const charge = this.form.get('deliverCharge').value;
     if (charge != null && charge !== '' && charge !== undefined && charge > 0) {
       grandTotal += parseFloat(charge);
     }
 
-    let tax = grandTotal * this.form.get('taxPercent').value / 100;
+    let tax = 0;
+    const taxableAmount = grandTotal - nonTaxableAmount;
+    if (taxableAmount > 0) {
+      tax = grandTotal * this.form.get('taxPercent').value / 100;
+    }
     let cgst = 0;
     let sgst = 0;
     if (this.form.get('taxDisabled').value) {
@@ -559,6 +587,7 @@ export class OrderUpdateManagerComponent implements OnInit, OnDestroy {
       orderItemTotal: totalPrice,
       orderComboTotal: totalComboPrice,
       orderAmount: grandTotal,
+      taxableAmount,
       packingCharge: '',
       roundOfAmount,
       cgst,
@@ -583,6 +612,7 @@ export class OrderUpdateManagerComponent implements OnInit, OnDestroy {
       kot_pending: ['0'],
       productionRejectedQuantity: ['0'],
       packagingCharges: ['0.00'],
+      inclTax: [false],
       totalPrice: ['0.00'],
       featuredImage: [''],
       orderGroup: [''],
@@ -610,6 +640,7 @@ export class OrderUpdateManagerComponent implements OnInit, OnDestroy {
       productionRejectedQuantity: ['0'],
       packagingCharges: ['0.00'],
       totalPrice: ['0.00'],
+      inclTax: [false],
       featuredImage: [''],
       orderGroup: [''],
       deletedFlag: [false],
@@ -660,6 +691,7 @@ export class OrderUpdateManagerComponent implements OnInit, OnDestroy {
       sgst: this.orderDetails.sgst,
       orderItemTotal: this.orderDetails.orderItemTotal,
       orderAmount: this.orderDetails.orderAmount,
+      taxableAmount: this.orderDetails.taxableAmount,
       packingCharge: this.orderDetails.packingCharge,
       deliverCharge: this.orderDetails.deliverCharge,
       discountValue: this.orderDetails.discountValue,
@@ -700,6 +732,7 @@ export class OrderUpdateManagerComponent implements OnInit, OnDestroy {
         productId: item.product.id,
         productName: item.product.productName,
         isParcel: item.isParcel,
+        inclTax: item.product.inclTax,
         price: item.price,
         advancedPriceId: item.advancedPriceId,
         advancedPriceTitle: item.advancedPriceTitle,
@@ -744,6 +777,7 @@ export class OrderUpdateManagerComponent implements OnInit, OnDestroy {
         comboProductId: item.product_combo.id,
         comboTitle: item.product_combo.comboTitle,
         isParcel: item.isParcel,
+        inclTax:  item.product_combo.inclTax,
         price: item.price,
         quantity: item.quantity,
         servedItems: item.servedQuantity,
@@ -1187,6 +1221,7 @@ export class OrderUpdateManagerComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     window.removeEventListener('keydown', this.keyListener, true);
+    window.removeEventListener('keyup', this.keyUpListener, true);
   }
 
 }

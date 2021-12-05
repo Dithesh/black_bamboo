@@ -128,7 +128,7 @@
                         <span class=""><span
                           class="d-inline-block mr-5"> &#8377;</span>{{ item.get('price').value | currency:'':''  }}</span>
                       </p>
-                      <p class="product_price mr-2" *ngIf="item.get('isParcel').value">
+                      <p class="product_price mr-2" *ngIf="item.get('isParcel').value && item.get('packagingCharges').value > 0">
                         <small>Pkg charge: </small>
                         <span class=""><span
                           class="d-inline-block mr-5"> &#8377;</span>{{ item.get('packagingCharges').value | currency:'':'' }}</span>
@@ -197,7 +197,7 @@
                         <span class=""><span
                           class="d-inline-block"> &#8377;</span>{{ item.get('price').value | currency:'':''}}</span>
                       </p>
-                      <p class="product_price mr-2" *ngIf="item.get('isParcel').value">
+                      <p class="product_price mr-2" *ngIf="item.get('isParcel').value && item.get('packagingCharges').value > 0">
                         <small>Pkg charge: </small>
                         <span class=""><span
                           class="d-inline-block"> &#8377;</span>{{ item.get('packagingCharges').value | currency :'':''}}</span>
@@ -265,7 +265,7 @@
                       <input matInput  [formControl]="form.get('deliverCharge')" (change)="handleFinalPricing()" digitOnly [decimal]="true">
                   </mat-form-field>
               </div> -->
-          <div class="billing_wrapper" *ngIf="form.get('orderItemTotal').value > 0">
+          <div class="billing_wrapper" *ngIf="form.get('orderItemTotal').value > 0 || form.get('orderComboTotal').value > 0">
             <div class="billing_strip">
               <p class="main_title">Order Summary</p>
             </div>
@@ -285,7 +285,7 @@
               <span class="value_section"><span
                 class="d-inline-block mr-5"> &#8377;</span>{{ form.get('packingCharge').value | currency:'':''}}</span>
             </div>
-            <div class="billing_strip" *ngIf="form.get('deliverCharge').value && form.get('deliverCharge').value > 0">
+            <div class="billing_strip" *ngIf="!selectedOrderType?.tableRequired">
               <p class="title">Delivery Charge</p>
               <mat-form-field appearance="outline" class="ew-80 pb-0 mr-m-11 inline-input text-right prefix-top-0">
                 <span matPrefix class="">&#8377;</span>
@@ -308,6 +308,7 @@
               <span class="value_section"><span
                 class="d-inline-block mr-5"> &#8377;</span>{{ form.get('sgst').value | currency:'':''}}</span>
             </div>
+
             <hr>
             <div class="billing_strip totalAmountText">
               <p class="title">Sub Total</p>

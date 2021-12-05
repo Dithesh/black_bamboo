@@ -5,14 +5,14 @@ export const environment = {
   // imgUrl: "http://192.168.1.103:8000",
 
   //black bamboo
-  // apiUrl: "http://path.runrestro.com:8983/api/",
-  // domain: "http://path.runrestro.com:8983",
-  // imgUrl: "http://path.runrestro.com:8983",
+  apiUrl: "http://path.runrestro.com:8983/api/",
+  domain: "http://path.runrestro.com:8983",
+  imgUrl: "http://path.runrestro.com:8983",
 
   // others
-  apiUrl: "http://path.runrestro.com/api/",
-  domain: "http://path.runrestro.com",
-  imgUrl: "http://path.runrestro.com",
+  // apiUrl: "http://path.runrestro.com/api/",
+  // domain: "http://path.runrestro.com",
+  // imgUrl: "http://path.runrestro.com",
 
   // apiUrl: "https://api.runrestro.com/api/",
   // domain: "https://api.runrestro.com",
